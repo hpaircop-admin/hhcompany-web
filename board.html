@@ -251,6 +251,16 @@
   .foot-col a, .foot-col p { display: block; font-size: 13px; color: rgba(255,255,255,0.55); margin-bottom: 10px; }
   .foot-col a:hover { color: var(--sky); }
   .foot-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 22px; font-size: 12px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  .foot-legal { border-top: 1px solid rgba(255,255,255,0.1); margin-top: 40px; padding-top: 32px; display: flex; gap: 64px; flex-wrap: wrap; }
+  .foot-legal-name { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 14px; }
+  .foot-legal-name span { color: rgba(255,255,255,0.4); font-weight: 500; font-size: 12px; margin-left: 8px; }
+  .foot-legal-col p { font-size: 13px; color: rgba(255,255,255,0.55); margin-bottom: 8px; }
+  .foot-legal-col p strong { display: inline-block; min-width: 108px; color: rgba(255,255,255,0.85); font-weight: 700; }
+  .foot-links { display: flex; gap: 24px; margin-top: 28px; flex-wrap: wrap; }
+  .foot-links a { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.7); }
+  .foot-links a:hover { color: var(--sky); }
+  .foot-links a.accent { color: #ff6b78; }
+  .foot-links a.accent:hover { color: #ff8f99; }
 
   .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s, transform .7s; }
   .reveal.on { opacity: 1; transform: none; }
@@ -382,9 +392,25 @@
         </div>
       </div>
     </div>
+    <div class="foot-legal">
+      <div class="foot-legal-col">
+        <h4 class="foot-legal-name">(주)더블에이치컴퍼니<span>HHCOMPANY</span></h4>
+        <p><strong>대표자</strong>김경훈</p>
+        <p><strong>주소</strong>경기도 의정부시 용현로155 105호</p>
+        <p><strong>사업자등록번호</strong>420-88-03868</p>
+      </div>
+      <div class="foot-legal-col">
+        <p><strong>개인정보관리책임자</strong>김성훈</p>
+        <p><strong>고객센터</strong>031-339-2999</p>
+      </div>
+    </div>
+    <div class="foot-links">
+      <a href="terms.html">이용약관</a>
+      <a href="#" class="accent">개인정보처리방침</a>
+      <a href="http://pf.kakao.com/_vvZxen/chat" target="_blank" rel="noopener">카카오톡 1:1 문의</a>
+    </div>
     <div class="foot-bottom">
       <span>© 2026 (주)더블에이치컴퍼니. All rights reserved.</span>
-      <span>HHCOMPANY</span>
     </div>
   </div>
 </footer>
