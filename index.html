@@ -272,7 +272,7 @@
     <ul class="nav-menu">
       <li><a href="#about">회사소개</a></li>
       <li><a href="#business">사업분야</a></li>
-      <li><a href="products.html" target="_blank">상품소개</a></li>
+      <li><a href="products.html">상품소개</a></li>
       <li><a href="#inquiry-board">문의게시판</a></li>
       <li><a href="#reserve-board">예약게시판</a></li>
     </ul>
@@ -362,20 +362,6 @@
         <p>여행사·대리점·폐쇄몰과 협력해 판매 채널을 넓힙니다. 채널별 수수료·정산을 투명하게 관리합니다.</p>
         <a href="#inquiry-board" class="more">파트너 문의</a>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- ── 상품소개 ── -->
-<section class="products" id="products">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <div class="sec-tag">Our Products</div>
-      <h2 class="sec-title">파트너 업장 상품 소개</h2>
-      <p class="sec-desc">더블에이치컴퍼니가 공식 총판·제휴로 연결하는 체험시설입니다. 자세한 견적은 예약게시판으로 문의해주세요.</p>
-    </div>
-    <div class="prod-grid" id="product-grid">
-      <div class="prod-empty">상품 정보를 불러오는 중입니다...</div>
     </div>
   </div>
 </section>
@@ -472,7 +458,7 @@
         <div class="foot-col">
           <h5>바로가기</h5>
           <a href="#about">회사소개</a>
-          <a href="products.html" target="_blank">상품소개</a>
+          <a href="products.html">상품소개</a>
           <a href="#inquiry-board">문의게시판</a>
           <a href="#reserve-board">예약게시판</a>
         </div>
@@ -527,45 +513,6 @@
     });
     if (!res.ok) { const err = await res.text(); throw new Error(`오류 ${res.status}: ${err}`); }
     return res.status === 204 ? null : res.json();
-  }
-
-  // ══════════════════════════════════════════════
-  // 상품소개
-  // ══════════════════════════════════════════════
-  async function loadProducts() {
-    try {
-      const rows = await sbFetch('products?select=*&visible=eq.true&order=sort_order.asc');
-      renderProducts(rows || []);
-    } catch(e) {
-      document.getElementById('product-grid').innerHTML = '<div class="prod-empty">상품 정보를 불러오지 못했습니다.</div>';
-    }
-  }
-  function renderProducts(list) {
-    const grid = document.getElementById('product-grid');
-    if (!list.length) { grid.innerHTML = '<div class="prod-empty">등록된 상품이 없습니다.</div>'; return; }
-    grid.innerHTML = list.map(p => {
-      const tickets = p.tickets || [];
-      const minPrice = tickets.length ? Math.min(...tickets.map(t=>t.price||0)) : 0;
-      return `<div class="prod-card reveal on">
-        <div class="prod-thumb" style="background:${p.gradient||'linear-gradient(135deg,#0e2a47,#1d6fe0)'}">${p.emoji||'🎡'}</div>
-        <div class="prod-body">
-          <div class="prod-name">${p.vname||p.name}</div>
-          <div class="prod-sub">${p.name}</div>
-          <div class="prod-desc">${p.desc||''}</div>
-          <div class="prod-foot">
-            <span class="prod-price">${minPrice.toLocaleString()}원~ <small>단체가</small></span>
-            <button class="prod-btn" onclick="askAboutProduct('${(p.vname||p.name||'').replace(/'/g,"\\'")}')">문의하기</button>
-          </div>
-        </div>
-      </div>`;
-    }).join('');
-  }
-  function askAboutProduct(vname) {
-    document.getElementById('reserve-form').classList.add('open');
-    document.getElementById('rb-venue').value = vname;
-    document.getElementById('rb-title').value = '';
-    document.getElementById('reserve-board').scrollIntoView({behavior:'smooth'});
-    showToast(vname + ' 관련 문의 폼을 열었습니다');
   }
 
   // ══════════════════════════════════════════════
@@ -685,7 +632,6 @@
   }
 
   window.addEventListener('load', () => {
-    loadProducts();
     loadInquiryBoard();
     loadReserveBoard();
   });
