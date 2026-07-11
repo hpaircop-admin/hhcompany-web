@@ -291,13 +291,13 @@
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
   @media (max-width: 900px) {
-    .nav-menu, .nav-cta-group { display: none; }
-    .burger { display: flex; align-items: center; justify-content: center; }
-    header.nav-open .wrap.nav { flex-wrap: wrap; row-gap: 18px; padding-bottom: 22px; }
-    header.nav-open .nav-menu { display: flex; flex-direction: column; gap: 16px; flex-basis: 100%; order: 3; }
-    header.nav-open .nav-menu a { font-size: 14px; }
-    header.nav-open .nav-cta-group { display: flex; flex-direction: column; gap: 10px; flex-basis: 100%; order: 4; align-items: stretch; }
-    header.nav-open .nav-cta-group a { justify-content: center; }
+    .nav { height: auto; flex-wrap: wrap; row-gap: 10px; padding: 12px 0; }
+    .nav-cta-group, .burger { display: none; }
+    .nav-menu { display: flex; flex-basis: 100%; order: 3; gap: 2px; justify-content: space-between; list-style: none; }
+    .nav-menu li { flex: 1; }
+    .nav-menu a { display: block; text-align: center; font-size: 10.5px; letter-spacing: 0; white-space: nowrap; padding: 2px 0; }
+    .hero-content { padding-top: 118px; }
+    .page-hero { padding-top: 168px; }
     .about-grid { grid-template-columns: 1fr; gap: 40px; }
     .biz-grid, .prod-grid { grid-template-columns: 1fr; }
     .bf-grid { grid-template-columns: 1fr; }
