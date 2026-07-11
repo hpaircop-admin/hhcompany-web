@@ -270,7 +270,12 @@
 
   @media (max-width: 900px) {
     .nav-menu, .nav-cta-group { display: none; }
-    .burger { display: block; }
+    .burger { display: flex; align-items: center; justify-content: center; }
+    header.nav-open .wrap.nav { flex-wrap: wrap; row-gap: 18px; padding-bottom: 22px; }
+    header.nav-open .nav-menu { display: flex; flex-direction: column; gap: 16px; flex-basis: 100%; order: 3; }
+    header.nav-open .nav-menu a { font-size: 14px; }
+    header.nav-open .nav-cta-group { display: flex; flex-direction: column; gap: 10px; flex-basis: 100%; order: 4; align-items: stretch; }
+    header.nav-open .nav-cta-group a { justify-content: center; }
     .about-grid { grid-template-columns: 1fr; gap: 40px; }
     .biz-grid, .prod-grid { grid-template-columns: 1fr; }
     .bf-grid { grid-template-columns: 1fr; }
@@ -540,6 +545,19 @@
     });
   }, { threshold: 0.12 });
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+(function () {
+  var header = document.getElementById('header');
+  var burger = document.querySelector('.burger');
+  if (header && burger) {
+    burger.addEventListener('click', function () {
+      header.classList.toggle('nav-open');
+    });
+    document.querySelectorAll('.nav-menu a, .nav-cta-group a').forEach(function (a) {
+      a.addEventListener('click', function () { header.classList.remove('nav-open'); });
+    });
+  }
+})();
 </script>
 </body>
 </html>
