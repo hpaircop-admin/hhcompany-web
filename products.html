@@ -193,6 +193,12 @@
   .prod-price small { font-size: 11px; font-weight: 500; color: var(--gray); }
   .prod-btn { background: var(--navy); color: #fff; border: none; padding: 8px 16px; border-radius: 4px; font-size: 12px; font-weight: 700; }
   .prod-btn:hover { background: var(--blue); }
+  .prod-btn.ghost { background: #fff; color: var(--navy); border: 1px solid var(--line); }
+  .prod-btn.ghost:hover { background: var(--cream); border-color: var(--navy); }
+  .prod-btn-group { display: flex; gap: 8px; }
+  .prod-thumb-link { display: block; }
+  .prod-name-link { color: inherit; text-decoration: none; }
+  .prod-name-link:hover { text-decoration: underline; }
   .prod-empty { text-align: center; color: var(--gray); padding: 40px; grid-column: 1/-1; }
 
   /* ── 게시판 공통 ── */
@@ -421,21 +427,38 @@
       document.getElementById('product-grid').innerHTML = '<div class="prod-empty">상품 정보를 불러오지 못했습니다.</div>';
     }
   }
+  const PRODUCT_DETAIL_PAGES = {
+    '오션월드': 'oceanworld.html',
+    '비발디파크 오션월드': 'oceanworld.html',
+    '키자니아': 'kidzania.html',
+    '키자니아 서울': 'kidzania.html',
+    '강화레포츠파크': 'ganghwa.html',
+    '강화 레포츠파크': 'ganghwa.html',
+    '원마운트': 'onemount.html',
+    '원마운트 워터파크': 'onemount.html',
+  };
+
   function renderProducts(list) {
     const grid = document.getElementById('product-grid');
     if (!list.length) { grid.innerHTML = '<div class="prod-empty">등록된 상품이 없습니다.</div>'; return; }
     grid.innerHTML = list.map(p => {
       const tickets = p.tickets || [];
       const minPrice = tickets.length ? Math.min(...tickets.map(t=>t.price||0)) : 0;
+      const detailPage = PRODUCT_DETAIL_PAGES[p.name] || PRODUCT_DETAIL_PAGES[p.vname] || null;
+      const thumb = `<div class="prod-thumb" style="background:${p.gradient||'linear-gradient(135deg,#0e2a47,#1d6fe0)'}">${p.emoji||'🎡'}</div>`;
+      const nameText = p.vname||p.name;
       return `<div class="prod-card">
-        <div class="prod-thumb" style="background:${p.gradient||'linear-gradient(135deg,#0e2a47,#1d6fe0)'}">${p.emoji||'🎡'}</div>
+        ${detailPage ? `<a href="${detailPage}" class="prod-thumb-link">${thumb}</a>` : thumb}
         <div class="prod-body">
-          <div class="prod-name">${p.vname||p.name}</div>
+          <div class="prod-name">${detailPage ? `<a href="${detailPage}" class="prod-name-link">${nameText}</a>` : nameText}</div>
           <div class="prod-sub">${p.name}</div>
           <div class="prod-desc">${p.desc||''}</div>
           <div class="prod-foot">
             <span class="prod-price">${minPrice.toLocaleString()}원~ <small>단체가</small></span>
-            <a class="prod-btn" style="display:inline-block;text-decoration:none" href="reserve.html">문의하기</a>
+            <div class="prod-btn-group">
+              ${detailPage ? `<a class="prod-btn ghost" style="display:inline-block;text-decoration:none" href="${detailPage}">자세히 보기</a>` : ''}
+              <a class="prod-btn" style="display:inline-block;text-decoration:none" href="reserve.html">문의하기</a>
+            </div>
           </div>
         </div>
       </div>`;
