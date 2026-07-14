@@ -183,7 +183,7 @@
   .prod-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
   .prod-card { border: 1px solid var(--line); border-radius: 8px; overflow: hidden; transition: transform .25s, box-shadow .25s; background: #fff; }
   .prod-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(14,42,71,0.1); }
-  .prod-thumb { height: 140px; display: flex; align-items: center; justify-content: center; font-size: 44px; }
+  .prod-thumb { height: 140px; display: flex; align-items: center; justify-content: center; font-size: 44px; overflow: hidden; }
   .prod-body { padding: 20px 22px 22px; }
   .prod-name { font-family: var(--serif); font-size: 17px; font-weight: 700; color: var(--ink); margin-bottom: 3px; }
   .prod-sub { font-size: 12px; color: var(--gray); margin-bottom: 10px; }
@@ -445,7 +445,9 @@
       const tickets = p.tickets || [];
       const minPrice = tickets.length ? Math.min(...tickets.map(t=>t.price||0)) : 0;
       const detailPage = PRODUCT_DETAIL_PAGES[p.name] || PRODUCT_DETAIL_PAGES[p.vname] || null;
-      const thumb = `<div class="prod-thumb" style="background:${p.gradient||'linear-gradient(135deg,#0e2a47,#1d6fe0)'}">${p.emoji||'🎡'}</div>`;
+      const thumb = p.image_url
+        ? `<div class="prod-thumb" style="padding:0;"><img src="${p.image_url}" alt="${p.vname||p.name}" style="width:100%;height:100%;object-fit:cover;display:block"></div>`
+        : `<div class="prod-thumb" style="background:${p.gradient||'linear-gradient(135deg,#0e2a47,#1d6fe0)'}">${p.emoji||'🎡'}</div>`;
       const nameText = p.vname||p.name;
       return `<div class="prod-card">
         ${detailPage ? `<a href="${detailPage}" class="prod-thumb-link">${thumb}</a>` : thumb}
