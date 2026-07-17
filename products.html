@@ -200,6 +200,14 @@
   .prod-name-link { color: inherit; text-decoration: none; }
   .prod-name-link:hover { text-decoration: underline; }
   .prod-empty { text-align: center; color: var(--gray); padding: 40px; grid-column: 1/-1; }
+  .cat-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 40px; }
+  .cat-tab { background: #fff; border: 1px solid var(--line); color: var(--gray); font-size: 13px; font-weight: 700; padding: 10px 20px; border-radius: 999px; transition: all .2s; }
+  .cat-tab:hover { border-color: var(--blue); color: var(--blue); }
+  .cat-tab.active { background: var(--navy); border-color: var(--navy); color: #fff; }
+  .cat-section { margin-bottom: 56px; }
+  .cat-section:last-child { margin-bottom: 0; }
+  .cat-section-title { font-family: var(--serif); font-size: 22px; font-weight: 700; color: var(--ink); margin-bottom: 22px; display: flex; align-items: baseline; gap: 10px; }
+  .cat-section-title .cat-count { font-family: 'Pretendard', sans-serif; font-size: 13px; font-weight: 600; color: var(--gray); }
 
   /* ── 게시판 공통 ── */
   .board { background: var(--cream); }
@@ -335,7 +343,8 @@
 
 <section class="products">
   <div class="wrap">
-    <div class="prod-grid" id="product-grid">
+    <div class="cat-tabs" id="cat-tabs" style="display:none"></div>
+    <div id="product-grid">
       <div class="prod-empty">상품 정보를 불러오는 중입니다...</div>
     </div>
   </div>
@@ -457,33 +466,80 @@
     '캐리비안베이 종일이용권 단체': 'caribbean.html',
   };
 
-  function renderProducts(list) {
-    const grid = document.getElementById('product-grid');
-    if (!list.length) { grid.innerHTML = '<div class="prod-empty">등록된 상품이 없습니다.</div>'; return; }
-    grid.innerHTML = list.map(p => {
-      const tickets = p.tickets || [];
-      const minPrice = tickets.length ? Math.min(...tickets.map(t=>t.price||0)) : 0;
-      const detailPage = PRODUCT_DETAIL_PAGES[p.name] || PRODUCT_DETAIL_PAGES[p.vname] || null;
-      const thumb = p.image_url
-        ? `<div class="prod-thumb" style="padding:0;"><img src="${p.image_url}" alt="${p.vname||p.name}" style="width:100%;height:100%;object-fit:cover;display:block"></div>`
-        : `<div class="prod-thumb" style="background:${p.gradient||'linear-gradient(135deg,#0e2a47,#1d6fe0)'}">${p.emoji||'🎡'}</div>`;
-      const nameText = p.vname||p.name;
-      return `<div class="prod-card">
-        ${detailPage ? `<a href="${detailPage}" class="prod-thumb-link">${thumb}</a>` : thumb}
-        <div class="prod-body">
-          <div class="prod-name">${detailPage ? `<a href="${detailPage}" class="prod-name-link">${nameText}</a>` : nameText}</div>
-          <div class="prod-sub">${p.name}</div>
-          <div class="prod-desc">${p.desc||''}</div>
-          <div class="prod-foot">
-            <span class="prod-price">${minPrice.toLocaleString()}원~ <small>단체가</small></span>
-            <div class="prod-btn-group">
-              ${detailPage ? `<a class="prod-btn ghost" style="display:inline-block;text-decoration:none" href="${detailPage}">자세히 보기</a>` : ''}
-              <a class="prod-btn" style="display:inline-block;text-decoration:none" href="reserve.html">문의하기</a>
-            </div>
+  const CATEGORY_META = {
+    waterpark:   { label: '워터파크',      order: 1 },
+    theme:       { label: '테마파크',      order: 2 },
+    experience:  { label: '체험 · 프로그램', order: 3 },
+    performance: { label: '공연',         order: 4 },
+  };
+  function catLabel(cat) { return (CATEGORY_META[cat] && CATEGORY_META[cat].label) || cat || '기타'; }
+  function catOrder(cat) { return (CATEGORY_META[cat] && CATEGORY_META[cat].order) || 99; }
+
+  function productCardHtml(p) {
+    const tickets = p.tickets || [];
+    const minPrice = tickets.length ? Math.min(...tickets.map(t=>t.price||0)) : 0;
+    const detailPage = PRODUCT_DETAIL_PAGES[p.name] || PRODUCT_DETAIL_PAGES[p.vname] || null;
+    const thumb = p.image_url
+      ? `<div class="prod-thumb" style="padding:0;"><img src="${p.image_url}" alt="${p.vname||p.name}" style="width:100%;height:100%;object-fit:cover;display:block"></div>`
+      : `<div class="prod-thumb" style="background:${p.gradient||'linear-gradient(135deg,#0e2a47,#1d6fe0)'}">${p.emoji||'🎡'}</div>`;
+    const nameText = p.vname||p.name;
+    return `<div class="prod-card">
+      ${detailPage ? `<a href="${detailPage}" class="prod-thumb-link">${thumb}</a>` : thumb}
+      <div class="prod-body">
+        <div class="prod-name">${detailPage ? `<a href="${detailPage}" class="prod-name-link">${nameText}</a>` : nameText}</div>
+        <div class="prod-sub">${p.name}</div>
+        <div class="prod-desc">${p.desc||''}</div>
+        <div class="prod-foot">
+          <span class="prod-price">${minPrice.toLocaleString()}원~ <small>단체가</small></span>
+          <div class="prod-btn-group">
+            ${detailPage ? `<a class="prod-btn ghost" style="display:inline-block;text-decoration:none" href="${detailPage}">자세히 보기</a>` : ''}
+            <a class="prod-btn" style="display:inline-block;text-decoration:none" href="reserve.html">문의하기</a>
           </div>
         </div>
-      </div>`;
-    }).join('');
+      </div>
+    </div>`;
+  }
+
+  function renderProducts(list) {
+    const grid = document.getElementById('product-grid');
+    const tabsWrap = document.getElementById('cat-tabs');
+    if (!list.length) { grid.innerHTML = '<div class="prod-empty">등록된 상품이 없습니다.</div>'; tabsWrap.style.display = 'none'; return; }
+
+    // 카테고리별 그룹핑
+    const groups = {};
+    list.forEach(p => {
+      const cat = p.cat || 'etc';
+      (groups[cat] = groups[cat] || []).push(p);
+    });
+    const cats = Object.keys(groups).sort((a, b) => catOrder(a) - catOrder(b));
+
+    // 섹션 렌더링
+    grid.innerHTML = cats.map(cat => `
+      <div class="cat-section" data-cat="${cat}">
+        <h2 class="cat-section-title">${catLabel(cat)} <span class="cat-count">${groups[cat].length}개</span></h2>
+        <div class="prod-grid">${groups[cat].map(productCardHtml).join('')}</div>
+      </div>
+    `).join('');
+
+    // 탭 렌더링 (카테고리가 2개 이상일 때만 표시)
+    if (cats.length > 1) {
+      tabsWrap.style.display = 'flex';
+      tabsWrap.innerHTML = ['all', ...cats].map(cat =>
+        `<button type="button" class="cat-tab${cat==='all' ? ' active' : ''}" data-cat="${cat}">${cat==='all' ? '전체' : catLabel(cat)}</button>`
+      ).join('');
+      tabsWrap.querySelectorAll('.cat-tab').forEach(btn => {
+        btn.addEventListener('click', () => {
+          tabsWrap.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const target = btn.dataset.cat;
+          grid.querySelectorAll('.cat-section').forEach(sec => {
+            sec.style.display = (target === 'all' || sec.dataset.cat === target) ? '' : 'none';
+          });
+        });
+      });
+    } else {
+      tabsWrap.style.display = 'none';
+    }
   }
 
   window.addEventListener('load', loadProducts);
