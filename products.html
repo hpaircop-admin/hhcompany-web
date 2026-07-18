@@ -181,14 +181,14 @@
   /* ── 상품소개 ── */
   .products { background: #fff; }
   .prod-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
-  .prod-card { border: 1px solid var(--line); border-radius: 8px; overflow: hidden; transition: transform .25s, box-shadow .25s; background: #fff; }
+  .prod-card { display: flex; flex-direction: column; height: 100%; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; transition: transform .25s, box-shadow .25s; background: #fff; }
   .prod-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(14,42,71,0.1); }
-  .prod-thumb { height: 140px; display: flex; align-items: center; justify-content: center; font-size: 44px; overflow: hidden; }
-  .prod-body { padding: 20px 22px 22px; }
+  .prod-thumb { height: 140px; display: flex; align-items: center; justify-content: center; font-size: 44px; overflow: hidden; flex-shrink: 0; }
+  .prod-body { padding: 20px 22px 22px; display: flex; flex-direction: column; flex: 1; }
   .prod-name { font-family: var(--serif); font-size: 17px; font-weight: 700; color: var(--ink); margin-bottom: 3px; }
   .prod-sub { font-size: 12px; color: var(--gray); margin-bottom: 10px; }
   .prod-desc { font-size: 13px; color: var(--gray); line-height: 1.6; margin-bottom: 16px; min-height: 42px; }
-  .prod-foot { display: flex; align-items: center; justify-content: space-between; padding-top: 14px; border-top: 1px solid var(--line); }
+  .prod-foot { display: flex; align-items: center; justify-content: space-between; padding-top: 14px; border-top: 1px solid var(--line); margin-top: auto; }
   .prod-price { font-size: 15px; font-weight: 800; color: var(--blue); }
   .prod-price small { font-size: 11px; font-weight: 500; color: var(--gray); }
   .prod-btn { background: var(--navy); color: #fff; border: none; padding: 8px 16px; border-radius: 4px; font-size: 12px; font-weight: 700; }
@@ -469,6 +469,8 @@
     '난타': 'nanta.html',
     '난타 공연': 'nanta.html',
     '난타(NANTA)': 'nanta.html',
+    '페인터즈 히어로': 'painters.html',
+    '페인터즈': 'painters.html',
   };
 
   const CATEGORY_META = {
