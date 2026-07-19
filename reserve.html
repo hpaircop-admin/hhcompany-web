@@ -333,7 +333,7 @@
       <div class="board-toolbar">
         <button class="board-write-btn" onclick="toggleReserveForm()">예약 문의 작성</button>
       </div>
-      <div class="board-form open" id="reserve-form">
+      <div class="board-form" id="reserve-form">
         <div class="bf-grid">
           <div><label class="bf-label">단체명 *</label><input class="bf-input" type="text" id="rb-title" placeholder="예) 더블에이치컴퍼니"></div>
           <div><label class="bf-label">연락처 *</label><input class="bf-input" type="tel" id="rb-phone" placeholder="010-0000-0000"></div>
@@ -497,6 +497,13 @@
     }
   }
 
+  function maskText(s) {
+    if (!s) return s;
+    const chars = Array.from(s.trim());
+    if (chars.length <= 1) return s;
+    return chars[0] + 'OO';
+  }
+
   let RESERVE_ROWS = [];
   async function loadReserveBoard() {
     const body = document.getElementById('reserve-table-body');
@@ -506,8 +513,8 @@
       if (!rows.length) { body.innerHTML = '<tr><td colspan="5" class="board-empty">등록된 예약 문의가 없습니다.</td></tr>'; return; }
       body.innerHTML = rows.map(r => `
         <tr onclick="openReserveDetail('${r.id}')">
-          <td>${r.group_name} 단체 예약 문의</td>
-          <td>${r.venue_name || '—'}</td>
+          <td>${maskText(r.group_name)} 단체 예약 문의</td>
+          <td>${r.venue_name ? maskText(r.venue_name) : '—'}</td>
           <td>${r.event_date ? new Date(r.event_date).toLocaleDateString('ko-KR') : '미정'}</td>
           <td>${new Date(r.created_at).toLocaleDateString('ko-KR')}</td>
           <td><span class="badge-status ${r.status==='confirmed'?'badge-confirmed':'badge-new'}">${r.status==='confirmed'?'확정':'접수중'}</span>${r.admin_reply ? ' <span class="badge-status badge-answered">답변완료</span>' : ''}</td>
