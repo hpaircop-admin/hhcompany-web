@@ -297,6 +297,7 @@
   .page-hero p { font-size:15px; color:rgba(255,255,255,0.72); max-width:520px; margin:0 auto; }
 </style>
 <link rel="icon" type="image/png" href="logo-icon.png">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 <body>
 
@@ -346,13 +347,24 @@
             </select>
           </div>
           <div><label class="bf-label">예상 인원</label><input class="bf-input" type="number" id="rb-count" placeholder="예) 30" min="0"></div>
+          <div><label class="bf-label">비밀번호 *</label><input class="bf-input" type="password" id="rb-pw" placeholder="문의 확인용 비밀번호"></div>
           <div class="full"><label class="bf-label">문의 내용</label><textarea class="bf-input" id="rb-note" placeholder="식사, 버스 등 추가 요청사항을 적어주세요"></textarea></div>
         </div>
         <button class="bf-submit" onclick="submitReservePost()">예약 신청하기</button>
-        <div class="bf-hint">신청 즉시 확정되는 것은 아니며, 담당자 확인 후 연락드립니다.</div>
+        <div class="bf-hint">신청 즉시 확정되는 것은 아니며, 담당자 확인 후 연락드립니다. 등록한 비밀번호로 답변을 확인할 수 있습니다.</div>
       </div>
-      <table class="board-table">
-        <thead><tr><th style="width:40%">제목</th><th>업장</th><th>희망일</th><th>작성일</th><th>상태</th></tr></thead>
+      <div class="board-detail" id="reserve-detail">
+        <div class="bd-title" id="rd-title"></div>
+        <div class="bd-meta" id="rd-meta"></div>
+        <div class="bd-content" id="rd-content"></div>
+        <div id="rd-reply-wrap" style="display:none">
+          <div class="bd-reply-label">담당자 답변</div>
+          <div class="bd-reply" id="rd-reply"></div>
+        </div>
+        <a class="bd-close" onclick="closeReserveDetail()">← 목록으로</a>
+      </div>
+      <table class="board-table" id="reserve-table">
+        <thead><tr><th style="width:36%">제목</th><th>업장</th><th>희망일</th><th>작성일</th><th>상태</th></tr></thead>
         <tbody id="reserve-table-body"><tr><td colspan="5" class="board-empty">불러오는 중...</td></tr></tbody>
       </table>
     </div>
@@ -429,14 +441,33 @@
     return res.status === 204 ? null : res.json();
   }
 
+  // ── 대표메일 알림 (EmailJS) ──
+  // https://www.emailjs.com 무료 가입 후 아래 3개 값만 채워 넣으면 새 글 등록 시 대표메일로 알림이 발송됩니다.
+  // 설정 방법은 EMAIL_ALERT_SETUP.md 파일을 참고하세요. (board.html과 같은 값을 넣으면 됩니다)
+  const EMAILJS_PUBLIC_KEY = 'YOUR_EMAILJS_PUBLIC_KEY';
+  const EMAILJS_SERVICE_ID = 'YOUR_EMAILJS_SERVICE_ID';
+  const EMAILJS_TEMPLATE_RESERVE = 'YOUR_EMAILJS_TEMPLATE_ID_RESERVE';
+  const ADMIN_EMAIL = 'hpaircop@gmail.com';
+  if (typeof emailjs !== 'undefined' && !EMAILJS_PUBLIC_KEY.startsWith('YOUR_')) {
+    emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+  }
+  function notifyAdminEmail(params) {
+    if (typeof emailjs === 'undefined') return;
+    if (EMAILJS_PUBLIC_KEY.startsWith('YOUR_')) return; // 설정 전에는 조용히 건너뜀
+    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_RESERVE, { to_email: ADMIN_EMAIL, ...params })
+      .catch(e => console.warn('메일 알림 발송 실패(신청은 정상 등록됨):', e));
+  }
+
   function toggleReserveForm() {
     document.getElementById('reserve-form').classList.toggle('open');
   }
   async function submitReservePost() {
     const gname = document.getElementById('rb-title').value.trim();
     const phone = document.getElementById('rb-phone').value.trim();
+    const pw = document.getElementById('rb-pw').value.trim();
     if (!gname) { showToast('단체명을 입력해주세요'); return; }
     if (!phone) { showToast('연락처를 입력해주세요'); return; }
+    if (!pw) { showToast('비밀번호를 입력해주세요'); return; }
     const dateVal = document.getElementById('rb-date').value;
     const rec = {
       event_date: dateVal || null,
@@ -445,36 +476,65 @@
       group_type: document.getElementById('rb-gtype').value,
       group_name: gname,
       phone,
+      password: pw,
       student_count: parseInt(document.getElementById('rb-count').value) || 0,
       note: document.getElementById('rb-note').value.trim(),
       status: 'new',
     };
     try {
       await sbFetch('web_inquiries', { method:'POST', body: JSON.stringify(rec) });
+      notifyAdminEmail({
+        subject: '[예약게시판] 새 예약 문의: ' + gname,
+        group_name: gname, phone, venue_name: rec.venue_name || '미지정',
+        event_date: rec.event_date || '미정', note: rec.note || '(내용 없음)',
+      });
       showToast('예약 문의가 등록되었습니다. 담당자가 곧 연락드립니다');
-      ['rb-title','rb-phone','rb-venue','rb-date','rb-count','rb-note'].forEach(id=>document.getElementById(id).value='');
+      ['rb-title','rb-phone','rb-venue','rb-date','rb-count','rb-note','rb-pw'].forEach(id=>document.getElementById(id).value='');
       document.getElementById('rb-gtype').value = '';
       loadReserveBoard();
     } catch(e) {
       showToast('등록 실패: ' + e.message);
     }
   }
+
+  let RESERVE_ROWS = [];
   async function loadReserveBoard() {
     const body = document.getElementById('reserve-table-body');
     try {
-      const rows = await sbFetch('web_inquiries?select=id,group_name,venue_name,event_date,created_at,status&order=created_at.desc&limit=50');
+      const rows = await sbFetch('web_inquiries?select=id,group_name,venue_name,event_date,created_at,status,note,password,admin_reply&order=created_at.desc&limit=50');
+      RESERVE_ROWS = rows || [];
       if (!rows.length) { body.innerHTML = '<tr><td colspan="5" class="board-empty">등록된 예약 문의가 없습니다.</td></tr>'; return; }
       body.innerHTML = rows.map(r => `
-        <tr>
+        <tr onclick="openReserveDetail('${r.id}')">
           <td>${r.group_name} 단체 예약 문의</td>
           <td>${r.venue_name || '—'}</td>
           <td>${r.event_date ? new Date(r.event_date).toLocaleDateString('ko-KR') : '미정'}</td>
           <td>${new Date(r.created_at).toLocaleDateString('ko-KR')}</td>
-          <td><span class="badge-status ${r.status==='confirmed'?'badge-confirmed':'badge-new'}">${r.status==='confirmed'?'확정':'접수중'}</span></td>
+          <td><span class="badge-status ${r.status==='confirmed'?'badge-confirmed':'badge-new'}">${r.status==='confirmed'?'확정':'접수중'}</span>${r.admin_reply ? ' <span class="badge-status badge-answered">답변완료</span>' : ''}</td>
         </tr>`).join('');
     } catch(e) {
       body.innerHTML = '<tr><td colspan="5" class="board-empty">목록을 불러오지 못했습니다.</td></tr>';
     }
+  }
+
+  function openReserveDetail(id) {
+    const r = RESERVE_ROWS.find(x => x.id === id);
+    if (!r) return;
+    const pw = prompt('등록 시 입력한 비밀번호를 입력해주세요');
+    if (pw === null) return;
+    if (!r.password || pw !== r.password) { showToast('비밀번호가 일치하지 않습니다'); return; }
+    document.getElementById('rd-title').textContent = `${r.group_name} 단체 예약 문의`;
+    document.getElementById('rd-meta').textContent = `${r.venue_name || '업장 미정'} · ${new Date(r.created_at).toLocaleString('ko-KR')}`;
+    document.getElementById('rd-content').textContent = r.note || '(문의 내용 없음)';
+    const replyWrap = document.getElementById('rd-reply-wrap');
+    if (r.admin_reply) { document.getElementById('rd-reply').textContent = r.admin_reply; replyWrap.style.display = 'block'; }
+    else { replyWrap.style.display = 'none'; }
+    document.getElementById('reserve-detail').classList.add('open');
+    document.getElementById('reserve-table').style.display = 'none';
+  }
+  function closeReserveDetail() {
+    document.getElementById('reserve-detail').classList.remove('open');
+    document.getElementById('reserve-table').style.display = '';
   }
 
   window.addEventListener('load', loadReserveBoard);

@@ -297,6 +297,7 @@
   .page-hero p { font-size:15px; color:rgba(255,255,255,0.72); max-width:520px; margin:0 auto; }
 </style>
 <link rel="icon" type="image/png" href="logo-icon.png">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 <body>
 
@@ -422,6 +423,23 @@
     return res.status === 204 ? null : res.json();
   }
 
+  // ── 대표메일 알림 (EmailJS) ──
+  // https://www.emailjs.com 무료 가입 후 아래 3개 값만 채워 넣으면 새 글 등록 시 대표메일로 알림이 발송됩니다.
+  // 설정 방법은 EMAIL_ALERT_SETUP.md 파일을 참고하세요.
+  const EMAILJS_PUBLIC_KEY = 'YOUR_EMAILJS_PUBLIC_KEY';
+  const EMAILJS_SERVICE_ID = 'YOUR_EMAILJS_SERVICE_ID';
+  const EMAILJS_TEMPLATE_INQUIRY = 'YOUR_EMAILJS_TEMPLATE_ID_INQUIRY';
+  const ADMIN_EMAIL = 'hpaircop@gmail.com';
+  if (typeof emailjs !== 'undefined' && !EMAILJS_PUBLIC_KEY.startsWith('YOUR_')) {
+    emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+  }
+  function notifyAdminEmail(params) {
+    if (typeof emailjs === 'undefined') return;
+    if (EMAILJS_PUBLIC_KEY.startsWith('YOUR_')) return; // 설정 전에는 조용히 건너뜀
+    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_INQUIRY, { to_email: ADMIN_EMAIL, ...params })
+      .catch(e => console.warn('메일 알림 발송 실패(게시글은 정상 등록됨):', e));
+  }
+
   function toggleInquiryForm() {
     document.getElementById('inquiry-form').classList.toggle('open');
   }
@@ -437,6 +455,7 @@
     if (!content) { showToast('내용을 입력해주세요'); return; }
     try {
       await sbFetch('board_posts', { method:'POST', body: JSON.stringify({ title, name, phone, password, content, status:'pending' }) });
+      notifyAdminEmail({ subject: '[문의게시판] 새 문의: ' + title, title, name, phone: phone || '연락처 없음', content });
       showToast('문의가 등록되었습니다');
       ['iq-title','iq-name','iq-phone','iq-password','iq-content'].forEach(id=>document.getElementById(id).value='');
       document.getElementById('inquiry-form').classList.remove('open');
