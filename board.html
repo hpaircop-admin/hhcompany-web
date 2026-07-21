@@ -467,6 +467,12 @@
       showToast('등록 실패: ' + e.message);
     }
   }
+  function maskText(name) {
+    if (!name) return '익명';
+    const s = name.trim();
+    if (!s) return '익명';
+    return s[0] + 'OO';
+  }
   async function loadInquiryBoard() {
     const body = document.getElementById('inquiry-table-body');
     try {
@@ -474,8 +480,8 @@
       if (!rows.length) { body.innerHTML = '<tr><td colspan="4" class="board-empty">등록된 문의가 없습니다.</td></tr>'; return; }
       body.innerHTML = rows.map(r => `
         <tr onclick="openInquiryDetail('${r.id}')">
-          <td>${r.title}</td>
-          <td>${r.name}</td>
+          <td>${maskText(r.title)}</td>
+          <td>${maskText(r.name)}</td>
           <td>${new Date(r.created_at).toLocaleDateString('ko-KR')}</td>
           <td><span class="badge-status ${r.status==='answered'?'badge-answered':'badge-pending'}">${r.status==='answered'?'답변완료':'답변대기'}</span></td>
         </tr>`).join('');
