@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>이용사례 | (주)더블에이치컴퍼니</title>
+<style>
+  @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css');
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700;900&display=swap');
+
+  :root {
+    --navy: #0e2a47;
+    --navy-deep: #081b30;
+    --blue: #1d6fe0;
+    --sky: #47b6e8;
+    --coral: #ff6b5c;
+    --amber: #ffb648;
+    --cream: #f5f8fc;
+    --ink: #16202e;
+    --gray: #64748b;
+    --line: #e2e9f2;
+    --serif: 'Noto Serif KR', Georgia, 'Times New Roman', serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Pretendard', -apple-system, sans-serif;
+    color: var(--ink); background: #fff; line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { text-decoration: none; }
+  button { cursor: pointer; font-family: inherit; }
+
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+
+  /* -- 헤더 -- */
+  header {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+    box-shadow: 0 2px 20px rgba(14,42,71,0.05);
+  }
+  .nav { display: flex; align-items: center; justify-content: space-between; height: 74px; }
+  .logo { display: flex; align-items: center; gap: 10px; }
+  .brand-icon { width: 38px; height: 38px; flex-shrink: 0; object-fit: contain; }
+  .logo-text { display: flex; flex-direction: column; line-height: 1.2; }
+  .logo-tag { font-size: 9px; font-weight: 700; letter-spacing: 0.14em; color: #6b8e23; text-transform: uppercase; }
+  .logo-word { font-family: var(--serif); font-size: 19px; font-weight: 700; letter-spacing: 0.01em; color: var(--navy); }
+  .logo-word span { color: var(--blue); }
+  .logo-kr { font-size: 10px; font-weight: 500; color: var(--gray); letter-spacing: 0.02em; margin-top: 1px; font-family: 'Pretendard', sans-serif; }
+  .foot-brand .logo-word { color: #fff; }
+  .foot-brand .logo-word span { color: var(--sky); }
+  .foot-brand .logo-tag { color: #a9d43f; }
+  .foot-brand .logo-kr { color: rgba(255,255,255,0.55); }
+  .nav-cta-group { display: flex; align-items: center; gap: 10px; }
+  .kakao-btn { display: inline-flex; align-items: center; gap: 6px; background: #FEE500; color: #191919; padding: 10px 18px; border-radius: 4px; font-size: 13px; font-weight: 700; transition: transform .2s, box-shadow .2s; }
+  .kakao-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(254,229,0,0.45); }
+  .kakao-btn svg { width: 16px; height: 16px; }
+  .foot-kakao { display: inline-flex; align-items: center; gap: 6px; color: #FEE500 !important; font-weight: 700; }
+  .foot-kakao svg { width: 14px; height: 14px; }
+  .nav-menu { display: flex; gap: 26px; list-style: none; }
+  .nav-menu a {
+    font-size: 12px; font-weight: 600; color: var(--ink);
+    letter-spacing: 0.05em; text-transform: uppercase; position: relative; padding: 4px 0;
+  }
+  .nav-menu a::after {
+    content: ''; position: absolute; left: 0; bottom: 0; width: 0; height: 2px;
+    background: var(--blue); transition: width .25s;
+  }
+  .nav-menu a:hover::after, .nav-menu a.active::after { width: 100%; }
+  .nav-menu a.active { color: var(--blue); }
+  .nav-cta {
+    background: var(--navy); color: #fff; padding: 10px 22px; border-radius: 4px;
+    font-size: 13px; font-weight: 700; transition: background .2s, transform .2s;
+  }
+  .nav-cta:hover { background: var(--blue); transform: translateY(-1px); }
+  .burger { display: none; background: none; border: none; cursor: pointer; }
+
+  /* -- 페이지 히어로 -- */
+  .page-hero { background: linear-gradient(150deg, var(--navy-deep) 0%, var(--navy) 45%, #123c56 100%); padding: 150px 0 70px; text-align:center; }
+  .page-hero .sec-tag { font-size: 12px; font-weight: 700; letter-spacing: 0.14em; color: var(--sky); text-transform: uppercase; margin-bottom: 14px; }
+  .page-hero h1 { font-family: var(--serif); font-size: clamp(28px,4vw,44px); font-weight:700; color:#fff; margin-bottom:14px; }
+  .page-hero p { font-size:15px; color:rgba(255,255,255,0.72); max-width:560px; margin:0 auto; }
+
+  section { padding: 72px 0; }
+
+  /* -- 통계 요약 -- */
+  .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: -46px; position: relative; z-index: 3; }
+  .stat-card { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 26px 22px; box-shadow: 0 12px 32px rgba(14,42,71,0.08); text-align: center; }
+  .stat-card .num { font-family: var(--serif); font-size: 32px; font-weight: 800; color: var(--navy); }
+  .stat-card .label { font-size: 12.5px; color: var(--gray); margin-top: 6px; font-weight: 600; }
+
+  .cases { background: var(--cream); }
+  .cases-head { text-align: center; margin-bottom: 36px; }
+  .cases-head .sec-tag { font-size: 12px; font-weight: 700; letter-spacing: 0.14em; color: var(--blue); text-transform: uppercase; margin-bottom: 14px; }
+  .cases-head h2 { font-family: var(--serif); font-size: clamp(24px, 3.2vw, 34px); font-weight: 700; }
+  .cases-head p { font-size: 14px; color: var(--gray); margin-top: 10px; }
+
+  .filter-row { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 34px; }
+  .filter-chip { border: 1px solid var(--line); background: #fff; color: var(--gray); font-size: 12.5px; font-weight: 600; padding: 8px 16px; border-radius: 20px; transition: all .2s; }
+  .filter-chip:hover { border-color: var(--blue); color: var(--blue); }
+  .filter-chip.active { background: var(--navy); border-color: var(--navy); color: #fff; }
+
+  /* -- 플래시 피드 -- */
+  .flash-wrap { max-width: 640px; margin: 0 auto; }
+  .flash-stage { position: relative; height: 168px; }
+  .flash-card {
+    position: absolute; inset: 0; background: #fff; border: 1px solid var(--line); border-radius: 14px;
+    padding: 26px 28px; box-shadow: 0 16px 40px rgba(14,42,71,0.10);
+    opacity: 0; transform: translateY(14px) scale(0.98); transition: opacity .45s ease, transform .45s ease;
+    pointer-events: none; display: flex; flex-direction: column; justify-content: center;
+  }
+  .flash-card.show { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+  .fc-top { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .fc-dot { width: 8px; height: 8px; border-radius: 50%; background: #34c98f; flex-shrink: 0; box-shadow: 0 0 0 4px rgba(52,201,143,0.15); }
+  .fc-when { font-size: 12px; color: var(--gray); font-weight: 600; }
+  .fc-name { font-family: var(--serif); font-size: 21px; font-weight: 800; color: var(--navy); margin-bottom: 10px; }
+  .fc-name .fc-gtype { font-family: 'Pretendard', sans-serif; font-size: 13px; font-weight: 700; color: var(--blue); margin-left: 8px; }
+  .fc-meta { display: flex; flex-wrap: wrap; gap: 7px; }
+  .fc-tag { font-size: 11.5px; font-weight: 600; color: var(--gray); background: var(--cream); border: 1px solid var(--line); padding: 5px 10px; border-radius: 6px; }
+  .fc-tag.venue { color: var(--navy); font-weight: 700; background: #fff; border-color: var(--navy); }
+  .fc-tag.count { color: var(--coral); border-color: rgba(255,107,92,0.3); background: rgba(255,107,92,0.06); }
+
+  .flash-progress { height: 3px; background: var(--line); border-radius: 3px; overflow: hidden; margin-top: 14px; }
+  .flash-progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--blue), var(--sky)); }
+  .flash-progress-bar.animate { transition: width 3.6s linear; width: 100%; }
+
+  .flash-controls { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 16px; }
+  .flash-nav-btn { width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--line); background: #fff; color: var(--navy); font-size: 15px; display: flex; align-items: center; justify-content: center; transition: all .2s; }
+  .flash-nav-btn:hover { border-color: var(--blue); color: var(--blue); }
+  .flash-index { font-size: 12px; color: var(--gray); font-weight: 600; min-width: 70px; text-align: center; }
+  .flash-note { text-align: center; font-size: 11.5px; color: var(--gray); margin-top: 18px; }
+
+  .cta-band { background: linear-gradient(135deg, var(--navy), var(--blue)); text-align: center; padding: 70px 0; }
+  .cta-band h3 { font-family: var(--serif); color: #fff; font-size: clamp(22px,3vw,30px); margin-bottom: 16px; }
+  .cta-band p { color: rgba(255,255,255,0.78); font-size: 14px; margin-bottom: 28px; }
+  .cta-btn { display: inline-block; background: var(--coral); color: #fff; font-weight: 700; font-size: 14px; padding: 14px 30px; border-radius: 4px; transition: transform .2s; }
+  .cta-btn:hover { transform: translateY(-2px); }
+
+  /* -- 푸터 -- */
+  footer { background: var(--navy-deep); color: rgba(255,255,255,0.85); padding: 60px 0 0; }
+  .foot-top { display: flex; justify-content: space-between; gap: 60px; padding-bottom: 42px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+  .foot-brand p { font-size: 13px; color: rgba(255,255,255,0.55); max-width: 340px; margin-top: 14px; }
+  .foot-info-row { display: flex; gap: 60px; }
+  .foot-legal-inline p { font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 7px; }
+  .foot-legal-inline p strong { color: rgba(255,255,255,0.8); margin-right: 8px; }
+  .foot-cols { display: flex; gap: 50px; }
+  .foot-col h5 { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 16px; }
+  .foot-col a, .foot-col p { display: block; font-size: 13px; color: rgba(255,255,255,0.7); margin-bottom: 10px; }
+  .foot-col a:hover { color: var(--sky); }
+  .foot-links { display: flex; gap: 20px; padding: 22px 0; }
+  .foot-links a { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.7); }
+  .foot-links a:hover { color: var(--sky); }
+  .foot-links a.accent { color: #ff6b78; }
+  .foot-links a.accent:hover { color: #ff8f99; }
+  .foot-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding: 18px 0; font-size: 12px; color: rgba(255,255,255,0.4); }
+
+  @media (max-width: 900px) {
+    .nav { height: auto; flex-wrap: wrap; row-gap: 10px; padding: 12px 0; }
+    .nav-cta-group, .burger { display: none; }
+    .nav-menu { display: flex; flex-basis: 100%; order: 3; gap: 2px; justify-content: space-between; list-style: none; flex-wrap: wrap; }
+    .nav-menu li { flex: 1 1 30%; }
+    .nav-menu a { display: block; text-align: center; font-size: 10px; letter-spacing: 0; white-space: nowrap; padding: 4px 0; }
+    .page-hero { padding-top: 168px; }
+    .stat-row { grid-template-columns: repeat(2,1fr); margin-top: -30px; }
+    section { padding: 56px 0; }
+    .wrap { padding: 0 20px; }
+    .foot-top { flex-direction: column; gap: 30px; }
+    .foot-info-row { flex-direction: column; gap: 24px; }
+    .flash-stage { height: 200px; }
+  }
+</style>
+<link rel="icon" type="image/png" href="logo-icon.png">
+</head>
+<body>
+
+<header id="header">
+  <div class="wrap nav">
+    <a href="index.html" class="logo"><img src="logo-icon.png" class="brand-icon" alt="HHCOMPANY 로고"><span class="logo-text"><span class="logo-tag">The Way To Success</span><span class="logo-word">HH<span>COMPANY</span></span></span></a>
+    <ul class="nav-menu">
+      <li><a href="ceo.html">대표인사말</a></li>
+      <li><a href="index.html#about">회사소개</a></li>
+      <li><a href="business.html">사업분야</a></li>
+      <li><a href="products.html">상품소개</a></li>
+      <li><a href="cases.html" class="active">이용사례</a></li>
+      <li><a href="board.html">문의게시판</a></li>
+      <li><a href="reserve.html">예약게시판</a></li>
+    </ul>
+    <div class="nav-cta-group"><a href="http://pf.kakao.com/_vvZxen/chat" target="_blank" rel="noopener" class="kakao-btn"><svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 3C6.48 3 2 6.58 2 11c0 2.8 1.83 5.26 4.6 6.71-.2.75-.73 2.72-.83 3.14-.13.52.19.51.4.37.17-.11 2.68-1.82 3.77-2.56.66.1 1.35.15 2.06.15 5.52 0 10-3.58 10-8s-4.48-8-10-8z"/></svg>카카오톡 상담</a><a href="reserve.html" class="nav-cta">단체 예약 문의</a></div>
+    <button class="burger" aria-label="메뉴">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0e2a47" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="wrap">
+    <div class="sec-tag">Case Studies</div>
+    <h1>단체 이용사례</h1>
+    <p>작년부터 지금까지, 어린이집·복지관·학교·종교단체·군부대 등 다양한 기관이 더블에이치컴퍼니와 함께 단체 나들이를 다녀갔습니다.</p>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="stat-row">
+    <div class="stat-card"><div class="num"><span id="st-groups">-</span></div><div class="label">누적 이용 단체</div></div>
+    <div class="stat-card"><div class="num"><span id="st-people">-</span></div><div class="label">누적 참여 인원</div></div>
+    <div class="stat-card"><div class="num"><span id="st-venues">-</span></div><div class="label">제휴 이용 업장</div></div>
+    <div class="stat-card"><div class="num"><span id="st-types">-</span></div><div class="label">이용 기관 유형</div></div>
+  </div>
+</div>
+
+<section class="cases">
+  <div class="wrap">
+    <div class="cases-head">
+      <div class="sec-tag">Live Feed</div>
+      <h2>최근 다녀간 단체들의 이용 소식</h2>
+      <p>개인정보 보호를 위해 기관명 일부와 담당자·연락처는 표시하지 않으며, 유형·지역·규모 정보만 순서대로 안내해드립니다.</p>
+    </div>
+    <div class="filter-row" id="filter-row"></div>
+    <div class="flash-wrap">
+      <div class="flash-stage" id="flash-stage"></div>
+      <div class="flash-progress"><div class="flash-progress-bar" id="flash-progress-bar"></div></div>
+      <div class="flash-controls">
+        <button class="flash-nav-btn" id="flash-prev" aria-label="이전">‹</button>
+        <div class="flash-index" id="flash-index">- / -</div>
+        <button class="flash-nav-btn" id="flash-next" aria-label="다음">›</button>
+      </div>
+      <div class="flash-note">자동으로 다음 이용사례가 순서대로 안내됩니다. 카드를 클릭하면 잠시 멈춥니다.</div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="wrap">
+    <h3>우리 단체도 이용해보고 싶다면?</h3>
+    <p>맞춤 견적과 일정 상담을 도와드립니다. 지금 예약 문의를 남겨주세요.</p>
+    <a href="reserve.html" class="cta-btn">단체 예약 문의하기</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <a href="index.html" class="logo"><img src="logo-icon.png" class="brand-icon" alt="HHCOMPANY 로고"><span class="logo-text"><span class="logo-tag">The Way To Success</span><span class="logo-word">HH<span>COMPANY</span></span><span class="logo-kr">(주)더블에이치컴퍼니</span></span></a>
+        <p>단체와 체험시설을 잇는 B2B 단체여행 파트너, (주)더블에이치컴퍼니입니다.</p>
+      </div>
+      <div class="foot-info-row">
+        <div class="foot-legal-inline">
+          <p><strong>대표자</strong><span>김경훈</span></p>
+          <p><strong>주소</strong><span>경기도 의정부시 용현로155 105호</span></p>
+          <p><strong>사업자등록번호</strong><span>420-88-03868</span></p>
+          <p><strong>통신판매업신고</strong><span>제 2026-의정부송산-0430 호</span></p>
+          <p><strong>대표메일</strong><span>hpaircop@gmail.com</span></p>
+          <p><strong>개인정보관리책임자</strong><span>김성훈</span></p>
+          <p><strong>고객센터</strong><span>031-339-2999</span></p>
+        </div>
+        <div class="foot-cols">
+          <div class="foot-col">
+            <h5>바로가기</h5>
+            <a href="ceo.html">대표인사말</a>
+            <a href="index.html#about">회사소개</a>
+            <a href="business.html">사업분야</a>
+            <a href="products.html">상품소개</a>
+            <a href="cases.html">이용사례</a>
+            <a href="board.html">문의게시판</a>
+            <a href="reserve.html">예약게시판</a>
+          </div>
+          <div class="foot-col">
+            <h5>문의</h5>
+            <p>hhcompany.co.kr</p>
+            <a href="http://pf.kakao.com/_vvZxen/chat" target="_blank" rel="noopener" class="foot-kakao"><svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 3C6.48 3 2 6.58 2 11c0 2.8 1.83 5.26 4.6 6.71-.2.75-.73 2.72-.83 3.14-.13.52.19.51.4.37.17-.11 2.68-1.82 3.77-2.56.66.1 1.35.15 2.06.15 5.52 0 10-3.58 10-8s-4.48-8-10-8z"/></svg>카카오톡 상담</a>
+            <a href="https://hhcompany-admin.pages.dev" target="_blank">관리자 로그인</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="foot-links">
+      <a href="terms.html">이용약관</a>
+      <a href="privacy.html" class="accent">개인정보처리방침</a>
+      <a href="http://pf.kakao.com/_vvZxen/chat" target="_blank" rel="noopener">카카오톡 1:1 문의</a>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 (주)더블에이치컴퍼니. All rights reserved.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// 실제 단체 이용 데이터를 기반으로 합니다. 개인정보 보호를 위해 기관명은 일부 마스킹(OO) 처리했고,
+// 담당자·연락처 등 식별정보는 포함하지 않았습니다.
+const CASES = [{"y": 2025, "m": 8, "venue": "아일랜드캐슬", "gtype": "종교단체", "name": "OO성당", "ticket_type": "초등", "total_count": 35, "region": "서울", "meal": null}, {"y": 2025, "m": 8, "venue": "아일랜드캐슬", "gtype": "종교단체", "name": "OO성당", "ticket_type": "초등", "total_count": 25, "region": "서울", "meal": null}, {"y": 2025, "m": 8, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 34, "region": "경기", "meal": null}, {"y": 2025, "m": 8, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 20, "region": "경기", "meal": null}, {"y": 2025, "m": 8, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 20, "region": "경기", "meal": null}, {"y": 2025, "m": 8, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO 복지관", "ticket_type": "초등", "total_count": 42, "region": "경기", "meal": "단체식"}, {"y": 2025, "m": 8, "venue": "아일랜드캐슬", "gtype": "학교·학원", "name": "OO 학교", "ticket_type": "초등", "total_count": 25, "region": "경기", "meal": null}, {"y": 2025, "m": 8, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO 복지관", "ticket_type": "중고", "total_count": 8, "region": "경기", "meal": "단체식"}, {"y": 2025, "m": 8, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO지역아동센터", "ticket_type": "초등", "total_count": 33, "region": "경기", "meal": "단체식"}, {"y": 2025, "m": 8, "venue": "기타", "gtype": "종교단체", "name": "OO교회", "ticket_type": "초등", "total_count": 15, "region": "서울", "meal": null}, {"y": 2025, "m": 8, "venue": "기타", "gtype": "학교·학원", "name": "OO학원", "ticket_type": "초등", "total_count": 15, "region": "경기", "meal": null}, {"y": 2025, "m": 8, "venue": "기타", "gtype": "종교단체", "name": "OO교회", "ticket_type": "초등", "total_count": 60, "region": "서울", "meal": null}, {"y": 2025, "m": 8, "venue": "롯데월드", "gtype": "복지관·지역아동센터", "name": "OO지역아동센터", "ticket_type": "초등", "total_count": 29, "region": "서울", "meal": "단체식"}, {"y": 2025, "m": 8, "venue": "기타", "gtype": "군부대", "name": "OO 군부대", "ticket_type": "초등", "total_count": 38, "region": "경기", "meal": null}, {"y": 2025, "m": 8, "venue": "롯데월드", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 20, "region": "경기", "meal": "단체식"}, {"y": 2025, "m": 8, "venue": "기타", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 34, "region": "경기", "meal": "단체식"}, {"y": 2025, "m": 8, "venue": "롯데월드", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 30, "region": "인천", "meal": "단체식"}, {"y": 2025, "m": 8, "venue": "기타", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 19, "region": "경기", "meal": "단체식"}, {"y": 2025, "m": 8, "venue": "롯데월드", "gtype": "종교단체", "name": "OO성당", "ticket_type": "초등", "total_count": 25, "region": "서울", "meal": null}, {"y": 2025, "m": 8, "venue": "기타", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 31, "region": "경기", "meal": "단체식"}, {"y": 2025, "m": 8, "venue": "롯데월드", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 31, "region": "경기", "meal": "단체식"}, {"y": 2025, "m": 8, "venue": "기타", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 18, "region": "경기", "meal": "단체식"}, {"y": 2025, "m": 8, "venue": "롯데월드", "gtype": "종교단체", "name": "OO교회", "ticket_type": "초등", "total_count": 34, "region": "서울", "meal": "단체식"}, {"y": 2025, "m": 8, "venue": "기타", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 43, "region": "인천", "meal": "단체식"}, {"y": 2025, "m": 8, "venue": "롯데월드", "gtype": "종교단체", "name": "OO교회", "ticket_type": "초등", "total_count": 22, "region": "서울", "meal": null}, {"y": 2025, "m": 8, "venue": "기타", "gtype": "종교단체", "name": "OO교회", "ticket_type": "초등", "total_count": 31, "region": "경기", "meal": null}, {"y": 2025, "m": 8, "venue": "기타", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 15, "region": "서울", "meal": null}, {"y": 2025, "m": 8, "venue": "롯데월드", "gtype": "종교단체", "name": "OO교회", "ticket_type": "초등", "total_count": 16, "region": "경기", "meal": null}, {"y": 2025, "m": 8, "venue": "기타", "gtype": "종교단체", "name": "OO 종교단체", "ticket_type": "초등", "total_count": 11, "region": "서울", "meal": null}, {"y": 2025, "m": 8, "venue": "롯데월드", "gtype": "복지관·지역아동센터", "name": "OO지역아동센터", "ticket_type": "초등", "total_count": 20, "region": "경기", "meal": "단체식"}, {"y": 2025, "m": 8, "venue": "기타", "gtype": "복지관·지역아동센터", "name": "OO지역아동센터", "ticket_type": "초등", "total_count": 37, "region": "서울", "meal": null}, {"y": 2025, "m": 8, "venue": "롯데월드", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 117, "region": "경기", "meal": "단체식"}, {"y": 2025, "m": 8, "venue": "기타", "gtype": "군부대", "name": "OO 군부대", "ticket_type": "초등", "total_count": 33, "region": "경기", "meal": null}, {"y": 2025, "m": 8, "venue": "롯데월드", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 37, "region": "경기", "meal": "단체식"}, {"y": 2025, "m": 8, "venue": "기타", "gtype": "종교단체", "name": "OO교회", "ticket_type": "초등", "total_count": 27, "region": "경기", "meal": null}, {"y": 2025, "m": 8, "venue": "롯데월드", "gtype": "복지관·지역아동센터", "name": "OO지역아동센터", "ticket_type": "초등", "total_count": 34, "region": "경기", "meal": "도시락"}, {"y": 2025, "m": 8, "venue": "기타", "gtype": "어린이집·유치원", "name": "OO유치원", "ticket_type": "유아", "total_count": 27, "region": "경기", "meal": "도시락"}, {"y": 2025, "m": 8, "venue": "롯데월드", "gtype": "복지관·지역아동센터", "name": "OO지역아동센터", "ticket_type": "초등", "total_count": 31, "region": "경기", "meal": "단체식"}, {"y": 2025, "m": 8, "venue": "기타", "gtype": "종교단체", "name": "OO교회", "ticket_type": "초등", "total_count": 45, "region": "서울", "meal": null}, {"y": 2025, "m": 8, "venue": "롯데월드", "gtype": "군부대", "name": "OO 군부대", "ticket_type": "초등", "total_count": 16, "region": "경기", "meal": null}, {"y": 2025, "m": 8, "venue": "기타", "gtype": "복지관·지역아동센터", "name": "OO지역아동센터", "ticket_type": "초등", "total_count": 25, "region": "경기", "meal": null}, {"y": 2025, "m": 8, "venue": "키자니아", "gtype": "복지관·지역아동센터", "name": "OO센터", "ticket_type": "초등", "total_count": 22, "region": "서울", "meal": null}, {"y": 2025, "m": 8, "venue": "키자니아", "gtype": "복지관·지역아동센터", "name": "OO 복지관", "ticket_type": "초등", "total_count": 23, "region": "경기", "meal": "단체식"}, {"y": 2025, "m": 8, "venue": "키자니아", "gtype": "복지관·지역아동센터", "name": "OO복지관", "ticket_type": "초등", "total_count": 16, "region": "경기", "meal": null}, {"y": 2025, "m": 8, "venue": "키자니아", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 76, "region": "서울", "meal": "도시락"}, {"y": 2025, "m": 8, "venue": "키자니아", "gtype": "복지관·지역아동센터", "name": "OO 복지관", "ticket_type": "초등", "total_count": 24, "region": "경기", "meal": null}, {"y": 2025, "m": 8, "venue": "키자니아", "gtype": "종교단체", "name": "OO교회", "ticket_type": "초등", "total_count": 27, "region": "경기", "meal": null}, {"y": 2025, "m": 8, "venue": "키자니아", "gtype": "복지관·지역아동센터", "name": "OO센터", "ticket_type": "초등", "total_count": 19, "region": "서울", "meal": null}, {"y": 2025, "m": 8, "venue": "키자니아", "gtype": "기타", "name": "OO 기타", "ticket_type": "초등", "total_count": 16, "region": "경기", "meal": null}, {"y": 2025, "m": 8, "venue": "키자니아", "gtype": "어린이집·유치원", "name": "OO 어린이집", "ticket_type": "초등", "total_count": 33, "region": "경기", "meal": null}, {"y": 2025, "m": 8, "venue": "키자니아", "gtype": "어린이집·유치원", "name": "OO유치원", "ticket_type": "유아", "total_count": 230, "region": "서울", "meal": "도시락"}, {"y": 2025, "m": 8, "venue": "키자니아", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 28, "region": "인천", "meal": "단체식"}, {"y": 2025, "m": 8, "venue": "키자니아", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 25, "region": "경기", "meal": "단체식"}, {"y": 2025, "m": 8, "venue": "키자니아", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 17, "region": "경기", "meal": "단체식"}, {"y": 2025, "m": 8, "venue": "키자니아", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 17, "region": "경기", "meal": "단체식"}, {"y": 2025, "m": 8, "venue": "키자니아", "gtype": "종교단체", "name": "OO교회", "ticket_type": "초등", "total_count": 30, "region": "경기", "meal": "단체식"}, {"y": 2025, "m": 8, "venue": "키자니아", "gtype": "복지관·지역아동센터", "name": "OO 복지관", "ticket_type": "초등", "total_count": 70, "region": "경기", "meal": null}, {"y": 2025, "m": 8, "venue": "키자니아", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 18, "region": "인천", "meal": "단체식"}, {"y": 2025, "m": 8, "venue": "키자니아", "gtype": "학교·학원", "name": "OO초등학교", "ticket_type": "초등", "total_count": 30, "region": "강원", "meal": "단체식"}, {"y": 2025, "m": 8, "venue": "키자니아", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 18, "region": "서울", "meal": null}, {"y": 2025, "m": 8, "venue": "키자니아", "gtype": "종교단체", "name": "OO성당", "ticket_type": "초등", "total_count": 37, "region": "서울", "meal": "단체식"}, {"y": 2025, "m": 8, "venue": "키자니아", "gtype": "복지관·지역아동센터", "name": "OO지역아동센터", "ticket_type": "초등", "total_count": 12, "region": "경기", "meal": null}, {"y": 2025, "m": 8, "venue": "키자니아", "gtype": "어린이집·유치원", "name": "OO 어린이집", "ticket_type": "유아", "total_count": 36, "region": "경기", "meal": "단체식"}, {"y": 2025, "m": 8, "venue": "루나폴(닷밀)", "gtype": "복지관·지역아동센터", "name": "OO센터", "ticket_type": "초등", "total_count": 26, "region": "경기", "meal": null}, {"y": 2025, "m": 8, "venue": "루나폴(닷밀)", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 20, "region": "경기", "meal": "단체식"}, {"y": 2025, "m": 8, "venue": "루나폴(닷밀)", "gtype": "복지관·지역아동센터", "name": "OO 복지관", "ticket_type": "초등", "total_count": 15, "region": "경기", "meal": null}, {"y": 2025, "m": 8, "venue": "루나폴(닷밀)", "gtype": "학교·학원", "name": "OO초등학교", "ticket_type": "초등", "total_count": 15, "region": "경기", "meal": null}, {"y": 2025, "m": 8, "venue": "두리랜드", "gtype": "기타", "name": "OO 기타", "ticket_type": "성인", "total_count": 33, "region": "경기도", "meal": null}, {"y": 2025, "m": 8, "venue": "두리랜드", "gtype": "기타", "name": "OO 기타", "ticket_type": "성인", "total_count": 30, "region": "경기도", "meal": null}, {"y": 2025, "m": 8, "venue": "두리랜드", "gtype": "복지관·지역아동센터", "name": "OO지역아동센터", "ticket_type": "초등", "total_count": 28, "region": "경기", "meal": "단체식"}, {"y": 2025, "m": 8, "venue": "두리랜드", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 67, "region": "경기", "meal": null}, {"y": 2025, "m": 8, "venue": "두리랜드", "gtype": "복지관·지역아동센터", "name": "OO 복지관", "ticket_type": "초등", "total_count": 120, "region": "서울", "meal": "단체식"}, {"y": 2025, "m": 8, "venue": "두리랜드", "gtype": "복지관·지역아동센터", "name": "OO 복지관", "ticket_type": "중고", "total_count": 44, "region": "경기", "meal": "단체식"}, {"y": 2025, "m": 8, "venue": "두리랜드", "gtype": "복지관·지역아동센터", "name": "OO 복지관", "ticket_type": "중고", "total_count": 21, "region": "경기", "meal": null}, {"y": 2025, "m": 8, "venue": "두리랜드", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 23, "region": "서울", "meal": "단체식"}, {"y": 2025, "m": 8, "venue": "두리랜드", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 31, "region": "경기", "meal": "단체식"}, {"y": 2025, "m": 8, "venue": "두리랜드", "gtype": "학교·학원", "name": "OO 학교", "ticket_type": "초등", "total_count": 92, "region": "서울", "meal": "도시락"}, {"y": 2025, "m": 8, "venue": "두리랜드", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 46, "region": "서울", "meal": "단체식"}, {"y": 2025, "m": 9, "venue": "워터월드(닷밀)", "gtype": "복지관·지역아동센터", "name": "OO 복지관", "ticket_type": "성인", "total_count": 42, "region": "서울", "meal": "단체식"}, {"y": 2025, "m": 9, "venue": "워터월드(닷밀)", "gtype": "복지관·지역아동센터", "name": "OO지역아동센터", "ticket_type": "초등", "total_count": 15, "region": "경기", "meal": "단체식"}, {"y": 2025, "m": 9, "venue": "워터월드(닷밀)", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 21, "region": "서울", "meal": "단체식"}, {"y": 2025, "m": 9, "venue": "워터월드(닷밀)", "gtype": "복지관·지역아동센터", "name": "OO지역아동센터", "ticket_type": "초등", "total_count": 33, "region": "경기", "meal": "단체식"}, {"y": 2025, "m": 9, "venue": "루나폴(닷밀)", "gtype": "기타", "name": "OO 기타", "ticket_type": "성인", "total_count": 14, "region": "경기", "meal": null}, {"y": 2025, "m": 9, "venue": "루나폴(닷밀)", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 32, "region": "경기", "meal": "단체식"}, {"y": 2025, "m": 10, "venue": "루나폴(닷밀)", "gtype": "복지관·지역아동센터", "name": "OO지역아동센터", "ticket_type": "초등", "total_count": 23, "region": "서울", "meal": "단체식"}, {"y": 2025, "m": 12, "venue": "루나폴(닷밀)", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 19, "region": "경기", "meal": "단체식"}, {"y": 2025, "m": 12, "venue": "기타", "gtype": "학교·학원", "name": "OO 학교", "ticket_type": "초등", "total_count": 45, "region": "서울", "meal": "단체식"}, {"y": 2025, "m": 12, "venue": "기타", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 22, "region": "서울", "meal": "단체식"}, {"y": 2025, "m": 12, "venue": "기타", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 23, "region": "경기", "meal": "단체식"}, {"y": 2025, "m": 12, "venue": "기타", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 12, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 1, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 32, "region": "경기", "meal": null}, {"y": 2026, "m": 1, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 18, "region": "경기", "meal": null}, {"y": 2026, "m": 1, "venue": "아일랜드캐슬", "gtype": "학교·학원", "name": "OO학원", "ticket_type": "초등", "total_count": 12, "region": "경기", "meal": null}, {"y": 2026, "m": 1, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 45, "region": "경기", "meal": null}, {"y": 2026, "m": 1, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 19, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 1, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 22, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 1, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 33, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 1, "venue": "아일랜드캐슬", "gtype": "종교단체", "name": "OO교회", "ticket_type": "초등", "total_count": 33, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 1, "venue": "아일랜드캐슬", "gtype": "종교단체", "name": "OO교회", "ticket_type": "초등", "total_count": 16, "region": "경기", "meal": null}, {"y": 2026, "m": 1, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 73, "region": "경기", "meal": null}, {"y": 2026, "m": 1, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 55, "region": "경기", "meal": null}, {"y": 2026, "m": 1, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 12, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 1, "venue": "아일랜드캐슬", "gtype": "종교단체", "name": "OO교회", "ticket_type": "초등", "total_count": 27, "region": "경기", "meal": null}, {"y": 2026, "m": 1, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 40, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 2, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 38, "region": "경기", "meal": null}, {"y": 2026, "m": 2, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 19, "region": "경기", "meal": null}, {"y": 2026, "m": 2, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 17, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 2, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 22, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 2, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 62, "region": "경기", "meal": null}, {"y": 2026, "m": 2, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 22, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 2, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 102, "region": "경기", "meal": null}, {"y": 2026, "m": 2, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 21, "region": "경기", "meal": null}, {"y": 2026, "m": 2, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 15, "region": "경기", "meal": null}, {"y": 2026, "m": 2, "venue": "아일랜드캐슬", "gtype": "종교단체", "name": "OO교회", "ticket_type": "초등", "total_count": 30, "region": "서울", "meal": null}, {"y": 2026, "m": 2, "venue": "아일랜드캐슬", "gtype": "종교단체", "name": "OO교회", "ticket_type": "중고등", "total_count": 55, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 2, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 21, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 2, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 25, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 3, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 17, "region": "경기", "meal": null}, {"y": 2026, "m": 3, "venue": "아일랜드캐슬", "gtype": "종교단체", "name": "OO교회", "ticket_type": "초등", "total_count": 100, "region": "경기", "meal": null}, {"y": 2026, "m": 3, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 44, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 3, "venue": "아일랜드캐슬", "gtype": "기타", "name": "OO센터", "ticket_type": "성인", "total_count": 18, "region": "경기", "meal": null}, {"y": 2026, "m": 3, "venue": "아일랜드캐슬", "gtype": "해외·인바운드 단체", "name": "OO여행사", "ticket_type": "성인", "total_count": 21, "region": "해외", "meal": null}, {"y": 2026, "m": 3, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO 복지관", "ticket_type": "성인", "total_count": 13, "region": "경기", "meal": null}, {"y": 2026, "m": 3, "venue": "아일랜드캐슬", "gtype": "해외·인바운드 단체", "name": "OO여행사", "ticket_type": "성인", "total_count": 23, "region": "해외", "meal": null}, {"y": 2026, "m": 3, "venue": "아일랜드캐슬", "gtype": "해외·인바운드 단체", "name": "OO여행사", "ticket_type": "성인", "total_count": 26, "region": "해외", "meal": null}, {"y": 2026, "m": 4, "venue": "아일랜드캐슬", "gtype": "해외·인바운드 단체", "name": "OO여행사", "ticket_type": "성인", "total_count": 27, "region": "해외", "meal": null}, {"y": 2026, "m": 4, "venue": "아일랜드캐슬", "gtype": "해외·인바운드 단체", "name": "OO여행사", "ticket_type": "성인", "total_count": 24, "region": "해외", "meal": null}, {"y": 2026, "m": 4, "venue": "아일랜드캐슬", "gtype": "해외·인바운드 단체", "name": "OO여행사", "ticket_type": "성인", "total_count": 31, "region": "해외", "meal": null}, {"y": 2026, "m": 4, "venue": "아일랜드캐슬", "gtype": "해외·인바운드 단체", "name": "OO여행사", "ticket_type": "성인", "total_count": 27, "region": "해외", "meal": null}, {"y": 2026, "m": 4, "venue": "아일랜드캐슬", "gtype": "해외·인바운드 단체", "name": "OO 해외", "ticket_type": "성인", "total_count": 11, "region": "해외", "meal": null}, {"y": 2026, "m": 4, "venue": "아일랜드캐슬", "gtype": "해외·인바운드 단체", "name": "OO여행사", "ticket_type": "성인", "total_count": 8, "region": "해외", "meal": null}, {"y": 2026, "m": 4, "venue": "아일랜드캐슬", "gtype": "해외·인바운드 단체", "name": "OO 해외", "ticket_type": "성인", "total_count": 33, "region": "해외", "meal": null}, {"y": 2026, "m": 4, "venue": "아일랜드캐슬", "gtype": "해외·인바운드 단체", "name": "OO여행사", "ticket_type": "성인", "total_count": 16, "region": "해외", "meal": null}, {"y": 2026, "m": 4, "venue": "아일랜드캐슬", "gtype": "해외·인바운드 단체", "name": "OO 해외", "ticket_type": "성인", "total_count": 22, "region": "해외", "meal": null}, {"y": 2026, "m": 4, "venue": "아일랜드캐슬", "gtype": "해외·인바운드 단체", "name": "OO여행사", "ticket_type": "성인", "total_count": 27, "region": "해외", "meal": null}, {"y": 2026, "m": 4, "venue": "아일랜드캐슬", "gtype": "해외·인바운드 단체", "name": "OO여행사", "ticket_type": "성인", "total_count": 29, "region": "해외", "meal": null}, {"y": 2026, "m": 4, "venue": "아일랜드캐슬", "gtype": "해외·인바운드 단체", "name": "OO 해외", "ticket_type": "성인", "total_count": 24, "region": "해외", "meal": null}, {"y": 2026, "m": 4, "venue": "아일랜드캐슬", "gtype": "해외·인바운드 단체", "name": "OO여행사", "ticket_type": "성인", "total_count": 33, "region": "해외", "meal": null}, {"y": 2026, "m": 4, "venue": "아일랜드캐슬", "gtype": "해외·인바운드 단체", "name": "OO 해외", "ticket_type": "성인", "total_count": 22, "region": "해외", "meal": null}, {"y": 2026, "m": 4, "venue": "아일랜드캐슬", "gtype": "종교단체", "name": "OO교회", "ticket_type": "중등", "total_count": 28, "region": "서울", "meal": null}, {"y": 2026, "m": 4, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO복지관", "ticket_type": "초등", "total_count": 13, "region": "인천", "meal": null}, {"y": 2026, "m": 5, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO지역아동센터", "ticket_type": "초등", "total_count": 28, "region": "경기", "meal": null}, {"y": 2026, "m": 5, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO지역아동센터", "ticket_type": "초등", "total_count": 12, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 5, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 46, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 5, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 40, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 5, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 39, "region": "인천", "meal": "단체식"}, {"y": 2026, "m": 5, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 22, "region": "인천", "meal": "단체식"}, {"y": 2026, "m": 6, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO 복지관", "ticket_type": "성인", "total_count": 18, "region": null, "meal": "단체식"}, {"y": 2026, "m": 6, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 70, "region": "경기", "meal": "식사포함"}, {"y": 2026, "m": 6, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 112, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 6, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 24, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 6, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 22, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 6, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 44, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 6, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 22, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 6, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 37, "region": null, "meal": "도시락"}, {"y": 2026, "m": 6, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 31, "region": "인천", "meal": "단체식"}, {"y": 2026, "m": 6, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 24, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 6, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO지역아동센터", "ticket_type": "초등", "total_count": 28, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 6, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 23, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 6, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 46, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 6, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 55, "region": "인천", "meal": "단체식"}, {"y": 2026, "m": 6, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 39, "region": "인천", "meal": "단체식"}, {"y": 2026, "m": 6, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 15, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 6, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 36, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 6, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 22, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 6, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 12, "region": "경기도", "meal": "단체식"}, {"y": 2026, "m": 6, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 15, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 6, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 40, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 6, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 65, "region": "서울", "meal": "식사포함"}, {"y": 2026, "m": 6, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 75, "region": "경기", "meal": "식사포함"}, {"y": 2026, "m": 6, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 39, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 6, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 133, "region": null, "meal": "단체식"}, {"y": 2026, "m": 6, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 16, "region": "인천", "meal": "단체식"}, {"y": 2026, "m": 6, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 25, "region": "인천", "meal": "단체식"}, {"y": 2026, "m": 6, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 27, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 6, "venue": "오션월드", "gtype": "복지관·지역아동센터", "name": "OO 복지관", "ticket_type": "초등", "total_count": 28, "region": "강원", "meal": "식사포함"}, {"y": 2026, "m": 6, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 25, "region": "경기도", "meal": "단체식"}, {"y": 2026, "m": 6, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 35, "region": "경기도", "meal": "단체식"}, {"y": 2026, "m": 6, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 18, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 6, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 36, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 6, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 23, "region": null, "meal": "단체식"}, {"y": 2026, "m": 6, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 32, "region": "경기", "meal": null}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 54, "region": "경기", "meal": "도시락"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 61, "region": "서울", "meal": "도시락"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 44, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 36, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 16, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "해외·인바운드 단체", "name": "OO 해외", "ticket_type": "초등", "total_count": 18, "region": null, "meal": null}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO 복지관", "ticket_type": "성인", "total_count": 14, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "학교·학원", "name": "OO초등학교", "ticket_type": "초등", "total_count": 21, "region": "강원", "meal": null}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 155, "region": "경기", "meal": "도시락"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO유치원", "ticket_type": "유아", "total_count": 39, "region": "경기", "meal": "도시락"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 53, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO유치원", "ticket_type": "유아", "total_count": 63, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 57, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO유치원", "ticket_type": "유아", "total_count": 38, "region": "경기", "meal": "도시락"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 36, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "기타", "name": "OO 기타", "ticket_type": null, "total_count": 93, "region": null, "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "해외·인바운드 단체", "name": "OO여행사", "ticket_type": "성인", "total_count": 20, "region": null, "meal": null}, {"y": 2026, "m": 7, "venue": "루나폴(닷밀)", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 46, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 62, "region": "경기", "meal": "도시락"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "학교·학원", "name": "OO중학교", "ticket_type": "중등", "total_count": 15, "region": "경기", "meal": null}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "학교·학원", "name": "OO학교", "ticket_type": "초등", "total_count": 120, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO 어린이집", "ticket_type": "유아", "total_count": 31, "region": "경기", "meal": "도시락"}, {"y": 2026, "m": 7, "venue": "두리랜드", "gtype": "종교단체", "name": "OO교회", "ticket_type": "초등", "total_count": 35, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "종교단체", "name": "OO교회", "ticket_type": "초등", "total_count": 40, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 55, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "워터월드(닷밀)", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 49, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 20, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 40, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 30, "region": "인천", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 44, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 53, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "루나폴(닷밀)", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 45, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "종교단체", "name": "OO 종교단체", "ticket_type": "초등", "total_count": 35, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 27, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 21, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "키자니아", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 28, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 22, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 22, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 15, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 26, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "종교단체", "name": "OO교회", "ticket_type": "초등", "total_count": 33, "region": null, "meal": null}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO 복지관", "ticket_type": "성인", "total_count": 12, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "군부대", "name": "OO부대", "ticket_type": "성인", "total_count": 31, "region": "경기", "meal": null}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "해외·인바운드 단체", "name": "OO여행사", "ticket_type": "성인 ", "total_count": 27, "region": null, "meal": null}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO 복지관", "ticket_type": "성인", "total_count": 14, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 132, "region": "서울", "meal": "도시락"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 38, "region": "경기", "meal": "도시락"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "해외·인바운드 단체", "name": "OO여행사", "ticket_type": "성인", "total_count": 27, "region": null, "meal": null}, {"y": 2026, "m": 7, "venue": "롯데월드", "gtype": "해외·인바운드 단체", "name": "OO여행사", "ticket_type": "성인 ", "total_count": 27, "region": null, "meal": null}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "학교·학원", "name": "OO 학교", "ticket_type": "초등", "total_count": 27, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 47, "region": "경기", "meal": "도시락"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 24, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO 복지관", "ticket_type": "성인", "total_count": 12, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "군부대", "name": "OO부대", "ticket_type": "성인", "total_count": 38, "region": "경기", "meal": null}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 101, "region": null, "meal": "도시락"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 22, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO 복지관", "ticket_type": "성인", "total_count": 11, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 23, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO 어린이집", "ticket_type": "유아", "total_count": 20, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "군부대", "name": "OO부대", "ticket_type": "성인", "total_count": 41, "region": "경기", "meal": null}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 51, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "종교단체", "name": "OO교회", "ticket_type": "초등", "total_count": 41, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 42, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "원마운트", "gtype": "종교단체", "name": "OO교회", "ticket_type": "초등", "total_count": 25, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 24, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "종교단체", "name": "OO교회", "ticket_type": "성인", "total_count": 10, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "기타", "name": "OO 기타", "ticket_type": "초등", "total_count": 30, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 21, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "종교단체", "name": "OO교회", "ticket_type": "초등", "total_count": 18, "region": null, "meal": null}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 28, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "종교단체", "name": "OO교회", "ticket_type": "초등", "total_count": 44, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "종교단체", "name": "OO교회", "ticket_type": "초등", "total_count": 18, "region": "경기", "meal": null}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "종교단체", "name": "OO 종교단체", "ticket_type": "초등", "total_count": 16, "region": null, "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "종교단체", "name": "OO교회", "ticket_type": "초등", "total_count": 41, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "오션월드", "gtype": "종교단체", "name": "OO교회", "ticket_type": "초등", "total_count": 41, "region": "강원", "meal": "백반식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 17, "region": "서울", "meal": null}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "해외·인바운드 단체", "name": "OO여행사", "ticket_type": "성인", "total_count": 13, "region": null, "meal": null}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO 복지관", "ticket_type": "초등", "total_count": 29, "region": "경기", "meal": null}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "해외·인바운드 단체", "name": "OO여행사", "ticket_type": "성인", "total_count": 31, "region": null, "meal": null}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 45, "region": "경기", "meal": "도시락"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 32, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 39, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 27, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO 복지관", "ticket_type": "초등", "total_count": 81, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "종교단체", "name": "OO 종교단체", "ticket_type": "중등", "total_count": 23, "region": null, "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 57, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 90, "region": "경기", "meal": "도시락"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 13, "region": "경기", "meal": "협의중"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 50, "region": "경기", "meal": "도시락"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO유치원", "ticket_type": "유아", "total_count": 48, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 20, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "종교단체", "name": "OO교회", "ticket_type": "초등", "total_count": 105, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO지역아동센터", "ticket_type": "초등", "total_count": 28, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO센터", "ticket_type": "초등", "total_count": 44, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "군부대", "name": "OO 군부대", "ticket_type": "성인", "total_count": 29, "region": "경기", "meal": null}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 17, "region": "경기", "meal": null}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "종교단체", "name": "OO교회", "ticket_type": "중등", "total_count": 40, "region": null, "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO학교", "ticket_type": "중등", "total_count": 17, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO센터", "ticket_type": "초등", "total_count": 30, "region": "서울", "meal": null}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO유치원", "ticket_type": "유아", "total_count": 18, "region": null, "meal": "도시락"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 63, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "종교단체", "name": "OO교회", "ticket_type": "초등", "total_count": 60, "region": "경기", "meal": "협의중"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "종교단체", "name": "OO교회", "ticket_type": "초등", "total_count": 17, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 66, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 44, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 110, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 55, "region": "인천", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "종교단체", "name": "OO교회", "ticket_type": "초등", "total_count": 19, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "종교단체", "name": "OO교회", "ticket_type": "초등", "total_count": 54, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO센터", "ticket_type": "초등", "total_count": 18, "region": "서울", "meal": null}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 55, "region": null, "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 28, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "종교단체", "name": "OO교회", "ticket_type": "초등", "total_count": 37, "region": null, "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "종교단체", "name": "OO교회", "ticket_type": "초등", "total_count": 40, "region": "인천", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "종교단체", "name": "OO 종교단체", "ticket_type": "초등", "total_count": 24, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "해외·인바운드 단체", "name": "OO여행사", "ticket_type": "성인", "total_count": 13, "region": null, "meal": null}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "종교단체", "name": "OO교회", "ticket_type": "초등", "total_count": 14, "region": "경기", "meal": null}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "종교단체", "name": "OO교회", "ticket_type": "초등", "total_count": 70, "region": "경기", "meal": null}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "종교단체", "name": "OO교회", "ticket_type": null, "total_count": 19, "region": null, "meal": "협의중"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO지역아동센터", "ticket_type": "초등", "total_count": 24, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO지역아동센터", "ticket_type": "초등", "total_count": 43, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 71, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO지역아동센터", "ticket_type": "초등", "total_count": 25, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "종교단체", "name": "OO교회", "ticket_type": "초등", "total_count": 35, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO지역아동센터", "ticket_type": "중고", "total_count": 12, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO지역아동센터", "ticket_type": "초등", "total_count": 40, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO지역아동센터", "ticket_type": "초등", "total_count": 20, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "종교단체", "name": "OO 종교단체", "ticket_type": "초등", "total_count": 50, "region": "경기", "meal": null}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO지역아동센터", "ticket_type": "초등", "total_count": 26, "region": null, "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "군부대", "name": "OO부대", "ticket_type": "성인", "total_count": 35, "region": "경기", "meal": null}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "종교단체", "name": "OO교회", "ticket_type": "초등", "total_count": 34, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO지역아동센터", "ticket_type": "초등", "total_count": 30, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "해외·인바운드 단체", "name": "OO여행사", "ticket_type": "성인", "total_count": 26, "region": null, "meal": null}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO지역아동센터", "ticket_type": "초등", "total_count": 15, "region": null, "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "종교단체", "name": "OO 종교단체", "ticket_type": "초등", "total_count": 30, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "종교단체", "name": "OO교회", "ticket_type": "중등", "total_count": 110, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "오션월드", "gtype": "복지관·지역아동센터", "name": "OO지역아동센터", "ticket_type": "초등", "total_count": 35, "region": null, "meal": "백반식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO지역아동센터", "ticket_type": "초등", "total_count": 31, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO 복지관", "ticket_type": "초등", "total_count": 28, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO센터", "ticket_type": "초등", "total_count": 155, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO복지관", "ticket_type": "성인", "total_count": 36, "region": "경기", "meal": null}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO지역아동센터", "ticket_type": "초등", "total_count": 44, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO센터", "ticket_type": "초등", "total_count": 44, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO센터", "ticket_type": "초등", "total_count": 38, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "학교·학원", "name": "OO센터", "ticket_type": "초등", "total_count": 27, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO지역아동센터", "ticket_type": "초등", "total_count": 33, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 7, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO지역아동센터", "ticket_type": "초등", "total_count": 20, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 8, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO지역아동센터", "ticket_type": "초등", "total_count": 38, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 8, "venue": "아일랜드캐슬", "gtype": "해외·인바운드 단체", "name": "OO여행사", "ticket_type": "성인", "total_count": 25, "region": null, "meal": null}, {"y": 2026, "m": 8, "venue": "오션월드", "gtype": "복지관·지역아동센터", "name": "OO지역아동센터", "ticket_type": "초등", "total_count": 21, "region": "충북", "meal": "백반식"}, {"y": 2026, "m": 8, "venue": "아일랜드캐슬", "gtype": "종교단체", "name": "OO 종교단체", "ticket_type": "초등", "total_count": 50, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 8, "venue": "오션월드", "gtype": "복지관·지역아동센터", "name": "OO센터", "ticket_type": "초등", "total_count": 15, "region": "경기", "meal": "밀쿠폰"}, {"y": 2026, "m": 8, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO지역아동센터", "ticket_type": "초등", "total_count": 35, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 8, "venue": "아일랜드캐슬", "gtype": "체육관·스포츠클럽", "name": "OO 체육관", "ticket_type": "초등", "total_count": 55, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 8, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO지역아동센터", "ticket_type": "초등", "total_count": 17, "region": null, "meal": "단체식"}, {"y": 2026, "m": 8, "venue": "아일랜드캐슬", "gtype": "학교·학원", "name": "OO 학교", "ticket_type": "초등", "total_count": 22, "region": "경기", "meal": null}, {"y": 2026, "m": 8, "venue": "아일랜드캐슬", "gtype": "해외·인바운드 단체", "name": "OO여행사", "ticket_type": "성인", "total_count": 20, "region": null, "meal": null}, {"y": 2026, "m": 8, "venue": "아일랜드캐슬", "gtype": "학교·학원", "name": "OO학원", "ticket_type": "초등", "total_count": 19, "region": null, "meal": "단체식"}, {"y": 2026, "m": 8, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO지역아동센터", "ticket_type": "초등", "total_count": 31, "region": "서울", "meal": "협의중"}, {"y": 2026, "m": 8, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO지역아동센터", "ticket_type": "초등", "total_count": 18, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 8, "venue": "아일랜드캐슬", "gtype": "종교단체", "name": "OO 종교단체", "ticket_type": "초등", "total_count": 80, "region": "경기", "meal": null}, {"y": 2026, "m": 8, "venue": "아일랜드캐슬", "gtype": "해외·인바운드 단체", "name": "OO여행사", "ticket_type": "성인", "total_count": 20, "region": null, "meal": null}, {"y": 2026, "m": 8, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO지역아동센터", "ticket_type": "초등", "total_count": 39, "region": "충남", "meal": "단체식"}, {"y": 2026, "m": 8, "venue": "아일랜드캐슬", "gtype": "종교단체", "name": "OO교회", "ticket_type": "중등", "total_count": 38, "region": null, "meal": null}, {"y": 2026, "m": 8, "venue": "아일랜드캐슬", "gtype": "해외·인바운드 단체", "name": "OO여행사", "ticket_type": "성인", "total_count": 20, "region": null, "meal": null}, {"y": 2026, "m": 8, "venue": "오션월드", "gtype": "복지관·지역아동센터", "name": "OO지역아동센터", "ticket_type": "초등", "total_count": 40, "region": "경기", "meal": "백반식"}, {"y": 2026, "m": 8, "venue": "아일랜드캐슬", "gtype": "해외·인바운드 단체", "name": "OO여행사", "ticket_type": "성인", "total_count": 20, "region": null, "meal": null}, {"y": 2026, "m": 8, "venue": "아일랜드캐슬", "gtype": "해외·인바운드 단체", "name": "OO여행사", "ticket_type": "성인", "total_count": 20, "region": null, "meal": null}, {"y": 2026, "m": 8, "venue": "아일랜드캐슬", "gtype": "해외·인바운드 단체", "name": "OO여행사", "ticket_type": "성인", "total_count": 20, "region": null, "meal": null}, {"y": 2026, "m": 8, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 12, "region": "경기", "meal": "협의중"}, {"y": 2026, "m": 8, "venue": "아일랜드캐슬", "gtype": "해외·인바운드 단체", "name": "OO여행사", "ticket_type": "성인", "total_count": 20, "region": null, "meal": null}, {"y": 2026, "m": 8, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO지역아동센터", "ticket_type": "초등", "total_count": 22, "region": "서울", "meal": "단체식"}, {"y": 2026, "m": 8, "venue": "아일랜드캐슬", "gtype": "해외·인바운드 단체", "name": "OO여행사", "ticket_type": "성인", "total_count": 20, "region": null, "meal": null}, {"y": 2026, "m": 8, "venue": "아일랜드캐슬", "gtype": "해외·인바운드 단체", "name": "OO여행사", "ticket_type": "성인", "total_count": 20, "region": null, "meal": null}, {"y": 2026, "m": 8, "venue": "아일랜드캐슬", "gtype": "복지관·지역아동센터", "name": "OO지역아동센터", "ticket_type": "초등", "total_count": 41, "region": "경기", "meal": null}, {"y": 2026, "m": 8, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 55, "region": null, "meal": "단체식"}, {"y": 2026, "m": 8, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 131, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 8, "venue": "아일랜드캐슬", "gtype": "어린이집·유치원", "name": "OO어린이집", "ticket_type": "유아", "total_count": 49, "region": "경기", "meal": "도시락"}, {"y": 2026, "m": 8, "venue": "아일랜드캐슬", "gtype": "종교단체", "name": "OO교회", "ticket_type": "초등", "total_count": 35, "region": "경기", "meal": "단체식"}, {"y": 2026, "m": 8, "venue": "아일랜드캐슬", "gtype": "해외·인바운드 단체", "name": "OO여행사", "ticket_type": "성인", "total_count": 20, "region": null, "meal": null}];
+
+function fmt(n){ return n.toLocaleString('ko-KR'); }
+
+function renderStats(){
+  const groups = CASES.length;
+  const people = CASES.reduce((s,c)=>s+(c.total_count||0),0);
+  const venues = new Set(CASES.map(c=>c.venue)).size;
+  const types = new Set(CASES.map(c=>c.gtype)).size;
+  document.getElementById('st-groups').textContent = fmt(groups) + '+';
+  document.getElementById('st-people').textContent = fmt(people) + '+';
+  document.getElementById('st-venues').textContent = venues;
+  document.getElementById('st-types').textContent = types;
+}
+
+let currentFilter = '전체';
+let pool = [];
+let idx = 0;
+let timer = null;
+let paused = false;
+const INTERVAL = 3800;
+
+function buildPool(){
+  const base = currentFilter === '전체' ? CASES : CASES.filter(c => c.gtype === currentFilter);
+  // 최신순으로 정렬해서 최근 이용사례부터 노출
+  pool = [...base].sort((a,b) => (b.y - a.y) || (b.m - a.m));
+  idx = 0;
+}
+
+function renderFilters(){
+  const types = ['전체', ...Array.from(new Set(CASES.map(c=>c.gtype)))];
+  const row = document.getElementById('filter-row');
+  row.innerHTML = types.map(t=>`<button class="filter-chip${t===currentFilter?' active':''}" data-t="${t}">${t}</button>`).join('');
+  row.querySelectorAll('.filter-chip').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      currentFilter = btn.dataset.t;
+      renderFilters();
+      buildPool();
+      renderCard(true);
+      restartTimer();
+    });
+  });
+}
+
+function cardHtml(c){
+  const when = c.m + '월 이용 · ' + c.y + '년';
+  return `
+    <div class="flash-card show">
+      <div class="fc-top"><span class="fc-dot"></span><span class="fc-when">${when}</span></div>
+      <div class="fc-name">${c.name}<span class="fc-gtype">${c.gtype}</span></div>
+      <div class="fc-meta">
+        <span class="fc-tag venue">${c.venue}</span>
+        ${c.region ? `<span class="fc-tag">${c.region} 소재</span>` : ''}
+        ${c.ticket_type ? `<span class="fc-tag">${c.ticket_type} 대상</span>` : ''}
+        <span class="fc-tag count">${fmt(c.total_count)}명</span>
+        ${c.meal ? `<span class="fc-tag">${c.meal}</span>` : ''}
+      </div>
+    </div>
+  `;
+}
+
+function renderCard(){
+  const stage = document.getElementById('flash-stage');
+  const idxLabel = document.getElementById('flash-index');
+  if (!pool.length){
+    stage.innerHTML = '<div class="flash-card show" style="align-items:center;text-align:center;color:var(--gray);font-size:13px;">해당 유형의 이용사례가 없습니다.</div>';
+    idxLabel.textContent = '0 / 0';
+    return;
+  }
+  const c = pool[idx];
+  stage.innerHTML = cardHtml(c);
+  idxLabel.textContent = (idx+1) + ' / ' + pool.length;
+  restartProgress();
+}
+
+function restartProgress(){
+  const bar = document.getElementById('flash-progress-bar');
+  bar.classList.remove('animate');
+  void bar.offsetWidth;
+  if (!paused) bar.classList.add('animate');
+}
+
+function next(){
+  if (!pool.length) return;
+  idx = (idx + 1) % pool.length;
+  renderCard();
+}
+function prev(){
+  if (!pool.length) return;
+  idx = (idx - 1 + pool.length) % pool.length;
+  renderCard();
+}
+
+function restartTimer(){
+  clearInterval(timer);
+  if (!paused) timer = setInterval(next, INTERVAL);
+}
+
+document.getElementById('flash-next').addEventListener('click', ()=>{ next(); restartTimer(); });
+document.getElementById('flash-prev').addEventListener('click', ()=>{ prev(); restartTimer(); });
+document.getElementById('flash-stage').addEventListener('click', ()=>{
+  paused = !paused;
+  restartProgress();
+  restartTimer();
+});
+
+renderStats();
+renderFilters();
+buildPool();
+renderCard();
+restartTimer();
+</script>
+</body>
+</html>
