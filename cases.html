@@ -112,7 +112,7 @@
   .bp-dot.upcoming { background: var(--coral); box-shadow: 0 0 0 4px rgba(255,107,92,0.15); }
 
   .blur-list-mask { position: relative; height: 340px; overflow: hidden; -webkit-mask-image: linear-gradient(to bottom, transparent, #000 8%, #000 88%, transparent); mask-image: linear-gradient(to bottom, transparent, #000 8%, #000 88%, transparent); }
-  .blur-list { position: absolute; top: 0; left: 0; right: 0; animation: scrollUp 34s linear infinite; }
+  .blur-list { position: absolute; top: 0; left: 0; right: 0; animation: scrollUp 34s linear infinite; animation-duration: var(--scroll-dur, 90s); }
   .blur-list:hover { animation-play-state: paused; }
   @keyframes scrollUp { from { transform: translateY(0); } to { transform: translateY(-50%); } }
 
@@ -342,18 +342,26 @@ function renderLists(){
   const doneEl = document.getElementById('list-done');
   const upEl = document.getElementById('list-upcoming');
 
+  // 행(row) 하나당 이 정도 시간(초)을 들여 천천히 지나가도록 총 재생시간을 계산합니다.
+  const SEC_PER_ROW = 3.2;
+  const MIN_DUR = 40;
+
   if (!done.length) {
     doneEl.innerHTML = '<div class="bl-row" style="filter:none;opacity:1;justify-content:center;color:var(--gray);">해당 유형의 이용 내역이 없습니다.</div>';
+    doneEl.style.setProperty('--scroll-dur', '0s');
   } else {
     const htmlStr = done.map(rowHtml).join('');
     doneEl.innerHTML = htmlStr + htmlStr; // 무한 스크롤처럼 보이도록 2배 반복
+    doneEl.style.setProperty('--scroll-dur', Math.max(MIN_DUR, done.length * SEC_PER_ROW) + 's');
   }
 
   if (!upcoming.length) {
     upEl.innerHTML = '<div class="bl-row" style="filter:none;opacity:1;justify-content:center;color:var(--gray);">해당 유형의 예약 내역이 없습니다.</div>';
+    upEl.style.setProperty('--scroll-dur', '0s');
   } else {
     const htmlStr2 = upcoming.map(rowHtml).join('');
     upEl.innerHTML = htmlStr2 + htmlStr2;
+    upEl.style.setProperty('--scroll-dur', Math.max(MIN_DUR, upcoming.length * SEC_PER_ROW) + 's');
   }
 }
 
