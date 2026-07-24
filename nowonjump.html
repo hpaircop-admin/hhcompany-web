@@ -89,6 +89,27 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
 .info-icon{font-size:19px;margin-bottom:6px;display:block}
 .info-lbl{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:4px;display:block}
 .info-val{font-size:13.5px;font-weight:700;color:var(--dark);line-height:1.6;display:block}
+.prog-wrap{padding:56px 24px;background:#fff}
+.prog-inner{max-width:820px;margin:0 auto}
+.prog-timeline{margin-top:22px;display:flex;flex-direction:column}
+.prog-row{display:flex;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid var(--border)}
+.prog-row:last-child{border-bottom:none}
+.prog-time{flex-shrink:0;min-width:112px;font-size:12.5px;font-weight:900;text-align:center;padding:8px 10px;border-radius:8px}
+.prog-desc{font-size:14.5px;font-weight:800;color:var(--dark)}
+.prog-desc small{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-top:2px}
+.prog-foot{font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.8;background:#F3F3F6;border-radius:10px;padding:14px 16px}
+.price-table-wrap{background:#fff;border-radius:18px;padding:26px 22px;margin-top:24px;text-align:left;box-shadow:0 20px 50px rgba(0,0,0,.3)}
+.price-badge-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+.price-period{font-size:11.5px;font-weight:800;color:var(--blue);background:#F9731614;padding:6px 14px;border-radius:999px}
+.price-note-sm{font-size:11px;color:var(--muted);font-weight:700}
+.price-table{width:100%;border-collapse:collapse}
+.price-table th{font-size:11px;color:var(--muted);font-weight:800;text-align:left;padding:10px 6px;border-bottom:2px solid var(--dark)}
+.price-table td{font-size:13px;color:var(--dark);padding:12px 6px;border-bottom:1px solid var(--border);vertical-align:top}
+.price-table tr:last-child td{border-bottom:none}
+.price-table td small{display:block;color:var(--muted);font-size:11px;font-weight:600;margin-top:2px}
+.price-old{color:var(--muted);text-decoration:line-through;font-size:11.5px;margin-right:6px;white-space:nowrap}
+.price-new{color:var(--blue);font-weight:900;font-size:15px;white-space:nowrap}
+.price-group-note{font-size:11.5px;color:var(--muted);margin-top:16px;line-height:1.7;padding-top:14px;border-top:1px dashed var(--border)}
 .cta-wrap{background:linear-gradient(135deg,#F97316 0%,#3B82F6 100%);padding:68px 24px;text-align:center}
 .cta-inner{max-width:580px;margin:0 auto}
 .cta-title{font-size:clamp(24px,5.5vw,40px);font-weight:900;color:#fff;letter-spacing:-.02em;margin-bottom:12px;line-height:1.2}
@@ -251,19 +272,83 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
     </div></div></div>
   </div>
 </section>
+<div class="prog-wrap">
+  <div class="prog-inner">
+    <p class="sec-label">Group Program</p>
+    <p class="sec-title">단체 프로그램 안내</p>
+    <p class="sec-desc" style="margin-bottom:0">학교·학원·기관 단체는 아래와 같은 흐름으로 하루 일정을 구성해 어드벤처존부터 서바이벌존, 아케이드존까지 존을 이동하며 체험합니다. 방문 시간과 인원에 맞춰 일정은 조정 가능합니다.</p>
+    <div class="prog-timeline">
+      <div class="prog-row">
+        <span class="prog-time" style="background:#DBEAFE;color:#1D4ED8">10:00–12:00</span>
+        <div class="prog-desc">어드벤처존 체험<small>스카이 트레일 · 펀 클라임 등 공중 어드벤처 액티비티</small></div>
+      </div>
+      <div class="prog-row">
+        <span class="prog-time" style="background:#FEF3C7;color:#92400E">12:00–13:00</span>
+        <div class="prog-desc">점심시간<small>400석 규모 자체 푸드코트 이용 (한식·양식·패스트푸드 등)</small></div>
+      </div>
+      <div class="prog-row">
+        <span class="prog-time" style="background:#FEE2E2;color:#B91C1C">13:00–14:00</span>
+        <div class="prog-desc">서바이벌존 체험<small>배틀월드 레이저태그 — 팀 대항 협동 프로그램</small></div>
+      </div>
+      <div class="prog-row">
+        <span class="prog-time" style="background:#EDE9FE;color:#5B21B6">14:00–16:00</span>
+        <div class="prog-desc">아케이드존 체험<small>인터랙티브 스포츠 · 슈퍼챌린지 등 디지털 콘텐츠</small></div>
+      </div>
+      <div class="prog-row">
+        <span class="prog-time" style="background:#F3F4F6;color:#374151">16:00–16:30</span>
+        <div class="prog-desc">정리 후 귀가<small>소지품 확인 및 인원 점검 후 이동</small></div>
+      </div>
+    </div>
+    <div class="prog-foot">
+      ※ 위 일정은 참고용 표준 프로그램이며, 도착 시간·인원·희망 존 구성에 따라 자유롭게 조정할 수 있습니다.<br>
+      ※ 라이드존(배틀드리프트카트·롤 글라이더), 키즈존, RC플레이존은 별도 요금이 적용되며 단체 상담 시 함께 안내해드립니다.
+    </div>
+  </div>
+</div>
 <div class="price-wrap">
   <div class="price-inner">
     <p class="sec-label" style="color:rgba(255,255,255,.45);text-align:center">Pricing</p>
     <p class="price-title">단체 요금 안내</p>
-    <p class="price-desc">노원 JUMP 단체 요금은 방문 인원, 이용 존 구성, 시기에 따라 맞춤 견적으로 안내드립니다.</p>
-    <div class="inquiry-box">
-      <span class="inquiry-badge">단체가 별도 문의</span>
-      <p class="inquiry-title">정확한 단체 요금은 아직 미정입니다</p>
-      <p class="inquiry-sub">희망 방문일과 인원, 이용하실 존을 말씀해주시면<br>가장 빠르고 정확하게 견적을 안내해드리겠습니다.</p>
-      <div class="notice-box">
-        <p class="notice-title">이용 안내</p>
-        <p class="notice-item">존별로 이용 가능한 연령·신장 기준이 다르니 사전 확인 바랍니다</p><p class="notice-item">RC플레이존은 별도 요금이 적용됩니다</p><p class="notice-item">단체 규모 및 방문 목적에 맞춘 존 구성 상담이 가능합니다</p>
+    <p class="price-desc">10인 이상 단체 기준 요금이며, 1학급당 인솔 교사 1인은 무료로 입장하실 수 있습니다.</p>
+    <div class="price-table-wrap">
+      <div class="price-badge-row">
+        <span class="price-period">2026년 8월 – 12월 단체 요금</span>
+        <span class="price-note-sm">1인 기준 · VAT 포함</span>
       </div>
+      <table class="price-table">
+        <thead>
+          <tr><th>상품구성</th><th>권종</th><th>정상가</th><th>단체요금</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td rowspan="2">프로그램<small>(1인 요금)</small></td>
+            <td>주중 종일 이용권</td>
+            <td><span class="price-old">60,000원</span></td>
+            <td><span class="price-new">40,000원</span></td>
+          </tr>
+          <tr>
+            <td>주중 3시간 이용권<small>(오전/오후)</small></td>
+            <td><span class="price-old">33,000원</span></td>
+            <td><span class="price-new">30,000원</span></td>
+          </tr>
+          <tr>
+            <td>식사권</td>
+            <td>왕갈비탕 or 왕돈까스</td>
+            <td><span class="price-old">14,000원</span></td>
+            <td><span class="price-new">12,000원</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="price-group-note">
+        · 10인 이상 단체 적용 요금이며, 1학급당 인솔 교사 1인은 무료 입장입니다.<br>
+        · 위 요금은 2026년 8월~12월 기준이며, 시기에 따라 변동될 수 있습니다.<br>
+        · 라이드존·키즈존·RC플레이존은 별도 요금이며, 존별로 이용 가능한 연령·신장 기준이 다르니 사전 확인 바랍니다.
+      </p>
+    </div>
+    <div class="inquiry-box" style="margin-top:24px">
+      <span class="inquiry-badge">단체 맞춤 견적 문의</span>
+      <p class="inquiry-title">방문 인원·희망 존 구성에 맞춘 견적 안내</p>
+      <p class="inquiry-sub">희망 방문일과 인원, 이용하실 존을 말씀해주시면<br>가장 빠르고 정확하게 견적을 안내해드리겠습니다.</p>
     </div>
   </div>
 </div>
