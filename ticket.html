@@ -84,6 +84,12 @@ async function loadTicket() {
       return;
     }
 
+    // 취소/환불된 입장권은 바코드를 아예 노출하지 않는다 (재입장 악용 방지)
+    if (p.status === 'cancelled') {
+      card.innerHTML = `<div class="state"><strong>취소된 입장권입니다</strong>이 예약(입장권)은 취소 또는 환불 처리되어 더 이상 사용하실 수 없습니다.<br>문의사항은 031-339-2999로 연락해주세요.</div>`;
+      return;
+    }
+
     card.innerHTML = `
       <div class="card-head">
         <div class="brand">HHCOMPANY 입장권</div>
