@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-N4BWKWXEQ4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-N4BWKWXEQ4');
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>개인 구매 | (주)더블에이치컴퍼니</title>
+<meta name="description" content="더블에이치컴퍼니 온라인 개인 입장권 구매">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0e2a47">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<style>
+  @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css');
+  :root{
+    --navy:#0e2a47;--navy-deep:#081b30;--blue:#1d6fe0;--sky:#47b6e8;--coral:#ff6b5c;--amber:#ffb648;
+    --cream:#f5f8fc;--ink:#16202e;--gray:#64748b;--line:#e2e9f2;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Pretendard',-apple-system,sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;line-height:1.6}
+  a{text-decoration:none;color:var(--blue)}
+
+  .topbar{background:var(--navy-deep);padding:14px 20px;display:flex;align-items:center;gap:10px}
+  .topbar img{width:28px;height:auto}
+  .topbar span{color:#fff;font-weight:800;font-size:15px;letter-spacing:.01em}
+  .topbar span b{color:var(--sky)}
+
+  .wrap{max-width:480px;margin:0 auto;padding:24px 16px 60px}
+  .card{background:#fff;border-radius:16px;box-shadow:0 8px 28px rgba(14,42,71,.08);overflow:hidden;margin-bottom:16px}
+  .card-head{background:linear-gradient(135deg,var(--navy),var(--blue));padding:20px 22px;color:#fff}
+  .card-head .eyebrow{font-size:11px;letter-spacing:.12em;text-transform:uppercase;opacity:.8;margin-bottom:6px}
+  .card-head .venue{font-size:20px;font-weight:800}
+  .card-head .ticket{font-size:13px;opacity:.85;margin-top:2px}
+  .card-body{padding:22px}
+
+  .field{margin-bottom:16px}
+  .field label{display:block;font-size:12.5px;font-weight:700;color:var(--navy);margin-bottom:6px}
+  .field input, .field select{width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:8px;font-size:14px;font-family:inherit;background:#fafbfd}
+  .field input:focus, .field select:focus{outline:none;border-color:var(--blue);background:#fff}
+
+  .qty-row{display:flex;align-items:center;gap:10px}
+  .qty-btn{width:36px;height:36px;border-radius:8px;border:1px solid var(--line);background:#fafbfd;font-size:16px;font-weight:700;color:var(--navy);cursor:pointer}
+  .qty-val{width:48px;text-align:center;font-size:16px;font-weight:700}
+
+  .price-row{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-top:1px dashed var(--line);margin-top:6px}
+  .price-row .label{font-size:13px;color:var(--gray)}
+  .price-row .amount{font-size:22px;font-weight:800;color:var(--coral)}
+
+  .submit-btn{width:100%;padding:15px;border:none;border-radius:10px;background:var(--navy);color:#fff;font-size:15px;font-weight:700;cursor:pointer;margin-top:6px;transition:background .2s}
+  .submit-btn:hover{background:var(--blue)}
+  .submit-btn:disabled{background:var(--line);color:var(--gray);cursor:not-allowed}
+
+  .state{padding:60px 24px;text-align:center;color:var(--gray);font-size:14px;line-height:1.8}
+  .state strong{display:block;color:var(--ink);font-size:16px;margin-bottom:6px}
+  .state .sub{font-size:12.5px;color:var(--gray);margin-top:10px}
+
+  .notice{margin-top:14px;background:#FFF6E8;border:1px solid #FFE3B0;border-radius:10px;padding:12px 14px;font-size:12px;color:#8a5a00;line-height:1.6}
+  .foot{margin-top:20px;text-align:center;font-size:11.5px;color:var(--gray);line-height:1.8}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <img src="logo-icon.png" alt="HHCOMPANY">
+  <span>HH<b>COMPANY</b> · 개인 구매</span>
+</div>
+
+<div class="wrap">
+  <div class="card" id="card">
+    <div class="state" id="state">상품 정보를 불러오는 중입니다...</div>
+  </div>
+</div>
+
+<div class="foot">
+  (주)더블에이치컴퍼니 · 사업자등록번호 420-88-03868<br>
+  문의 <a href="tel:031-339-2999">031-339-2999</a> · <a href="products.html">홈페이지 바로가기</a>
+</div>
+
+<script>
+const SB_URL = 'https://xoupacfmkhuuvxebgfqi.supabase.co';
+const SB_KEY = 'sb_publishable_46KQebvC7_S-_JDramvDmA_jk9aSeVc';
+const FN_URL = `${SB_URL}/functions/v1/payment-confirm`;
+
+async function sbFetch(path) {
+  const res = await fetch(`${SB_URL}/rest/v1/${path}`, {
+    headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` },
+  });
+  if (!res.ok) throw new Error(`오류 ${res.status}`);
+  return res.json();
+}
+async function fnFetch(path, body) {
+  const res = await fetch(`${FN_URL}/${path}`, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body || {}),
+  });
+  const data = await res.json().catch(() => ({}));
+  return { ok: res.ok, status: res.status, data };
+}
+
+function money(n) { return Number(n || 0).toLocaleString('ko-KR') + '원'; }
+
+let PRODUCT = null;
+let qty = 1;
+
+function renderForm() {
+  const card = document.getElementById('card');
+  card.innerHTML = `
+    <div class="card-head">
+      <div class="eyebrow">Online Ticket</div>
+      <div class="venue">${PRODUCT.vname || PRODUCT.name}</div>
+      <div class="ticket">${PRODUCT.name}</div>
+    </div>
+    <div class="card-body">
+      <div class="field">
+        <label>구매자 이름</label>
+        <input type="text" id="f-name" placeholder="이름을 입력해주세요">
+      </div>
+      <div class="field">
+        <label>연락처</label>
+        <input type="tel" id="f-phone" placeholder="010-0000-0000">
+      </div>
+      <div class="field">
+        <label>이메일 (선택)</label>
+        <input type="email" id="f-email" placeholder="영수증/티켓 발송용">
+      </div>
+      <div class="field">
+        <label>방문 예정일 (선택)</label>
+        <input type="date" id="f-date">
+      </div>
+      <div class="field">
+        <label>수량</label>
+        <div class="qty-row">
+          <button type="button" class="qty-btn" id="qty-minus">−</button>
+          <div class="qty-val" id="qty-val">1</div>
+          <button type="button" class="qty-btn" id="qty-plus">+</button>
+        </div>
+      </div>
+      <div class="price-row">
+        <span class="label">결제 금액</span>
+        <span class="amount" id="total-amount">${money(PRODUCT.indiv_price)}</span>
+      </div>
+      <button type="button" class="submit-btn" id="pay-btn">결제하기</button>
+      <div class="notice">결제 완료 시 입력하신 연락처로 입장권 바코드 링크가 발급됩니다. 현장에서 바코드를 제시해주세요.</div>
+    </div>`;
+
+  document.getElementById('qty-minus').onclick = () => { if (qty > 1) qty--; updateQty(); };
+  document.getElementById('qty-plus').onclick = () => { qty++; updateQty(); };
+  document.getElementById('pay-btn').onclick = submitOrder;
+}
+
+function updateQty() {
+  document.getElementById('qty-val').textContent = qty;
+  document.getElementById('total-amount').textContent = money(PRODUCT.indiv_price * qty);
+}
+
+async function submitOrder() {
+  const name = document.getElementById('f-name').value.trim();
+  const phone = document.getElementById('f-phone').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  const visitDate = document.getElementById('f-date').value;
+
+  if (!name) return alert('이름을 입력해주세요.');
+  if (!phone) return alert('연락처를 입력해주세요.');
+
+  const btn = document.getElementById('pay-btn');
+  btn.disabled = true; btn.textContent = '주문 생성 중...';
+
+  const created = await fnFetch('create', {
+    productId: PRODUCT.id, quantity: qty, buyerName: name, buyerPhone: phone,
+    buyerEmail: email || undefined, visitDate: visitDate || undefined,
+  });
+
+  if (!created.ok) {
+    btn.disabled = false; btn.textContent = '결제하기';
+    return alert(created.data?.message || '주문 생성에 실패했습니다.');
+  }
+
+  const orderId = created.data.data.orderId;
+
+  // ── PG 위젯 연동 지점 ─────────────────────────────────────
+  // TODO: 토스페이먼츠 등 PG 가맹점 연동이 완료되면 여기서 결제창(SDK)을
+  // 열고, 고객이 결제를 마치면 successUrl로 돌아온 뒤 아래 confirm 호출로
+  // 이어집니다. 지금은 PG가 연결되지 않아 confirm이 바로 "준비 중" 응답을 줍니다.
+  btn.textContent = '결제 확인 중...';
+  const confirmed = await fnFetch('confirm', { orderId, amount: created.data.data.amount });
+
+  if (confirmed.ok) {
+    const pins = confirmed.data.data.pins || [];
+    location.href = 'ticket.html?pin=' + encodeURIComponent(pins[0] || '');
+    return;
+  }
+
+  showPendingState(orderId, created.data.data.amount);
+}
+
+function showPendingState(orderId, amount) {
+  document.getElementById('card').innerHTML = `
+    <div class="state">
+      <strong>온라인 결제 준비 중입니다</strong>
+      주문이 접수되었습니다 (주문번호 ${orderId}).<br>
+      온라인 카드결제 연동이 완료되는 대로 순차 오픈 예정이며, 그 전까지는 담당자가 안내드린 방법으로 결제를 도와드립니다.
+      <div class="sub">문의: 031-339-2999 · 주문금액 ${money(amount)}</div>
+    </div>`;
+}
+
+async function loadProduct() {
+  const params = new URLSearchParams(location.search);
+  const productId = (params.get('product') || '').trim();
+  const state = document.getElementById('state');
+
+  if (!productId) {
+    state.innerHTML = `<strong>상품 정보가 없습니다</strong>링크가 올바른지 확인해주세요.`;
+    return;
+  }
+
+  try {
+    const rows = await sbFetch(`products?select=id,name,vname,indiv_price,indiv_sale_enabled&id=eq.${encodeURIComponent(productId)}&limit=1`);
+    const p = Array.isArray(rows) ? rows[0] : null;
+
+    if (!p) {
+      state.innerHTML = `<strong>상품 정보를 찾을 수 없습니다</strong>링크가 올바른지 확인해주세요.`;
+      return;
+    }
+    if (!p.indiv_sale_enabled || !p.indiv_price) {
+      state.innerHTML = `<strong>아직 온라인 개인 구매를 준비 중입니다</strong>해당 시설은 현재 단체 예약만 가능합니다.<br><a href="reserve.html">단체 예약 문의하기 →</a>`;
+      return;
+    }
+
+    PRODUCT = p;
+    renderForm();
+  } catch (e) {
+    state.innerHTML = `<strong>불러오지 못했습니다</strong>잠시 후 다시 시도해주세요.`;
+  }
+}
+
+loadProduct();
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+}
+</script>
+</body>
+</html>

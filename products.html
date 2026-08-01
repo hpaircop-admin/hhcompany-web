@@ -14,6 +14,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>상품소개 | (주)더블에이치컴퍼니</title>
 <meta name="description" content="아일랜드캐슬, 오션월드, 키자니아, 롯데월드 단체 입장권 최저가 예약. 학교·어린이집·복지관·체육관 단체 전문.">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0e2a47">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
 <style>
   @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css');
   @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700;900&display=swap');
@@ -540,6 +543,7 @@
           <span class="prod-price">${minPrice.toLocaleString()}원~ <small>단체가</small></span>
           <div class="prod-btn-group">
             ${detailPage ? `<a class="prod-btn ghost" style="display:inline-block;text-decoration:none" href="${detailPage}">자세히 보기</a>` : ''}
+            ${(p.indiv_sale_enabled && p.indiv_price) ? `<a class="prod-btn" style="display:inline-block;text-decoration:none;background:var(--coral)" href="buy.html?product=${encodeURIComponent(p.id)}">개인 구매</a>` : ''}
             <a class="prod-btn" style="display:inline-block;text-decoration:none" href="reserve.html">문의하기</a>
           </div>
         </div>
@@ -604,6 +608,13 @@
     });
   }
 })();
+</script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js').catch(function () {});
+    });
+  }
 </script>
 </body>
 </html>
