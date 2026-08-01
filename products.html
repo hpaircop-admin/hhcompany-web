@@ -461,7 +461,10 @@
 
   async function loadProducts() {
     try {
-      const rows = await sbFetch('products?select=*&visible=eq.true&order=sort_order.asc');
+      // products_public 뷰는 개인판매가(indiv_price)·개인판매 여부(indiv_sale_enabled) 두 컬럼을
+      // 제외하고 나머지를 그대로 보여주는 뷰입니다. B2B 협력사도 볼 수 있는 완전 공개 페이지라
+      // 여기서는 원본 products 테이블 대신 이 뷰를 조회해 개인가가 절대 섞여 들어오지 않게 합니다.
+      const rows = await sbFetch('products_public?select=*&visible=eq.true&order=sort_order.asc');
       renderProducts(rows || []);
     } catch(e) {
       document.getElementById('product-grid').innerHTML = '<div class="prod-empty">상품 정보를 불러오지 못했습니다.</div>';
