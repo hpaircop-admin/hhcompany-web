@@ -211,10 +211,102 @@ function showLoginGate(productId) {
     <div class="sub"><a href="login.html?redirect=${redirect}">이메일로 로그인하기 →</a></div>`;
 }
 
+// ── 주문 링크(?order=)로 들어온 경우 — 관리자가 특정 개인에게 직접 발급한
+// 결제 전용 링크. 로그인이나 공개 상품가격 조회 없이, 이 주문 id를 아는
+// 사람만 자신의 주문 내용을 보고 결제할 수 있다.
+let CURRENT_ORDER = null;
+
+function renderOrderForm(order) {
+  const card = document.getElementById('card');
+  const needName = !order.buyer_name;
+  card.innerHTML = `
+    <div class="card-head">
+      <div class="eyebrow">개인 구매 링크</div>
+      <div class="venue">${order.venue_name}</div>
+      <div class="ticket">${order.ticket_name || ''}</div>
+    </div>
+    <div class="card-body">
+      ${needName ? `
+      <div class="field">
+        <label>구매자 이름</label>
+        <input type="text" id="o-name" placeholder="이름을 입력해주세요">
+      </div>` : `
+      <div class="field"><label>구매자</label><input type="text" value="${order.buyer_name}" disabled></div>`}
+      <div class="field"><label>연락처</label><input type="text" value="${order.buyer_phone}" disabled></div>
+      <div class="field"><label>수량</label><input type="text" value="${order.quantity}개" disabled></div>
+      <div class="price-row">
+        <span class="label">결제 금액</span>
+        <span class="amount">${money(order.total_amount)}</span>
+      </div>
+      <button type="button" class="submit-btn" id="pay-btn">결제하기</button>
+      <div class="notice">결제 완료 시 입력하신 연락처로 입장권 바코드 링크가 발급됩니다. 현장에서 바코드를 제시해주세요.</div>
+    </div>`;
+
+  document.getElementById('pay-btn').onclick = () => confirmExistingOrder(order, needName);
+}
+
+async function confirmExistingOrder(order, needName) {
+  const btn = document.getElementById('pay-btn');
+  if (needName) {
+    const name = document.getElementById('o-name').value.trim();
+    if (!name) return alert('이름을 입력해주세요.');
+    try {
+      await sb.from('orders').update({ buyer_name: name }).eq('id', order.id);
+      order.buyer_name = name;
+    } catch (e) { /* 이름 저장 실패해도 결제는 진행 */ }
+  }
+
+  btn.disabled = true; btn.textContent = '결제 확인 중...';
+
+  // ── PG 위젯 연동 지점 ─────────────────────────────────────
+  // TODO: 토스페이먼츠 등 PG 가맹점 연동이 완료되면 여기서 결제창(SDK)을
+  // 열고, 고객이 결제를 마치면 successUrl로 돌아온 뒤 아래 confirm 호출로
+  // 이어집니다. 지금은 PG가 연결되지 않아 confirm이 바로 "준비 중" 응답을 줍니다.
+  const confirmed = await fnFetch('confirm', { orderId: order.id, amount: order.total_amount });
+
+  if (confirmed.ok) {
+    const pins = confirmed.data.data.pins || [];
+    location.href = 'ticket.html?pin=' + encodeURIComponent(pins[0] || '');
+    return;
+  }
+
+  showPendingState(order.id, order.total_amount);
+}
+
+async function loadByOrderId(orderId) {
+  const state = document.getElementById('state');
+  try {
+    const { data: order, error } = await sb.from('orders').select('*').eq('id', orderId).maybeSingle();
+    if (error || !order) {
+      state.innerHTML = `<strong>주문 정보를 찾을 수 없습니다</strong>링크가 올바른지 확인해주세요.`;
+      return;
+    }
+    if (order.status === 'paid') {
+      state.innerHTML = `<strong>이미 결제가 완료된 주문입니다</strong>발급된 입장권은 문자로 전송된 링크를 확인해주세요.<div class="sub">문의: 031-339-2999</div>`;
+      return;
+    }
+    if (order.status !== 'pending') {
+      state.innerHTML = `<strong>더 이상 유효하지 않은 주문입니다</strong>담당자에게 문의해주세요.<div class="sub">문의: 031-339-2999</div>`;
+      return;
+    }
+    CURRENT_ORDER = order;
+    renderOrderForm(order);
+  } catch (e) {
+    state.innerHTML = `<strong>불러오지 못했습니다</strong>잠시 후 다시 시도해주세요.`;
+  }
+}
+
 async function loadProduct() {
   const params = new URLSearchParams(location.search);
-  const productId = (params.get('product') || '').trim();
+  const orderId = (params.get('order') || '').trim();
   const state = document.getElementById('state');
+
+  if (orderId) {
+    await loadByOrderId(orderId);
+    return;
+  }
+
+  const productId = (params.get('product') || '').trim();
 
   if (!productId) {
     state.innerHTML = `<strong>상품 정보가 없습니다</strong>링크가 올바른지 확인해주세요.`;
