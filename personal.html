@@ -143,7 +143,7 @@ let CATALOG = [];
 async function loadCatalog() {
   const list = document.getElementById('list');
   try {
-    const rows = await sbFetch('indiv_products_public?select=*');
+    const rows = await sbFetch('indiv_products_public?select=*&order=sort_order.asc');
     CATALOG = rows || [];
     if (!CATALOG.length) {
       list.innerHTML = `<div class="empty">현재 판매 중인 개인 전용 상품이 없습니다.<br>문의: 031-339-2999</div>`;
