@@ -73,18 +73,19 @@
           <label>이메일</label>
           <input type="email" id="f-email" placeholder="example@email.com">
         </div>
-        <button type="button" class="submit-btn" id="send-btn" onclick="sendCode()">인증코드 받기</button>
+        <button type="button" class="submit-btn" id="send-btn" onclick="sendLink()">로그인 링크 받기</button>
         <div class="msg" id="email-msg"></div>
       </div>
 
-      <div id="step-code" style="display:none">
-        <div class="field">
-          <label>인증코드 (6자리)</label>
-          <input type="text" id="f-code" placeholder="000000" inputmode="numeric" maxlength="6">
+      <div id="step-sent" style="display:none">
+        <div class="msg success" style="font-size:14px;color:var(--ink);line-height:1.8">
+          입력하신 이메일로 로그인 링크를 보내드렸습니다.<br>메일함에서 <strong>로그인(Sign in)</strong> 링크를 눌러주세요.
         </div>
-        <button type="button" class="submit-btn" id="verify-btn" onclick="verifyCode()">확인하고 로그인</button>
-        <div class="msg" id="code-msg"></div>
         <a href="#" class="link-back" onclick="backToEmail();return false">이메일 다시 입력하기</a>
+      </div>
+
+      <div id="step-checking" style="display:none">
+        <div class="msg" style="font-size:14px;color:var(--ink)">로그인 확인 중입니다...</div>
       </div>
     </div>
   </div>
@@ -100,15 +101,23 @@ function getRedirectTarget() {
   return params.get('redirect') || 'products.html';
 }
 
-async function sendCode() {
+function showStep(step) {
+  document.getElementById('step-email').style.display = step === 'email' ? '' : 'none';
+  document.getElementById('step-sent').style.display = step === 'sent' ? '' : 'none';
+  document.getElementById('step-checking').style.display = step === 'checking' ? '' : 'none';
+}
+
+async function sendLink() {
   const email = document.getElementById('f-email').value.trim();
   const msg = document.getElementById('email-msg');
   const btn = document.getElementById('send-btn');
   if (!email) { msg.textContent = '이메일을 입력해주세요.'; msg.className = 'msg error'; return; }
 
   btn.disabled = true; btn.textContent = '전송 중...';
-  const { error } = await sb.auth.signInWithOtp({ email, options: { shouldCreateUser: true } });
-  btn.disabled = false; btn.textContent = '인증코드 받기';
+  const target = getRedirectTarget();
+  const emailRedirectTo = `${location.origin}${location.pathname}?redirect=${encodeURIComponent(target)}`;
+  const { error } = await sb.auth.signInWithOtp({ email, options: { shouldCreateUser: true, emailRedirectTo } });
+  btn.disabled = false; btn.textContent = '로그인 링크 받기';
 
   if (error) {
     msg.textContent = '전송 실패: ' + error.message;
@@ -116,35 +125,26 @@ async function sendCode() {
     return;
   }
   msg.textContent = '';
-  document.getElementById('step-email').style.display = 'none';
-  document.getElementById('step-code').style.display = '';
-  document.getElementById('code-msg').textContent = email + '로 인증코드를 보냈습니다.';
-  document.getElementById('code-msg').className = 'msg success';
+  showStep('sent');
 }
 
 function backToEmail() {
-  document.getElementById('step-code').style.display = 'none';
-  document.getElementById('step-email').style.display = '';
+  showStep('email');
 }
 
-async function verifyCode() {
-  const email = document.getElementById('f-email').value.trim();
-  const token = document.getElementById('f-code').value.trim();
-  const msg = document.getElementById('code-msg');
-  const btn = document.getElementById('verify-btn');
-  if (!token) { msg.textContent = '인증코드를 입력해주세요.'; msg.className = 'msg error'; return; }
+// 이메일에 있는 로그인 링크를 눌러서 돌아왔을 때, 세션이 만들어지는 대로 원래 가려던 곳으로 이동
+sb.auth.onAuthStateChange((event, session) => {
+  if (session) location.href = getRedirectTarget();
+});
 
-  btn.disabled = true; btn.textContent = '확인 중...';
-  const { error } = await sb.auth.verifyOtp({ email, token, type: 'email' });
-  btn.disabled = false; btn.textContent = '확인하고 로그인';
-
-  if (error) {
-    msg.textContent = '인증 실패: ' + error.message;
-    msg.className = 'msg error';
-    return;
+(async () => {
+  // 로그인 링크로 돌아온 경우(URL에 토큰이 붙어있는 경우) 세션 확인 중 화면을 보여줌
+  if (location.hash.includes('access_token') || location.search.includes('redirect=')) {
+    const { data: { session } } = await sb.auth.getSession();
+    if (session) { location.href = getRedirectTarget(); return; }
+    if (location.hash.includes('access_token')) showStep('checking');
   }
-  location.href = getRedirectTarget();
-}
+})();
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
