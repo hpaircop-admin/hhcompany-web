@@ -204,13 +204,6 @@ function showPendingState(orderId, amount) {
     </div>`;
 }
 
-function showLoginGate(productId) {
-  const state = document.getElementById('state');
-  const redirect = encodeURIComponent(location.pathname.split('/').pop() + location.search);
-  state.innerHTML = `<strong>로그인이 필요합니다</strong>개인 구매는 회원 로그인 후 가격 확인 및 결제가 가능합니다.
-    <div class="sub"><a href="login.html?redirect=${redirect}">이메일로 로그인하기 →</a></div>`;
-}
-
 // ── 주문 링크(?order=)로 들어온 경우 — 관리자가 특정 개인에게 직접 발급한
 // 결제 전용 링크. 로그인이나 공개 상품가격 조회 없이, 이 주문 id를 아는
 // 사람만 자신의 주문 내용을 보고 결제할 수 있다.
@@ -313,29 +306,22 @@ async function loadProduct() {
     return;
   }
 
-  const { data: { session } } = await sb.auth.getSession();
-  if (!session) {
-    showLoginGate(productId);
-    return;
-  }
-
+  // indiv_products_public 뷰는 개인판매를 켜놓은 상품만 anon(비로그인)에게
+  // 공개하도록 만들어둔 좁은 창구입니다 (personal.html 참고). 로그인 없이도
+  // 이 경로로 들어온 사람은 바로 가격을 볼 수 있습니다.
   try {
     const { data: p, error } = await sb
-      .from('products')
-      .select('id,name,vname,indiv_price,indiv_sale_enabled')
+      .from('indiv_products_public')
+      .select('id,name,vname,indiv_price')
       .eq('id', productId)
       .maybeSingle();
 
     if (error || !p) {
-      state.innerHTML = `<strong>상품 정보를 찾을 수 없습니다</strong>링크가 올바른지 확인해주세요.`;
-      return;
-    }
-    if (!p.indiv_sale_enabled || !p.indiv_price) {
       state.innerHTML = `<strong>아직 온라인 개인 구매를 준비 중입니다</strong>해당 시설은 현재 단체 예약만 가능합니다.<br><a href="reserve.html">단체 예약 문의하기 →</a>`;
       return;
     }
 
-    PRODUCT = p;
+    PRODUCT = { ...p, indiv_sale_enabled: true };
     const qtyParam = parseInt(params.get('qty'), 10);
     if (qtyParam && qtyParam > 0) qty = qtyParam;
     renderForm();

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-N4BWKWXEQ4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-N4BWKWXEQ4');
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>개인 전용관 | (주)더블에이치컴퍼니</title>
+<meta name="description" content="더블에이치컴퍼니 개인 전용 입장권 구매">
+<meta name="robots" content="noindex, nofollow">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0e2a47">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<style>
+  @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css');
+  :root{
+    --navy:#0e2a47;--navy-deep:#081b30;--blue:#1d6fe0;--sky:#47b6e8;--coral:#ff6b5c;--amber:#ffb648;
+    --cream:#f5f8fc;--ink:#16202e;--gray:#64748b;--line:#e2e9f2;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Pretendard',-apple-system,sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;line-height:1.6}
+  a{text-decoration:none}
+
+  .topbar{background:linear-gradient(135deg,var(--navy-deep),var(--navy));padding:32px 20px 28px}
+  .topbar-inner{max-width:960px;margin:0 auto}
+  .topbar-inner .brand{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+  .topbar-inner .brand img{width:28px;height:auto}
+  .topbar-inner .brand span{color:#fff;font-weight:800;font-size:15px}
+  .topbar-inner .brand span b{color:var(--sky)}
+  .topbar-inner h1{color:#fff;font-size:24px;font-weight:800;margin-bottom:8px}
+  .topbar-inner p{color:rgba(255,255,255,.75);font-size:13.5px;line-height:1.7}
+
+  .wrap{max-width:960px;margin:0 auto;padding:28px 20px 60px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+  .card{background:#fff;border-radius:14px;box-shadow:0 6px 20px rgba(14,42,71,.07);overflow:hidden;display:flex;flex-direction:column}
+  .card-top{background:linear-gradient(135deg,var(--navy),var(--blue));padding:20px;color:#fff}
+  .card-top .emoji{font-size:26px;margin-bottom:8px}
+  .card-top .venue{font-size:16px;font-weight:800}
+  .card-body{padding:18px 20px;display:flex;flex-direction:column;gap:12px;flex:1}
+  .card-body .desc{font-size:12.5px;color:var(--gray);line-height:1.6;flex:1}
+  .card-price{font-size:20px;font-weight:800;color:var(--coral)}
+  .card-price small{font-size:11px;color:var(--gray);font-weight:600}
+  .buy-btn{display:block;text-align:center;background:var(--navy);color:#fff;font-size:13.5px;font-weight:700;padding:12px;border-radius:8px}
+  .buy-btn:hover{background:var(--blue)}
+
+  .empty{background:#fff;border-radius:14px;padding:60px 24px;text-align:center;color:var(--gray);font-size:14px}
+  .loading{padding:60px 24px;text-align:center;color:var(--gray);font-size:14px}
+
+  .foot{margin-top:24px;text-align:center;font-size:11.5px;color:var(--gray);line-height:1.8}
+  .foot a{color:var(--blue)}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <img src="logo-icon.png" alt="HHCOMPANY">
+      <span>HH<b>COMPANY</b></span>
+    </div>
+    <h1>개인 전용관</h1>
+    <p>더블에이치컴퍼니가 안내드린 분들만을 위한 개인 구매 페이지입니다.<br>원하시는 상품을 선택해 온라인으로 결제하실 수 있습니다.</p>
+  </div>
+</div>
+
+<div class="wrap">
+  <div id="list" class="loading">상품을 불러오는 중입니다...</div>
+</div>
+
+<div class="foot">
+  (주)더블에이치컴퍼니 · 사업자등록번호 420-88-03868<br>
+  문의 <a href="tel:031-339-2999">031-339-2999</a>
+</div>
+
+<script>
+const SB_URL = 'https://xoupacfmkhuuvxebgfqi.supabase.co';
+const SB_KEY = 'sb_publishable_46KQebvC7_S-_JDramvDmA_jk9aSeVc';
+
+async function sbFetch(path) {
+  const res = await fetch(`${SB_URL}/rest/v1/${path}`, {
+    headers: { apikey: SB_KEY, Authorization: `Bearer ${SB_KEY}` },
+  });
+  if (!res.ok) throw new Error(`오류 ${res.status}`);
+  return res.json();
+}
+
+function money(n) { return Number(n || 0).toLocaleString('ko-KR') + '원'; }
+
+async function loadCatalog() {
+  const list = document.getElementById('list');
+  try {
+    const rows = await sbFetch('indiv_products_public?select=*');
+    if (!rows || !rows.length) {
+      list.innerHTML = `<div class="empty">현재 판매 중인 개인 전용 상품이 없습니다.<br>문의: 031-339-2999</div>`;
+      return;
+    }
+    list.className = 'grid';
+    list.innerHTML = rows.map(p => `
+      <div class="card">
+        <div class="card-top">
+          <div class="emoji">${p.emoji || '🎟️'}</div>
+          <div class="venue">${p.vname || p.name}</div>
+        </div>
+        <div class="card-body">
+          <div class="desc">${p.desc || p.name}</div>
+          <div class="card-price">${money(p.indiv_price)} <small>1인</small></div>
+          <a class="buy-btn" href="buy.html?product=${encodeURIComponent(p.id)}">구매하기 →</a>
+        </div>
+      </div>
+    `).join('');
+  } catch (e) {
+    list.className = 'loading';
+    list.innerHTML = `불러오지 못했습니다. 잠시 후 다시 시도해주세요.`;
+  }
+}
+
+loadCatalog();
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+}
+</script>
+</body>
+</html>
