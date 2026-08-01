@@ -47,7 +47,10 @@
   .card-body .desc{font-size:12.5px;color:var(--gray);line-height:1.6;flex:1}
   .card-price{font-size:20px;font-weight:800;color:var(--coral)}
   .card-price small{font-size:11px;color:var(--gray);font-weight:600}
-  .buy-btn{display:block;text-align:center;background:var(--navy);color:#fff;font-size:13.5px;font-weight:700;padding:12px;border-radius:8px}
+  .btn-row{display:flex;gap:8px}
+  .detail-btn{flex:1;text-align:center;background:#fff;color:var(--navy);border:1.5px solid var(--line);font-size:13px;font-weight:700;padding:11px;border-radius:8px;cursor:pointer}
+  .detail-btn:hover{border-color:var(--blue);color:var(--blue)}
+  .buy-btn{flex:1;display:block;text-align:center;background:var(--navy);color:#fff;font-size:13.5px;font-weight:700;padding:12px;border-radius:8px;border:none;cursor:pointer}
   .buy-btn:hover{background:var(--blue)}
 
   .empty{background:#fff;border-radius:14px;padding:60px 24px;text-align:center;color:var(--gray);font-size:14px}
@@ -55,6 +58,26 @@
 
   .foot{margin-top:24px;text-align:center;font-size:11.5px;color:var(--gray);line-height:1.8}
   .foot a{color:var(--blue)}
+
+  /* 자세히보기 모달 */
+  .modal-bg{display:none;position:fixed;inset:0;background:rgba(8,27,48,.55);z-index:100;align-items:flex-end;justify-content:center}
+  .modal-bg.open{display:flex}
+  .modal{background:#fff;width:100%;max-width:520px;max-height:88vh;border-radius:20px 20px 0 0;overflow-y:auto;animation:slideUp .25s ease}
+  @media (min-width:640px){ .modal-bg{align-items:center} .modal{border-radius:16px;max-height:80vh} }
+  @keyframes slideUp{from{transform:translateY(24px);opacity:0}to{transform:translateY(0);opacity:1}}
+  .modal-top{background:linear-gradient(135deg,var(--navy),var(--blue));padding:26px 24px;color:#fff;position:relative}
+  .modal-close{position:absolute;top:16px;right:16px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.18);border:none;color:#fff;font-size:18px;cursor:pointer;line-height:1}
+  .modal-top .emoji{font-size:32px;margin-bottom:8px}
+  .modal-top .venue{font-size:19px;font-weight:800}
+  .modal-body{padding:22px 24px 26px}
+  .modal-desc{font-size:13.5px;color:var(--ink);line-height:1.8;margin-bottom:18px}
+  .modal-feat-title{font-size:12.5px;font-weight:700;color:var(--gray);margin-bottom:8px}
+  .modal-feat{list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:22px}
+  .modal-feat li{font-size:13px;color:var(--ink);line-height:1.6;padding-left:18px;position:relative}
+  .modal-feat li::before{content:'✓';position:absolute;left:0;color:var(--sky);font-weight:800}
+  .modal-price-row{display:flex;align-items:center;justify-content:space-between;background:var(--cream);border-radius:10px;padding:14px 16px;margin-bottom:14px}
+  .modal-price-row .label{font-size:12.5px;color:var(--gray);font-weight:600}
+  .modal-price-row .amount{font-size:20px;font-weight:800;color:var(--coral)}
 </style>
 </head>
 <body>
@@ -72,6 +95,28 @@
 
 <div class="wrap">
   <div id="list" class="loading">상품을 불러오는 중입니다...</div>
+</div>
+
+<div class="modal-bg" id="detail-modal" onclick="if(event.target===this) closeDetail()">
+  <div class="modal">
+    <div class="modal-top">
+      <button class="modal-close" onclick="closeDetail()">×</button>
+      <div class="emoji" id="dt-emoji">🎟️</div>
+      <div class="venue" id="dt-venue"></div>
+    </div>
+    <div class="modal-body">
+      <div class="modal-desc" id="dt-desc"></div>
+      <div id="dt-feat-wrap">
+        <div class="modal-feat-title">이용 안내 및 특징</div>
+        <ul class="modal-feat" id="dt-feat"></ul>
+      </div>
+      <div class="modal-price-row">
+        <span class="label">개인 구매가 (1인)</span>
+        <span class="amount" id="dt-price"></span>
+      </div>
+      <a class="buy-btn" id="dt-buy-btn" href="#">구매하기 →</a>
+    </div>
+  </div>
 </div>
 
 <div class="foot">
@@ -93,16 +138,19 @@ async function sbFetch(path) {
 
 function money(n) { return Number(n || 0).toLocaleString('ko-KR') + '원'; }
 
+let CATALOG = [];
+
 async function loadCatalog() {
   const list = document.getElementById('list');
   try {
     const rows = await sbFetch('indiv_products_public?select=*');
-    if (!rows || !rows.length) {
+    CATALOG = rows || [];
+    if (!CATALOG.length) {
       list.innerHTML = `<div class="empty">현재 판매 중인 개인 전용 상품이 없습니다.<br>문의: 031-339-2999</div>`;
       return;
     }
     list.className = 'grid';
-    list.innerHTML = rows.map(p => `
+    list.innerHTML = CATALOG.map(p => `
       <div class="card">
         <div class="card-top">
           <div class="emoji">${p.emoji || '🎟️'}</div>
@@ -111,7 +159,10 @@ async function loadCatalog() {
         <div class="card-body">
           <div class="desc">${p.desc || p.name}</div>
           <div class="card-price">${money(p.indiv_price)} <small>1인</small></div>
-          <a class="buy-btn" href="buy.html?product=${encodeURIComponent(p.id)}">구매하기 →</a>
+          <div class="btn-row">
+            <button type="button" class="detail-btn" onclick="openDetail('${p.id}')">자세히보기</button>
+            <a class="buy-btn" href="buy.html?product=${encodeURIComponent(p.id)}">구매하기 →</a>
+          </div>
         </div>
       </div>
     `).join('');
@@ -119,6 +170,32 @@ async function loadCatalog() {
     list.className = 'loading';
     list.innerHTML = `불러오지 못했습니다. 잠시 후 다시 시도해주세요.`;
   }
+}
+
+function openDetail(id) {
+  const p = CATALOG.find(x => x.id === id);
+  if (!p) return;
+  document.getElementById('dt-emoji').textContent = p.emoji || '🎟️';
+  document.getElementById('dt-venue').textContent = p.vname || p.name;
+  document.getElementById('dt-desc').textContent = p.desc || p.name;
+  document.getElementById('dt-price').textContent = money(p.indiv_price);
+  document.getElementById('dt-buy-btn').href = 'buy.html?product=' + encodeURIComponent(p.id);
+
+  const feat = Array.isArray(p.features) ? p.features : [];
+  const featWrap = document.getElementById('dt-feat-wrap');
+  const featList = document.getElementById('dt-feat');
+  if (feat.length) {
+    featWrap.style.display = '';
+    featList.innerHTML = feat.map(f => `<li>${f}</li>`).join('');
+  } else {
+    featWrap.style.display = 'none';
+  }
+
+  document.getElementById('detail-modal').classList.add('open');
+}
+
+function closeDetail() {
+  document.getElementById('detail-modal').classList.remove('open');
 }
 
 loadCatalog();
