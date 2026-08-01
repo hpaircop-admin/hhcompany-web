@@ -574,6 +574,19 @@
 
   window.addEventListener('load', loadReserveBoard);
 
+  // 상품 상세페이지(예: islandcastle.html)에서 ?venue=업장명&count=인원 으로 넘어오면
+  // 예약 문의 폼을 미리 채워서 자동으로 펼쳐줍니다.
+  window.addEventListener('load', function () {
+    const params = new URLSearchParams(location.search);
+    const venue = params.get('venue');
+    const count = params.get('count');
+    if (!venue && !count) return;
+    if (venue) document.getElementById('rb-venue').value = venue;
+    if (count) document.getElementById('rb-count').value = count;
+    document.getElementById('reserve-form').classList.add('open');
+    document.getElementById('reserve-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
 (function () {
   var header = document.getElementById('header');
   var burger = document.querySelector('.burger');

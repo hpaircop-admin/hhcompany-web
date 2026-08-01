@@ -77,6 +77,21 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
 .cta-btns{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
 .btn-p{background:#fff;color:#0284C7;font-size:15px;font-weight:900;padding:14px 30px;border-radius:8px;text-decoration:none}
 .btn-s{background:transparent;color:#fff;font-size:15px;font-weight:700;padding:14px 30px;border-radius:8px;text-decoration:none;border:1.5px solid rgba(255,255,255,.55)}
+.booking-card{background:#fff;border-radius:14px;padding:26px 24px;text-align:left;margin-bottom:26px;box-shadow:0 20px 45px rgba(15,36,56,.28)}
+.booking-tabs{display:flex;gap:8px;margin-bottom:20px}
+.booking-tab{flex:1;padding:12px 8px;border-radius:8px;border:1.5px solid var(--border);background:#fff;color:var(--muted);font-size:13.5px;font-weight:800;cursor:pointer;transition:all .2s;font-family:inherit}
+.booking-tab.active{background:var(--navy);border-color:var(--navy);color:#fff}
+.booking-label{display:block;font-size:12px;font-weight:700;color:var(--dark);margin-bottom:8px}
+.booking-input{width:100%;padding:11px 13px;border:1px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;margin-bottom:8px}
+.booking-input:focus{outline:none;border-color:var(--blue)}
+.booking-err{color:#dc2626;font-size:12px;margin-bottom:10px;display:none}
+.booking-price-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px dashed var(--border);margin-bottom:14px}
+.booking-price-row strong{color:var(--accent);font-size:19px}
+.qty-row{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.qty-btn{width:34px;height:34px;border-radius:7px;border:1px solid var(--border);background:#FAF8F4;font-size:16px;font-weight:800;color:var(--navy);cursor:pointer}
+.qty-val{font-size:15px;font-weight:800;min-width:24px;text-align:center;display:inline-block}
+.btn-full{display:block;width:100%;text-align:center;background:var(--navy);color:#fff;font-size:14.5px;font-weight:800;padding:13px;border-radius:8px;border:none;cursor:pointer;font-family:inherit}
+.booking-note{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.6}
 .footer{background:var(--dark);padding:28px 24px;text-align:center}
 .footer p{font-size:12px;color:rgba(255,255,255,.32);line-height:1.9}
 .footer strong{color:rgba(255,255,255,.55)}
@@ -147,8 +162,39 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
 
 <div class="cta-wrap" id="contact">
   <div class="cta-inner">
-    <h2 class="cta-title">지금 바로<br>단체 예약 문의하세요</h2>
-    <p class="cta-desc">더블에이치컴퍼니를 통해 예약하시면 단체 맞춤 일정 조율, 버스 섭외, 식사 연계까지 원스톱으로 도와드립니다.</p>
+    <h2 class="cta-title">지금 바로<br>예약하세요</h2>
+    <p class="cta-desc">10명 이상 단체는 맞춤 견적 문의로, 10명 미만 개인은 온라인 결제로 바로 예약하실 수 있습니다.</p>
+
+    <div class="booking-card">
+      <div class="booking-tabs">
+        <button type="button" class="booking-tab active" id="tab-group" onclick="switchBookingTab('group')">단체 예약 (10명 이상)</button>
+        <button type="button" class="booking-tab" id="tab-indiv" onclick="switchBookingTab('indiv')">개인 구매</button>
+      </div>
+
+      <div id="panel-group">
+        <label class="booking-label">예상 인원</label>
+        <input type="number" id="group-count" class="booking-input" min="1" placeholder="예: 30" value="10">
+        <div class="booking-err" id="group-err">단체 예약은 최소 10명부터 가능합니다. 10명 미만이시면 개인 구매 탭을 이용해주세요.</div>
+        <button type="button" class="btn-full" onclick="goGroupReserve()">단체 예약 문의하기 →</button>
+        <p class="booking-note">문의 접수 후 담당자가 시즌별 요금과 일정을 맞춤 안내해드립니다.</p>
+      </div>
+
+      <div id="panel-indiv" style="display:none">
+        <div id="indiv-loading" style="color:var(--muted);font-size:13px;padding:8px 0">개인 판매가 확인 중...</div>
+        <div id="indiv-content" style="display:none">
+          <div class="booking-price-row"><span>1인 개인 요금</span><strong id="indiv-price-val"></strong></div>
+          <label class="booking-label">수량</label>
+          <div class="qty-row">
+            <button type="button" class="qty-btn" onclick="changeIndivQty(-1)">−</button>
+            <span class="qty-val" id="indiv-qty">1</span>
+            <button type="button" class="qty-btn" onclick="changeIndivQty(1)">+</button>
+          </div>
+          <button type="button" class="btn-full" onclick="goIndivBuy()">개인 구매 · 결제하기 →</button>
+        </div>
+        <div id="indiv-unavailable" style="display:none;color:var(--muted);font-size:13px;padding:8px 0;line-height:1.7">현재 온라인 개인 구매는 준비 중입니다. 단체 예약 문의 또는 전화로 문의해주세요.</div>
+      </div>
+    </div>
+
     <div class="cta-btns">
       <a href="tel:031-339-2999" class="btn-p">📞 031-339-2999</a>
       <a href="https://pf.kakao.com/_vvZxen/chat" target="_blank" class="btn-s">💬 카카오톡 문의</a>
@@ -163,5 +209,65 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
     <span style="color:rgba(255,255,255,.18);font-size:11px">© 2026 HHCOMPANY. All rights reserved.</span>
   </p>
 </footer>
+
+<script>
+  const SB_URL = 'https://xoupacfmkhuuvxebgfqi.supabase.co';
+  const SB_KEY = 'sb_publishable_46KQebvC7_S-_JDramvDmA_jk9aSeVc';
+  const VENUE_NAME = '아일랜드캐슬';
+  const PRODUCT_ID = 'p14';
+
+  let indivProduct = null;
+  let indivQty = 1;
+
+  function switchBookingTab(tab) {
+    document.getElementById('tab-group').classList.toggle('active', tab === 'group');
+    document.getElementById('tab-indiv').classList.toggle('active', tab === 'indiv');
+    document.getElementById('panel-group').style.display = tab === 'group' ? '' : 'none';
+    document.getElementById('panel-indiv').style.display = tab === 'indiv' ? '' : 'none';
+    if (tab === 'indiv' && indivProduct === null) loadIndivProduct();
+  }
+
+  function goGroupReserve() {
+    const countInput = document.getElementById('group-count');
+    const errEl = document.getElementById('group-err');
+    const count = parseInt(countInput.value, 10);
+    if (!count || count < 10) {
+      errEl.style.display = 'block';
+      countInput.focus();
+      return;
+    }
+    errEl.style.display = 'none';
+    location.href = 'reserve.html?venue=' + encodeURIComponent(VENUE_NAME) + '&count=' + count;
+  }
+
+  async function loadIndivProduct() {
+    try {
+      const res = await fetch(`${SB_URL}/rest/v1/products?select=id,indiv_price,indiv_sale_enabled&id=eq.${PRODUCT_ID}&limit=1`, {
+        headers: { apikey: SB_KEY, Authorization: `Bearer ${SB_KEY}` },
+      });
+      const rows = await res.json();
+      indivProduct = Array.isArray(rows) ? rows[0] : null;
+    } catch (e) {
+      indivProduct = null;
+    }
+
+    document.getElementById('indiv-loading').style.display = 'none';
+    if (indivProduct && indivProduct.indiv_sale_enabled && indivProduct.indiv_price) {
+      document.getElementById('indiv-content').style.display = '';
+      document.getElementById('indiv-price-val').textContent = Number(indivProduct.indiv_price).toLocaleString('ko-KR') + '원';
+    } else {
+      document.getElementById('indiv-unavailable').style.display = '';
+    }
+  }
+
+  function changeIndivQty(delta) {
+    indivQty = Math.max(1, indivQty + delta);
+    document.getElementById('indiv-qty').textContent = indivQty;
+  }
+
+  function goIndivBuy() {
+    location.href = 'buy.html?product=' + encodeURIComponent(PRODUCT_ID) + '&qty=' + indivQty;
+  }
+</script>
 </body>
 </html>

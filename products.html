@@ -543,7 +543,6 @@
           <span class="prod-price">${minPrice.toLocaleString()}원~ <small>단체가</small></span>
           <div class="prod-btn-group">
             ${detailPage ? `<a class="prod-btn ghost" style="display:inline-block;text-decoration:none" href="${detailPage}">자세히 보기</a>` : ''}
-            ${(p.indiv_sale_enabled && p.indiv_price) ? `<a class="prod-btn" style="display:inline-block;text-decoration:none;background:var(--coral)" href="buy.html?product=${encodeURIComponent(p.id)}">개인 구매</a>` : ''}
             <a class="prod-btn" style="display:inline-block;text-decoration:none" href="reserve.html">문의하기</a>
           </div>
         </div>

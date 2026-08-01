@@ -137,13 +137,13 @@ function renderForm() {
         <label>수량</label>
         <div class="qty-row">
           <button type="button" class="qty-btn" id="qty-minus">−</button>
-          <div class="qty-val" id="qty-val">1</div>
+          <div class="qty-val" id="qty-val">${qty}</div>
           <button type="button" class="qty-btn" id="qty-plus">+</button>
         </div>
       </div>
       <div class="price-row">
         <span class="label">결제 금액</span>
-        <span class="amount" id="total-amount">${money(PRODUCT.indiv_price)}</span>
+        <span class="amount" id="total-amount">${money(PRODUCT.indiv_price * qty)}</span>
       </div>
       <button type="button" class="submit-btn" id="pay-btn">결제하기</button>
       <div class="notice">결제 완료 시 입력하신 연락처로 입장권 바코드 링크가 발급됩니다. 현장에서 바코드를 제시해주세요.</div>
@@ -233,6 +233,8 @@ async function loadProduct() {
     }
 
     PRODUCT = p;
+    const qtyParam = parseInt(params.get('qty'), 10);
+    if (qtyParam && qtyParam > 0) qty = qtyParam;
     renderForm();
   } catch (e) {
     state.innerHTML = `<strong>불러오지 못했습니다</strong>잠시 후 다시 시도해주세요.`;
