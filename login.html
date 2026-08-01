@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-N4BWKWXEQ4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-N4BWKWXEQ4');
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>개인 회원 로그인 | (주)더블에이치컴퍼니</title>
+<meta name="robots" content="noindex">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0e2a47">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css');
+  :root{
+    --navy:#0e2a47;--navy-deep:#081b30;--blue:#1d6fe0;--sky:#47b6e8;--coral:#ff6b5c;--amber:#ffb648;
+    --cream:#f5f8fc;--ink:#16202e;--gray:#64748b;--line:#e2e9f2;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Pretendard',-apple-system,sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;line-height:1.6}
+  .topbar{background:var(--navy-deep);padding:14px 20px;display:flex;align-items:center;gap:10px}
+  .topbar img{width:28px;height:auto}
+  .topbar span{color:#fff;font-weight:800;font-size:15px}
+  .topbar span b{color:var(--sky)}
+
+  .wrap{max-width:420px;margin:0 auto;padding:40px 16px 60px}
+  .card{background:#fff;border-radius:16px;box-shadow:0 8px 28px rgba(14,42,71,.08);overflow:hidden}
+  .card-head{background:linear-gradient(135deg,var(--navy),var(--blue));padding:24px;color:#fff}
+  .card-head .eyebrow{font-size:11px;letter-spacing:.12em;text-transform:uppercase;opacity:.8;margin-bottom:6px}
+  .card-head .title{font-size:20px;font-weight:800}
+  .card-body{padding:24px}
+
+  .field{margin-bottom:16px}
+  .field label{display:block;font-size:12.5px;font-weight:700;color:var(--navy);margin-bottom:6px}
+  .field input{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:8px;font-size:15px;font-family:inherit;background:#fafbfd}
+  .field input:focus{outline:none;border-color:var(--blue);background:#fff}
+
+  .submit-btn{width:100%;padding:14px;border:none;border-radius:10px;background:var(--navy);color:#fff;font-size:15px;font-weight:700;cursor:pointer;transition:background .2s}
+  .submit-btn:hover{background:var(--blue)}
+  .submit-btn:disabled{background:var(--line);color:var(--gray);cursor:not-allowed}
+
+  .msg{font-size:12.5px;color:var(--gray);margin-top:12px;line-height:1.6}
+  .msg.error{color:#dc2626}
+  .msg.success{color:#16a34a}
+  .link-back{display:block;text-align:center;margin-top:16px;font-size:12.5px;color:var(--gray);text-decoration:none}
+  .link-back:hover{color:var(--blue)}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <img src="logo-icon.png" alt="HHCOMPANY">
+  <span>HH<b>COMPANY</b> · 개인 회원</span>
+</div>
+
+<div class="wrap">
+  <div class="card">
+    <div class="card-head">
+      <div class="eyebrow">Member Login</div>
+      <div class="title">개인 구매 로그인</div>
+    </div>
+    <div class="card-body">
+      <div id="step-email">
+        <div class="field">
+          <label>이메일</label>
+          <input type="email" id="f-email" placeholder="example@email.com">
+        </div>
+        <button type="button" class="submit-btn" id="send-btn" onclick="sendCode()">인증코드 받기</button>
+        <div class="msg" id="email-msg"></div>
+      </div>
+
+      <div id="step-code" style="display:none">
+        <div class="field">
+          <label>인증코드 (6자리)</label>
+          <input type="text" id="f-code" placeholder="000000" inputmode="numeric" maxlength="6">
+        </div>
+        <button type="button" class="submit-btn" id="verify-btn" onclick="verifyCode()">확인하고 로그인</button>
+        <div class="msg" id="code-msg"></div>
+        <a href="#" class="link-back" onclick="backToEmail();return false">이메일 다시 입력하기</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const SB_URL = 'https://xoupacfmkhuuvxebgfqi.supabase.co';
+const SB_KEY = 'sb_publishable_46KQebvC7_S-_JDramvDmA_jk9aSeVc';
+const sb = supabase.createClient(SB_URL, SB_KEY);
+
+function getRedirectTarget() {
+  const params = new URLSearchParams(location.search);
+  return params.get('redirect') || 'products.html';
+}
+
+async function sendCode() {
+  const email = document.getElementById('f-email').value.trim();
+  const msg = document.getElementById('email-msg');
+  const btn = document.getElementById('send-btn');
+  if (!email) { msg.textContent = '이메일을 입력해주세요.'; msg.className = 'msg error'; return; }
+
+  btn.disabled = true; btn.textContent = '전송 중...';
+  const { error } = await sb.auth.signInWithOtp({ email, options: { shouldCreateUser: true } });
+  btn.disabled = false; btn.textContent = '인증코드 받기';
+
+  if (error) {
+    msg.textContent = '전송 실패: ' + error.message;
+    msg.className = 'msg error';
+    return;
+  }
+  msg.textContent = '';
+  document.getElementById('step-email').style.display = 'none';
+  document.getElementById('step-code').style.display = '';
+  document.getElementById('code-msg').textContent = email + '로 인증코드를 보냈습니다.';
+  document.getElementById('code-msg').className = 'msg success';
+}
+
+function backToEmail() {
+  document.getElementById('step-code').style.display = 'none';
+  document.getElementById('step-email').style.display = '';
+}
+
+async function verifyCode() {
+  const email = document.getElementById('f-email').value.trim();
+  const token = document.getElementById('f-code').value.trim();
+  const msg = document.getElementById('code-msg');
+  const btn = document.getElementById('verify-btn');
+  if (!token) { msg.textContent = '인증코드를 입력해주세요.'; msg.className = 'msg error'; return; }
+
+  btn.disabled = true; btn.textContent = '확인 중...';
+  const { error } = await sb.auth.verifyOtp({ email, token, type: 'email' });
+  btn.disabled = false; btn.textContent = '확인하고 로그인';
+
+  if (error) {
+    msg.textContent = '인증 실패: ' + error.message;
+    msg.className = 'msg error';
+    return;
+  }
+  location.href = getRedirectTarget();
+}
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+}
+</script>
+</body>
+</html>

@@ -17,6 +17,7 @@
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0e2a47">
 <link rel="apple-touch-icon" href="icons/icon-180.png">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css');
   :root{
@@ -87,14 +88,8 @@
 const SB_URL = 'https://xoupacfmkhuuvxebgfqi.supabase.co';
 const SB_KEY = 'sb_publishable_46KQebvC7_S-_JDramvDmA_jk9aSeVc';
 const FN_URL = `${SB_URL}/functions/v1/payment-confirm`;
+const sb = supabase.createClient(SB_URL, SB_KEY);
 
-async function sbFetch(path) {
-  const res = await fetch(`${SB_URL}/rest/v1/${path}`, {
-    headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` },
-  });
-  if (!res.ok) throw new Error(`오류 ${res.status}`);
-  return res.json();
-}
 async function fnFetch(path, body) {
   const res = await fetch(`${FN_URL}/${path}`, {
     method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body || {}),
@@ -209,6 +204,13 @@ function showPendingState(orderId, amount) {
     </div>`;
 }
 
+function showLoginGate(productId) {
+  const state = document.getElementById('state');
+  const redirect = encodeURIComponent(location.pathname.split('/').pop() + location.search);
+  state.innerHTML = `<strong>로그인이 필요합니다</strong>개인 구매는 회원 로그인 후 가격 확인 및 결제가 가능합니다.
+    <div class="sub"><a href="login.html?redirect=${redirect}">이메일로 로그인하기 →</a></div>`;
+}
+
 async function loadProduct() {
   const params = new URLSearchParams(location.search);
   const productId = (params.get('product') || '').trim();
@@ -219,11 +221,20 @@ async function loadProduct() {
     return;
   }
 
-  try {
-    const rows = await sbFetch(`products?select=id,name,vname,indiv_price,indiv_sale_enabled&id=eq.${encodeURIComponent(productId)}&limit=1`);
-    const p = Array.isArray(rows) ? rows[0] : null;
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) {
+    showLoginGate(productId);
+    return;
+  }
 
-    if (!p) {
+  try {
+    const { data: p, error } = await sb
+      .from('products')
+      .select('id,name,vname,indiv_price,indiv_sale_enabled')
+      .eq('id', productId)
+      .maybeSingle();
+
+    if (error || !p) {
       state.innerHTML = `<strong>상품 정보를 찾을 수 없습니다</strong>링크가 올바른지 확인해주세요.`;
       return;
     }
