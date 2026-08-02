@@ -104,7 +104,51 @@
   .blob-2 { width: 400px; height: 400px; background: var(--sky); bottom: -140px; left: -60px; opacity: 0.35; }
   .blob-3 { width: 300px; height: 300px; background: var(--coral); top: 40%; right: 20%; opacity: 0.22; }
 
-  .hero-content { position: relative; z-index: 2; padding-top: 74px; }
+  /* ══════════════════════════════════════════
+     히어로 배경을 "영상처럼" 보이게 하는 캔버스 씬
+     (구름/관람차/버스가 다니는 길/반짝임) + 시네마틱 연출
+     ══════════════════════════════════════════ */
+  .hero-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; display: block; }
+  .hero-canvas.kenburns { animation: kenBurns 26s ease-in-out infinite alternate; transform-origin: 60% 55%; }
+  @keyframes kenBurns { from { transform: scale(1); } to { transform: scale(1.045); } }
+
+  .hero-vignette {
+    position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    background: radial-gradient(ellipse at 55% 45%, transparent 40%, rgba(8,27,48,0.55) 100%);
+  }
+  .hero-grain {
+    position: absolute; inset: -60px; z-index: 2; pointer-events: none; opacity: 0.05; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    animation: grainShift 1s steps(6) infinite;
+  }
+  @keyframes grainShift {
+    0% { transform: translate(0,0); } 20% { transform: translate(-3%,2%); } 40% { transform: translate(2%,-3%); }
+    60% { transform: translate(-2%,3%); } 80% { transform: translate(3%,-2%); } 100% { transform: translate(0,0); }
+  }
+  .hero-letterbox { position: absolute; left: 0; right: 0; height: 10px; background: #050f1c; z-index: 4; pointer-events: none; }
+  .hero-letterbox.top { top: 0; }
+  .hero-letterbox.bottom { bottom: 0; }
+  .hero-letterbox::after { content: ''; position: absolute; left: 0; right: 0; height: 1px; background: linear-gradient(90deg,transparent,rgba(255,182,72,.5),transparent); }
+  .hero-letterbox.top::after { bottom: 0; }
+  .hero-letterbox.bottom::after { top: 0; }
+
+  .hero-rec {
+    position: absolute; top: 96px; right: 32px; z-index: 5; pointer-events: none;
+    display: flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.08em; color: rgba(255,255,255,0.55);
+  }
+  .hero-rec .dot3 { width: 6px; height: 6px; border-radius: 50%; background: var(--coral); animation: pulse 1.4s infinite; }
+  @media (max-width: 900px) { .hero-rec { display: none; } }
+
+  /* ── 회사 소개 영상 ── */
+  .video-showcase { background: #fff; }
+  .video-frame {
+    max-width: 900px; margin: 0 auto; border-radius: 14px; overflow: hidden;
+    box-shadow: 0 30px 60px rgba(14,42,71,0.18); background: var(--navy-deep); aspect-ratio: 16/9;
+  }
+  .video-frame video { width: 100%; height: 100%; display: block; object-fit: cover; }
+
+  .hero-content { position: relative; z-index: 6; padding-top: 74px; }
   .eyebrow {
     display: inline-flex; align-items: center; gap: 8px;
     font-size: 13px; font-weight: 600; letter-spacing: 0.08em;
@@ -144,7 +188,7 @@
 
   .scroll-hint {
     position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
-    z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 8px;
+    z-index: 6; display: flex; flex-direction: column; align-items: center; gap: 8px;
     color: rgba(255,255,255,0.5);
     font-size: 11px; font-weight: 600; letter-spacing: 0.15em;
     animation: bob 2.2s ease-in-out infinite;
@@ -188,9 +232,9 @@
   .about-points { list-style: none; margin-top: 28px; }
   .about-points li { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 18px; font-size: 15px; font-weight: 500; }
   .about-points .ic { flex-shrink: 0; width: 28px; height: 28px; border-radius: 6px; background: var(--blue); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; }
-  .about-visual { position: relative; aspect-ratio: 4/5; border-radius: 12px; overflow: hidden; background: linear-gradient(160deg, var(--navy), var(--blue)); display: flex; align-items: center; justify-content: center; box-shadow: 0 30px 60px rgba(14,42,71,0.25); }
+  .about-visual { position: relative; aspect-ratio: 1/1; border-radius: 12px; overflow: hidden; background: linear-gradient(160deg, var(--navy), var(--blue)); display: flex; align-items: center; justify-content: center; box-shadow: 0 30px 60px rgba(14,42,71,0.25); }
   .about-visual .big-num { text-align: center; color: #fff; padding: 40px; }
-  .about-visual .big-num .n-text { font-family: var(--serif); font-size: clamp(28px, 4vw, 42px); font-weight: 700; line-height: 1.3; letter-spacing: -0.01em; }
+  .about-visual .big-num .n-text { font-family: var(--serif); font-size: clamp(30px, 4.6vw, 48px); font-weight: 700; line-height: 1.3; letter-spacing: -0.01em; }
   .about-visual .big-num .n-text span { color: var(--amber); }
   .about-visual .big-num .t { font-size: 14px; letter-spacing: 0.2em; color: rgba(255,255,255,0.55); margin-top: 20px; font-weight: 600; }
   .about-visual .float-card { position: absolute; background: #fff; border-radius: 8px; padding: 14px 18px; box-shadow: 0 12px 30px rgba(0,0,0,0.15); font-size: 13px; font-weight: 600; }
@@ -370,6 +414,12 @@
     <div class="blob blob-2"></div>
     <div class="blob blob-3"></div>
   </div>
+  <canvas class="hero-canvas kenburns" id="heroCanvas" aria-hidden="true"></canvas>
+  <div class="hero-vignette" aria-hidden="true"></div>
+  <div class="hero-grain" aria-hidden="true"></div>
+  <div class="hero-letterbox top" aria-hidden="true"></div>
+  <div class="hero-letterbox bottom" aria-hidden="true"></div>
+  <div class="hero-rec" aria-hidden="true"><span class="dot3"></span>매일, 새로운 하루</div>
   <div class="wrap hero-content">
     <span class="eyebrow"><span class="dot"></span>단체·체험 여행 전문 파트너</span>
     <h1>모두의 하루를<br><span class="hl">특별한 추억</span>으로 잇습니다</h1>
@@ -379,10 +429,24 @@
       <a href="business.html" class="btn-ghost">사업 분야 보기</a>
     </div>
   </div>
-  <a href="#about" class="scroll-hint" aria-label="아래로 스크롤">
+  <a href="#intro-video" class="scroll-hint" aria-label="아래로 스크롤">
     <span>SCROLL</span>
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
   </a>
+</section>
+
+<!-- ── 회사 소개 영상 ── -->
+<section class="video-showcase" id="intro-video">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-tag">Our Story</div>
+      <h2 class="sec-title">영상으로 만나는 더블에이치컴퍼니</h2>
+      <p class="sec-desc">문의부터 정산까지, 더블에이치컴퍼니가 단체의 하루를 어떻게 설계하는지 짧은 영상으로 확인해보세요.</p>
+    </div>
+    <div class="video-frame reveal">
+      <video src="intro.mp4" playsinline muted loop autoplay controls preload="metadata" poster="logo-icon.png"></video>
+    </div>
+  </div>
 </section>
 
 <!-- ── ABOUT ── -->
@@ -480,6 +544,157 @@
   // 헤더 스크롤 효과
   const header = document.getElementById('header');
   window.addEventListener('scroll', () => header.classList.toggle('scrolled', window.scrollY > 20));
+
+  // ── 히어로 시네마틱 캔버스 ──────────────────────────────────────
+  // 실제 영상 파일 없이도 "구름이 흐르고 관람차가 돌고 버스가 길을 오가는"
+  // 루프 씬을 캔버스로 매 프레임 그려서 영상처럼 보이게 만든다.
+  (function heroCinematic() {
+    const canvas = document.getElementById('heroCanvas');
+    const heroSection = document.querySelector('.hero');
+    if (!canvas || !heroSection) return;
+    const ctx = canvas.getContext('2d');
+    const heroReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    let W = 0, H = 0, roadPts = [];
+
+    function bez(t, p0, p1, p2, p3) {
+      const mt = 1 - t;
+      return mt * mt * mt * p0 + 3 * mt * mt * t * p1 + 3 * mt * t * t * p2 + t * t * t * p3;
+    }
+
+    function buildRoad() {
+      const y0 = H * 0.86, y1 = H * 0.78, y2 = H * 0.90, y3 = H * 0.82;
+      const pts = []; const N = 120;
+      for (let i = 0; i <= N; i++) {
+        const t = i / N;
+        pts.push({ x: bez(t, -40, W * 0.32, W * 0.68, W + 40), y: bez(t, y0, y1, y2, y3) });
+      }
+      roadPts = pts;
+    }
+
+    function roadPoint(t) {
+      const n = roadPts.length - 1;
+      const f = Math.max(0, Math.min(1, t)) * n;
+      const i = Math.floor(f), frac = f - i;
+      const a = roadPts[i], b = roadPts[Math.min(i + 1, n)];
+      return { x: a.x + (b.x - a.x) * frac, y: a.y + (b.y - a.y) * frac, angle: Math.atan2(b.y - a.y, b.x - a.x) };
+    }
+
+    function resize() {
+      const rect = heroSection.getBoundingClientRect();
+      W = rect.width; H = rect.height;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(W * dpr);
+      canvas.height = Math.round(H * dpr);
+      canvas.style.width = W + 'px';
+      canvas.style.height = H + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      buildRoad();
+    }
+
+    const clouds = Array.from({ length: 5 }, () => ({
+      offset: Math.random(), y: 0.08 + Math.random() * 0.16,
+      r: 46 + Math.random() * 40, period: 70000 + Math.random() * 60000,
+      alpha: 0.10 + Math.random() * 0.08
+    }));
+
+    const sparkles = Array.from({ length: 24 }, () => ({
+      xr: Math.random(), offset: Math.random(), period: 14000 + Math.random() * 16000,
+      size: 1 + Math.random() * 1.8, flickerPhase: Math.random() * Math.PI * 2, flickerFreq: 0.0006 + Math.random() * 0.0008
+    }));
+
+    const wheelCx = () => W * 0.80, wheelCy = () => H * 0.50, wheelR = () => Math.min(H * 0.16, 90);
+
+    function drawClouds(t) {
+      clouds.forEach(c => {
+        const frac = (t / c.period + c.offset) % 1;
+        const x = frac * (W + 260) - 130, y = c.y * H;
+        ctx.save();
+        ctx.filter = 'blur(14px)';
+        ctx.fillStyle = `rgba(255,255,255,${c.alpha})`;
+        ctx.beginPath(); ctx.ellipse(x, y, c.r, c.r * 0.5, 0, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.ellipse(x + c.r * 0.7, y + c.r * 0.12, c.r * 0.65, c.r * 0.38, 0, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.ellipse(x - c.r * 0.6, y + c.r * 0.16, c.r * 0.55, c.r * 0.32, 0, 0, Math.PI * 2); ctx.fill();
+        ctx.restore();
+      });
+    }
+
+    function drawWheel(t) {
+      const cx = wheelCx(), cy = wheelCy(), r = wheelR(), angle = t * 0.00028;
+      ctx.save();
+      ctx.strokeStyle = 'rgba(255,255,255,0.16)'; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.stroke();
+      for (let i = 0; i < 8; i++) {
+        const a = angle + (i / 8) * Math.PI * 2;
+        const x = cx + Math.cos(a) * r, y = cy + Math.sin(a) * r;
+        ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(x, y);
+        ctx.strokeStyle = 'rgba(255,255,255,0.10)'; ctx.stroke();
+        ctx.beginPath(); ctx.arc(x, y, 3.4, 0, Math.PI * 2);
+        ctx.fillStyle = i % 2 === 0 ? 'rgba(255,182,72,0.4)' : 'rgba(255,255,255,0.28)';
+        ctx.fill();
+      }
+      ctx.beginPath();
+      ctx.moveTo(cx, cy + r); ctx.lineTo(cx - r * 0.42, cy + r + 34);
+      ctx.moveTo(cx, cy + r); ctx.lineTo(cx + r * 0.42, cy + r + 34);
+      ctx.strokeStyle = 'rgba(255,255,255,0.14)'; ctx.stroke();
+      ctx.restore();
+    }
+
+    function drawRoad() {
+      if (roadPts.length < 2) return;
+      ctx.save();
+      ctx.strokeStyle = 'rgba(255,255,255,0.08)'; ctx.lineWidth = 2; ctx.setLineDash([10, 10]);
+      ctx.beginPath();
+      roadPts.forEach((p, i) => i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y));
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function drawBus(t) {
+      const period = 10000, tt = (t % period) / period, p = roadPoint(tt);
+      ctx.save();
+      ctx.translate(p.x, p.y); ctx.rotate(p.angle);
+      const bw = 46, bh = 20;
+      ctx.fillStyle = 'rgba(255,182,72,0.9)';
+      ctx.beginPath();
+      if (ctx.roundRect) ctx.roundRect(-bw / 2, -bh, bw, bh, 5); else ctx.rect(-bw / 2, -bh, bw, bh);
+      ctx.fill();
+      ctx.fillStyle = 'rgba(14,42,71,0.55)';
+      ctx.fillRect(-bw / 2 + 5, -bh + 4, 10, 7);
+      ctx.fillRect(-bw / 2 + 18, -bh + 4, 10, 7);
+      ctx.fillRect(-bw / 2 + 31, -bh + 4, 9, 7);
+      ctx.fillStyle = 'rgba(8,27,48,0.85)';
+      ctx.beginPath(); ctx.arc(-bw / 2 + 10, 1, 4, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(bw / 2 - 10, 1, 4, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+    }
+
+    function drawSparkles(t) {
+      sparkles.forEach(s => {
+        const frac = (t / s.period + s.offset) % 1;
+        const x = s.xr * W, y = H - frac * (H + 40) + 20;
+        const a = 0.15 + 0.25 * (0.5 + 0.5 * Math.sin(t * s.flickerFreq + s.flickerPhase));
+        ctx.beginPath(); ctx.arc(x, y, s.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,${Math.max(0, a)})`; ctx.fill();
+      });
+    }
+
+    function frame(t) {
+      ctx.clearRect(0, 0, W, H);
+      drawClouds(t); drawWheel(t); drawRoad(); drawBus(t); drawSparkles(t);
+      if (!heroReduced && !document.hidden) requestAnimationFrame(frame);
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+
+    if (heroReduced) {
+      frame(4500); // 정지 모션: 대표 프레임 한 장만 그림
+    } else {
+      requestAnimationFrame(frame);
+      document.addEventListener('visibilitychange', () => { if (!document.hidden) requestAnimationFrame(frame); });
+    }
+  })();
 
   const io = new IntersectionObserver((entries) => {
     entries.forEach((e, i) => {
