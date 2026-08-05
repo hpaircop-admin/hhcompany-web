@@ -58,8 +58,8 @@
     transition: border-color .3s, box-shadow .3s;
   }
   header.scrolled { border-color: var(--line); box-shadow: 0 2px 20px rgba(14,42,71,0.05); }
-  .nav { display: flex; align-items: center; justify-content: space-between; height: 74px; }
-  .logo { display: flex; align-items: center; gap: 10px; }
+  .nav { display: flex; align-items: center; justify-content: space-between; height: 74px; max-width: 1320px; }
+  .logo { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
   .brand-icon { width: 38px; height: 38px; flex-shrink: 0; object-fit: contain; }
   .logo-text { display: flex; flex-direction: column; line-height: 1.2; }
   .logo-tag { font-size: 9px; font-weight: 700; letter-spacing: 0.14em; color: #6b8e23; text-transform: uppercase; }
@@ -70,21 +70,21 @@
   .foot-brand .logo-word span { color: var(--sky); }
   .foot-brand .logo-tag { color: #a9d43f; }
   .foot-brand .logo-kr { color: rgba(255,255,255,0.55); }
-  .nav-cta-group { display: flex; align-items: center; gap: 10px; }
-  .member-btn { display: inline-flex; align-items: center; gap: 4px; background: transparent; color: var(--navy); padding: 9px 16px; border-radius: 4px; font-size: 13px; font-weight: 700; border: 1.5px solid var(--line); transition: border-color .2s, color .2s; }
-  .member-btn:hover { border-color: var(--blue); color: var(--blue); }
-  .member-btn.is-member { color: var(--blue); border-color: rgba(29,111,224,0.35); background: rgba(29,111,224,0.06); }
+  .nav-cta-group { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .member-btn { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; background: transparent; color: var(--navy); padding: 8px 6px; border-radius: 4px; font-size: 13px; font-weight: 700; border: none; text-decoration: underline; text-underline-offset: 3px; transition: color .2s; }
+  .member-btn:hover { color: var(--blue); }
+  .member-btn.is-member { color: var(--blue); }
   .nav-menu .member-link { display: none; }
   .nav-menu .member-link a { color: var(--blue) !important; }
-  .kakao-btn { display: inline-flex; align-items: center; gap: 6px; background: #FEE500; color: #191919; padding: 10px 18px; border-radius: 4px; font-size: 13px; font-weight: 700; transition: transform .2s, box-shadow .2s; }
+  .kakao-btn { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; background: #FEE500; color: #191919; padding: 9px 14px; border-radius: 4px; font-size: 13px; font-weight: 700; transition: transform .2s, box-shadow .2s; }
   .kakao-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(254,229,0,0.45); }
   .kakao-btn svg { width: 16px; height: 16px; }
   .foot-kakao { display: inline-flex; align-items: center; gap: 6px; color: #FEE500 !important; font-weight: 700; }
   .foot-kakao svg { width: 14px; height: 14px; }
-  .nav-menu { display: flex; gap: 34px; list-style: none; }
+  .nav-menu { display: flex; gap: 20px; list-style: none; flex-shrink: 0; }
   .nav-menu a {
-    font-size: 12px; font-weight: 600; color: var(--ink);
-    letter-spacing: 0.06em; text-transform: uppercase; position: relative; padding: 4px 0;
+    display: inline-block; font-size: 12px; font-weight: 600; color: var(--ink); white-space: nowrap;
+    letter-spacing: 0; position: relative; padding: 4px 0;
   }
   .nav-menu a::after {
     content: ''; position: absolute; left: 0; bottom: 0; width: 0; height: 2px;
@@ -92,7 +92,7 @@
   }
   .nav-menu a:hover::after { width: 100%; }
   .nav-cta {
-    background: var(--navy); color: #fff; padding: 10px 22px; border-radius: 4px;
+    background: var(--navy); color: #fff; padding: 10px 16px; border-radius: 4px; white-space: nowrap;
     font-size: 13px; font-weight: 700; transition: background .2s, transform .2s;
   }
   .nav-cta:hover { background: var(--blue); transform: translateY(-1px); }
@@ -408,7 +408,7 @@
       <li><a href="reserve.html">예약게시판</a></li>
       <li class="member-link"><a href="login.html?redirect=personal.html" id="memberLinkMobile">회원가입 / 로그인</a></li>
     </ul>
-    <div class="nav-cta-group"><a href="login.html?redirect=personal.html" class="member-btn" id="memberBtn">회원가입</a><a href="http://pf.kakao.com/_vvZxen/chat" target="_blank" rel="noopener" class="kakao-btn"><svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 3C6.48 3 2 6.58 2 11c0 2.8 1.83 5.26 4.6 6.71-.2.75-.73 2.72-.83 3.14-.13.52.19.51.4.37.17-.11 2.68-1.82 3.77-2.56.66.1 1.35.15 2.06.15 5.52 0 10-3.58 10-8s-4.48-8-10-8z"/></svg>카카오톡 상담</a><a href="reserve.html" class="nav-cta">단체 예약 문의</a></div>
+    <div class="nav-cta-group"><a href="login.html?redirect=personal.html" class="member-btn" id="memberBtn">회원가입</a><a href="http://pf.kakao.com/_vvZxen/chat" target="_blank" rel="noopener" class="kakao-btn"><svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 3C6.48 3 2 6.58 2 11c0 2.8 1.83 5.26 4.6 6.71-.2.75-.73 2.72-.83 3.14-.13.52.19.51.4.37.17-.11 2.68-1.82 3.77-2.56.66.1 1.35.15 2.06.15 5.52 0 10-3.58 10-8s-4.48-8-10-8z"/></svg>카카오톡 상담</a><a href="reserve.html?write=1" class="nav-cta">단체 예약 문의</a></div>
     <button class="burger" aria-label="메뉴">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0e2a47" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </button>
