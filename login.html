@@ -82,14 +82,19 @@
           <label>이메일</label>
           <input type="email" id="f-email" placeholder="example@email.com">
         </div>
-        <button type="button" class="submit-btn" id="send-btn" onclick="sendLink()">회원가입 / 로그인 링크 받기</button>
+        <button type="button" class="submit-btn" id="send-btn" onclick="sendCode()">인증코드 받기</button>
         <div class="msg" id="email-msg"></div>
       </div>
 
-      <div id="step-sent" style="display:none">
-        <div class="msg success" style="font-size:14px;color:var(--ink);line-height:1.8">
-          입력하신 이메일로 로그인 링크를 보내드렸습니다.<br>메일함에서 <strong>로그인(Sign in)</strong> 링크를 눌러주세요.
+      <div id="step-code" style="display:none">
+        <p style="font-size:12.5px;color:var(--gray);line-height:1.6;margin-bottom:16px" id="code-sent-to">입력하신 이메일로 6자리 인증코드를 보내드렸습니다. 메일함에서 코드를 확인해 아래에 입력해주세요.</p>
+        <div class="field">
+          <label>인증코드 (6자리)</label>
+          <input type="text" id="f-code" placeholder="000000" inputmode="numeric" maxlength="6" style="letter-spacing:4px;font-size:20px;text-align:center;font-weight:700">
         </div>
+        <button type="button" class="submit-btn" id="verify-btn" onclick="verifyCode()">인증코드 확인</button>
+        <div class="msg" id="code-msg"></div>
+        <a href="#" class="link-back" onclick="resendCode();return false" id="resend-link">인증코드 다시 받기</a>
         <a href="#" class="link-back" onclick="backToEmail();return false">이메일 다시 입력하기</a>
       </div>
 
@@ -105,6 +110,10 @@ const SB_URL = 'https://xoupacfmkhuuvxebgfqi.supabase.co';
 const SB_KEY = 'sb_publishable_46KQebvC7_S-_JDramvDmA_jk9aSeVc';
 const sb = supabase.createClient(SB_URL, SB_KEY);
 
+let pendingEmail = '';
+let pendingName = '';
+let pendingPhone = '';
+
 function getRedirectTarget() {
   const params = new URLSearchParams(location.search);
   return params.get('redirect') || 'personal.html';
@@ -112,11 +121,11 @@ function getRedirectTarget() {
 
 function showStep(step) {
   document.getElementById('step-email').style.display = step === 'email' ? '' : 'none';
-  document.getElementById('step-sent').style.display = step === 'sent' ? '' : 'none';
+  document.getElementById('step-code').style.display = step === 'code' ? '' : 'none';
   document.getElementById('step-checking').style.display = step === 'checking' ? '' : 'none';
 }
 
-async function sendLink() {
+async function sendCode() {
   const name = document.getElementById('f-name').value.trim();
   const phone = document.getElementById('f-phone').value.trim();
   const email = document.getElementById('f-email').value.trim();
@@ -127,42 +136,74 @@ async function sendLink() {
   if (!email) { msg.textContent = '이메일을 입력해주세요.'; msg.className = 'msg error'; return; }
 
   btn.disabled = true; btn.textContent = '전송 중...';
-  const target = getRedirectTarget();
-  const emailRedirectTo = `${location.origin}${location.pathname}?redirect=${encodeURIComponent(target)}`;
   // name/phone은 신규 가입일 때만 auth.users.raw_user_meta_data에 실려서 저장되고,
   // DB 트리거(handle_new_user)가 profiles 테이블로 자동 복사합니다.
-  // 이미 가입된 이메일이면 이 값들은 무시되고 로그인 링크만 재발송됩니다.
+  // 이미 가입된 이메일이면 이 값들은 무시되고 인증코드만 재발송됩니다.
+  // emailRedirectTo를 넘기지 않으면 링크 대신 6자리 코드로 인증하는 방식이 됩니다.
   const { error } = await sb.auth.signInWithOtp({
     email,
-    options: { shouldCreateUser: true, emailRedirectTo, data: { name, phone } },
+    options: { shouldCreateUser: true, data: { name, phone } },
   });
-  btn.disabled = false; btn.textContent = '회원가입 / 로그인 링크 받기';
+  btn.disabled = false; btn.textContent = '인증코드 받기';
 
   if (error) {
     msg.textContent = '전송 실패: ' + error.message;
     msg.className = 'msg error';
     return;
   }
+  pendingEmail = email; pendingName = name; pendingPhone = phone;
+  document.getElementById('code-sent-to').textContent = `${email} 로 6자리 인증코드를 보내드렸습니다. 메일함에서 코드를 확인해 아래에 입력해주세요.`;
+  document.getElementById('f-code').value = '';
+  document.getElementById('code-msg').textContent = '';
   msg.textContent = '';
-  showStep('sent');
+  showStep('code');
+}
+
+async function verifyCode() {
+  const code = document.getElementById('f-code').value.trim();
+  const msg = document.getElementById('code-msg');
+  const btn = document.getElementById('verify-btn');
+  if (!code || code.length < 6) { msg.textContent = '6자리 코드를 정확히 입력해주세요.'; msg.className = 'msg error'; return; }
+
+  btn.disabled = true; btn.textContent = '확인 중...';
+  const { data, error } = await sb.auth.verifyOtp({ email: pendingEmail, token: code, type: 'email' });
+  btn.disabled = false; btn.textContent = '인증코드 확인';
+
+  if (error) {
+    msg.textContent = '인증 실패: 코드가 올바르지 않거나 만료되었습니다. 다시 시도해주세요.';
+    msg.className = 'msg error';
+    return;
+  }
+  if (data && data.session) {
+    location.href = getRedirectTarget();
+  }
+}
+
+async function resendCode() {
+  const msg = document.getElementById('code-msg');
+  if (!pendingEmail) { backToEmail(); return; }
+  msg.textContent = '재전송 중...';
+  msg.className = 'msg';
+  const { error } = await sb.auth.signInWithOtp({
+    email: pendingEmail,
+    options: { shouldCreateUser: true, data: { name: pendingName, phone: pendingPhone } },
+  });
+  msg.textContent = error ? ('재전송 실패: ' + error.message) : '인증코드를 다시 보내드렸습니다.';
+  msg.className = error ? 'msg error' : 'msg success';
 }
 
 function backToEmail() {
   showStep('email');
 }
 
-// 이메일에 있는 로그인 링크를 눌러서 돌아왔을 때, 세션이 만들어지는 대로 원래 가려던 곳으로 이동
+// 세션이 만들어지는 대로(코드 인증 성공 시) 원래 가려던 곳으로 이동
 sb.auth.onAuthStateChange((event, session) => {
   if (session) location.href = getRedirectTarget();
 });
 
 (async () => {
-  // 로그인 링크로 돌아온 경우(URL에 토큰이 붙어있는 경우) 세션 확인 중 화면을 보여줌
-  if (location.hash.includes('access_token') || location.search.includes('redirect=')) {
-    const { data: { session } } = await sb.auth.getSession();
-    if (session) { location.href = getRedirectTarget(); return; }
-    if (location.hash.includes('access_token')) showStep('checking');
-  }
+  const { data: { session } } = await sb.auth.getSession();
+  if (session) { location.href = getRedirectTarget(); }
 })();
 
 if ('serviceWorker' in navigator) {
