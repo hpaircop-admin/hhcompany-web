@@ -18,6 +18,7 @@
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0e2a47">
 <link rel="apple-touch-icon" href="icons/icon-180.png">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css');
   :root{
@@ -30,7 +31,10 @@
 
   .topbar{background:linear-gradient(135deg,var(--navy-deep),var(--navy));padding:32px 20px 28px}
   .topbar-inner{max-width:960px;margin:0 auto}
-  .topbar-inner .brand{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+  .topbar-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+  .logout-link{font-size:12px;font-weight:600;color:rgba(255,255,255,.6);cursor:pointer}
+  .logout-link:hover{color:#fff}
+  .topbar-inner .brand{display:flex;align-items:center;gap:10px}
   .topbar-inner .brand img{width:28px;height:auto}
   .topbar-inner .brand span{color:#fff;font-weight:800;font-size:15px}
   .topbar-inner .brand span b{color:var(--sky)}
@@ -84,9 +88,12 @@
 
 <div class="topbar">
   <div class="topbar-inner">
-    <div class="brand">
-      <img src="logo-icon.png" alt="HHCOMPANY">
-      <span>HH<b>COMPANY</b></span>
+    <div class="topbar-top">
+      <div class="brand">
+        <img src="logo-icon.png" alt="HHCOMPANY">
+        <span>HH<b>COMPANY</b></span>
+      </div>
+      <a href="#" class="logout-link" id="logout-link">로그아웃</a>
     </div>
     <h1>개인 전용관</h1>
     <p>더블에이치컴퍼니가 안내드린 분들만을 위한 개인 구매 페이지입니다.<br>원하시는 상품을 선택해 온라인으로 결제하실 수 있습니다.</p>
@@ -127,6 +134,7 @@
 <script>
 const SB_URL = 'https://xoupacfmkhuuvxebgfqi.supabase.co';
 const SB_KEY = 'sb_publishable_46KQebvC7_S-_JDramvDmA_jk9aSeVc';
+const sbAuth = supabase.createClient(SB_URL, SB_KEY);
 
 async function sbFetch(path) {
   const res = await fetch(`${SB_URL}/rest/v1/${path}`, {
@@ -198,7 +206,21 @@ function closeDetail() {
   document.getElementById('detail-modal').classList.remove('open');
 }
 
-loadCatalog();
+// 회원가입/로그인한 사람만 개인구매채널을 볼 수 있도록 가드.
+// 세션이 없으면 로그인 페이지로 보내고, 로그인 완료 후 다시 이 페이지로 돌아온다.
+(async function guardAuthAndInit() {
+  const { data: { session } } = await sbAuth.auth.getSession();
+  if (!session) {
+    location.href = 'login.html?redirect=personal.html';
+    return;
+  }
+  document.getElementById('logout-link').addEventListener('click', async (e) => {
+    e.preventDefault();
+    await sbAuth.auth.signOut();
+    location.href = 'index.html';
+  });
+  loadCatalog();
+})();
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
