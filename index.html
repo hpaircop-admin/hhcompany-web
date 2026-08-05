@@ -146,14 +146,6 @@
   .hero-rec .dot3 { width: 6px; height: 6px; border-radius: 50%; background: var(--coral); animation: pulse 1.4s infinite; }
   @media (max-width: 900px) { .hero-rec { display: none; } }
 
-  /* ── 회사 소개 영상 ── */
-  .video-showcase { background: #fff; }
-  .video-frame {
-    max-width: 900px; margin: 0 auto; border-radius: 14px; overflow: hidden;
-    box-shadow: 0 30px 60px rgba(14,42,71,0.18); background: var(--navy-deep); aspect-ratio: 16/9;
-  }
-  .video-frame video { width: 100%; height: 100%; display: block; object-fit: cover; }
-
   .hero-content { position: relative; z-index: 6; padding-top: 74px; }
   .eyebrow {
     display: inline-flex; align-items: center; gap: 8px;
@@ -437,24 +429,10 @@
       <a href="business.html" class="btn-ghost">사업 분야 보기</a>
     </div>
   </div>
-  <a href="#intro-video" class="scroll-hint" aria-label="아래로 스크롤">
+  <a href="#about" class="scroll-hint" aria-label="아래로 스크롤">
     <span>SCROLL</span>
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
   </a>
-</section>
-
-<!-- ── 회사 소개 영상 ── -->
-<section class="video-showcase" id="intro-video">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <div class="sec-tag">Our Story</div>
-      <h2 class="sec-title">영상으로 만나는 더블에이치컴퍼니</h2>
-      <p class="sec-desc">문의부터 정산까지, 더블에이치컴퍼니가 단체의 하루를 어떻게 설계하는지 짧은 영상으로 확인해보세요.</p>
-    </div>
-    <div class="video-frame reveal">
-      <video src="intro.mp4" playsinline muted loop autoplay controls preload="metadata" poster="logo-icon.png"></video>
-    </div>
-  </div>
 </section>
 
 <!-- ── ABOUT ── -->
