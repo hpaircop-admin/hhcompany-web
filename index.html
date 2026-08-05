@@ -70,7 +70,8 @@
   .foot-brand .logo-word span { color: var(--sky); }
   .foot-brand .logo-tag { color: #a9d43f; }
   .foot-brand .logo-kr { color: rgba(255,255,255,0.55); }
-  .nav-cta-group { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .nav-right { display: flex; align-items: center; gap: 28px; flex-shrink: 0; }
+  .nav-cta-group { display: flex; align-items: center; gap: 8px; flex-shrink: 0; padding-left: 24px; border-left: 1px solid var(--line); }
   .member-btn { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; background: transparent; color: var(--navy); padding: 8px 6px; border-radius: 4px; font-size: 13px; font-weight: 700; border: none; text-decoration: underline; text-underline-offset: 3px; transition: color .2s; }
   .member-btn:hover { color: var(--blue); }
   .member-btn.is-member { color: var(--blue); }
@@ -383,19 +384,21 @@
 <header id="header">
   <div class="wrap nav">
     <a href="index.html" class="logo"><img src="logo-icon.png" class="brand-icon" alt="HHCOMPANY 로고"><span class="logo-text"><span class="logo-tag">The Way To Success</span><span class="logo-word">HH<span>COMPANY</span></span></span></a>
-    <ul class="nav-menu">
-      <li><a href="ceo.html">대표인사말</a></li>
-      <li><a href="#about">회사소개</a></li>
-      <li><a href="business.html">사업분야</a></li>
-      <li><a href="products.html">상품소개</a></li>
-      <li><a href="cases.html">이용사례</a></li>
-      <li><a href="press.html">언론보도</a></li>
-      <li><a href="board.html">문의게시판</a></li>
-      <li><a href="reserve.html">예약게시판</a></li>
-      <li class="member-link"><a href="login.html?redirect=personal.html" id="memberLinkMobile">회원가입 / 로그인</a></li>
-      <li class="member-link" id="logoutLiMobile" style="display:none"><a href="#" id="logoutLinkMobile">로그아웃</a></li>
-    </ul>
-    <div class="nav-cta-group"><a href="login.html?redirect=personal.html" class="member-btn" id="memberBtn">회원가입</a><a href="#" class="logout-link" id="logoutLink" style="display:none">로그아웃</a></div>
+    <div class="nav-right">
+      <ul class="nav-menu">
+        <li><a href="ceo.html">대표인사말</a></li>
+        <li><a href="#about">회사소개</a></li>
+        <li><a href="business.html">사업분야</a></li>
+        <li><a href="products.html">상품소개</a></li>
+        <li><a href="cases.html">이용사례</a></li>
+        <li><a href="press.html">언론보도</a></li>
+        <li><a href="board.html">문의게시판</a></li>
+        <li><a href="reserve.html">예약게시판</a></li>
+        <li class="member-link"><a href="login.html?redirect=personal.html" id="memberLinkMobile">회원가입 / 로그인</a></li>
+        <li class="member-link" id="logoutLiMobile" style="display:none"><a href="#" id="logoutLinkMobile">로그아웃</a></li>
+      </ul>
+      <div class="nav-cta-group"><a href="login.html?redirect=personal.html" class="member-btn" id="memberBtn">회원가입</a><a href="#" class="logout-link" id="logoutLink" style="display:none">로그아웃</a></div>
+    </div>
     <button class="burger" aria-label="메뉴">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0e2a47" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </button>

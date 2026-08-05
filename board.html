@@ -13,6 +13,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>문의게시판 | (주)더블에이치컴퍼니</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css');
   @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700;900&display=swap');
@@ -53,8 +54,8 @@
     transition: border-color .3s, box-shadow .3s;
   }
   header.scrolled { border-color: var(--line); box-shadow: 0 2px 20px rgba(14,42,71,0.05); }
-  .nav { display: flex; align-items: center; justify-content: space-between; height: 74px; }
-  .logo { display: flex; align-items: center; gap: 10px; }
+  .nav { display: flex; align-items: center; justify-content: space-between; height: 74px; max-width: 1320px; }
+  .logo { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
   .brand-icon { width: 38px; height: 38px; flex-shrink: 0; object-fit: contain; }
   .logo-text { display: flex; flex-direction: column; line-height: 1.2; }
   .logo-tag { font-size: 9px; font-weight: 700; letter-spacing: 0.14em; color: #6b8e23; text-transform: uppercase; }
@@ -65,27 +66,27 @@
   .foot-brand .logo-word span { color: var(--sky); }
   .foot-brand .logo-tag { color: #a9d43f; }
   .foot-brand .logo-kr { color: rgba(255,255,255,0.55); }
-  .nav-cta-group { display: flex; align-items: center; gap: 10px; }
-  .kakao-btn { display: inline-flex; align-items: center; gap: 6px; background: #FEE500; color: #191919; padding: 10px 18px; border-radius: 4px; font-size: 13px; font-weight: 700; transition: transform .2s, box-shadow .2s; }
-  .kakao-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(254,229,0,0.45); }
-  .kakao-btn svg { width: 16px; height: 16px; }
+  .nav-right { display: flex; align-items: center; gap: 28px; flex-shrink: 0; }
+  .nav-cta-group { display: flex; align-items: center; gap: 8px; flex-shrink: 0; padding-left: 24px; border-left: 1px solid var(--line); }
+  .member-btn { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; background: transparent; color: var(--navy); padding: 8px 6px; border-radius: 4px; font-size: 13px; font-weight: 700; border: none; text-decoration: underline; text-underline-offset: 3px; transition: color .2s; }
+  .member-btn:hover { color: var(--blue); }
+  .member-btn.is-member { color: var(--blue); }
+  .logout-link { display: inline-flex; align-items: center; white-space: nowrap; background: transparent; color: var(--ink); opacity: .55; padding: 8px 6px; border-radius: 4px; font-size: 12px; font-weight: 600; border: none; transition: opacity .2s, color .2s; }
+  .logout-link:hover { opacity: 1; color: var(--blue); }
+  .nav-menu .member-link { display: none; }
+  .nav-menu .member-link a { color: var(--blue) !important; }
   .foot-kakao { display: inline-flex; align-items: center; gap: 6px; color: #FEE500 !important; font-weight: 700; }
   .foot-kakao svg { width: 14px; height: 14px; }
-  .nav-menu { display: flex; gap: 34px; list-style: none; }
+  .nav-menu { display: flex; gap: 20px; list-style: none; flex-shrink: 0; }
   .nav-menu a {
-    font-size: 12px; font-weight: 600; color: var(--ink);
-    letter-spacing: 0.06em; text-transform: uppercase; position: relative; padding: 4px 0;
+    display: inline-block; font-size: 12px; font-weight: 600; color: var(--ink); white-space: nowrap;
+    letter-spacing: 0; position: relative; padding: 4px 0;
   }
   .nav-menu a::after {
     content: ''; position: absolute; left: 0; bottom: 0; width: 0; height: 2px;
     background: var(--blue); transition: width .25s;
   }
   .nav-menu a:hover::after { width: 100%; }
-  .nav-cta {
-    background: var(--navy); color: #fff; padding: 10px 22px; border-radius: 4px;
-    font-size: 13px; font-weight: 700; transition: background .2s, transform .2s;
-  }
-  .nav-cta:hover { background: var(--blue); transform: translateY(-1px); }
   .burger { display: none; background: none; border: none; cursor: pointer; }
 
   /* ── 히어로 ── */
@@ -280,6 +281,7 @@
   @media (max-width: 900px) {
     .nav { height: auto; flex-wrap: wrap; row-gap: 10px; padding: 12px 0; }
     .nav-cta-group { display: none; }
+    .nav-menu .member-link { display: block; }
     .burger { display: flex; align-items: center; justify-content: center; }
     .nav { position: relative; }
     .nav-menu {
@@ -327,16 +329,21 @@
 <header id="header" class="scrolled">
   <div class="wrap nav">
     <a href="index.html" class="logo"><img src="logo-icon.png" class="brand-icon" alt="HHCOMPANY 로고"><span class="logo-text"><span class="logo-tag">The Way To Success</span><span class="logo-word">HH<span>COMPANY</span></span></span></a>
-    <ul class="nav-menu">
-      <li><a href="ceo.html">대표인사말</a></li>
-      <li><a href="index.html#about">회사소개</a></li>
-      <li><a href="business.html">사업분야</a></li>
-      <li><a href="products.html">상품소개</a></li>
-      <li><a href="cases.html">이용사례</a></li>
-      <li><a href="press.html">언론보도</a></li>
-      <li><a href="board.html">문의게시판</a></li>
-      <li><a href="reserve.html">예약게시판</a></li>
-    </ul>
+    <div class="nav-right">
+      <ul class="nav-menu">
+        <li><a href="ceo.html">대표인사말</a></li>
+        <li><a href="index.html#about">회사소개</a></li>
+        <li><a href="business.html">사업분야</a></li>
+        <li><a href="products.html">상품소개</a></li>
+        <li><a href="cases.html">이용사례</a></li>
+        <li><a href="press.html">언론보도</a></li>
+        <li><a href="board.html">문의게시판</a></li>
+        <li><a href="reserve.html">예약게시판</a></li>
+        <li class="member-link"><a href="login.html?redirect=personal.html" id="memberLinkMobile">회원가입 / 로그인</a></li>
+        <li class="member-link" id="logoutLiMobile" style="display:none"><a href="#" id="logoutLinkMobile">로그아웃</a></li>
+      </ul>
+      <div class="nav-cta-group"><a href="login.html?redirect=personal.html" class="member-btn" id="memberBtn">회원가입</a><a href="#" class="logout-link" id="logoutLink" style="display:none">로그아웃</a></div>
+    </div>
     <button class="burger" aria-label="메뉴">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0e2a47" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </button>
@@ -548,6 +555,46 @@
       a.addEventListener('click', function () { header.classList.remove('nav-open'); });
     });
   }
+})();
+
+// ── 개인 회원(B2C) 로그인 상태에 따라 "회원가입 ↔ 개인구매" 버튼 전환 + 로그아웃 ──
+(function memberNav() {
+  if (typeof supabase === 'undefined') return;
+  const SB_URL = 'https://xoupacfmkhuuvxebgfqi.supabase.co';
+  const SB_KEY = 'sb_publishable_46KQebvC7_S-_JDramvDmA_jk9aSeVc';
+  const sbAuth = supabase.createClient(SB_URL, SB_KEY);
+  const desktopBtn = document.getElementById('memberBtn');
+  const mobileBtn = document.getElementById('memberLinkMobile');
+  const logoutBtn = document.getElementById('logoutLink');
+  const logoutLiMobile = document.getElementById('logoutLiMobile');
+  const logoutBtnMobile = document.getElementById('logoutLinkMobile');
+
+  function render(session) {
+    const loggedIn = !!session;
+    const href = loggedIn ? 'personal.html' : 'login.html?redirect=personal.html';
+    if (desktopBtn) {
+      desktopBtn.href = href;
+      desktopBtn.textContent = loggedIn ? '개인구매 →' : '회원가입';
+      desktopBtn.classList.toggle('is-member', loggedIn);
+    }
+    if (mobileBtn) {
+      mobileBtn.href = href;
+      mobileBtn.textContent = loggedIn ? '개인구매 →' : '회원가입 / 로그인';
+    }
+    if (logoutBtn) logoutBtn.style.display = loggedIn ? '' : 'none';
+    if (logoutLiMobile) logoutLiMobile.style.display = loggedIn ? '' : 'none';
+  }
+
+  async function doSignOut(e) {
+    e.preventDefault();
+    await sbAuth.auth.signOut();
+    location.href = 'index.html';
+  }
+  if (logoutBtn) logoutBtn.addEventListener('click', doSignOut);
+  if (logoutBtnMobile) logoutBtnMobile.addEventListener('click', doSignOut);
+
+  sbAuth.auth.getSession().then(({ data }) => render(data.session)).catch(() => {});
+  sbAuth.auth.onAuthStateChange((_event, session) => render(session));
 })();
 </script>
 </body>
