@@ -69,7 +69,15 @@
     </div>
     <div class="card-body">
       <div id="step-email">
-        <p style="font-size:12.5px;color:var(--gray);line-height:1.6;margin-bottom:16px">이메일만 입력하시면 별도 가입 절차 없이 인증 링크로 바로 회원가입 및 로그인됩니다. 회원가입 후 개인 전용 구매 페이지를 이용하실 수 있습니다.</p>
+        <p style="font-size:12.5px;color:var(--gray);line-height:1.6;margin-bottom:16px">아래 정보를 입력하시면 별도 가입 절차 없이 이메일 인증 링크로 바로 회원가입 및 로그인됩니다. 회원가입 후 개인 전용 구매 페이지를 이용하실 수 있습니다. (이미 가입하신 분은 이메일만 입력해주세요)</p>
+        <div class="field">
+          <label>이름</label>
+          <input type="text" id="f-name" placeholder="이름을 입력해주세요">
+        </div>
+        <div class="field">
+          <label>연락처</label>
+          <input type="tel" id="f-phone" placeholder="010-0000-0000">
+        </div>
         <div class="field">
           <label>이메일</label>
           <input type="email" id="f-email" placeholder="example@email.com">
@@ -109,16 +117,26 @@ function showStep(step) {
 }
 
 async function sendLink() {
+  const name = document.getElementById('f-name').value.trim();
+  const phone = document.getElementById('f-phone').value.trim();
   const email = document.getElementById('f-email').value.trim();
   const msg = document.getElementById('email-msg');
   const btn = document.getElementById('send-btn');
+  if (!name) { msg.textContent = '이름을 입력해주세요.'; msg.className = 'msg error'; return; }
+  if (!phone) { msg.textContent = '연락처를 입력해주세요.'; msg.className = 'msg error'; return; }
   if (!email) { msg.textContent = '이메일을 입력해주세요.'; msg.className = 'msg error'; return; }
 
   btn.disabled = true; btn.textContent = '전송 중...';
   const target = getRedirectTarget();
   const emailRedirectTo = `${location.origin}${location.pathname}?redirect=${encodeURIComponent(target)}`;
-  const { error } = await sb.auth.signInWithOtp({ email, options: { shouldCreateUser: true, emailRedirectTo } });
-  btn.disabled = false; btn.textContent = '로그인 링크 받기';
+  // name/phone은 신규 가입일 때만 auth.users.raw_user_meta_data에 실려서 저장되고,
+  // DB 트리거(handle_new_user)가 profiles 테이블로 자동 복사합니다.
+  // 이미 가입된 이메일이면 이 값들은 무시되고 로그인 링크만 재발송됩니다.
+  const { error } = await sb.auth.signInWithOtp({
+    email,
+    options: { shouldCreateUser: true, emailRedirectTo, data: { name, phone } },
+  });
+  btn.disabled = false; btn.textContent = '회원가입 / 로그인 링크 받기';
 
   if (error) {
     msg.textContent = '전송 실패: ' + error.message;
