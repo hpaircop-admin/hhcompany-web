@@ -87,10 +87,10 @@
       </div>
 
       <div id="step-code" style="display:none">
-        <p style="font-size:12.5px;color:var(--gray);line-height:1.6;margin-bottom:16px" id="code-sent-to">입력하신 이메일로 6자리 인증코드를 보내드렸습니다. 메일함에서 코드를 확인해 아래에 입력해주세요.</p>
+        <p style="font-size:12.5px;color:var(--gray);line-height:1.6;margin-bottom:16px" id="code-sent-to">입력하신 이메일로 인증코드를 보내드렸습니다. 메일함에서 코드를 확인해 아래에 입력해주세요.</p>
         <div class="field">
-          <label>인증코드 (6자리)</label>
-          <input type="text" id="f-code" placeholder="000000" inputmode="numeric" maxlength="6" style="letter-spacing:4px;font-size:20px;text-align:center;font-weight:700">
+          <label>인증코드</label>
+          <input type="text" id="f-code" placeholder="이메일로 받은 코드 입력" inputmode="numeric" maxlength="12" style="letter-spacing:3px;font-size:20px;text-align:center;font-weight:700">
         </div>
         <button type="button" class="submit-btn" id="verify-btn" onclick="verifyCode()">인증코드 확인</button>
         <div class="msg" id="code-msg"></div>
@@ -152,7 +152,7 @@ async function sendCode() {
     return;
   }
   pendingEmail = email; pendingName = name; pendingPhone = phone;
-  document.getElementById('code-sent-to').textContent = `${email} 로 6자리 인증코드를 보내드렸습니다. 메일함에서 코드를 확인해 아래에 입력해주세요.`;
+  document.getElementById('code-sent-to').textContent = `${email} 로 인증코드를 보내드렸습니다. 메일함에서 코드를 확인해 아래에 입력해주세요.`;
   document.getElementById('f-code').value = '';
   document.getElementById('code-msg').textContent = '';
   msg.textContent = '';
@@ -163,7 +163,7 @@ async function verifyCode() {
   const code = document.getElementById('f-code').value.trim();
   const msg = document.getElementById('code-msg');
   const btn = document.getElementById('verify-btn');
-  if (!code || code.length < 6) { msg.textContent = '6자리 코드를 정확히 입력해주세요.'; msg.className = 'msg error'; return; }
+  if (!code) { msg.textContent = '이메일로 받은 코드를 입력해주세요.'; msg.className = 'msg error'; return; }
 
   btn.disabled = true; btn.textContent = '확인 중...';
   const { data, error } = await sb.auth.verifyOtp({ email: pendingEmail, token: code, type: 'email' });
