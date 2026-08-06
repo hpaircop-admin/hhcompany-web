@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-N4BWKWXEQ4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-N4BWKWXEQ4');
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I-ON × 노원 JUMP KIDS | 아이의 경험을 켜다</title>
+<meta name="description" content="I-ON — 자모 동반 체험학습 브랜드. 노원 JUMP KIDS 첫 체험 프로그램, 모집형(단체확정) / 즉시입장권 온라인 신청.">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://js.tosspayments.com/v1/payment-widget"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --ion-coral:#FF6B4A;--ion-indigo:#2B2358;--ion-gold:#FFC857;--ion-cream:#FFF8F0;
+  --ink:#241F3D;--muted:#6b6480;--line:rgba(43,35,88,.12);--white:#fff;
+}
+body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;background:var(--ion-cream);color:var(--ink);line-height:1.6;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:200;background:var(--ion-indigo);padding:13px 20px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.ion-logo{display:flex;align-items:center;gap:9px}
+.ion-mark{font-size:19px;font-weight:900;color:#fff;letter-spacing:-.02em;position:relative}
+.ion-mark .o{display:inline-block;position:relative}
+.ion-mark .o::after{content:'';position:absolute;left:50%;top:50%;width:16px;height:16px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,var(--ion-gold) 0%,rgba(255,200,87,0) 72%);z-index:-1}
+.nav-sub{font-size:9.5px;color:rgba(255,255,255,.6);display:block;margin-top:1px;letter-spacing:.04em}
+.nav-cta{background:linear-gradient(120deg,var(--ion-coral),var(--ion-gold));color:#241408;font-size:12.5px;font-weight:800;padding:8px 16px;border-radius:999px;text-decoration:none;white-space:nowrap}
+
+/* hero */
+.hero{position:relative;width:100%;min-height:64vh;display:flex;align-items:flex-end;overflow:hidden}
+.hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(36,31,61,.94) 0%,rgba(36,31,61,.55) 55%,rgba(36,31,61,.15) 100%)}
+.hero-content{position:relative;z-index:2;padding:0 22px 34px;width:100%}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);color:#fff;font-size:10.5px;font-weight:800;letter-spacing:.04em;padding:6px 13px;border-radius:999px;margin-bottom:14px}
+.hero-title{font-size:clamp(26px,7vw,44px);font-weight:900;color:#fff;line-height:1.25;letter-spacing:-.03em;margin-bottom:10px}
+.hero-title em{background:linear-gradient(120deg,var(--ion-coral),var(--ion-gold));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-style:normal}
+.hero-sub{font-size:13.5px;color:rgba(255,255,255,.8);line-height:1.7;margin-bottom:20px;max-width:560px}
+.hero-btn{display:inline-block;background:linear-gradient(120deg,var(--ion-coral),var(--ion-gold));color:#241408;font-size:14px;font-weight:800;padding:13px 26px;border-radius:10px;text-decoration:none}
+
+/* brand strip */
+.brand-strip{padding:40px 20px;max-width:820px;margin:0 auto}
+.brand-strip h2{font-size:clamp(18px,4vw,24px);font-weight:900;letter-spacing:-.02em;margin-bottom:14px;text-align:center}
+.brand-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.brand-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 14px}
+.brand-card .ic{font-size:20px;margin-bottom:6px}
+.brand-card h4{font-size:13px;font-weight:800;margin-bottom:4px}
+.brand-card p{font-size:11px;color:var(--muted);line-height:1.55}
+
+/* tickets */
+.ticket-band{padding:16px 20px 48px;max-width:820px;margin:0 auto}
+.ticket-band-head{text-align:center;margin-bottom:22px}
+.ticket-band-head .label{font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:800;color:var(--ion-coral);margin-bottom:6px}
+.ticket-band-head h2{font-size:clamp(20px,4.5vw,28px);font-weight:900;letter-spacing:-.02em}
+.ticket-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:600px){.ticket-grid{grid-template-columns:1fr}}
+.ticket-card{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 4px 18px rgba(43,35,88,.06);display:flex;flex-direction:column}
+.ticket-card .thead{padding:18px 18px 14px;color:#fff}
+.ticket-card.group .thead{background:linear-gradient(135deg,var(--ion-gold),var(--ion-coral))}
+.ticket-card.solo .thead{background:linear-gradient(135deg,var(--ion-indigo),#4a3f7a)}
+.ticket-card .ttag{font-size:10.5px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;opacity:.85;margin-bottom:6px}
+.ticket-card .tname{font-size:17px;font-weight:900}
+.ticket-card .tbody{padding:16px 18px 20px;flex:1;display:flex;flex-direction:column}
+.ticket-card .tdesc{font-size:12px;color:var(--muted);line-height:1.65;margin-bottom:14px;flex:1}
+.ticket-card .tprice{font-size:22px;font-weight:900;color:var(--ink);margin-bottom:4px}
+.ticket-card .tprice small{font-size:11px;font-weight:700;color:var(--muted)}
+.ticket-card .tnote{font-size:10.5px;color:var(--ion-coral);background:#FFF1EC;padding:5px 10px;border-radius:999px;display:inline-block;margin-bottom:12px;font-weight:700}
+.ticket-card .tbtn{width:100%;padding:13px;border:none;border-radius:10px;background:var(--ion-indigo);color:#fff;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit}
+.ticket-card .tbtn:hover{background:#3a3170}
+.progress-note{font-size:11px;color:var(--muted);margin-bottom:10px}
+.price-disclaimer{text-align:center;font-size:10.5px;color:var(--muted);margin-top:12px}
+
+/* modal */
+.ion-overlay{display:none;position:fixed;inset:0;background:rgba(36,31,61,.55);z-index:500;align-items:flex-start;justify-content:center;padding:40px 16px;overflow-y:auto}
+.ion-overlay.open{display:flex}
+.ion-modal{background:#fff;border-radius:18px;max-width:420px;width:100%;overflow:hidden}
+.ion-modal .mhead{padding:20px 22px;color:#fff;position:relative}
+.ion-modal.group .mhead{background:linear-gradient(135deg,var(--ion-gold),var(--ion-coral))}
+.ion-modal.solo .mhead{background:linear-gradient(135deg,var(--ion-indigo),#4a3f7a)}
+.ion-modal .mhead .mclose{position:absolute;top:14px;right:16px;background:none;border:none;color:#fff;font-size:18px;cursor:pointer;opacity:.85}
+.ion-modal .mhead .mtag{font-size:10.5px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;opacity:.85;margin-bottom:4px}
+.ion-modal .mhead .mtitle{font-size:18px;font-weight:900}
+.ion-modal .mbody{padding:20px 22px 24px}
+.mfield{margin-bottom:14px}
+.mfield label{display:block;font-size:12px;font-weight:700;color:var(--ion-indigo);margin-bottom:5px}
+.mfield input,.mfield select{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:8px;font-size:14px;font-family:inherit;background:#fbfaf7}
+.mfield input:focus,.mfield select:focus{outline:none;border-color:var(--ion-coral)}
+.progress-wrap{background:#fbfaf7;border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:14px}
+.progress-bar-track{width:100%;height:8px;background:var(--line);border-radius:999px;overflow:hidden;margin-top:8px}
+.progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--ion-gold),var(--ion-coral));border-radius:999px;width:0%;transition:width .3s}
+.mprice-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-top:1px dashed var(--line);margin:6px 0 14px}
+.mprice-row .l{font-size:12.5px;color:var(--muted)}
+.mprice-row .amt{font-size:20px;font-weight:900;color:var(--ion-coral)}
+.msubmit{width:100%;padding:14px;border:none;border-radius:10px;background:var(--ion-indigo);color:#fff;font-size:14.5px;font-weight:800;cursor:pointer;font-family:inherit}
+.msubmit:disabled{background:var(--line);color:var(--muted);cursor:not-allowed}
+.mmsg{font-size:12px;color:#dc2626;margin-top:10px;line-height:1.6}
+.mstate{padding:36px 8px;text-align:center;color:var(--muted);font-size:13.5px;line-height:1.8}
+.mstate strong{display:block;color:var(--ink);font-size:16px;margin-bottom:8px}
+.mstate .sub{font-size:11.5px;color:var(--muted);margin-top:10px}
+.test-badge{display:inline-block;background:#FFF1EC;color:var(--ion-coral);font-size:10.5px;font-weight:800;padding:4px 10px;border-radius:999px;margin-bottom:12px}
+#toss-payment-method{min-height:180px;margin-bottom:10px}
+#toss-agreement{min-height:80px;margin-bottom:14px}
+
+/* sections (JUMP KIDS content) */
+.sec{padding:44px 20px;max-width:820px;margin:0 auto}
+.sec.alt{background:#fff}
+.sec-label{font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:800;color:var(--ion-coral);margin-bottom:8px}
+.sec-title{font-size:clamp(19px,4.2vw,26px);font-weight:900;color:var(--ink);line-height:1.3;letter-spacing:-.02em;margin-bottom:12px}
+.sec-desc{font-size:13.5px;color:var(--muted);line-height:1.8;white-space:pre-line}
+.feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}
+.feat-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 15px}
+.feat-card .ic{font-size:22px;margin-bottom:7px}
+.feat-card h4{font-size:13px;font-weight:800;margin-bottom:4px}
+.feat-card p{font-size:11px;color:var(--muted);line-height:1.55}
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
+.pcard{background:#fff;border-radius:14px;overflow:hidden;border:1px solid var(--line)}
+.pcard .pimg{width:100%;aspect-ratio:4/3;overflow:hidden;background:#eee}
+.pcard .pimg img{width:100%;height:100%;object-fit:cover}
+.pcard .pbody{padding:11px 12px}
+.pcard .pbody h5{font-size:12.5px;font-weight:800;margin-bottom:3px}
+.pcard .pbody p{font-size:10.5px;color:var(--muted);line-height:1.5}
+.rule-box{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px 18px;margin-top:16px}
+.rule-box h4{font-size:13.5px;font-weight:800;margin-bottom:10px}
+.rule-box ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+.rule-box li{font-size:12px;color:var(--muted);line-height:1.6;padding-left:14px;position:relative}
+.rule-box li::before{content:'·';position:absolute;left:0;font-weight:900;color:var(--ion-coral)}
+.dress-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}
+.dress-item{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 5px;text-align:center}
+.dress-item .di{font-size:18px;margin-bottom:5px}
+.dress-item span{font-size:10px;font-weight:700;color:var(--ink);line-height:1.3;display:block}
+.faq-item{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 16px;margin-bottom:10px}
+.faq-q{display:flex;gap:8px;font-size:13px;font-weight:800;color:var(--ink);margin-bottom:7px}
+.faq-q .qmark{background:var(--ion-coral);color:#fff;font-size:10.5px;font-weight:900;width:19px;height:19px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.faq-a{font-size:12px;color:var(--muted);line-height:1.7;padding-left:27px}
+.loc-info{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.loc-row{display:flex;gap:14px;padding:8px 0;font-size:12px;border-bottom:1px solid #f0f0f2}
+.loc-row:last-child{border-bottom:none}
+.loc-row b{width:52px;flex-shrink:0;color:var(--ink)}
+.loc-row span{color:var(--muted);line-height:1.6}
+
+.footnote{max-width:820px;margin:0 auto;padding:24px 20px 50px;font-size:11px;color:#9a93ab;line-height:1.8;text-align:center}
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <div class="ion-logo">
+    <div class="ion-mark">I-<span class="o">O</span>N</div>
+    <div><span class="nav-sub">아이의 경험을 켜다 · 더블에이치컴퍼니</span></div>
+  </div>
+  <a href="#tickets" class="nav-cta">신청하기</a>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <img class="hero-img" src="products/점프원/web/ion-hero.jpg" alt="I-ON 가족 체험">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <span class="hero-badge">I-ON 첫 체험 프로그램 · 노원 JUMP KIDS</span>
+    <div class="hero-title">아이의 하루를 켜면,<br><em>가족의 특별한 경험</em>이 시작됩니다</div>
+    <div class="hero-sub">I-ON은 개인을 싸게 모으는 티켓이 아니라, 가족의 참여를 하나의 단체 경험으로 설계합니다. 미취학 아동 전용 실내 놀이공간 JUMP KIDS에서 첫 프로그램을 시작합니다.</div>
+    <a href="#tickets" class="hero-btn">참가 신청하기 →</a>
+  </div>
+</div>
+
+<!-- BRAND STRIP -->
+<div class="brand-strip">
+  <h2>I-ON은 이런 브랜드예요</h2>
+  <div class="brand-cards">
+    <div class="brand-card"><div class="ic">👨‍👩‍👧</div><h4>가족 참여 중심</h4><p>혼자가 아니라 보호자와 함께하는 체험으로 설계합니다.</p></div>
+    <div class="brand-card"><div class="ic">📅</div><h4>지정일 · 실명 명단</h4><p>모집형은 지정일에 최소 인원이 모이면 확정되는 방식입니다.</p></div>
+    <div class="brand-card"><div class="ic">🎈</div><h4>개인 즉시입장권도 OK</h4><p>날짜에 구애받지 않고 바로 이용하실 분은 개인권도 준비돼 있어요.</p></div>
+    <div class="brand-card"><div class="ic">🛡️</div><h4>더블에이치컴퍼니 운영</h4><p>단체 예약·현장 운영 경험을 바탕으로 안전하게 진행합니다.</p></div>
+  </div>
+</div>
+
+<!-- TICKETS -->
+<div class="ticket-band" id="tickets">
+  <div class="ticket-band-head">
+    <div class="label">Choose Your Way</div>
+    <h2>JUMP KIDS, 어떻게 참여하시겠어요?</h2>
+  </div>
+  <div class="ticket-grid">
+    <div class="ticket-card group">
+      <div class="thead">
+        <div class="ttag">모집형 · 단체확정</div>
+        <div class="tname">지정일 체험단</div>
+      </div>
+      <div class="tbody">
+        <div class="tdesc">지정된 날짜에 신청하고, 최소 인원이 모이면 행사가 확정됩니다. 확정 후 지정 시간에 집결해 함께 입장해요. 실명 참가자 명단으로 안전하게 운영됩니다.</div>
+        <div class="tnote" id="group-progress-note">모집 현황 확인 중...</div>
+        <div class="tprice" id="group-price">-<small>원 / 1인</small></div>
+        <button type="button" class="tbtn" onclick="openModal('group')">모집형 신청하기</button>
+      </div>
+    </div>
+    <div class="ticket-card solo">
+      <div class="thead">
+        <div class="ttag">즉시입장권 · 개인</div>
+        <div class="tname">자유 방문권</div>
+      </div>
+      <div class="tbody">
+        <div class="tdesc">날짜 지정 없이, 원하는 날 바로 방문해서 이용할 수 있는 개인 전용 티켓입니다. 보호자 동반 필수, 미취학 아동(120cm 미만) 전용 공간입니다.</div>
+        <div class="tprice" id="solo-price">-<small>원 / 1인</small></div>
+        <button type="button" class="tbtn" onclick="openModal('solo')">즉시입장권 신청하기</button>
+      </div>
+    </div>
+  </div>
+  <div class="price-disclaimer">* 표시된 가격은 협의 전 임시 가격이며, 정식 오픈 전 확정 후 안내드립니다.</div>
+</div>
+
+<!-- MODAL -->
+<div class="ion-overlay" id="ionOverlay">
+  <div class="ion-modal" id="ionModal">
+    <div class="mhead">
+      <button type="button" class="mclose" onclick="closeModal()">✕</button>
+      <div class="mtag" id="m-tag">모집형</div>
+      <div class="mtitle" id="m-title">지정일 체험단 신청</div>
+    </div>
+    <div class="mbody" id="m-body">
+      <!-- filled dynamically -->
+    </div>
+  </div>
+</div>
+
+<!-- JUMP KIDS 소개 -->
+<div class="sec">
+  <div class="sec-label">ABOUT JUMP KIDS</div>
+  <div class="sec-title">키 120cm 미만, 미취학 아동 전용 공간</div>
+  <div class="sec-desc">날씨 걱정 없이, 마음껏 뛰어놀아요! 아이들의 웃음소리가 끊이지 않는 안전한 실내 놀이공간입니다. 노원구청이 조성한 검증된 안전시설, 약 3,000평 실내 복합 체험시설의 일부입니다.</div>
+  <div class="feat-grid">
+    <div class="feat-card"><div class="ic">👧</div><h4>오직 아이들을 위해!</h4><p>미취학 아동 전용</p></div>
+    <div class="feat-card"><div class="ic">🛝</div><h4>다양한 놀이시설</h4><p>즐길거리 가득한 놀이공간</p></div>
+    <div class="feat-card"><div class="ic">👨‍👩‍👧</div><h4>안전한 실내 놀이공간</h4><p>보호자 동반 필수</p></div>
+    <div class="feat-card"><div class="ic">🏫</div><h4>함께라면 더 즐거운</h4><p>유치원·어린이집 단체 환영</p></div>
+  </div>
+</div>
+
+<div class="sec alt">
+  <div class="sec-label">KIDS GROUND</div>
+  <div class="sec-title">둘러보기</div>
+  <div class="pgrid">
+    <div class="pcard"><div class="pimg"><img src="products/점프원/web/kids-ranch.jpg" alt="생생목장놀이"></div><div class="pbody"><h5>생생목장놀이</h5><p>어미소 인형에게 우유를 얻어 아기소에게 먹여주는 역할 놀이.</p></div></div>
+    <div class="pcard"><div class="pimg"><img src="products/점프원/web/kids-junglegym.jpg" alt="정글짐"></div><div class="pbody"><h5>정글짐</h5><p>3층 높이 그물망 정글짐에서 자라나는 모험심과 용기!</p></div></div>
+    <div class="pcard"><div class="pimg"><img src="products/점프원/web/kids-ballpool.jpg" alt="롤플레이"></div><div class="pbody"><h5>롤플레이</h5><p>알록달록 볼풀장에서 감각을 깨우는 즐거운 놀이 시간.</p></div></div>
+    <div class="pcard"><div class="pimg"><img src="products/점프원/web/kids-trampoline.jpg" alt="트램폴린"></div><div class="pbody"><h5>트램폴린</h5><p>개별 칸으로 나뉘어 있어 더욱 안전한 트램폴린.</p></div></div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sec-label">SAFETY</div>
+  <div class="sec-title">안전하고 즐거운 이용을 위한 약속</div>
+  <div class="dress-grid">
+    <div class="dress-item"><div class="di">📏</div><span>신장 120cm 미만</span></div>
+    <div class="dress-item"><div class="di">🧦</div><span>미끄럼방지 양말 필수</span></div>
+    <div class="dress-item"><div class="di">👨‍👧</div><span>보호자 동반</span></div>
+    <div class="dress-item"><div class="di">🚫</div><span>외부음식 반입금지</span></div>
+  </div>
+  <div class="rule-box">
+    <h4>이용수칙</h4>
+    <ul>
+      <li>신장 120cm 미만 혹은 미취학 아동(만 6세) 전용 공간입니다.</li>
+      <li>[필수] 아이들의 안전을 위해 미끄럼방지 양말을 반드시 착용해 주세요. (현장 구매 가능)</li>
+      <li>보호자는 일반 양말 착용 필수이며, 반드시 동반 입장하셔야 합니다.</li>
+      <li>외부 음식물 및 음료 반입은 제한됩니다.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="sec alt">
+  <div class="sec-label">FAQ</div>
+  <div class="sec-title">자주 묻는 질문</div>
+  <div class="faq-item">
+    <div class="faq-q"><span class="qmark">Q</span>모집형과 즉시입장권의 차이가 뭔가요?</div>
+    <div class="faq-a">모집형은 I-ON이 지정한 날짜에 신청자가 모여 최소 인원을 충족하면 행사가 확정되는 방식으로, 실명 명단 기반으로 안전하게 운영됩니다. 즉시입장권은 날짜 제약 없이 개인이 원하는 날 바로 방문하는 일반 티켓입니다.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q"><span class="qmark">Q</span>모집형 인원이 다 안 모이면 어떻게 되나요?</div>
+    <div class="faq-a">최소 인원 미달 시 담당자가 안내드리며, 다른 지정일로 이동하거나 즉시입장권으로 전환하실 수 있습니다.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q"><span class="qmark">Q</span>몇 살까지 이용 가능한가요?</div>
+    <div class="faq-a">JUMP KIDS는 신장 120cm 미만 혹은 미취학 아동(만 6세) 전용 공간입니다.</div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sec-label">LOCATION</div>
+  <div class="sec-title">찾아오시는 길</div>
+  <div class="loc-info">
+    <div class="loc-row"><b>주소</b><span>서울특별시 노원구 한글비석로 102, 점프</span></div>
+    <div class="loc-row"><b>지하철</b><span>7호선 하계역 3번 출구 도보 5~7분 (300M 이내)</span></div>
+    <div class="loc-row"><b>운영시간</b><span>10:00 ~ 18:00 (매주 월요일 휴관)</span></div>
+  </div>
+</div>
+
+<div class="footnote">
+  I-ON은 (주)더블에이치컴퍼니가 운영하는 자모 동반 체험학습 브랜드입니다.<br>
+  (주)더블에이치컴퍼니 · 사업자등록번호 420-88-03868 · 문의 031-339-2999 · hpaircop@gmail.com<br>
+  시설 정보 및 이미지 출처: JUMP KIDS 공식 안내자료.
+</div>
+
+<script>
+const SB_URL = 'https://xoupacfmkhuuvxebgfqi.supabase.co';
+const SB_KEY = 'sb_publishable_46KQebvC7_S-_JDramvDmA_jk9aSeVc';
+const FN_URL = `${SB_URL}/functions/v1/payment-confirm`;
+const sb = supabase.createClient(SB_URL, SB_KEY);
+
+const GROUP_PRODUCT_ID = 'ion_jumpkids_group';
+const SOLO_PRODUCT_ID = 'ion_jumpkids_solo';
+const MIN_GROUP_SIZE = 10;
+
+// 모집형 지정일 후보 (매주 토요일)
+const GROUP_DATES = [
+  { value: '2026-08-08', label: '2026년 8월 8일 (토)' },
+  { value: '2026-08-15', label: '2026년 8월 15일 (토)' },
+  { value: '2026-08-22', label: '2026년 8월 22일 (토)' },
+  { value: '2026-08-29', label: '2026년 8월 29일 (토)' },
+];
+
+let GROUP_PRICE = null, SOLO_PRICE = null;
+let currentMode = 'group';
+let currentQty = 1;
+let progressCache = {};
+
+function money(n) { return Number(n || 0).toLocaleString('ko-KR') + '원'; }
+
+async function fnFetch(path, body) {
+  const res = await fetch(`${FN_URL}/${path}`, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body || {}),
+  });
+  const data = await res.json().catch(() => ({}));
+  return { ok: res.ok, status: res.status, data };
+}
+
+async function loadPrices() {
+  const { data } = await sb.from('products').select('id, indiv_price').in('id', [GROUP_PRODUCT_ID, SOLO_PRODUCT_ID]);
+  (data || []).forEach(p => {
+    if (p.id === GROUP_PRODUCT_ID) GROUP_PRICE = p.indiv_price;
+    if (p.id === SOLO_PRODUCT_ID) SOLO_PRICE = p.indiv_price;
+  });
+  document.getElementById('group-price').innerHTML = money(GROUP_PRICE) + '<small>원 / 1인</small>';
+  document.getElementById('solo-price').innerHTML = money(SOLO_PRICE) + '<small>원 / 1인</small>';
+}
+
+async function loadGroupProgress() {
+  try {
+    const { data } = await sb.from('ion_group_progress').select('*');
+    (data || []).forEach(row => { progressCache[row.visit_date] = row.ticket_count || 0; });
+  } catch (e) { /* 뷰가 아직 없으면 조용히 무시 */ }
+  const total = GROUP_DATES.reduce((sum, d) => sum + (progressCache[d.value] || 0), 0);
+  const note = document.getElementById('group-progress-note');
+  if (total > 0) {
+    note.textContent = `현재 전체 ${total}명 모집 중 (지정일별 최소 ${MIN_GROUP_SIZE}명 확정)`;
+  } else {
+    note.textContent = `최소 ${MIN_GROUP_SIZE}명 모이면 확정돼요`;
+  }
+}
+
+function openModal(mode) {
+  currentMode = mode; currentQty = 1;
+  const overlay = document.getElementById('ionOverlay');
+  const modal = document.getElementById('ionModal');
+  modal.className = 'ion-modal ' + mode;
+  document.getElementById('m-tag').textContent = mode === 'group' ? '모집형 · 단체확정' : '즉시입장권 · 개인';
+  document.getElementById('m-title').textContent = mode === 'group' ? '지정일 체험단 신청' : '자유 방문권 신청';
+  renderModalBody();
+  overlay.classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('ionOverlay').classList.remove('open');
+}
+
+function renderModalBody() {
+  const body = document.getElementById('m-body');
+  const price = currentMode === 'group' ? GROUP_PRICE : SOLO_PRICE;
+  const dateOptions = GROUP_DATES.map(d => {
+    const cnt = progressCache[d.value] || 0;
+    return `<option value="${d.value}">${d.label} · 현재 ${cnt}명 모집중</option>`;
+  }).join('');
+
+  body.innerHTML = `
+    ${currentMode === 'group' ? `
+    <div class="mfield">
+      <label>참여 지정일</label>
+      <select id="m-date">${dateOptions}</select>
+    </div>
+    <div class="progress-wrap">
+      <span class="progress-note" id="m-progress-text">최소 ${MIN_GROUP_SIZE}명 모이면 행사가 확정됩니다.</span>
+      <div class="progress-bar-track"><div class="progress-bar-fill" id="m-progress-fill"></div></div>
+    </div>` : ``}
+    <div class="mfield"><label>${currentMode === 'group' ? '참가자(보호자) 이름' : '구매자 이름'}</label><input type="text" id="m-name" placeholder="이름을 입력해주세요"></div>
+    <div class="mfield"><label>연락처</label><input type="tel" id="m-phone" placeholder="010-0000-0000"></div>
+    <div class="mfield"><label>이메일 (선택)</label><input type="email" id="m-email" placeholder="안내 발송용"></div>
+    <div class="mfield"><label>인원 수</label><input type="number" id="m-qty" value="1" min="1" max="20"></div>
+    <div class="mprice-row"><span class="l">결제 예정 금액</span><span class="amt" id="m-amount">${money(price)}</span></div>
+    <button type="button" class="msubmit" id="m-submit">신청 및 결제하기</button>
+    <div class="mmsg" id="m-msg"></div>
+  `;
+
+  const qtyInput = document.getElementById('m-qty');
+  const amountEl = document.getElementById('m-amount');
+  qtyInput.oninput = () => {
+    const q = Math.max(1, parseInt(qtyInput.value, 10) || 1);
+    amountEl.textContent = money(price * q);
+  };
+  if (currentMode === 'group') {
+    const dateSel = document.getElementById('m-date');
+    const updateProgress = () => {
+      const cnt = progressCache[dateSel.value] || 0;
+      const pct = Math.min(100, Math.round((cnt / MIN_GROUP_SIZE) * 100));
+      document.getElementById('m-progress-fill').style.width = pct + '%';
+      document.getElementById('m-progress-text').textContent = `현재 ${cnt}명 / 최소 ${MIN_GROUP_SIZE}명 (${pct}%)`;
+    };
+    dateSel.onchange = updateProgress;
+    updateProgress();
+  }
+  document.getElementById('m-submit').onclick = submitTicket;
+}
+
+// ── 토스페이먼츠 결제위젯 (테스트 키) ─────────────────────────
+// ⚠️ 지금은 문서 공개 테스트 키를 쓰고 있어 실제 청구가 발생하지 않습니다.
+// 정식 오픈 시 이 두 값을 실제 발급받은 live_ 키로 교체하고, Supabase
+// Edge Function Secrets의 TOSS_SECRET_KEY도 함께 live_sk_ 키로 바꿔야 합니다.
+const TOSS_CLIENT_KEY = 'test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq';
+
+async function submitTicket() {
+  const name = document.getElementById('m-name').value.trim();
+  const phone = document.getElementById('m-phone').value.trim();
+  const email = document.getElementById('m-email').value.trim();
+  const qty = Math.max(1, parseInt(document.getElementById('m-qty').value, 10) || 1);
+  const msg = document.getElementById('m-msg');
+  const btn = document.getElementById('m-submit');
+
+  if (!name) { msg.textContent = '이름을 입력해주세요.'; return; }
+  if (!phone) { msg.textContent = '연락처를 입력해주세요.'; return; }
+  msg.textContent = '';
+
+  const visitDate = currentMode === 'group' ? document.getElementById('m-date').value : undefined;
+  const productId = currentMode === 'group' ? GROUP_PRODUCT_ID : SOLO_PRODUCT_ID;
+  const ticketLabel = currentMode === 'group' ? 'I-ON × 노원 JUMP KIDS (모집형)' : 'I-ON × 노원 JUMP KIDS (즉시입장권)';
+
+  btn.disabled = true; btn.textContent = '신청 접수 중...';
+  const created = await fnFetch('create', {
+    productId, quantity: qty, buyerName: name, buyerPhone: phone,
+    buyerEmail: email || undefined, visitDate,
+  });
+
+  if (!created.ok) {
+    btn.disabled = false; btn.textContent = '신청 및 결제하기';
+    msg.textContent = created.data?.message || '신청 처리에 실패했습니다.';
+    return;
+  }
+
+  const orderId = created.data.data.orderId;
+  const amount = created.data.data.amount;
+  renderPaymentStep(orderId, amount, ticketLabel, name, email);
+}
+
+// 주문 생성 완료 → 결제위젯을 모달 안에 렌더링
+async function renderPaymentStep(orderId, amount, orderName, buyerName, buyerEmail) {
+  const body = document.getElementById('m-body');
+  body.innerHTML = `
+    <div class="test-badge">테스트 결제 모드 · 실제 청구 없음</div>
+    <div id="toss-payment-method"></div>
+    <div id="toss-agreement"></div>
+    <div class="mprice-row"><span class="l">결제 금액</span><span class="amt">${money(amount)}</span></div>
+    <button type="button" class="msubmit" id="toss-pay-btn">${money(amount)} 결제하기</button>
+    <div class="mmsg" id="m-msg"></div>
+  `;
+
+  try {
+    const paymentWidget = PaymentWidget(TOSS_CLIENT_KEY, 'guest_' + orderId);
+    paymentWidget.renderPaymentMethods('#toss-payment-method', { value: amount });
+    paymentWidget.renderAgreement('#toss-agreement');
+
+    if (location.protocol === 'file:') {
+      document.getElementById('m-msg').innerHTML =
+        '⚠️ file://로 직접 열면 결제위젯이 정상 동작하지 않을 수 있습니다.<br>로컬 서버나 실제 배포 주소(https://)로 열어서 테스트해주세요.';
+    }
+
+    document.getElementById('toss-pay-btn').onclick = async () => {
+      const msg = document.getElementById('m-msg');
+      msg.textContent = '';
+      try {
+        await paymentWidget.requestPayment({
+          orderId,
+          orderName,
+          customerName: buyerName,
+          customerEmail: buyerEmail || undefined,
+          successUrl: location.origin + location.pathname,
+          failUrl: location.origin + location.pathname,
+        });
+      } catch (e) {
+        console.error('토스 결제 요청 실패:', e);
+        msg.textContent = '결제창을 여는 데 실패했습니다: ' + (e?.message || e || '알 수 없는 오류');
+      }
+    };
+  } catch (e) {
+    console.error('결제위젯 렌더링 실패:', e);
+    document.getElementById('m-msg').textContent = '결제위젯을 불러오지 못했습니다: ' + (e?.message || e);
+  }
+}
+
+function showPendingState(orderId, amount) {
+  document.getElementById('m-body').innerHTML = `
+    <div class="mstate">
+      <strong>신청이 접수됐어요!</strong>
+      온라인 결제 준비 중입니다 (접수번호 ${orderId}).<br>
+      정식 오픈 전까지는 담당자가 안내드린 방법으로 결제를 도와드립니다.
+      <div class="sub">문의: 031-339-2999 · 신청 금액 ${money(amount)}</div>
+    </div>`;
+}
+
+function showConfirmingState() {
+  document.getElementById('m-body').innerHTML = `
+    <div class="mstate"><strong>결제 확인 중입니다...</strong>잠시만 기다려주세요.</div>`;
+}
+
+function showConfirmFailedState(message) {
+  document.getElementById('m-body').innerHTML = `
+    <div class="mstate">
+      <strong>결제 확인에 실패했습니다</strong>
+      ${message || '결제 승인 중 문제가 발생했습니다.'}
+      <div class="sub">문의: 031-339-2999</div>
+    </div>`;
+}
+
+// 토스 결제위젯에서 successUrl/failUrl로 돌아왔을 때(=페이지 전체가 새로고침된 상태) 처리
+async function handleTossRedirectReturn() {
+  const params = new URLSearchParams(location.search);
+  const paymentKey = params.get('paymentKey');
+  const orderId = params.get('orderId');
+  const amount = params.get('amount');
+  const failCode = params.get('code');
+
+  if (paymentKey && orderId && amount) {
+    openModal('solo');
+    showConfirmingState();
+    const confirmed = await fnFetch('confirm', { orderId, paymentKey, amount: Number(amount) });
+    if (confirmed.ok) {
+      const pins = confirmed.data.data.pins || [];
+      location.href = 'ticket.html?pin=' + encodeURIComponent(pins[0] || '');
+      return;
+    }
+    showConfirmFailedState(confirmed.data?.message);
+    // URL을 깨끗하게 정리 (새로고침 시 재확인 방지)
+    history.replaceState(null, '', location.pathname);
+  } else if (failCode) {
+    const orderIdFromFail = params.get('orderId') || '';
+    openModal('solo');
+    document.getElementById('m-body').innerHTML = `
+      <div class="mstate">
+        <strong>결제가 취소됐어요</strong>
+        ${params.get('message') || '결제가 완료되지 않았습니다.'}
+        <div class="sub">${orderIdFromFail ? '접수번호 ' + orderIdFromFail + ' · ' : ''}다시 시도하시려면 신청서를 새로 작성해주세요.</div>
+      </div>`;
+    history.replaceState(null, '', location.pathname);
+  }
+}
+
+loadPrices();
+loadGroupProgress();
+handleTossRedirectReturn();
+</script>
+</body>
+</html>
