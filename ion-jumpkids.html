@@ -495,13 +495,15 @@ async function renderPaymentStep(orderId, amount, orderName, buyerName, buyerEma
     <div id="toss-payment-method"></div>
     <div id="toss-agreement"></div>
     <div class="mprice-row"><span class="l">결제 금액</span><span class="amt">${money(amount)}</span></div>
-    <button type="button" class="msubmit" id="toss-pay-btn">${money(amount)} 결제하기</button>
+    <button type="button" class="msubmit" id="toss-pay-btn" disabled>결제 UI 불러오는 중...</button>
     <div class="mmsg" id="m-msg"></div>
   `;
 
+  const payBtn = document.getElementById('toss-pay-btn');
+
   try {
     const paymentWidget = PaymentWidget(TOSS_CLIENT_KEY, 'guest_' + orderId);
-    paymentWidget.renderPaymentMethods('#toss-payment-method', { value: amount });
+    const paymentMethodsWidget = paymentWidget.renderPaymentMethods('#toss-payment-method', { value: amount });
     paymentWidget.renderAgreement('#toss-agreement');
 
     if (location.protocol === 'file:') {
@@ -509,9 +511,24 @@ async function renderPaymentStep(orderId, amount, orderName, buyerName, buyerEma
         '⚠️ file://로 직접 열면 결제위젯이 정상 동작하지 않을 수 있습니다.<br>로컬 서버나 실제 배포 주소(https://)로 열어서 테스트해주세요.';
     }
 
-    document.getElementById('toss-pay-btn').onclick = async () => {
+    // 결제수단 UI가 완전히 렌더링(ready)된 후에만 결제 버튼을 활성화 —
+    // 렌더링 끝나기 전에 requestPayment를 호출하면 토스 SDK가 에러를 던짐
+    let widgetReady = false;
+    if (paymentMethodsWidget && typeof paymentMethodsWidget.on === 'function') {
+      paymentMethodsWidget.on('ready', () => {
+        widgetReady = true;
+        payBtn.disabled = false;
+        payBtn.textContent = money(amount) + ' 결제하기';
+      });
+    } else {
+      // on('ready')를 지원하지 않는 SDK 버전 대비 — 짧은 지연 후 그냥 활성화
+      setTimeout(() => { widgetReady = true; payBtn.disabled = false; payBtn.textContent = money(amount) + ' 결제하기'; }, 1500);
+    }
+
+    payBtn.onclick = async () => {
       const msg = document.getElementById('m-msg');
       msg.textContent = '';
+      if (!widgetReady) { msg.textContent = '결제 UI를 아직 불러오는 중입니다. 잠시만 기다려주세요.'; return; }
       try {
         await paymentWidget.requestPayment({
           orderId,
