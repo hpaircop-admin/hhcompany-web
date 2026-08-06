@@ -15,7 +15,7 @@
 <title>I-ON × 노원 JUMP KIDS | 아이의 경험을 켜다</title>
 <meta name="description" content="I-ON — 자모 동반 체험학습 브랜드. 노원 JUMP KIDS 첫 체험 프로그램, 모집형(단체확정) / 즉시입장권 온라인 신청.">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://js.tosspayments.com/v1/payment-widget"></script>
+<script src="https://js.tosspayments.com/v1/payment"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -106,8 +106,10 @@ a{color:inherit}
 .mstate strong{display:block;color:var(--ink);font-size:16px;margin-bottom:8px}
 .mstate .sub{font-size:11.5px;color:var(--muted);margin-top:10px}
 .test-badge{display:inline-block;background:#FFF1EC;color:var(--ion-coral);font-size:10.5px;font-weight:800;padding:4px 10px;border-radius:999px;margin-bottom:12px}
-#toss-payment-method{min-height:180px;margin-bottom:10px}
-#toss-agreement{min-height:80px;margin-bottom:14px}
+.pay-method-grid{display:flex;flex-direction:column;gap:9px;margin:16px 0 6px}
+.paymethod-btn{width:100%;padding:14px;border:1px solid var(--line);border-radius:10px;background:#fbfaf7;color:var(--ink);font-size:14.5px;font-weight:800;cursor:pointer;font-family:inherit;text-align:center;transition:border-color .15s,background .15s}
+.paymethod-btn:hover{border-color:var(--ion-coral);background:#FFF1EC}
+.paymethod-btn:disabled{opacity:.5;cursor:not-allowed}
 
 /* sections (JUMP KIDS content) */
 .sec{padding:44px 20px;max-width:820px;margin:0 auto}
@@ -448,11 +450,12 @@ function renderModalBody() {
   document.getElementById('m-submit').onclick = submitTicket;
 }
 
-// ── 토스페이먼츠 결제위젯 (테스트 키) ─────────────────────────
-// ⚠️ 지금은 문서 공개 테스트 키를 쓰고 있어 실제 청구가 발생하지 않습니다.
-// 정식 오픈 시 이 두 값을 실제 발급받은 live_ 키로 교체하고, Supabase
-// Edge Function Secrets의 TOSS_SECRET_KEY도 함께 live_sk_ 키로 바꿔야 합니다.
-const TOSS_CLIENT_KEY = 'test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq';
+// ── 토스페이먼츠 결제창(V1, API 개별 연동 키) — 테스트 키 ─────────
+// ⚠️ 지금은 더블에이치컴퍼니 개발자센터 계정의 테스트 키를 쓰고 있어
+// 실제 청구가 발생하지 않습니다. 정식 오픈 시 이 값을 실제 발급받은
+// live_ck_ 키로 교체하고, Supabase Edge Function Secrets의
+// TOSS_SECRET_KEY도 함께 live_sk_ 키로 바꿔야 합니다.
+const TOSS_CLIENT_KEY = 'test_ck_mBZ1gQ4YVXjkOOAlJW968I2KPoqN';
 
 async function submitTicket() {
   const name = document.getElementById('m-name').value.trim();
@@ -487,50 +490,42 @@ async function submitTicket() {
   renderPaymentStep(orderId, amount, ticketLabel, name, email);
 }
 
-// 주문 생성 완료 → 결제위젯을 모달 안에 렌더링
+// 주문 생성 완료 → 결제수단 선택 버튼을 모달 안에 렌더링 (토스 결제창 V1)
 async function renderPaymentStep(orderId, amount, orderName, buyerName, buyerEmail) {
   const body = document.getElementById('m-body');
   body.innerHTML = `
     <div class="test-badge">테스트 결제 모드 · 실제 청구 없음</div>
-    <div id="toss-payment-method"></div>
-    <div id="toss-agreement"></div>
     <div class="mprice-row"><span class="l">결제 금액</span><span class="amt">${money(amount)}</span></div>
-    <button type="button" class="msubmit" id="toss-pay-btn" disabled>결제 UI 불러오는 중...</button>
+    <div class="pay-method-grid" id="pay-method-grid">
+      <button type="button" class="paymethod-btn" data-method="카드">💳 카드로 결제</button>
+      <button type="button" class="paymethod-btn" data-method="계좌이체">🏦 계좌이체로 결제</button>
+      <button type="button" class="paymethod-btn" data-method="토스페이">🅣 토스페이로 결제</button>
+    </div>
     <div class="mmsg" id="m-msg"></div>
   `;
 
-  const payBtn = document.getElementById('toss-pay-btn');
+  if (location.protocol === 'file:') {
+    document.getElementById('m-msg').innerHTML =
+      '⚠️ file://로 직접 열면 결제창이 정상 동작하지 않을 수 있습니다.<br>실제 배포 주소(https://)로 열어서 테스트해주세요.';
+  }
 
+  let tossPayments;
   try {
-    const paymentWidget = PaymentWidget(TOSS_CLIENT_KEY, 'guest_' + orderId);
-    const paymentMethodsWidget = paymentWidget.renderPaymentMethods('#toss-payment-method', { value: amount });
-    paymentWidget.renderAgreement('#toss-agreement');
+    tossPayments = TossPayments(TOSS_CLIENT_KEY);
+  } catch (e) {
+    console.error('토스페이먼츠 SDK 초기화 실패:', e);
+    document.getElementById('m-msg').textContent = '결제 모듈을 불러오지 못했습니다: ' + (e?.message || e);
+    return;
+  }
 
-    if (location.protocol === 'file:') {
-      document.getElementById('m-msg').innerHTML =
-        '⚠️ file://로 직접 열면 결제위젯이 정상 동작하지 않을 수 있습니다.<br>로컬 서버나 실제 배포 주소(https://)로 열어서 테스트해주세요.';
-    }
-
-    // 결제수단 UI가 완전히 렌더링(ready)된 후에만 결제 버튼을 활성화 —
-    // 렌더링 끝나기 전에 requestPayment를 호출하면 토스 SDK가 에러를 던짐
-    let widgetReady = false;
-    if (paymentMethodsWidget && typeof paymentMethodsWidget.on === 'function') {
-      paymentMethodsWidget.on('ready', () => {
-        widgetReady = true;
-        payBtn.disabled = false;
-        payBtn.textContent = money(amount) + ' 결제하기';
-      });
-    } else {
-      // on('ready')를 지원하지 않는 SDK 버전 대비 — 짧은 지연 후 그냥 활성화
-      setTimeout(() => { widgetReady = true; payBtn.disabled = false; payBtn.textContent = money(amount) + ' 결제하기'; }, 1500);
-    }
-
-    payBtn.onclick = async () => {
+  document.querySelectorAll('.paymethod-btn').forEach(btn => {
+    btn.onclick = async () => {
       const msg = document.getElementById('m-msg');
       msg.textContent = '';
-      if (!widgetReady) { msg.textContent = '결제 UI를 아직 불러오는 중입니다. 잠시만 기다려주세요.'; return; }
+      document.querySelectorAll('.paymethod-btn').forEach(b => b.disabled = true);
       try {
-        await paymentWidget.requestPayment({
+        await tossPayments.requestPayment(btn.dataset.method, {
+          amount,
           orderId,
           orderName,
           customerName: buyerName,
@@ -540,13 +535,12 @@ async function renderPaymentStep(orderId, amount, orderName, buyerName, buyerEma
         });
       } catch (e) {
         console.error('토스 결제 요청 실패:', e);
+        document.querySelectorAll('.paymethod-btn').forEach(b => b.disabled = false);
+        if (e?.code === 'USER_CANCEL') { msg.textContent = '결제가 취소되었습니다.'; return; }
         msg.textContent = '결제창을 여는 데 실패했습니다: ' + (e?.message || e || '알 수 없는 오류');
       }
     };
-  } catch (e) {
-    console.error('결제위젯 렌더링 실패:', e);
-    document.getElementById('m-msg').textContent = '결제위젯을 불러오지 못했습니다: ' + (e?.message || e);
-  }
+  });
 }
 
 function showPendingState(orderId, amount) {
