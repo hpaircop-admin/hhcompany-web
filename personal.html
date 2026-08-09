@@ -162,18 +162,23 @@ const CAT_LABELS = {
   performance: '🎭 공연',
 };
 
-// 일부 상품은 전용 판매 페이지(브랜드 소개+결제까지 한 페이지)가 따로 있음 —
-// 그런 상품은 "구매하기"를 buy.html이 아니라 그 전용 페이지로 바로 연결한다.
-// id가 아니라 업장명/상품명 문자열로 매칭 — 카탈로그의 실제 products.id 값이
-// 바뀌어도(예: p14 → 다른 값) 깨지지 않도록 함.
-const CUSTOM_SALES_PAGES = [
-  { match: n => /아일랜드캐슬/.test(n), url: 'islandcastle-personal.html' },
-  { match: n => /jump/i.test(n) || /점프/.test(n), url: 'ion-jumpkids.html' },
-];
+// 개인구매는 별도 구매전용 페이지가 아니라, 각 상품의 실제 소개 페이지에
+// 로그인 기반 구매 위젯(js/buy-widget.js)이 내장되는 방식으로 통일했다.
+// "구매하기"를 누르면 그 상품 소개 페이지의 #buy 위치로 바로 이동한다.
+// (예외) 노원 JUMP KIDS는 I-ON 서브브랜드 전용 판매 페이지(ion-jumpkids.html)가
+// 이미 별도로 운영 중이라 그대로 유지한다.
+const PRODUCT_PAGE_MAP = {
+  p2: 'oceanworld.html', p3: 'kidzania.html', p4: 'lotteworld.html', p5: 'duriland.html',
+  p7: 'noljasup.html', p8: 'seoulland.html', p9: 'sinheung.html', p10: 'aquaplanet.html',
+  p11: 'folkvillage.html', p12: 'woongjin.html', p13: 'caribbean.html', p14: 'islandcastle.html',
+  p15: 'wavepark.html', p16: 'nanta.html', p17: 'painters.html', p18: 'ion-jumpkids.html',
+  p19: 'aquaplanet-gwanggyo.html', p20: 'jangsutang.html', p21: 'alsatang.html',
+  p22: 'caterpillar.html', p23: 'museumhei.html', p_1784012727753: 'onemount.html',
+};
 function customPageFor(p) {
-  const name = (p.vname || p.name || '');
-  const found = CUSTOM_SALES_PAGES.find(c => c.match(name));
-  return found ? found.url : null;
+  const page = PRODUCT_PAGE_MAP[p.id];
+  if (!page) return null;
+  return page === 'ion-jumpkids.html' ? page : (page + '#buy');
 }
 function buyUrlFor(p) {
   return customPageFor(p) || ('buy.html?product=' + encodeURIComponent(p.id));

@@ -13,6 +13,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>오션월드 | 2026 단체행사 안내</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://js.tosspayments.com/v1/payment"></script>
+<script src="js/buy-widget.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -143,11 +146,29 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
 .footer p{font-size:12px;color:rgba(255,255,255,.3);line-height:1.9}
 .footer strong{color:rgba(255,255,255,.55)}
 
+/* RESERVE FORM (날짜 지정 예약) */
+.rsv-card{background:#fff;border-radius:16px;padding:32px 26px;text-align:left;box-shadow:0 20px 50px rgba(0,20,50,.25);margin-bottom:30px}
+.rsv-note{background:rgba(0,102,204,.06);border:1px solid rgba(0,102,204,.16);border-radius:10px;padding:14px 16px;font-size:12.5px;color:var(--muted);line-height:1.7;margin-bottom:20px}
+.rsv-note strong{color:var(--blue)}
+.rsv-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.rsv-grid .full{grid-column:1/-1}
+.rsv-label{display:block;font-size:12px;font-weight:700;color:var(--dark);margin-bottom:6px}
+.rsv-input{width:100%;padding:11px 13px;border:1px solid var(--border);border-radius:8px;font-size:13.5px;color:var(--text);background:#fafcff}
+.rsv-input:focus{outline:none;border-color:var(--blue)}
+textarea.rsv-input{resize:vertical;min-height:70px}
+.rsv-submit{width:100%;background:var(--blue);color:#fff;border:none;padding:15px;border-radius:8px;font-size:15px;font-weight:800;margin-top:6px;cursor:pointer}
+.rsv-submit:hover{background:var(--blue-mid)}
+.cta-divider{display:flex;align-items:center;gap:12px;color:rgba(255,255,255,.5);font-size:12px;margin:26px 0 18px}
+.cta-divider::before,.cta-divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.25)}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--dark);color:#fff;padding:12px 22px;border-radius:8px;font-size:13px;font-weight:600;opacity:0;pointer-events:none;transition:all .25s;z-index:999}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
 @media(max-width:560px){
   .zone-grid{grid-template-columns:1fr}
   .info-grid{grid-template-columns:1fr}
   .pt-head,.pt-row{grid-template-columns:1fr 1fr}
   .cta-btns{flex-direction:column;align-items:center}
+  .rsv-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -444,17 +465,46 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
   </div>
 </div>
 
-<!-- CTA -->
+<!-- CTA + 날짜 지정 예약 -->
 <div class="cta-wrap" id="contact">
   <div class="cta-inner">
-    <h2 class="cta-title">지금 바로<br>단체 예약 문의하세요</h2>
-    <p class="cta-desc">더블에이치컴퍼니를 통해 예약하시면 단체 맞춤 일정 조율, 버스 섭외, 식사 연계까지 원스톱으로 도와드립니다.</p>
+    <h2 class="cta-title">날짜 지정<br>단체 예약 신청</h2>
+    <p class="cta-desc">원하시는 날짜로 예약을 먼저 접수해주시면, 담당자가 확인 후 확정 연락드립니다.</p>
+
+    <div class="rsv-card">
+      <div class="rsv-note">💳 <strong>결제 없이 날짜만 먼저 예약</strong>하실 수 있습니다. 결제는 예약하신 날짜에 현장에서 참가 인원 전체를 모아 <strong>일괄로 진행</strong>합니다.</div>
+      <div class="rsv-grid">
+        <div><label class="rsv-label">단체명 *</label><input class="rsv-input" type="text" id="rv-title" placeholder="예) OO초등학교"></div>
+        <div><label class="rsv-label">연락처 *</label><input class="rsv-input" type="tel" id="rv-phone" placeholder="010-0000-0000"></div>
+        <div><label class="rsv-label">희망 날짜 *</label><input class="rsv-input" type="date" id="rv-date"></div>
+        <div><label class="rsv-label">예상 인원</label><input class="rsv-input" type="number" id="rv-count" placeholder="예) 30" min="0"></div>
+        <div class="full"><label class="rsv-label">단체 구분</label>
+          <select class="rsv-input" id="rv-gtype">
+            <option value="">선택</option>
+            <option>어린이집·유치원</option><option>학교·학원</option><option>복지관·지역아동센터</option>
+            <option>체육관·스포츠클럽</option><option>종교단체</option><option>군부대</option><option>기업·단체</option><option>기타</option>
+          </select>
+        </div>
+        <div class="full"><label class="rsv-label">비밀번호 * <span style="font-weight:400;color:var(--muted)">(신청 확인용, 숫자 4자리 등)</span></label><input class="rsv-input" type="password" id="rv-pw" placeholder="예) 1234"></div>
+        <div class="full"><label class="rsv-label">추가 요청사항</label><textarea class="rsv-input" id="rv-note" placeholder="버스, 식사 등 추가 요청사항을 적어주세요"></textarea></div>
+      </div>
+      <button class="rsv-submit" onclick="submitOceanReserve()">날짜 예약 신청하기</button>
+    </div>
+
+    <div style="margin-top:22px;text-align:left">
+      <div style="font-size:14px;font-weight:800;color:#fff;margin-bottom:10px">10명 미만 개인 구매</div>
+      <div class="hhbw-mount" id="buy"></div>
+    </div>
+
+    <div class="cta-divider">또는 바로 연락하기</div>
     <div class="cta-btns">
       <a href="tel:031-339-2999" class="btn-p">📞 031-339-2999</a>
       <a href="https://pf.kakao.com/_vvZxen" target="_blank" class="btn-s">💬 카카오톡 문의</a>
     </div>
   </div>
 </div>
+
+<div class="toast" id="toast"></div>
 
 <!-- FOOTER -->
 <footer class="footer">
@@ -464,6 +514,86 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
     <span style="color:rgba(255,255,255,.18);font-size:11px">© 2026 HHCOMPANY. All rights reserved.</span>
   </p>
 </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.className = 'toast show';
+    clearTimeout(t._tt); t._tt = setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  const SB_URL = 'https://xoupacfmkhuuvxebgfqi.supabase.co';
+  const SB_KEY = 'sb_publishable_46KQebvC7_S-_JDramvDmA_jk9aSeVc';
+  async function sbFetch(path, opts={}) {
+    const res = await fetch(`${SB_URL}/rest/v1/${path}`, {
+      headers: {
+        'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`,
+        'Content-Type': 'application/json',
+        'Prefer': opts.prefer || 'return=representation',
+        ...opts.headers,
+      }, ...opts,
+    });
+    if (!res.ok) { const err = await res.text(); throw new Error(`오류 ${res.status}: ${err}`); }
+    return res.status === 204 ? null : res.json();
+  }
+
+  // ── 대표메일 알림 (EmailJS) — 예약게시판(reserve.html)과 같은 설정값 재사용 ──
+  const EMAILJS_PUBLIC_KEY = 'x4v1t-GUbsUgOBqpF';
+  const EMAILJS_SERVICE_ID = 'service_edpe1je';
+  const EMAILJS_TEMPLATE_RESERVE = 'template_ul8bspr';
+  const ADMIN_EMAIL = 'hpaircop@gmail.com';
+  if (typeof emailjs !== 'undefined' && !EMAILJS_PUBLIC_KEY.startsWith('YOUR_')) {
+    emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+  }
+  function notifyAdminEmail(params) {
+    if (typeof emailjs === 'undefined') return;
+    if (EMAILJS_PUBLIC_KEY.startsWith('YOUR_')) return;
+    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_RESERVE, { to_email: ADMIN_EMAIL, ...params })
+      .catch(e => console.warn('메일 알림 발송 실패(신청은 정상 등록됨):', e));
+  }
+
+  // 오늘 이전 날짜는 선택 못하게
+  (function(){ const d = document.getElementById('rv-date'); if (d) d.min = new Date().toISOString().slice(0,10); })();
+
+  async function submitOceanReserve() {
+    const gname = document.getElementById('rv-title').value.trim();
+    const phone = document.getElementById('rv-phone').value.trim();
+    const pw = document.getElementById('rv-pw').value.trim();
+    const dateVal = document.getElementById('rv-date').value;
+    if (!gname) { showToast('단체명을 입력해주세요'); return; }
+    if (!phone) { showToast('연락처를 입력해주세요'); return; }
+    if (!dateVal) { showToast('희망 날짜를 선택해주세요'); return; }
+    if (!pw) { showToast('비밀번호를 입력해주세요'); return; }
+    const rec = {
+      event_date: dateVal,
+      event_month: parseInt(dateVal.split('-')[1], 10),
+      venue_name: '오션월드',
+      group_type: document.getElementById('rv-gtype').value,
+      group_name: gname,
+      phone,
+      password: pw,
+      student_count: parseInt(document.getElementById('rv-count').value) || 0,
+      note: document.getElementById('rv-note').value.trim(),
+      status: 'new',
+    };
+    try {
+      await sbFetch('web_inquiries', { method:'POST', body: JSON.stringify(rec) });
+      notifyAdminEmail({
+        subject: '[오션월드] 새 날짜 예약 신청: ' + gname,
+        group_name: gname, phone, venue_name: '오션월드',
+        event_date: rec.event_date, note: rec.note || '(내용 없음)',
+      });
+      showToast('예약 신청이 접수되었습니다. 담당자가 곧 연락드립니다 🙌');
+      ['rv-title','rv-phone','rv-date','rv-count','rv-note','rv-pw'].forEach(id=>document.getElementById(id).value='');
+      document.getElementById('rv-gtype').value = '';
+    } catch(e) {
+      showToast('접수 실패: ' + e.message);
+    }
+  }
+
+  HHBuyWidget.init({ mount: '#buy', productId: 'p2', venueName: '오션월드' });
+</script>
 
 </body>
 </html>
