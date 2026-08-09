@@ -471,36 +471,55 @@ textarea.rsv-input{resize:vertical;min-height:70px}
     <h2 class="cta-title">날짜 지정<br>단체 예약 신청</h2>
     <p class="cta-desc">원하시는 날짜로 예약을 먼저 접수해주시면, 담당자가 확인 후 확정 연락드립니다.</p>
 
-    <div class="rsv-card">
-      <div class="rsv-note">💳 <strong>결제 없이 날짜만 먼저 예약</strong>하실 수 있습니다. 결제는 예약하신 날짜에 현장에서 참가 인원 전체를 모아 <strong>일괄로 진행</strong>합니다.</div>
-      <div class="rsv-grid">
-        <div><label class="rsv-label">단체명 *</label><input class="rsv-input" type="text" id="rv-title" placeholder="예) OO초등학교"></div>
-        <div><label class="rsv-label">연락처 *</label><input class="rsv-input" type="tel" id="rv-phone" placeholder="010-0000-0000"></div>
-        <div><label class="rsv-label">희망 날짜 *</label><input class="rsv-input" type="date" id="rv-date"></div>
-        <div><label class="rsv-label">예상 인원</label><input class="rsv-input" type="number" id="rv-count" placeholder="예) 30" min="0"></div>
-        <div class="full"><label class="rsv-label">단체 구분</label>
-          <select class="rsv-input" id="rv-gtype">
-            <option value="">선택</option>
-            <option>어린이집·유치원</option><option>학교·학원</option><option>복지관·지역아동센터</option>
-            <option>체육관·스포츠클럽</option><option>종교단체</option><option>군부대</option><option>기업·단체</option><option>기타</option>
-          </select>
-        </div>
-        <div class="full"><label class="rsv-label">비밀번호 * <span style="font-weight:400;color:var(--muted)">(신청 확인용, 숫자 4자리 등)</span></label><input class="rsv-input" type="password" id="rv-pw" placeholder="예) 1234"></div>
-        <div class="full"><label class="rsv-label">추가 요청사항</label><textarea class="rsv-input" id="rv-note" placeholder="버스, 식사 등 추가 요청사항을 적어주세요"></textarea></div>
+    <div style="background:#fff;border-radius:16px;padding:26px 22px;box-shadow:0 20px 50px rgba(0,20,50,.25);text-align:left">
+      <div style="display:flex;border-radius:10px;overflow:hidden;margin-bottom:20px;border:1px solid #e2e9f2">
+        <button type="button" id="rtab-group" onclick="rvSwitchTab('group')" style="flex:1;padding:13px 8px;border:none;cursor:pointer;font-weight:800;font-size:13.5px;background:#152238;color:#fff">단체 예약 (10명 이상)</button>
+        <button type="button" id="rtab-indiv" onclick="rvSwitchTab('indiv')" style="flex:1;padding:13px 8px;border:none;cursor:pointer;font-weight:800;font-size:13.5px;background:#fff;color:#152238">개인 구매</button>
       </div>
-      <button class="rsv-submit" onclick="submitOceanReserve()">날짜 예약 신청하기</button>
+
+      <div id="rpanel-group">
+        <div class="rsv-card" style="box-shadow:none;padding:0;margin-bottom:0">
+          <div class="rsv-note">💳 <strong>결제 없이 날짜만 먼저 예약</strong>하실 수 있습니다. 결제는 예약하신 날짜에 현장에서 참가 인원 전체를 모아 <strong>일괄로 진행</strong>합니다.</div>
+          <div class="rsv-grid">
+            <div><label class="rsv-label">단체명 *</label><input class="rsv-input" type="text" id="rv-title" placeholder="예) OO초등학교"></div>
+            <div><label class="rsv-label">연락처 *</label><input class="rsv-input" type="tel" id="rv-phone" placeholder="010-0000-0000"></div>
+            <div><label class="rsv-label">희망 날짜 *</label><input class="rsv-input" type="date" id="rv-date"></div>
+            <div><label class="rsv-label">예상 인원</label><input class="rsv-input" type="number" id="rv-count" placeholder="예) 30" min="0"></div>
+            <div class="full"><label class="rsv-label">단체 구분</label>
+              <select class="rsv-input" id="rv-gtype">
+                <option value="">선택</option>
+                <option>어린이집·유치원</option><option>학교·학원</option><option>복지관·지역아동센터</option>
+                <option>체육관·스포츠클럽</option><option>종교단체</option><option>군부대</option><option>기업·단체</option><option>기타</option>
+              </select>
+            </div>
+            <div class="full"><label class="rsv-label">비밀번호 * <span style="font-weight:400;color:var(--muted)">(신청 확인용, 숫자 4자리 등)</span></label><input class="rsv-input" type="password" id="rv-pw" placeholder="예) 1234"></div>
+            <div class="full"><label class="rsv-label">추가 요청사항</label><textarea class="rsv-input" id="rv-note" placeholder="버스, 식사 등 추가 요청사항을 적어주세요"></textarea></div>
+          </div>
+          <button class="rsv-submit" onclick="submitOceanReserve()">날짜 예약 신청하기</button>
+        </div>
+
+        <div class="cta-divider">또는 바로 연락하기</div>
+        <div class="cta-btns">
+          <a href="tel:031-339-2999" class="btn-p">📞 031-339-2999</a>
+          <a href="https://pf.kakao.com/_vvZxen" target="_blank" class="btn-s">💬 카카오톡 문의</a>
+        </div>
+      </div>
+
+      <div id="rpanel-indiv" style="display:none">
+        <div class="hhbw-mount" id="buy"></div>
+      </div>
     </div>
 
-    <div style="margin-top:22px;text-align:left">
-      <div style="font-size:14px;font-weight:800;color:#fff;margin-bottom:10px">10명 미만 개인 구매</div>
-      <div class="hhbw-mount" id="buy"></div>
-    </div>
-
-    <div class="cta-divider">또는 바로 연락하기</div>
-    <div class="cta-btns">
-      <a href="tel:031-339-2999" class="btn-p">📞 031-339-2999</a>
-      <a href="https://pf.kakao.com/_vvZxen" target="_blank" class="btn-s">💬 카카오톡 문의</a>
-    </div>
+    <script>
+      function rvSwitchTab(tab) {
+        var g = document.getElementById('rtab-group'), i = document.getElementById('rtab-indiv');
+        g.style.background = tab === 'group' ? '#152238' : '#fff'; g.style.color = tab === 'group' ? '#fff' : '#152238';
+        i.style.background = tab === 'indiv' ? '#152238' : '#fff'; i.style.color = tab === 'indiv' ? '#fff' : '#152238';
+        document.getElementById('rpanel-group').style.display = tab === 'group' ? '' : 'none';
+        document.getElementById('rpanel-indiv').style.display = tab === 'indiv' ? '' : 'none';
+      }
+      if (location.hash === '#buy') rvSwitchTab('indiv');
+    </script>
   </div>
 </div>
 
