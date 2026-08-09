@@ -419,8 +419,13 @@ async function oauthSignup(provider) {
 }
 
 // 세션이 만들어지는 대로(코드 인증 성공 또는 OAuth 복귀 시) 동의 기록 → 연락처 보유 여부 확인 → 최종 이동
-sb.auth.onAuthStateChange(async (event, session) => {
-  if (!session) return;
+// ⚠️ onAuthStateChange 리스너와, 페이지 로드 시 getSession()으로 "이미 로그인돼있으면 바로 이동"하던
+// 별도 체크가 동시에 있으면 후자가 먼저 끝나버려 프로필 완성 단계를 건너뛸 수 있음(레이스 컨디션).
+// 그래서 두 경로 모두 아래 finishAuth() 하나만 타도록 통일하고, authFlowStarted 가드로 중복 실행을 막음.
+let authFlowStarted = false;
+async function finishAuth(session) {
+  if (!session || authFlowStarted) return;
+  authFlowStarted = true;
 
   if (sessionStorage.getItem('hh_oauth_consent_pending') === '1') {
     const marketingPref = sessionStorage.getItem('hh_oauth_marketing_pref') === '1';
@@ -449,11 +454,13 @@ sb.auth.onAuthStateChange(async (event, session) => {
   } catch (e) { /* 조회 실패 시에는 그냥 통과시켜 로그인은 막지 않음 */ }
 
   location.href = getRedirectTarget();
-});
+}
+
+sb.auth.onAuthStateChange((event, session) => { finishAuth(session); });
 
 (async () => {
   const { data: { session } } = await sb.auth.getSession();
-  if (session) { location.href = getRedirectTarget(); }
+  if (session) finishAuth(session);
 })();
 
 if ('serviceWorker' in navigator) {
