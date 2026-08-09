@@ -42,6 +42,10 @@
   .topbar-inner p{color:rgba(255,255,255,.75);font-size:13.5px;line-height:1.7}
 
   .wrap{max-width:960px;margin:0 auto;padding:28px 20px 60px}
+  .cat-section{margin-bottom:36px}
+  .cat-section:last-child{margin-bottom:0}
+  .cat-title{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:800;color:var(--navy);margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--line)}
+  .cat-title .cat-count{font-size:11.5px;font-weight:700;color:var(--gray);background:var(--line);padding:2px 9px;border-radius:999px}
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
   .card{background:#fff;border-radius:14px;box-shadow:0 6px 20px rgba(14,42,71,.07);overflow:hidden;display:flex;flex-direction:column}
   .card-top{background:linear-gradient(135deg,var(--navy),var(--blue));padding:20px;color:#fff}
@@ -148,6 +152,16 @@ function money(n) { return Number(n || 0).toLocaleString('ko-KR') + '원'; }
 
 let CATALOG = [];
 
+// products.cat 값(waterpark/theme/experience/performance) 기준으로 섹션을 나눔.
+// 관리자 화면(admin/index.html #prod-cat)에서 실제 쓰는 값과 동일하게 맞춤.
+const CAT_ORDER = ['waterpark', 'theme', 'experience', 'performance'];
+const CAT_LABELS = {
+  waterpark: '🌊 워터파크',
+  theme: '🎡 놀이공원 · 테마파크',
+  experience: '🎨 체험 · 키즈파크',
+  performance: '🎭 공연',
+};
+
 // 일부 상품은 전용 판매 페이지(브랜드 소개+결제까지 한 페이지)가 따로 있음 —
 // 그런 상품은 "구매하기"를 buy.html이 아니라 그 전용 페이지로 바로 연결한다.
 // id가 아니라 업장명/상품명 문자열로 매칭 — 카탈로그의 실제 products.id 값이
@@ -165,6 +179,25 @@ function buyUrlFor(p) {
   return customPageFor(p) || ('buy.html?product=' + encodeURIComponent(p.id));
 }
 
+function cardHtml(p) {
+  return `
+    <div class="card">
+      <div class="card-top">
+        <div class="emoji">${p.emoji || '🎟️'}</div>
+        <div class="venue">${p.vname || p.name}</div>
+      </div>
+      <div class="card-body">
+        <div class="desc">${p.desc || p.name}</div>
+        <div class="card-price">${money(p.indiv_price)} <small>1인</small></div>
+        <div class="btn-row">
+          <button type="button" class="detail-btn" onclick="openDetail('${p.id}')">자세히보기</button>
+          <a class="buy-btn" href="${buyUrlFor(p)}">구매하기 →</a>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
 async function loadCatalog() {
   const list = document.getElementById('list');
   try {
@@ -174,23 +207,23 @@ async function loadCatalog() {
       list.innerHTML = `<div class="empty">현재 판매 중인 개인 전용 상품이 없습니다.<br>문의: 031-339-2999</div>`;
       return;
     }
-    list.className = 'grid';
-    list.innerHTML = CATALOG.map(p => `
-      <div class="card">
-        <div class="card-top">
-          <div class="emoji">${p.emoji || '🎟️'}</div>
-          <div class="venue">${p.vname || p.name}</div>
+    list.className = '';
+
+    // cat 값 기준으로 그룹핑 — 알 수 없는/빈 값은 '체험'류로 묶어서 누락되는 상품이 없게 함
+    const groups = {};
+    CATALOG.forEach(p => {
+      const key = CAT_ORDER.includes(p.cat) ? p.cat : 'experience';
+      (groups[key] = groups[key] || []).push(p);
+    });
+
+    list.innerHTML = CAT_ORDER
+      .filter(k => groups[k] && groups[k].length)
+      .map(k => `
+        <div class="cat-section">
+          <div class="cat-title">${CAT_LABELS[k]}<span class="cat-count">${groups[k].length}</span></div>
+          <div class="grid">${groups[k].map(cardHtml).join('')}</div>
         </div>
-        <div class="card-body">
-          <div class="desc">${p.desc || p.name}</div>
-          <div class="card-price">${money(p.indiv_price)} <small>1인</small></div>
-          <div class="btn-row">
-            <button type="button" class="detail-btn" onclick="openDetail('${p.id}')">자세히보기</button>
-            <a class="buy-btn" href="${buyUrlFor(p)}">구매하기 →</a>
-          </div>
-        </div>
-      </div>
-    `).join('');
+      `).join('');
   } catch (e) {
     list.className = 'loading';
     list.innerHTML = `불러오지 못했습니다. 잠시 후 다시 시도해주세요.`;
