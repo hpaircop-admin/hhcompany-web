@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-N4BWKWXEQ4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-N4BWKWXEQ4');
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>아일랜드캐슬 개인 입장권 구매 | (주)더블에이치컴퍼니</title>
+<meta name="description" content="경기 의정부 장암온천 위 실내외 복합 워터파크&온천스파, 아일랜드캐슬 개인 입장권 온라인 구매">
+<meta name="robots" content="noindex, nofollow">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0e2a47">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://js.tosspayments.com/v1/payment"></script>
+<style>
+  @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css');
+  :root{
+    --navy:#0e2a47;--navy-deep:#081b30;--blue:#1d6fe0;--sky:#47b6e8;--coral:#ff6b5c;--amber:#ffb648;
+    --cream:#f5f8fc;--ink:#16202e;--gray:#64748b;--line:#e2e9f2;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Pretendard',-apple-system,sans-serif;background:var(--cream);color:var(--ink);line-height:1.6}
+  a{text-decoration:none;color:inherit}
+  img{max-width:100%;display:block}
+
+  .nav{position:sticky;top:0;z-index:200;background:var(--navy-deep);padding:13px 20px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .nav-brand{display:flex;align-items:center;gap:9px}
+  .nav-brand img{width:26px;height:auto}
+  .nav-brand span{color:#fff;font-weight:800;font-size:14.5px}
+  .nav-brand span b{color:var(--sky)}
+  .nav-back{font-size:12px;font-weight:700;color:rgba(255,255,255,.72)}
+  .nav-back:hover{color:#fff}
+
+  .hero{position:relative;width:100%;min-height:52vh;display:flex;align-items:flex-end;overflow:hidden;background:linear-gradient(135deg,var(--navy-deep),var(--navy))}
+  .hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55}
+  .hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,27,48,.94) 0%,rgba(8,27,48,.55) 55%,rgba(8,27,48,.15) 100%)}
+  .hero-content{position:relative;z-index:2;padding:0 20px 30px;width:100%;max-width:720px;margin:0 auto}
+  .hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;font-size:11px;font-weight:800;letter-spacing:.02em;padding:6px 13px;border-radius:999px;margin-bottom:14px}
+  .hero-title{font-size:clamp(24px,6.5vw,38px);font-weight:900;color:#fff;line-height:1.3;letter-spacing:-.02em;margin-bottom:10px}
+  .hero-sub{font-size:13.5px;color:rgba(255,255,255,.82);line-height:1.75;margin-bottom:22px;max-width:560px}
+  .hero-btn{display:inline-block;background:var(--coral);color:#fff;font-size:14px;font-weight:800;padding:13px 26px;border-radius:10px}
+
+  .section{max-width:720px;margin:0 auto;padding:44px 20px}
+  .section-title{font-size:19px;font-weight:800;margin-bottom:14px;letter-spacing:-.01em}
+  .about-desc{font-size:13.5px;color:var(--gray);line-height:1.85;margin-bottom:18px}
+  .pill-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+  .pill{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:12.5px;font-weight:700;color:var(--navy);text-align:center}
+
+  .info-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 22px}
+  .info-row{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);font-size:13px}
+  .info-row:last-child{border-bottom:none}
+  .info-row .k{color:var(--gray);font-weight:600;flex-shrink:0}
+  .info-row .v{text-align:right;color:var(--ink)}
+
+  .buy-band{background:linear-gradient(135deg,var(--navy),var(--blue));border-radius:16px;padding:26px 24px;color:#fff;display:flex;flex-direction:column;gap:14px}
+  .buy-band .label{font-size:11.5px;font-weight:700;color:rgba(255,255,255,.75);letter-spacing:.03em}
+  .buy-band .price{font-size:26px;font-weight:900}
+  .buy-band .price small{font-size:12px;font-weight:600;color:rgba(255,255,255,.75)}
+  .buy-band-btn{background:var(--coral);color:#fff;font-size:15px;font-weight:800;padding:14px;border-radius:10px;border:none;cursor:pointer;width:100%}
+  .buy-band-btn:hover{background:#ff8171}
+
+  .faq-item{border-bottom:1px solid var(--line);padding:14px 0}
+  .faq-item:last-child{border-bottom:none}
+  .faq-q{font-size:13.5px;font-weight:700;margin-bottom:6px}
+  .faq-a{font-size:12.5px;color:var(--gray);line-height:1.7}
+
+  .foot{max-width:720px;margin:0 auto;padding:20px 20px 60px;text-align:center;font-size:11.5px;color:var(--gray);line-height:1.8}
+  .foot a{color:var(--blue)}
+
+  /* ── 구매 모달 ── */
+  .modal-bg{display:none;position:fixed;inset:0;background:rgba(8,27,48,.55);z-index:300;align-items:flex-end;justify-content:center}
+  .modal-bg.open{display:flex}
+  .modal{background:#fff;width:100%;max-width:480px;max-height:90vh;border-radius:20px 20px 0 0;overflow-y:auto;animation:slideUp .25s ease}
+  @media (min-width:640px){ .modal-bg{align-items:center} .modal{border-radius:16px;max-height:82vh} }
+  @keyframes slideUp{from{transform:translateY(24px);opacity:0}to{transform:translateY(0);opacity:1}}
+  .modal-top{background:linear-gradient(135deg,var(--navy),var(--blue));padding:22px 24px;color:#fff;position:relative}
+  .modal-close{position:absolute;top:14px;right:14px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.18);border:none;color:#fff;font-size:18px;cursor:pointer;line-height:1}
+  .modal-top .tag{font-size:11px;font-weight:800;opacity:.8;margin-bottom:4px}
+  .modal-top .title{font-size:17px;font-weight:800}
+  .modal-body{padding:20px 22px 24px}
+  .mfield{margin-bottom:14px}
+  .mfield label{display:block;font-size:12px;font-weight:700;color:var(--navy);margin-bottom:6px}
+  .mfield input{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:8px;font-size:14.5px;font-family:inherit;background:#fafbfd}
+  .mfield input:focus{outline:none;border-color:var(--blue);background:#fff}
+  .mprice-row{display:flex;align-items:center;justify-content:space-between;background:var(--cream);border-radius:10px;padding:13px 15px;margin-bottom:16px}
+  .mprice-row .l{font-size:12px;color:var(--gray);font-weight:600}
+  .mprice-row .amt{font-size:18px;font-weight:800;color:var(--coral)}
+  .msubmit{width:100%;padding:13px;border:none;border-radius:10px;background:var(--navy);color:#fff;font-size:14.5px;font-weight:700;cursor:pointer}
+  .msubmit:hover{background:var(--blue)}
+  .msubmit:disabled{opacity:.5;cursor:not-allowed}
+  .mmsg{font-size:12px;color:#dc2626;margin-top:10px;line-height:1.6}
+  .pay-method-grid{display:flex;flex-direction:column;gap:8px;margin-bottom:6px}
+  .paymethod-btn{width:100%;padding:13px;border:1.5px solid var(--line);border-radius:10px;background:#fff;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer}
+  .paymethod-btn:hover{border-color:var(--blue);color:var(--blue)}
+  .paymethod-btn:disabled{opacity:.5;cursor:not-allowed}
+  .test-badge{display:inline-block;background:var(--amber);color:#4a2e00;font-size:11px;font-weight:800;padding:5px 11px;border-radius:999px;margin-bottom:14px}
+  .mstate{font-size:13.5px;color:var(--ink);line-height:1.8}
+  .mstate strong{display:block;font-size:15px;margin-bottom:8px}
+  .mstate .sub{font-size:12px;color:var(--gray);margin-top:10px}
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <div class="nav-brand">
+    <img src="logo-icon.png" alt="HHCOMPANY">
+    <span>HH<b>COMPANY</b> · 아일랜드캐슬</span>
+  </div>
+  <a href="personal.html" class="nav-back">← 개인 전용관으로</a>
+</div>
+
+<div class="hero">
+  <img class="hero-img" src="products/아일랜드캐슬/아일랜드캐슬(무지).jpg" alt="아일랜드캐슬" onerror="this.style.display='none'">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-badge">📍 경기 의정부 장암온천 · 천연온천수 100%</div>
+    <div class="hero-title">언제나 즐거운<br>아일랜드캐슬</div>
+    <div class="hero-sub">경기 의정부 장암온천 위에 자리한 실내외 복합 워터파크&온천스파입니다. 마야 신전을 테마로 꾸며진 실내 파도풀과 토렌트리버 유수풀, 실외 워터슬라이드존, 그리고 천연온천수 100%를 사용한 스파힐링존까지 사계절 내내 즐기실 수 있습니다.</div>
+    <a href="#buy" class="hero-btn">개인 입장권 구매하기 →</a>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">이용 안내</div>
+  <div class="pill-grid">
+    <div class="pill">🌊 파도풀</div>
+    <div class="pill">🎢 워터슬라이드</div>
+    <div class="pill">🏞️ 토렌트리버 유수풀</div>
+    <div class="pill">♨️ 스파힐링존</div>
+    <div class="pill">👶 실내키즈존</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">기본 정보</div>
+  <div class="info-card">
+    <div class="info-row"><span class="k">위치</span><span class="v">경기 의정부 장암온천</span></div>
+    <div class="info-row"><span class="k">온천</span><span class="v">천연온천수 100% 사용</span></div>
+    <div class="info-row"><span class="k">이용 방식</span><span class="v">실내외 자유이용</span></div>
+    <div class="info-row"><span class="k">예약 문의</span><span class="v"><a href="tel:031-339-2999" style="color:var(--blue)">031-339-2999</a></span></div>
+  </div>
+</div>
+
+<div class="section" id="buy">
+  <div class="section-title">개인 입장권 구매</div>
+  <div class="buy-band">
+    <div class="label">아일랜드캐슬 개인 입장권 (1인)</div>
+    <div class="price" id="band-price">가격 불러오는 중...</div>
+    <button type="button" class="buy-band-btn" onclick="openBuyModal()">온라인으로 결제하기</button>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">자주 묻는 질문</div>
+  <div class="faq-item">
+    <div class="faq-q">현장에서 바로 입장할 수 있나요?</div>
+    <div class="faq-a">온라인 결제 완료 후 문자(카카오 알림톡)로 바코드 입장권 링크를 보내드립니다. 현장에서 그 링크의 바코드를 제시해주시면 바로 입장하실 수 있습니다.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">단체(10인 이상)로 방문하려면 어떻게 하나요?</div>
+    <div class="faq-a">단체 예약은 이 페이지가 아닌 별도 단체 문의를 통해 진행됩니다. 031-339-2999로 전화 문의해주세요.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">환불이나 일정 변경이 가능한가요?</div>
+    <div class="faq-a">결제 후 방문 전까지 문의주시면 안내해드립니다. 031-339-2999로 연락해주세요.</div>
+  </div>
+</div>
+
+<div class="foot">
+  (주)더블에이치컴퍼니 · 사업자등록번호 420-88-03868<br>
+  문의 <a href="tel:031-339-2999">031-339-2999</a>
+</div>
+
+<!-- 구매 모달 -->
+<div class="modal-bg" id="buyOverlay" onclick="if(event.target===this) closeBuyModal()">
+  <div class="modal">
+    <div class="modal-top">
+      <button class="modal-close" onclick="closeBuyModal()">×</button>
+      <div class="tag">개인 입장권</div>
+      <div class="title" id="m-title">아일랜드캐슬 개인 입장권</div>
+    </div>
+    <div class="modal-body" id="m-body">
+      <!-- renderModalBody()로 채워짐 -->
+    </div>
+  </div>
+</div>
+
+<script>
+const SB_URL = 'https://xoupacfmkhuuvxebgfqi.supabase.co';
+const SB_KEY = 'sb_publishable_46KQebvC7_S-_JDramvDmA_jk9aSeVc';
+const FN_URL = `${SB_URL}/functions/v1/payment-confirm`;
+const sb = supabase.createClient(SB_URL, SB_KEY);
+
+// 아일랜드캐슬은 별도 신규 상품을 만들지 않고, 이미 personal.html 카탈로그(indiv_products_public)에
+// 노출 중인 기존 상품 id를 그대로 재사용합니다 (관리자 상품 화면에서 이미 개인가/판매활성화가
+// 설정돼 있어 pin_inventory 재고와도 그대로 연결됨).
+const PRODUCT_ID = 'p14';
+
+let PRICE = null;
+
+function money(n) { return Number(n || 0).toLocaleString('ko-KR') + '원'; }
+
+async function fnFetch(path, body) {
+  const res = await fetch(`${FN_URL}/${path}`, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body || {}),
+  });
+  const data = await res.json().catch(() => ({}));
+  return { ok: res.ok, status: res.status, data };
+}
+
+async function loadPrice() {
+  try {
+    const { data } = await sb.from('products').select('id, indiv_price').eq('id', PRODUCT_ID).maybeSingle();
+    PRICE = data ? data.indiv_price : null;
+  } catch (e) { /* 아래에서 null 처리 */ }
+  const el = document.getElementById('band-price');
+  if (PRICE) {
+    el.innerHTML = money(PRICE) + '<small style="font-weight:600;font-size:12px"> / 1인</small>';
+  } else {
+    el.textContent = '현재 온라인 판매가 준비 중입니다';
+  }
+}
+
+function openBuyModal() {
+  if (!PRICE) { alert('현재 온라인 판매가 준비 중입니다. 031-339-2999로 문의해주세요.'); return; }
+  renderModalBody();
+  document.getElementById('buyOverlay').classList.add('open');
+}
+function closeBuyModal() {
+  document.getElementById('buyOverlay').classList.remove('open');
+}
+
+function renderModalBody() {
+  const body = document.getElementById('m-body');
+  body.innerHTML = `
+    <div class="mfield"><label>구매자 이름</label><input type="text" id="m-name" placeholder="이름을 입력해주세요"></div>
+    <div class="mfield"><label>연락처</label><input type="tel" id="m-phone" placeholder="010-0000-0000"></div>
+    <div class="mfield"><label>이메일 (선택)</label><input type="email" id="m-email" placeholder="안내 발송용"></div>
+    <div class="mfield"><label>인원 수</label><input type="number" id="m-qty" value="1" min="1" max="20"></div>
+    <div class="mprice-row"><span class="l">결제 예정 금액</span><span class="amt" id="m-amount">${money(PRICE)}</span></div>
+    <button type="button" class="msubmit" id="m-submit">결제 진행하기</button>
+    <div class="mmsg" id="m-msg"></div>
+  `;
+  const qtyInput = document.getElementById('m-qty');
+  const amountEl = document.getElementById('m-amount');
+  qtyInput.oninput = () => {
+    const q = Math.max(1, parseInt(qtyInput.value, 10) || 1);
+    amountEl.textContent = money(PRICE * q);
+  };
+  document.getElementById('m-submit').onclick = submitTicket;
+}
+
+// ── 토스페이먼츠 결제창(V1, API 개별 연동 키) — 테스트 키 ─────────
+// ⚠️ 지금은 더블에이치컴퍼니 개발자센터 계정의 테스트 키를 쓰고 있어 실제 청구가 발생하지 않습니다.
+// 정식 오픈 시 이 값을 실제 발급받은 live_ck_ 키로 교체하고, Supabase Edge Function Secrets의
+// TOSS_SECRET_KEY도 함께 live_sk_ 키로 바꿔야 합니다.
+const TOSS_CLIENT_KEY = 'test_ck_mBZ1gQ4YVXjkO0AlJW968l2KPoqN';
+
+async function submitTicket() {
+  const name = document.getElementById('m-name').value.trim();
+  const phone = document.getElementById('m-phone').value.trim();
+  const email = document.getElementById('m-email').value.trim();
+  const qty = Math.max(1, parseInt(document.getElementById('m-qty').value, 10) || 1);
+  const msg = document.getElementById('m-msg');
+  const btn = document.getElementById('m-submit');
+
+  if (!name) { msg.textContent = '이름을 입력해주세요.'; return; }
+  if (!phone) { msg.textContent = '연락처를 입력해주세요.'; return; }
+  msg.textContent = '';
+
+  btn.disabled = true; btn.textContent = '신청 접수 중...';
+  const created = await fnFetch('create', {
+    productId: PRODUCT_ID, quantity: qty, buyerName: name, buyerPhone: phone,
+    buyerEmail: email || undefined,
+  });
+
+  if (!created.ok) {
+    btn.disabled = false; btn.textContent = '결제 진행하기';
+    msg.textContent = created.data?.message || '신청 처리에 실패했습니다.';
+    return;
+  }
+
+  const orderId = created.data.data.orderId;
+  const amount = created.data.data.amount;
+  renderPaymentStep(orderId, amount, '아일랜드캐슬 개인 입장권', name, email);
+}
+
+// 주문 생성 완료 → 결제수단 선택 버튼을 모달 안에 렌더링 (토스 결제창 V1)
+async function renderPaymentStep(orderId, amount, orderName, buyerName, buyerEmail) {
+  const body = document.getElementById('m-body');
+  body.innerHTML = `
+    <div class="test-badge">테스트 결제 모드 · 실제 청구 없음</div>
+    <div class="mprice-row"><span class="l">결제 금액</span><span class="amt">${money(amount)}</span></div>
+    <div class="pay-method-grid" id="pay-method-grid">
+      <button type="button" class="paymethod-btn" data-method="카드">💳 카드로 결제</button>
+      <button type="button" class="paymethod-btn" data-method="계좌이체">🏦 계좌이체로 결제</button>
+      <button type="button" class="paymethod-btn" data-method="토스페이">🅣 토스페이로 결제</button>
+    </div>
+    <div class="mmsg" id="m-msg"></div>
+  `;
+
+  if (location.protocol === 'file:') {
+    document.getElementById('m-msg').innerHTML =
+      '⚠️ file://로 직접 열면 결제창이 정상 동작하지 않을 수 있습니다.<br>실제 배포 주소(https://)로 열어서 테스트해주세요.';
+  }
+
+  let tossPayments;
+  try {
+    tossPayments = TossPayments(TOSS_CLIENT_KEY);
+  } catch (e) {
+    console.error('토스페이먼츠 SDK 초기화 실패:', e);
+    document.getElementById('m-msg').textContent = '결제 모듈을 불러오지 못했습니다: ' + (e?.message || e);
+    return;
+  }
+
+  document.querySelectorAll('.paymethod-btn').forEach(btn => {
+    btn.onclick = async () => {
+      const msg = document.getElementById('m-msg');
+      msg.textContent = '';
+      document.querySelectorAll('.paymethod-btn').forEach(b => b.disabled = true);
+      try {
+        await tossPayments.requestPayment(btn.dataset.method, {
+          amount,
+          orderId,
+          orderName,
+          customerName: buyerName,
+          customerEmail: buyerEmail || undefined,
+          successUrl: location.origin + location.pathname,
+          failUrl: location.origin + location.pathname,
+        });
+      } catch (e) {
+        console.error('토스 결제 요청 실패:', e);
+        document.querySelectorAll('.paymethod-btn').forEach(b => b.disabled = false);
+        if (e?.code === 'USER_CANCEL') { msg.textContent = '결제가 취소되었습니다.'; return; }
+        msg.textContent = '결제창을 여는 데 실패했습니다: ' + (e?.message || e || '알 수 없는 오류');
+      }
+    };
+  });
+}
+
+function showConfirmingState() {
+  document.getElementById('m-body').innerHTML = `
+    <div class="mstate"><strong>결제 확인 중입니다...</strong>잠시만 기다려주세요.</div>`;
+}
+function showConfirmFailedState(message) {
+  document.getElementById('m-body').innerHTML = `
+    <div class="mstate">
+      <strong>결제 확인에 실패했습니다</strong>
+      ${message || '결제 승인 중 문제가 발생했습니다.'}
+      <div class="sub">문의: 031-339-2999</div>
+    </div>`;
+}
+
+// 토스 결제창에서 successUrl/failUrl로 돌아왔을 때(=페이지 전체가 새로고침된 상태) 처리
+async function handleTossRedirectReturn() {
+  const params = new URLSearchParams(location.search);
+  const paymentKey = params.get('paymentKey');
+  const orderId = params.get('orderId');
+  const amount = params.get('amount');
+  const failCode = params.get('code');
+
+  if (paymentKey && orderId && amount) {
+    document.getElementById('buyOverlay').classList.add('open');
+    showConfirmingState();
+    const confirmed = await fnFetch('confirm', { orderId, paymentKey, amount: Number(amount) });
+    if (confirmed.ok) {
+      const pins = confirmed.data.data.pins || [];
+      location.href = 'ticket.html?pin=' + encodeURIComponent(pins[0] || '');
+      return;
+    }
+    showConfirmFailedState(confirmed.data?.message);
+    history.replaceState(null, '', location.pathname);
+  } else if (failCode) {
+    const orderIdFromFail = params.get('orderId') || '';
+    document.getElementById('buyOverlay').classList.add('open');
+    document.getElementById('m-body').innerHTML = `
+      <div class="mstate">
+        <strong>결제가 취소됐어요</strong>
+        ${params.get('message') || '결제가 완료되지 않았습니다.'}
+        <div class="sub">${orderIdFromFail ? '접수번호 ' + orderIdFromFail + ' · ' : ''}다시 시도하시려면 구매하기를 다시 눌러주세요.</div>
+      </div>`;
+    history.replaceState(null, '', location.pathname);
+  }
+}
+
+loadPrice();
+handleTossRedirectReturn();
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+}
+</script>
+</body>
+</html>

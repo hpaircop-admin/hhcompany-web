@@ -148,6 +148,23 @@ function money(n) { return Number(n || 0).toLocaleString('ko-KR') + '원'; }
 
 let CATALOG = [];
 
+// 일부 상품은 전용 판매 페이지(브랜드 소개+결제까지 한 페이지)가 따로 있음 —
+// 그런 상품은 "구매하기"를 buy.html이 아니라 그 전용 페이지로 바로 연결한다.
+// id가 아니라 업장명/상품명 문자열로 매칭 — 카탈로그의 실제 products.id 값이
+// 바뀌어도(예: p14 → 다른 값) 깨지지 않도록 함.
+const CUSTOM_SALES_PAGES = [
+  { match: n => /아일랜드캐슬/.test(n), url: 'islandcastle-personal.html' },
+  { match: n => /jump/i.test(n) || /점프/.test(n), url: 'ion-jumpkids.html' },
+];
+function customPageFor(p) {
+  const name = (p.vname || p.name || '');
+  const found = CUSTOM_SALES_PAGES.find(c => c.match(name));
+  return found ? found.url : null;
+}
+function buyUrlFor(p) {
+  return customPageFor(p) || ('buy.html?product=' + encodeURIComponent(p.id));
+}
+
 async function loadCatalog() {
   const list = document.getElementById('list');
   try {
@@ -169,7 +186,7 @@ async function loadCatalog() {
           <div class="card-price">${money(p.indiv_price)} <small>1인</small></div>
           <div class="btn-row">
             <button type="button" class="detail-btn" onclick="openDetail('${p.id}')">자세히보기</button>
-            <a class="buy-btn" href="buy.html?product=${encodeURIComponent(p.id)}">구매하기 →</a>
+            <a class="buy-btn" href="${buyUrlFor(p)}">구매하기 →</a>
           </div>
         </div>
       </div>
@@ -187,7 +204,7 @@ function openDetail(id) {
   document.getElementById('dt-venue').textContent = p.vname || p.name;
   document.getElementById('dt-desc').textContent = p.desc || p.name;
   document.getElementById('dt-price').textContent = money(p.indiv_price);
-  document.getElementById('dt-buy-btn').href = 'buy.html?product=' + encodeURIComponent(p.id);
+  document.getElementById('dt-buy-btn').href = buyUrlFor(p);
 
   const feat = Array.isArray(p.features) ? p.features : [];
   const featWrap = document.getElementById('dt-feat-wrap');
