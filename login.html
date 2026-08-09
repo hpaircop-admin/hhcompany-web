@@ -12,7 +12,7 @@
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>회원가입 / 로그인 | (주)더블에이치컴퍼니</title>
+<title>로그인 / 회원가입 | (주)더블에이치컴퍼니</title>
 <meta name="robots" content="noindex">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0e2a47">
@@ -38,16 +38,22 @@
   .card-head .title{font-size:20px;font-weight:800}
   .card-body{padding:24px}
 
+  .tabs{display:flex;margin-bottom:18px;border-bottom:1px solid var(--line)}
+  .tab-btn{flex:1;padding:11px 4px;background:none;border:none;font-family:inherit;font-size:14.5px;font-weight:700;color:var(--gray);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .15s,border-color .15s}
+  .tab-btn.active{color:var(--navy);border-bottom-color:var(--blue)}
+
+  .lead-msg{font-size:12.5px;color:var(--gray);line-height:1.6;margin-bottom:16px}
+
   .field{margin-bottom:16px}
   .field label{display:block;font-size:12.5px;font-weight:700;color:var(--navy);margin-bottom:6px}
   .field input{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:8px;font-size:15px;font-family:inherit;background:#fafbfd}
   .field input:focus{outline:none;border-color:var(--blue);background:#fff}
 
-  .submit-btn{width:100%;padding:14px;border:none;border-radius:10px;background:var(--navy);color:#fff;font-size:15px;font-weight:700;cursor:pointer;transition:background .2s}
+  .submit-btn{width:100%;padding:14px;border:none;border-radius:10px;background:var(--navy);color:#fff;font-size:15px;font-weight:700;cursor:pointer;transition:background .2s;font-family:inherit}
   .submit-btn:hover{background:var(--blue)}
   .submit-btn:disabled{background:var(--line);color:var(--gray);cursor:not-allowed}
 
-  .msg{font-size:12.5px;color:var(--gray);margin-top:12px;line-height:1.6}
+  .msg{font-size:12.5px;color:var(--gray);margin-top:12px;line-height:1.6;min-height:1px}
   .msg.error{color:#dc2626}
   .msg.success{color:#16a34a}
   .link-back{display:block;text-align:center;margin-top:16px;font-size:12.5px;color:var(--gray);text-decoration:none}
@@ -60,6 +66,17 @@
   .consent-toggle{background:none;border:none;color:var(--blue);font-size:11.5px;font-family:inherit;text-decoration:underline;cursor:pointer;padding:0;margin-left:4px}
   .consent-detail{display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--line);font-size:11.5px;color:var(--gray);line-height:1.7}
   .consent-detail.open{display:block}
+
+  .divider{display:flex;align-items:center;gap:10px;margin:18px 0 14px;font-size:12px;color:var(--gray)}
+  .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--line)}
+
+  .oauth-btn{width:100%;padding:12px;border-radius:10px;border:1px solid var(--line);background:#fff;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px;color:var(--ink)}
+  .oauth-btn:last-child{margin-bottom:0}
+  .oauth-btn:disabled{opacity:.45;cursor:not-allowed}
+  .oauth-btn .badge{width:20px;height:20px;border-radius:5px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0}
+  .oauth-btn.google .badge{background:#fff;border:1px solid var(--line);color:#1a73e8}
+  .oauth-btn.kakao{background:#FEE500;border-color:#FEE500}
+  .oauth-btn.kakao .badge{background:#191919;color:#FEE500}
 </style>
 </head>
 <body>
@@ -73,37 +90,86 @@
   <div class="card">
     <div class="card-head">
       <div class="eyebrow">Sign Up · Login</div>
-      <div class="title">회원가입 / 로그인</div>
+      <div class="title">로그인 / 회원가입</div>
     </div>
     <div class="card-body">
-      <div id="step-email">
-        <p style="font-size:12.5px;color:var(--gray);line-height:1.6;margin-bottom:16px">아래 정보를 입력하시면 별도 가입 절차 없이 이메일 인증 링크로 바로 회원가입 및 로그인됩니다. 회원가입 후 개인 전용 구매 페이지를 이용하실 수 있습니다. (이미 가입하신 분은 이메일만 입력해주세요)</p>
-        <div class="field">
-          <label>이름</label>
-          <input type="text" id="f-name" placeholder="이름을 입력해주세요">
+
+      <div id="step-email-wrap">
+        <div class="tabs">
+          <button type="button" class="tab-btn active" id="tab-login-btn" onclick="switchTab('login')">로그인</button>
+          <button type="button" class="tab-btn" id="tab-signup-btn" onclick="switchTab('signup')">회원가입</button>
         </div>
-        <div class="field">
-          <label>연락처</label>
-          <input type="tel" id="f-phone" placeholder="010-0000-0000">
-        </div>
-        <div class="field">
-          <label>이메일</label>
-          <input type="email" id="f-email" placeholder="example@email.com">
-        </div>
-        <div class="consent">
-          <div class="consent-row">
-            <input type="checkbox" id="f-consent">
-            <label for="f-consent">개인정보 수집·이용에 동의합니다. (필수)<button type="button" class="consent-toggle" onclick="toggleConsentDetail()">내용 보기</button></label>
+
+        <!-- 로그인 (이미 가입한 회원) -->
+        <div id="panel-login">
+          <p class="lead-msg">가입하신 이메일을 입력하시면 인증코드를 보내드립니다. 비밀번호는 필요 없습니다.</p>
+          <div class="field">
+            <label>이메일</label>
+            <input type="email" id="login-email" placeholder="example@email.com">
           </div>
-          <div class="consent-detail" id="consent-detail">
-            · 수집 항목: 이름, 연락처, 이메일<br>
-            · 수집 목적: 회원가입 및 본인 확인, 개인 구매(개인 전용관) 서비스 제공, 예약·결제·티켓 안내<br>
-            · 보유 및 이용 기간: 회원 탈퇴 시까지 (관련 법령에 따라 보관이 필요한 경우 해당 기간 동안 보관)<br>
-            · 동의를 거부하실 수 있으며, 거부 시 회원가입 및 개인 구매 서비스 이용이 제한됩니다.
-          </div>
+          <button type="button" class="submit-btn" id="login-send-btn" onclick="sendCode('login')">인증코드 받기</button>
+          <div class="msg" id="login-msg"></div>
+
+          <div class="divider"><span>또는</span></div>
+          <button type="button" class="oauth-btn google" onclick="oauthLogin('google')"><span class="badge">G</span>구글로 로그인</button>
+          <button type="button" class="oauth-btn kakao" onclick="oauthLogin('kakao')"><span class="badge">K</span>카카오로 로그인</button>
         </div>
-        <button type="button" class="submit-btn" id="send-btn" onclick="sendCode()">인증코드 받기</button>
-        <div class="msg" id="email-msg"></div>
+
+        <!-- 회원가입 (신규) -->
+        <div id="panel-signup" style="display:none">
+          <p class="lead-msg">아래 정보를 입력하시면 별도 절차 없이 이메일 인증코드로 바로 회원가입됩니다. 회원가입 후 개인 전용 구매 페이지를 이용하실 수 있습니다.</p>
+          <div class="field">
+            <label>이름</label>
+            <input type="text" id="signup-name" placeholder="이름을 입력해주세요">
+          </div>
+          <div class="field">
+            <label>연락처</label>
+            <input type="tel" id="signup-phone" placeholder="010-0000-0000">
+          </div>
+          <div class="field">
+            <label>이메일</label>
+            <input type="email" id="signup-email" placeholder="example@email.com">
+          </div>
+          <div class="field">
+            <label>생년월일 <span style="font-weight:400;color:var(--gray)">(선택)</span></label>
+            <input type="date" id="signup-birthdate">
+          </div>
+          <div class="consent">
+            <div class="consent-row" style="padding-bottom:9px;margin-bottom:9px;border-bottom:1px solid var(--line)">
+              <input type="checkbox" id="signup-consent-all">
+              <label for="signup-consent-all" style="font-weight:700">전체 동의합니다</label>
+            </div>
+            <div class="consent-row">
+              <input type="checkbox" id="signup-consent-terms">
+              <label for="signup-consent-terms">이용약관 동의 (필수)<a href="terms.html" target="_blank" class="consent-toggle">보기</a></label>
+            </div>
+            <div class="consent-row" style="margin-top:9px">
+              <input type="checkbox" id="signup-consent-privacy">
+              <label for="signup-consent-privacy">개인정보 수집·이용 동의 (필수)<button type="button" class="consent-toggle" onclick="toggleConsentDetail()">내용 보기</button></label>
+            </div>
+            <div class="consent-detail" id="consent-detail">
+              · 수집 항목: 이름, 연락처, 이메일, 생년월일(선택)<br>
+              · 수집 목적: 회원가입 및 본인 확인, 개인 구매(개인 전용관) 서비스 제공, 예약·결제·티켓 안내<br>
+              · 보유 및 이용 기간: 회원 탈퇴 시까지 (관련 법령에 따라 보관이 필요한 경우 해당 기간 동안 보관)<br>
+              · 동의를 거부하실 수 있으며, 거부 시 회원가입 및 개인 구매 서비스 이용이 제한됩니다.
+            </div>
+            <div class="consent-row" style="margin-top:9px">
+              <input type="checkbox" id="signup-consent-marketing">
+              <label for="signup-consent-marketing">마케팅 정보 수신 동의 (선택)<button type="button" class="consent-toggle" onclick="toggleMarketingDetail()">내용 보기</button></label>
+            </div>
+            <div class="consent-detail" id="marketing-detail">
+              · 수집(이용) 목적: 할인·이벤트·신상품 등 광고성 정보를 문자(SMS) 및 이메일로 안내<br>
+              · 보유 및 이용 기간: 동의 철회 시 또는 회원 탈퇴 시까지<br>
+              · 동의하지 않으셔도 회원가입 및 서비스 이용에는 제한이 없으며, 마이페이지에서 언제든 철회하실 수 있습니다.
+            </div>
+          </div>
+          <button type="button" class="submit-btn" id="signup-send-btn" onclick="sendCode('signup')">인증코드 받기</button>
+          <div class="msg" id="signup-msg"></div>
+
+          <div class="divider"><span>또는</span></div>
+          <button type="button" class="oauth-btn google" onclick="oauthSignup('google')"><span class="badge">G</span>구글로 회원가입</button>
+          <button type="button" class="oauth-btn kakao" onclick="oauthSignup('kakao')"><span class="badge">K</span>카카오로 회원가입</button>
+        </div>
       </div>
 
       <div id="step-code" style="display:none">
@@ -121,6 +187,26 @@
       <div id="step-checking" style="display:none">
         <div class="msg" style="font-size:14px;color:var(--ink)">로그인 확인 중입니다...</div>
       </div>
+
+      <div id="step-complete-profile" style="display:none">
+        <p class="lead-msg">회원 정보를 조금만 더 채워주세요. 연락처는 예약·결제 안내에 꼭 필요해요.</p>
+        <div class="field">
+          <label>연락처</label>
+          <input type="tel" id="cp-phone" placeholder="010-0000-0000">
+        </div>
+        <div class="field">
+          <label>생년월일 <span style="font-weight:400;color:var(--gray)">(선택)</span></label>
+          <input type="date" id="cp-birthdate">
+        </div>
+        <div class="consent">
+          <div class="consent-row">
+            <input type="checkbox" id="cp-marketing">
+            <label for="cp-marketing">마케팅 정보(할인·이벤트 안내) 수신에 동의합니다 (선택)</label>
+          </div>
+        </div>
+        <button type="button" class="submit-btn" id="cp-save-btn" onclick="completeProfile()">완료</button>
+        <div class="msg" id="cp-msg"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -133,54 +219,96 @@ const sb = supabase.createClient(SB_URL, SB_KEY);
 let pendingEmail = '';
 let pendingName = '';
 let pendingPhone = '';
+let pendingBirthdate = '';
+let pendingMarketing = false;
+let pendingMode = 'login';
 
 function toggleConsentDetail() {
   document.getElementById('consent-detail').classList.toggle('open');
 }
+function toggleMarketingDetail() {
+  document.getElementById('marketing-detail').classList.toggle('open');
+}
+
+// "전체 동의" 체크박스 ↔ 개별 동의 3종 동기화
+(function bindConsentAll() {
+  const all = document.getElementById('signup-consent-all');
+  const boxes = ['signup-consent-terms', 'signup-consent-privacy', 'signup-consent-marketing'].map(id => document.getElementById(id));
+  all.addEventListener('change', () => { boxes.forEach(b => b.checked = all.checked); });
+  boxes.forEach(b => b.addEventListener('change', () => { all.checked = boxes.every(x => x.checked); }));
+})();
 
 function getRedirectTarget() {
   const params = new URLSearchParams(location.search);
   return params.get('redirect') || 'personal.html';
 }
 
-function showStep(step) {
-  document.getElementById('step-email').style.display = step === 'email' ? '' : 'none';
-  document.getElementById('step-code').style.display = step === 'code' ? '' : 'none';
-  document.getElementById('step-checking').style.display = step === 'checking' ? '' : 'none';
+function switchTab(mode) {
+  document.getElementById('tab-login-btn').classList.toggle('active', mode === 'login');
+  document.getElementById('tab-signup-btn').classList.toggle('active', mode === 'signup');
+  document.getElementById('panel-login').style.display = mode === 'login' ? '' : 'none';
+  document.getElementById('panel-signup').style.display = mode === 'signup' ? '' : 'none';
 }
 
-async function sendCode() {
-  const name = document.getElementById('f-name').value.trim();
-  const phone = document.getElementById('f-phone').value.trim();
-  const email = document.getElementById('f-email').value.trim();
-  const msg = document.getElementById('email-msg');
-  const btn = document.getElementById('send-btn');
-  if (!name) { msg.textContent = '이름을 입력해주세요.'; msg.className = 'msg error'; return; }
-  if (!phone) { msg.textContent = '연락처를 입력해주세요.'; msg.className = 'msg error'; return; }
-  if (!email) { msg.textContent = '이메일을 입력해주세요.'; msg.className = 'msg error'; return; }
-  if (!document.getElementById('f-consent').checked) { msg.textContent = '개인정보 수집·이용에 동의해주세요.'; msg.className = 'msg error'; return; }
+// 회원가입 안내 팝업 등에서 ?mode=signup 으로 들어오면 회원가입 탭을 기본으로 보여줌
+if (new URLSearchParams(location.search).get('mode') === 'signup') {
+  switchTab('signup');
+}
+
+function showStep(step) {
+  document.getElementById('step-email-wrap').style.display = step === 'email' ? '' : 'none';
+  document.getElementById('step-code').style.display = step === 'code' ? '' : 'none';
+  document.getElementById('step-checking').style.display = step === 'checking' ? '' : 'none';
+  document.getElementById('step-complete-profile').style.display = step === 'complete-profile' ? '' : 'none';
+}
+
+async function sendCode(mode) {
+  const msg = document.getElementById(mode === 'login' ? 'login-msg' : 'signup-msg');
+  const btn = document.getElementById(mode === 'login' ? 'login-send-btn' : 'signup-send-btn');
+  let email = '', name = '', phone = '', birthdate = '', marketing = false;
+
+  if (mode === 'login') {
+    email = document.getElementById('login-email').value.trim();
+    if (!email) { msg.textContent = '이메일을 입력해주세요.'; msg.className = 'msg error'; return; }
+  } else {
+    name = document.getElementById('signup-name').value.trim();
+    phone = document.getElementById('signup-phone').value.trim();
+    email = document.getElementById('signup-email').value.trim();
+    birthdate = document.getElementById('signup-birthdate').value || '';
+    marketing = document.getElementById('signup-consent-marketing').checked;
+    if (!name) { msg.textContent = '이름을 입력해주세요.'; msg.className = 'msg error'; return; }
+    if (!phone) { msg.textContent = '연락처를 입력해주세요.'; msg.className = 'msg error'; return; }
+    if (!email) { msg.textContent = '이메일을 입력해주세요.'; msg.className = 'msg error'; return; }
+    if (!document.getElementById('signup-consent-terms').checked) { msg.textContent = '이용약관에 동의해주세요.'; msg.className = 'msg error'; return; }
+    if (!document.getElementById('signup-consent-privacy').checked) { msg.textContent = '개인정보 수집·이용에 동의해주세요.'; msg.className = 'msg error'; return; }
+  }
 
   btn.disabled = true; btn.textContent = '전송 중...';
-  // name/phone/privacy_consent는 신규 가입일 때만 auth.users.raw_user_meta_data에 실려서 저장되고,
+  // name/phone/동의값들은 신규 가입일 때만 auth.users.raw_user_meta_data에 실려서 저장되고,
   // DB 트리거(handle_new_user)가 profiles 테이블로 자동 복사합니다(동의 시각도 함께 기록).
-  // 이미 가입된 이메일이면 이 값들은 무시되고 인증코드만 재발송됩니다.
-  // emailRedirectTo를 넘기지 않으면 링크 대신 6자리 코드로 인증하는 방식이 됩니다.
+  // 로그인(mode='login') 탭은 shouldCreateUser:false 로 호출해서, 가입 이력이 없는 이메일이면
+  // 새로 계정을 만들지 않고 에러를 돌려주도록 합니다.
   const { error } = await sb.auth.signInWithOtp({
     email,
-    options: { shouldCreateUser: true, data: { name, phone, privacy_consent: true } },
+    options: mode === 'login'
+      ? { shouldCreateUser: false }
+      : { shouldCreateUser: true, data: { name, phone, privacy_consent: true, terms_consent: true, marketing_consent: marketing, birthdate } },
   });
   btn.disabled = false; btn.textContent = '인증코드 받기';
 
   if (error) {
-    msg.textContent = '전송 실패: ' + error.message;
+    if (mode === 'login') {
+      msg.innerHTML = '가입 내역을 찾을 수 없습니다. 아직 회원이 아니시라면 <a href="#" onclick="switchTab(\'signup\');return false" style="color:var(--blue);text-decoration:underline">회원가입</a>을 진행해주세요.';
+    } else {
+      msg.textContent = '전송 실패: ' + error.message;
+    }
     msg.className = 'msg error';
     return;
   }
-  pendingEmail = email; pendingName = name; pendingPhone = phone;
+  pendingEmail = email; pendingName = name; pendingPhone = phone; pendingBirthdate = birthdate; pendingMarketing = marketing; pendingMode = mode;
   document.getElementById('code-sent-to').textContent = `${email} 로 인증코드를 보내드렸습니다. 메일함에서 코드를 확인해 아래에 입력해주세요.`;
   document.getElementById('f-code').value = '';
   document.getElementById('code-msg').textContent = '';
-  msg.textContent = '';
   showStep('code');
 }
 
@@ -200,7 +328,8 @@ async function verifyCode() {
     return;
   }
   if (data && data.session) {
-    location.href = getRedirectTarget();
+    // 이후 처리(동의 기록 확인 → 프로필 완성 여부 확인 → 최종 이동)는 onAuthStateChange가 일괄 담당
+    showStep('checking');
   }
 }
 
@@ -211,19 +340,115 @@ async function resendCode() {
   msg.className = 'msg';
   const { error } = await sb.auth.signInWithOtp({
     email: pendingEmail,
-    options: { shouldCreateUser: true, data: { name: pendingName, phone: pendingPhone, privacy_consent: true } },
+    options: pendingMode === 'login'
+      ? { shouldCreateUser: false }
+      : { shouldCreateUser: true, data: { name: pendingName, phone: pendingPhone, privacy_consent: true, terms_consent: true, marketing_consent: pendingMarketing, birthdate: pendingBirthdate } },
   });
   msg.textContent = error ? ('재전송 실패: ' + error.message) : '인증코드를 다시 보내드렸습니다.';
   msg.className = error ? 'msg error' : 'msg success';
+}
+
+// 소셜 간편가입/일반가입 모두에서 연락처가 비어있는 회원은 여기서 한 번 채우게 함
+async function completeProfile() {
+  const phone = document.getElementById('cp-phone').value.trim();
+  const birthdate = document.getElementById('cp-birthdate').value || null;
+  const marketing = document.getElementById('cp-marketing').checked;
+  const msg = document.getElementById('cp-msg');
+  if (!phone) { msg.textContent = '연락처를 입력해주세요.'; msg.className = 'msg error'; return; }
+
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) { location.href = 'login.html'; return; }
+
+  const btn = document.getElementById('cp-save-btn');
+  btn.disabled = true; btn.textContent = '저장 중...';
+  const patch = { phone, marketing_consent: marketing, marketing_consent_at: marketing ? new Date().toISOString() : null };
+  if (birthdate) patch.birthdate = birthdate;
+  const { error } = await sb.from('profiles').update(patch).eq('id', session.user.id);
+  btn.disabled = false; btn.textContent = '완료';
+
+  if (error) { msg.textContent = '저장 실패: ' + error.message; msg.className = 'msg error'; return; }
+  location.href = getRedirectTarget();
 }
 
 function backToEmail() {
   showStep('email');
 }
 
-// 세션이 만들어지는 대로(코드 인증 성공 시) 원래 가려던 곳으로 이동
-sb.auth.onAuthStateChange((event, session) => {
-  if (session) location.href = getRedirectTarget();
+// 구글/카카오 간편 로그인(기존 회원) — 계정이 없으면 OAuth 특성상 자동으로 신규 생성됩니다.
+async function oauthLogin(provider) {
+  const target = getRedirectTarget();
+  const { error } = await sb.auth.signInWithOAuth({
+    provider,
+    options: { redirectTo: location.origin + location.pathname + '?redirect=' + encodeURIComponent(target) },
+  });
+  if (error) {
+    const msg = document.getElementById('login-msg');
+    msg.textContent = '로그인 실패: ' + error.message;
+    msg.className = 'msg error';
+  }
+}
+
+// 구글/카카오 간편 회원가입 — 이용약관·개인정보 동의 체크 후에만 진행.
+// 마케팅 수신동의 여부는 세션스토리지에 잠시 담아뒀다가, 로그인 완료 후 한꺼번에 profiles에 기록.
+// (OAuth는 제공자가 주는 정보만 받기 때문에 연락처는 여기서 못 받음 — 로그인 완료 후 프로필 완성 단계에서 받음)
+async function oauthSignup(provider) {
+  const msg = document.getElementById('signup-msg');
+  if (!document.getElementById('signup-consent-terms').checked) {
+    msg.textContent = '이용약관에 동의해주세요.';
+    msg.className = 'msg error';
+    return;
+  }
+  if (!document.getElementById('signup-consent-privacy').checked) {
+    msg.textContent = '개인정보 수집·이용에 동의해주세요.';
+    msg.className = 'msg error';
+    return;
+  }
+  sessionStorage.setItem('hh_oauth_consent_pending', '1');
+  sessionStorage.setItem('hh_oauth_marketing_pref', document.getElementById('signup-consent-marketing').checked ? '1' : '0');
+  const target = getRedirectTarget();
+  const { error } = await sb.auth.signInWithOAuth({
+    provider,
+    options: { redirectTo: location.origin + location.pathname + '?redirect=' + encodeURIComponent(target) },
+  });
+  if (error) {
+    sessionStorage.removeItem('hh_oauth_consent_pending');
+    sessionStorage.removeItem('hh_oauth_marketing_pref');
+    msg.textContent = '가입 실패: ' + error.message;
+    msg.className = 'msg error';
+  }
+}
+
+// 세션이 만들어지는 대로(코드 인증 성공 또는 OAuth 복귀 시) 동의 기록 → 연락처 보유 여부 확인 → 최종 이동
+sb.auth.onAuthStateChange(async (event, session) => {
+  if (!session) return;
+
+  if (sessionStorage.getItem('hh_oauth_consent_pending') === '1') {
+    const marketingPref = sessionStorage.getItem('hh_oauth_marketing_pref') === '1';
+    sessionStorage.removeItem('hh_oauth_consent_pending');
+    sessionStorage.removeItem('hh_oauth_marketing_pref');
+    try {
+      await sb.from('profiles')
+        .update({
+          privacy_consent_at: new Date().toISOString(),
+          terms_consent_at: new Date().toISOString(),
+          marketing_consent: marketingPref,
+          marketing_consent_at: marketingPref ? new Date().toISOString() : null,
+        })
+        .eq('id', session.user.id)
+        .is('privacy_consent_at', null);
+    } catch (e) { /* 동의 기록 실패해도 로그인 자체는 계속 진행 */ }
+  }
+
+  // 연락처가 비어있으면(주로 소셜 간편가입, 또는 그 이전에 만들어진 계정) 프로필 완성 단계를 한 번 거치게 함
+  try {
+    const { data: profile } = await sb.from('profiles').select('phone').eq('id', session.user.id).maybeSingle();
+    if (profile && !profile.phone) {
+      showStep('complete-profile');
+      return;
+    }
+  } catch (e) { /* 조회 실패 시에는 그냥 통과시켜 로그인은 막지 않음 */ }
+
+  location.href = getRedirectTarget();
 });
 
 (async () => {
