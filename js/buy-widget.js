@@ -107,12 +107,24 @@
 
   async function boot(state) {
     const client = getClient();
-    const [{ data: sessionData }, priceRow] = await Promise.all([
-      client.auth.getSession(),
-      client.from('products').select('id, indiv_price').eq('id', state.productId).maybeSingle(),
-    ]);
+    let sessionData = null, priceResult = { data: null, error: null };
+    try {
+      const sessRes = await client.auth.getSession();
+      sessionData = sessRes?.data || null;
+    } catch (e) {
+      console.error('[HHBuyWidget] getSession() 실패:', e);
+    }
+    try {
+      priceResult = await client.from('products').select('id, indiv_price').eq('id', state.productId).maybeSingle();
+    } catch (e) {
+      priceResult = { data: null, error: e };
+    }
+    if (priceResult.error) {
+      console.error('[HHBuyWidget] 상품 가격 조회 실패 (productId=' + state.productId + '):', priceResult.error);
+    }
     state.session = sessionData?.session || null;
-    state.price = priceRow?.data ? priceRow.data.indiv_price : null;
+    state.price = priceResult.data ? priceResult.data.indiv_price : null;
+    state.priceError = priceResult.error || null;
 
     if (state.session) {
       try {
@@ -134,11 +146,21 @@
     const { mountEl, price } = state;
 
     if (!price) {
-      mountEl.innerHTML = `
-        <div class="hhbw-label">개인 구매</div>
-        <div class="hhbw-price">현재 온라인 판매 준비 중입니다</div>
-        <div class="hhbw-note">전화 또는 카카오톡 문의로 개인(10인 미만) 예약을 도와드릴게요.</div>
-      `;
+      if (state.priceError) {
+        // 실제로 상품이 미설정인 게 아니라 조회 자체가 실패한 경우 — 콘솔에 이미 상세 에러를 남겼으니
+        // 화면에는 문의 유도 + 개발자용 힌트만 짧게 표시 (F12 콘솔에서 정확한 원인 확인 가능)
+        mountEl.innerHTML = `
+          <div class="hhbw-label">개인 구매</div>
+          <div class="hhbw-price">가격 정보를 불러오지 못했습니다</div>
+          <div class="hhbw-note">전화 또는 카카오톡으로 문의해주세요. (관리자: 브라우저 콘솔(F12)에서 정확한 오류 메시지를 확인할 수 있습니다)</div>
+        `;
+      } else {
+        mountEl.innerHTML = `
+          <div class="hhbw-label">개인 구매</div>
+          <div class="hhbw-price">현재 온라인 판매 준비 중입니다</div>
+          <div class="hhbw-note">전화 또는 카카오톡 문의로 개인(10인 미만) 예약을 도와드릴게요.</div>
+        `;
+      }
       return;
     }
 
