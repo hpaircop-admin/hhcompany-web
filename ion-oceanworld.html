@@ -433,13 +433,20 @@ function renderRoundCard() {
 }
 
 async function boot() {
-  const { data: productRow } = await sb.from('products').select('id, indiv_price, group_dates').eq('id', PRODUCT_ID).maybeSingle();
+  const { data: productRow, error: productErr } = await sb.from('products').select('id, indiv_price, group_dates').eq('id', PRODUCT_ID).maybeSingle();
+  if (productErr) console.error('[ion-oceanworld] 상품 조회 실패:', productErr);
+  if (!productRow) console.error('[ion-oceanworld] products 테이블에 id=' + PRODUCT_ID + ' 상품이 없습니다. supabase_migration_group_dates.sql(및 이전 오션월드 모집형 마이그레이션)을 Supabase SQL 편집기에서 실행했는지 확인하세요.');
   PRICE = productRow ? productRow.indiv_price : null;
   GROUP_DATES = (productRow && productRow.group_dates) || [];
   await loadGroupProgress();
 
-  document.getElementById('group-price').innerHTML = money(PRICE) + '<small>원 / 1인</small>';
-  document.getElementById('card-price').textContent = money(PRICE);
+  if (!PRICE) {
+    document.getElementById('group-price').innerHTML = '가격 준비중<small> · 문의 031-339-2999</small>';
+    document.getElementById('card-price').textContent = '준비중';
+  } else {
+    document.getElementById('group-price').innerHTML = money(PRICE) + '<small>원 / 1인</small>';
+    document.getElementById('card-price').textContent = money(PRICE);
+  }
   renderRoundCard();
 
   const openCount = GROUP_DATES.filter(d => !isClosed(d)).length;
@@ -461,6 +468,10 @@ function closeModal() {
 
 function renderModalBody() {
   const body = document.getElementById('m-body');
+  if (!PRICE) {
+    body.innerHTML = `<div class="mstate"><strong>현재 온라인 신청 준비 중입니다</strong>가격 정보가 아직 등록되지 않았습니다.<div class="sub">문의: 031-339-2999</div></div>`;
+    return;
+  }
   const openDates = GROUP_DATES.filter(d => !isClosed(d));
   const dateOptions = openDates.map(d => {
     const cnt = progressCache[d.value] || 0;
