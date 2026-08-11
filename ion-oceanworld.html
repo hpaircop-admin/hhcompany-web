@@ -166,6 +166,33 @@ a{color:inherit}
 .loc-row b{width:52px;flex-shrink:0;color:var(--ink)}
 .loc-row span{color:var(--muted);line-height:1.6}
 
+/* PRICING (참고용 정가표) */
+.price-band{padding:44px 20px;background:var(--ion-indigo)}
+.price-band .price-inner{max-width:820px;margin:0 auto}
+.price-band .sec-label{color:var(--ion-gold)}
+.price-band .sec-title{color:#fff}
+.price-band .sec-desc{color:rgba(255,255,255,.65)}
+.price-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}
+@media(max-width:560px){.price-grid{grid-template-columns:1fr}}
+.price-period{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:14px 16px}
+.price-period.peak{border-color:rgba(255,200,87,.4);background:rgba(255,200,87,.08)}
+.period-title{font-size:11px;font-weight:800;color:var(--ion-gold);letter-spacing:.05em;margin-bottom:10px}
+.pt{width:100%;border-collapse:collapse}
+.pt th{font-size:10px;color:rgba(255,255,255,.4);font-weight:700;text-align:center;padding:5px 6px;border-bottom:1px solid rgba(255,255,255,.08);letter-spacing:.04em}
+.pt td{font-size:13.5px;text-align:center;padding:8px 6px;border-bottom:1px solid rgba(255,255,255,.05);color:#fff;font-weight:700}
+.pt td:first-child{color:rgba(255,255,255,.7);font-weight:600;text-align:left}
+.pt tr:last-child td{border-bottom:none}
+.pt .cy{color:var(--ion-gold)}
+.pt .wy{color:var(--ion-coral)}
+.price-note-box{background:rgba(255,107,74,.1);border:1px solid rgba(255,107,74,.25);border-radius:12px;padding:14px 16px;margin-top:16px}
+.price-note-box p{font-size:11.5px;color:rgba(255,255,255,.75);line-height:1.7}
+.price-note-box b{color:var(--ion-gold)}
+
+/* GROUP MEAL */
+.meal-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px 20px;margin-top:16px;display:flex;align-items:center;gap:16px}
+.meal-card .mp{font-size:24px;font-weight:900;color:var(--ion-coral);letter-spacing:-.02em;white-space:nowrap}
+.meal-card .md{font-size:12.5px;color:var(--muted);line-height:1.7}
+
 .footnote{max-width:820px;margin:0 auto;padding:24px 20px 50px;font-size:11px;color:#9a93ab;line-height:1.8;text-align:center}
 </style>
 </head>
@@ -190,6 +217,7 @@ a{color:inherit}
     <div class="hero-quicklinks">
       <a href="#indoor" class="hero-qlink">🏛️ 실내존 둘러보기</a>
       <a href="#outdoor" class="hero-qlink">🌊 야외존 둘러보기</a>
+      <a href="#pricing" class="hero-qlink">💰 요금 안내</a>
       <a href="#tickets" class="hero-qlink solid">🎟️ 참가 신청하기</a>
     </div>
   </div>
@@ -275,6 +303,59 @@ a{color:inherit}
     <div class="pcard"><div class="pimg"><img src="products/oceanworld/outdoor-kidspool.jpg" alt="야외 키즈풀" onerror="this.parentElement.parentElement.style.display='none'"></div><div class="pbody"><h5>야외 키즈풀</h5><p>야외에서 즐기는 어린이 전용 얕은 풀.</p></div></div>
     <div class="pcard"><div class="pimg"><img src="products/oceanworld/outdoor-pharaohspa.jpg" alt="파라오스파" onerror="this.parentElement.parentElement.style.display='none'"></div><div class="pbody"><h5>파라오스파</h5><p>이집트 파라오 테마의 이국적인 스파존.</p></div></div>
     <div class="pcard"><div class="pimg"><img src="products/oceanworld/outdoor-openbath.jpg" alt="야외노천탕" onerror="this.parentElement.parentElement.style.display='none'"></div><div class="pbody"><h5>야외노천탕</h5><p>이벤트 노천탕에서 즐기는 색다른 물놀이.</p></div></div>
+  </div>
+</div>
+
+<!-- 요금 (참고용 정가표) -->
+<div class="price-band" id="pricing">
+  <div class="price-inner">
+    <div class="sec-label">2026 PRICING</div>
+    <div class="sec-title">오션월드 정가 안내</div>
+    <div class="sec-desc">※ 유초중고 동일 요금 · 방문 당일 기준 — 아래는 오션월드 개인/단체 정가이며, I-ON 모집형 참가비(1인 30,000원, 종일권+구명조끼 포함)는 이와 별도로 하단 신청 섹션에서 안내됩니다.</div>
+    <div class="price-grid">
+      <div class="price-period">
+        <div class="period-title">4/1 ~ 5/31</div>
+        <table class="pt"><tr><th>구분</th><th>주중</th><th>주말·공휴일</th></tr><tr><td>유초중고</td><td class="cy" colspan="2" style="text-align:center">17,000원</td></tr></table>
+      </div>
+      <div class="price-period">
+        <div class="period-title">6/1 ~ 6/21</div>
+        <table class="pt"><tr><th>구분</th><th>주중</th><th>주말·공휴일</th></tr><tr><td>유초중고</td><td class="cy">20,000원</td><td class="wy">22,000원</td></tr></table>
+      </div>
+      <div class="price-period">
+        <div class="period-title">6/22 ~ 7/19</div>
+        <table class="pt"><tr><th>구분</th><th>주중</th><th>주말·공휴일</th></tr><tr><td>유초중고</td><td class="cy">25,000원</td><td class="wy">29,000원</td></tr></table>
+      </div>
+      <div class="price-period peak">
+        <div class="period-title">⭐ 7/20 ~ 8/2 성수기</div>
+        <table class="pt"><tr><th>구분</th><th>주중</th><th>주말·공휴일</th></tr><tr><td>유초중고</td><td class="cy">32,000원</td><td class="wy">45,000원</td></tr></table>
+      </div>
+      <div class="price-period">
+        <div class="period-title">8/3 ~ 8/17</div>
+        <table class="pt"><tr><th>구분</th><th>주중</th><th>주말·공휴일</th></tr><tr><td>유초중고</td><td class="cy">25,000원</td><td class="wy">30,000원</td></tr></table>
+      </div>
+      <div class="price-period">
+        <div class="period-title">8/18 ~ 8/30</div>
+        <table class="pt"><tr><th>구분</th><th>주중</th><th>주말·공휴일</th></tr><tr><td>유초중고</td><td class="cy" colspan="2" style="text-align:center">20,000원</td></tr></table>
+      </div>
+      <div class="price-period">
+        <div class="period-title">8/31 ~ 익년 5/31</div>
+        <table class="pt"><tr><th>구분</th><th>주중</th><th>주말·공휴일</th></tr><tr><td>유초중고</td><td class="cy" colspan="2" style="text-align:center">17,000원</td></tr></table>
+      </div>
+    </div>
+    <div class="price-note-box">
+      <p><b>단체 이용 안내</b> · 아쿠아슈즈 필수 착용(샌들·슬리퍼·쪼리 등 외부화 착용 불가) · 인솔교사 학생 10명당 1명 무료(식사 포함) · 구명조끼 무료 / 수건 대여료 +1,500원 · 유아단체 예약 가능(인솔자 5:1 동반 필수)</p>
+    </div>
+  </div>
+</div>
+
+<!-- 단체 식사 -->
+<div class="sec alt">
+  <div class="sec-label">GROUP MEAL</div>
+  <div class="sec-title">단체 식사 안내</div>
+  <div class="sec-desc">단체 예약 시 백반식 단체 식사를 제공합니다. 충분한 영양 보충으로 온종일 즐거운 물놀이를 즐겨보세요.</div>
+  <div class="meal-card">
+    <div class="mp">10,000원</div>
+    <div class="md">1인 기준(백반식) · 밥, 국, 메인 반찬, 김치 등으로 구성<br>사전 협의 시 단체 식당 이용 가능합니다.</div>
   </div>
 </div>
 
@@ -387,6 +468,11 @@ const PRODUCT_ID = 'oceanworld_group';
 const MIN_GROUP_SIZE = 10;
 const TOSS_CLIENT_KEY = 'test_ck_mBZ1gQ4YVXjkO0AlJW968l2KPoqN';
 
+// ⚠️ 토스페이먼츠 정식 연동 전까지는 인라인 결제창을 띄우지 않고,
+// 신청 접수만 받은 뒤 담당자가 결제 링크를 문자/카카오로 별도 발송합니다.
+// 나중에 토스 연동이 끝나면 이 값을 true로 바꾸면 바로 인라인 결제로 전환됩니다.
+const ENABLE_INLINE_PAYMENT = false;
+
 // 회차(참여 지정일) 목록은 admin(상품관리 > 오션월드 모집형)에서 등록한 값을
 // products.group_dates 컬럼에서 실시간으로 불러옵니다 — 코드 수정 없이
 // 관리자가 직접 회차/날짜/마감일을 추가·삭제할 수 있습니다.
@@ -497,8 +583,9 @@ function renderModalBody() {
     <div class="mfield"><label>연락처</label><input type="tel" id="m-phone" placeholder="010-0000-0000"></div>
     <div class="mfield"><label>이메일 (선택)</label><input type="email" id="m-email" placeholder="안내 발송용"></div>
     <div class="mfield"><label>인원 수</label><input type="number" id="m-qty" value="1" min="1" max="20"></div>
-    <div class="mprice-row"><span class="l">결제 예정 금액</span><span class="amt" id="m-amount">${money(PRICE)}</span></div>
-    <button type="button" class="msubmit" id="m-submit">신청 및 결제하기</button>
+    <div class="mprice-row"><span class="l">${ENABLE_INLINE_PAYMENT ? '결제 예정 금액' : '예상 참가비'}</span><span class="amt" id="m-amount">${money(PRICE)}</span></div>
+    <button type="button" class="msubmit" id="m-submit">${ENABLE_INLINE_PAYMENT ? '신청 및 결제하기' : '신청하기'}</button>
+    ${ENABLE_INLINE_PAYMENT ? '' : '<div class="mfield-note" style="font-size:11px;color:var(--muted);margin-top:-8px;margin-bottom:2px">신청 후 담당자가 결제 링크를 별도로 보내드립니다.</div>'}
     <div class="mmsg" id="m-msg"></div>
   `;
 
@@ -540,14 +627,29 @@ async function submitTicket() {
   });
 
   if (!created.ok) {
-    btn.disabled = false; btn.textContent = '신청 및 결제하기';
+    btn.disabled = false; btn.textContent = '신청하기';
     msg.textContent = created.data?.message || '신청 처리에 실패했습니다.';
     return;
   }
 
   const orderId = created.data.data.orderId;
   const amount = created.data.data.amount;
-  renderPaymentStep(orderId, amount, name, email);
+  if (ENABLE_INLINE_PAYMENT) {
+    renderPaymentStep(orderId, amount, name, email);
+  } else {
+    showApplicationReceivedState(orderId, amount, phone);
+  }
+}
+
+// 토스 인라인 결제 없이 "접수만" 받는 현재 운영 방식 — 신청 완료 안내만 보여주고,
+// 실제 결제 링크는 담당자가 확인 후 문자/카카오로 별도 발송합니다.
+function showApplicationReceivedState(orderId, amount, phone) {
+  document.getElementById('m-body').innerHTML = `
+    <div class="mstate">
+      <strong>신청이 접수됐어요!</strong>
+      담당자가 확인 후 결제 안내(결제 링크)를 <b>${phone}</b>(으)로 곧 보내드립니다.
+      <div class="sub">접수번호 ${orderId} · 신청 금액 ${money(amount)}<br>문의: 031-339-2999</div>
+    </div>`;
 }
 
 function renderPaymentStep(orderId, amount, buyerName, buyerEmail) {
