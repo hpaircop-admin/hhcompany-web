@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-N4BWKWXEQ4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-N4BWKWXEQ4');
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I-ON × 오션월드 | 아이의 경험을 켜다</title>
+<meta name="description" content="I-ON — 자모 동반 체험학습 브랜드. 오션월드 단체모집 프로그램, 지정 회차에 신청하고 최소 인원이 모이면 확정됩니다.">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://js.tosspayments.com/v1/payment"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --ion-coral:#FF6B4A;--ion-indigo:#2B2358;--ion-gold:#FFC857;--ion-cream:#FFF8F0;
+  --ink:#241F3D;--muted:#6b6480;--line:rgba(43,35,88,.12);--white:#fff;
+}
+body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;background:var(--ion-cream);color:var(--ink);line-height:1.6;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:200;background:var(--ion-indigo);padding:13px 20px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.ion-logo{display:flex;align-items:center;gap:9px}
+.ion-mark{font-size:19px;font-weight:900;color:#fff;letter-spacing:-.02em;position:relative}
+.ion-mark .o{display:inline-block;position:relative}
+.ion-mark .o::after{content:'';position:absolute;left:50%;top:50%;width:16px;height:16px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,var(--ion-gold) 0%,rgba(255,200,87,0) 72%);z-index:-1}
+.nav-sub{font-size:9.5px;color:rgba(255,255,255,.6);display:block;margin-top:1px;letter-spacing:.04em}
+.nav-cta{background:linear-gradient(120deg,var(--ion-coral),var(--ion-gold));color:#241408;font-size:12.5px;font-weight:800;padding:8px 16px;border-radius:999px;text-decoration:none;white-space:nowrap}
+
+/* hero */
+.hero{position:relative;width:100%;min-height:64vh;display:flex;align-items:flex-end;overflow:hidden}
+.hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(36,31,61,.94) 0%,rgba(36,31,61,.55) 55%,rgba(36,31,61,.15) 100%)}
+.hero-content{position:relative;z-index:2;padding:0 22px 34px;width:100%}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);color:#fff;font-size:10.5px;font-weight:800;letter-spacing:.04em;padding:6px 13px;border-radius:999px;margin-bottom:14px}
+.hero-title{font-size:clamp(26px,7vw,44px);font-weight:900;color:#fff;line-height:1.25;letter-spacing:-.03em;margin-bottom:10px}
+.hero-title em{background:linear-gradient(120deg,var(--ion-coral),var(--ion-gold));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-style:normal}
+.hero-sub{font-size:13.5px;color:rgba(255,255,255,.8);line-height:1.7;margin-bottom:20px;max-width:560px}
+.hero-quicklinks{display:flex;gap:8px;flex-wrap:wrap}
+.hero-qlink{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);color:#fff;font-size:12px;font-weight:700;padding:9px 15px;border-radius:999px;text-decoration:none;white-space:nowrap}
+.hero-qlink:hover{background:rgba(255,255,255,.22)}
+.hero-qlink.solid{background:linear-gradient(120deg,var(--ion-coral),var(--ion-gold));color:#241408;border:none;font-weight:800}
+
+/* brand strip */
+.brand-strip{padding:40px 20px;max-width:820px;margin:0 auto}
+.brand-strip h2{font-size:clamp(18px,4vw,24px);font-weight:900;letter-spacing:-.02em;margin-bottom:14px;text-align:center}
+.brand-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.brand-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 14px}
+.brand-card .ic{font-size:20px;margin-bottom:6px}
+.brand-card h4{font-size:13px;font-weight:800;margin-bottom:4px}
+.brand-card p{font-size:11px;color:var(--muted);line-height:1.55}
+
+/* ticket (단일 모집형) */
+.ticket-band{padding:16px 20px 48px;max-width:640px;margin:0 auto}
+.ticket-band-head{text-align:center;margin-bottom:22px}
+.ticket-band-head .label{font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:800;color:var(--ion-coral);margin-bottom:6px}
+.ticket-band-head h2{font-size:clamp(20px,4.5vw,28px);font-weight:900;letter-spacing:-.02em}
+.ticket-card{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 4px 18px rgba(43,35,88,.06);display:flex;flex-direction:column}
+.ticket-card .thead{padding:18px 18px 14px;color:#fff;background:linear-gradient(135deg,var(--ion-gold),var(--ion-coral))}
+.ticket-card .ttag{font-size:10.5px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;opacity:.85;margin-bottom:6px}
+.ticket-card .tname{font-size:17px;font-weight:900}
+.ticket-card .tbody{padding:16px 18px 20px;flex:1;display:flex;flex-direction:column}
+.ticket-card .tdesc{font-size:12px;color:var(--muted);line-height:1.65;margin-bottom:14px}
+.ticket-card .tprice{font-size:24px;font-weight:900;color:var(--ink);margin-bottom:4px}
+.ticket-card .tprice small{font-size:11px;font-weight:700;color:var(--muted)}
+.ticket-card .tnote{font-size:10.5px;color:var(--ion-coral);background:#FFF1EC;padding:5px 10px;border-radius:999px;display:inline-block;margin-bottom:12px;font-weight:700}
+.ticket-card .tbtn{width:100%;padding:13px;border:none;border-radius:10px;background:var(--ion-indigo);color:#fff;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit}
+.ticket-card .tbtn:hover{background:#3a3170}
+.price-disclaimer{text-align:center;font-size:10.5px;color:var(--muted);margin-top:12px}
+
+/* 안내카드 (스크린샷 내용) */
+.info-card{background:linear-gradient(160deg,#1a3a6b,#2f6fd6);border-radius:20px;padding:22px 20px;margin-top:0 auto 22px;max-width:640px;margin-left:auto;margin-right:auto;color:#fff;box-shadow:0 10px 30px rgba(30,60,120,.25)}
+.info-price-badge{background:#fff;border-radius:14px;padding:16px 18px;display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.info-price-badge .ic{width:44px;height:44px;border-radius:50%;background:#1d6fe0;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.info-price-badge .txt .l{font-size:11px;color:var(--muted);font-weight:700}
+.info-price-badge .txt .amt{font-size:24px;font-weight:900;color:#e2431a;line-height:1.2}
+.info-price-badge .txt .sub{font-size:11.5px;color:var(--ink);font-weight:800;margin-top:2px}
+.round-table{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.round-row{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);border-radius:12px;padding:11px 14px;display:flex;align-items:center;gap:10px;font-size:12.5px}
+.round-row.closed{opacity:.5}
+.round-row .rnd{background:#fff;color:#1a3a6b;font-size:11px;font-weight:900;padding:4px 10px;border-radius:999px;flex-shrink:0}
+.round-row .rdate{font-weight:800;flex:1}
+.round-row .rdeadline{font-size:11px;color:rgba(255,255,255,.75)}
+.info-icon-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.info-icon-item{text-align:center;background:rgba(255,255,255,.1);border-radius:12px;padding:12px 4px}
+.info-icon-item .ii{font-size:18px;margin-bottom:6px}
+.info-icon-item span{font-size:10px;font-weight:700;line-height:1.35;display:block}
+
+/* modal */
+.ion-overlay{display:none;position:fixed;inset:0;background:rgba(36,31,61,.55);z-index:500;align-items:flex-start;justify-content:center;padding:40px 16px;overflow-y:auto}
+.ion-overlay.open{display:flex}
+.ion-modal{background:#fff;border-radius:18px;max-width:420px;width:100%;overflow:hidden}
+.ion-modal .mhead{padding:20px 22px;color:#fff;position:relative;background:linear-gradient(135deg,var(--ion-gold),var(--ion-coral))}
+.ion-modal .mhead .mclose{position:absolute;top:14px;right:16px;background:none;border:none;color:#fff;font-size:18px;cursor:pointer;opacity:.85}
+.ion-modal .mhead .mtag{font-size:10.5px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;opacity:.85;margin-bottom:4px}
+.ion-modal .mhead .mtitle{font-size:18px;font-weight:900}
+.ion-modal .mbody{padding:20px 22px 24px}
+.mfield{margin-bottom:14px}
+.mfield label{display:block;font-size:12px;font-weight:700;color:var(--ion-indigo);margin-bottom:5px}
+.mfield input,.mfield select{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:8px;font-size:14px;font-family:inherit;background:#fbfaf7}
+.mfield input:focus,.mfield select:focus{outline:none;border-color:var(--ion-coral)}
+.progress-wrap{background:#fbfaf7;border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:14px}
+.progress-bar-track{width:100%;height:8px;background:var(--line);border-radius:999px;overflow:hidden;margin-top:8px}
+.progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--ion-gold),var(--ion-coral));border-radius:999px;width:0%;transition:width .3s}
+.mprice-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-top:1px dashed var(--line);margin:6px 0 14px}
+.mprice-row .l{font-size:12.5px;color:var(--muted)}
+.mprice-row .amt{font-size:20px;font-weight:900;color:var(--ion-coral)}
+.msubmit{width:100%;padding:14px;border:none;border-radius:10px;background:var(--ion-indigo);color:#fff;font-size:14.5px;font-weight:800;cursor:pointer;font-family:inherit}
+.msubmit:disabled{background:var(--line);color:var(--muted);cursor:not-allowed}
+.mmsg{font-size:12px;color:#dc2626;margin-top:10px;line-height:1.6}
+.mstate{padding:36px 8px;text-align:center;color:var(--muted);font-size:13.5px;line-height:1.8}
+.mstate strong{display:block;color:var(--ink);font-size:16px;margin-bottom:8px}
+.mstate .sub{font-size:11.5px;color:var(--muted);margin-top:10px}
+.test-badge{display:inline-block;background:#FFF1EC;color:var(--ion-coral);font-size:10.5px;font-weight:800;padding:4px 10px;border-radius:999px;margin-bottom:12px}
+.pay-method-grid{display:flex;flex-direction:column;gap:9px;margin:16px 0 6px}
+.paymethod-btn{width:100%;padding:14px;border:1px solid var(--line);border-radius:10px;background:#fbfaf7;color:var(--ink);font-size:14.5px;font-weight:800;cursor:pointer;font-family:inherit;text-align:center;transition:border-color .15s,background .15s}
+.paymethod-btn:hover{border-color:var(--ion-coral);background:#FFF1EC}
+.paymethod-btn:disabled{opacity:.5;cursor:not-allowed}
+
+/* sections (오션월드 콘텐츠) */
+.sec{padding:44px 20px;max-width:820px;margin:0 auto}
+.sec.alt{background:#fff}
+.sec-label{font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:800;color:var(--ion-coral);margin-bottom:8px}
+.sec-title{font-size:clamp(19px,4.2vw,26px);font-weight:900;color:var(--ink);line-height:1.3;letter-spacing:-.02em;margin-bottom:12px}
+.sec-desc{font-size:13.5px;color:var(--muted);line-height:1.8;white-space:pre-line}
+.feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}
+.feat-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 15px}
+.feat-card .ic{font-size:22px;margin-bottom:7px}
+.feat-card h4{font-size:13px;font-weight:800;margin-bottom:4px}
+.feat-card p{font-size:11px;color:var(--muted);line-height:1.55}
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
+.pcard{background:#fff;border-radius:14px;overflow:hidden;border:1px solid var(--line)}
+.pcard .pimg{width:100%;aspect-ratio:4/3;overflow:hidden;background:#eee;position:relative}
+.pcard .pimg img{width:100%;height:100%;object-fit:cover}
+.pcard .pimg .ptag{position:absolute;top:8px;left:8px;background:rgba(36,31,61,.78);color:#fff;font-size:9.5px;font-weight:800;padding:3px 9px;border-radius:999px;backdrop-filter:blur(3px)}
+.pcard .pbody{padding:11px 12px}
+.pcard .pbody h5{font-size:12.5px;font-weight:800;margin-bottom:3px}
+.pcard .pbody p{font-size:10.5px;color:var(--muted);line-height:1.5}
+.zone-band-dark{padding:40px 20px;background:var(--ion-indigo)}
+.zone-band-dark .zone-inner{max-width:820px;margin:0 auto}
+.zone-band-dark .sec-label{color:var(--ion-gold)}
+.zone-band-dark .sec-title{color:#fff}
+.zone-band-dark .sec-desc{color:rgba(255,255,255,.7)}
+.zone-head{display:flex;align-items:center;gap:9px;margin:22px 0 4px}
+.zone-tag{display:inline-block;font-size:10px;font-weight:900;letter-spacing:.06em;padding:4px 11px;border-radius:999px;color:#241408;background:var(--ion-gold)}
+.zone-head h4{font-size:14.5px;font-weight:900;color:#fff}
+.dress-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}
+.dress-item{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 5px;text-align:center}
+.dress-item .di{font-size:18px;margin-bottom:5px}
+.dress-item span{font-size:10px;font-weight:700;color:var(--ink);line-height:1.3;display:block}
+.faq-item{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 16px;margin-bottom:10px}
+.faq-q{display:flex;gap:8px;font-size:13px;font-weight:800;color:var(--ink);margin-bottom:7px}
+.faq-q .qmark{background:var(--ion-coral);color:#fff;font-size:10.5px;font-weight:900;width:19px;height:19px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.faq-a{font-size:12px;color:var(--muted);line-height:1.7;padding-left:27px}
+.loc-info{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.loc-row{display:flex;gap:14px;padding:8px 0;font-size:12px;border-bottom:1px solid #f0f0f2}
+.loc-row:last-child{border-bottom:none}
+.loc-row b{width:52px;flex-shrink:0;color:var(--ink)}
+.loc-row span{color:var(--muted);line-height:1.6}
+
+.footnote{max-width:820px;margin:0 auto;padding:24px 20px 50px;font-size:11px;color:#9a93ab;line-height:1.8;text-align:center}
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <div class="ion-logo">
+    <div class="ion-mark">I-<span class="o">O</span>N</div>
+    <div><span class="nav-sub">아이의 경험을 켜다 · 더블에이치컴퍼니</span></div>
+  </div>
+  <a href="#tickets" class="nav-cta">신청하기</a>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <img class="hero-img" src="products/오션월드/오션월드.jpg" alt="비발디파크 오션월드" onerror="this.style.display='none'">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <span class="hero-badge">I-ON 여름 체험 프로그램 · 오션월드 단체모집</span>
+    <div class="hero-title">아이의 여름을 켜면,<br><em>온 가족 워터파크</em>가 시작됩니다</div>
+    <div class="hero-sub">I-ON은 개인을 싸게 모으는 티켓이 아니라, 가족의 참여를 하나의 단체 경험으로 설계합니다. 국내 최대 규모 비발디파크 오션월드에서, 지정 회차에 신청자가 모여 최소 인원을 채우면 단체가로 확정되는 여름 프로그램입니다.</div>
+    <div class="hero-quicklinks">
+      <a href="#indoor" class="hero-qlink">🏛️ 실내존 둘러보기</a>
+      <a href="#outdoor" class="hero-qlink">🌊 야외존 둘러보기</a>
+      <a href="#tickets" class="hero-qlink solid">🎟️ 참가 신청하기</a>
+    </div>
+  </div>
+</div>
+
+<!-- BRAND STRIP -->
+<div class="brand-strip">
+  <h2>I-ON은 이런 브랜드예요</h2>
+  <div class="brand-cards">
+    <div class="brand-card"><div class="ic">👨‍👩‍👧</div><h4>가족 참여 중심</h4><p>혼자가 아니라 보호자와 함께하는 체험으로 설계합니다.</p></div>
+    <div class="brand-card"><div class="ic">📅</div><h4>지정 회차 · 실명 명단</h4><p>모집형은 지정 회차에 최소 인원이 모이면 확정되는 방식입니다.</p></div>
+    <div class="brand-card"><div class="ic">🎟️</div><h4>종일권 + 구명조끼 포함</h4><p>추가 비용 걱정 없이 하루 종일 안전하게 즐길 수 있어요.</p></div>
+    <div class="brand-card"><div class="ic">🛡️</div><h4>더블에이치컴퍼니 운영</h4><p>단체 예약·현장 운영 경험을 바탕으로 안전하게 진행합니다.</p></div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="ion-overlay" id="ionOverlay">
+  <div class="ion-modal" id="ionModal">
+    <div class="mhead">
+      <button type="button" class="mclose" onclick="closeModal()">✕</button>
+      <div class="mtag">모집형 · 단체확정</div>
+      <div class="mtitle">오션월드 단체모집 신청</div>
+    </div>
+    <div class="mbody" id="m-body">
+      <!-- filled dynamically -->
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div class="sec">
+  <div class="sec-label">ABOUT OCEAN WORLD</div>
+  <div class="sec-title">실내와 야외를 모두 갖춘<br>국내 최대 워터파크</div>
+  <div class="sec-desc">비발디파크 오션월드는 이집트 신전 테마의 웅장한 실내존과 짜릿한 슬라이드로 가득한 야외존을 모두 갖춘 국내 최대 규모의 워터파크입니다. I-ON이 지정한 회차에 신청자가 모여 최소 인원을 충족하면, 온 가족이 함께 단체가로 입장해 즐길 수 있습니다.</div>
+  <div class="feat-grid">
+    <div class="feat-card"><div class="ic">🌊</div><h4>국내 최대 규모</h4><p>실내·야외 20여 종 어트랙션</p></div>
+    <div class="feat-card"><div class="ic">🏛️</div><h4>이집트 신전 테마</h4><p>연중 즐기는 실내 워터파크</p></div>
+    <div class="feat-card"><div class="ic">👨‍👩‍👧‍👦</div><h4>유아~고등학생 · 동반가족</h4><p>온 가족이 함께 즐기는 여름</p></div>
+    <div class="feat-card"><div class="ic">🦺</div><h4>구명조끼 무료</h4><p>안전하게, 종일권으로 마음껏</p></div>
+  </div>
+</div>
+
+<!-- 실내존 -->
+<div class="zone-band-dark" id="indoor">
+  <div class="zone-inner">
+    <div class="sec-label">INDOOR ZONE</div>
+    <div class="sec-title">실내존 · 연중 즐기는 워터파크</div>
+    <div class="sec-desc">날씨에 상관없이 연중 이용 가능한 실내존. 파도풀, 유수풀, 키즈풀, 워터플렉스, 실내 슬라이드까지 다채로운 어트랙션이 가득합니다.</div>
+
+    <div class="zone-head"><span class="zone-tag">Indoor</span><h4>파도풀 · 유수풀 · 워터플렉스 · 키즈풀</h4></div>
+    <div class="pgrid">
+      <div class="pcard"><div class="pimg"><img src="products/오션월드/오션월드 _ 어트랙션/오션월드_실내존_파도풀_01.jpg.jpg" alt="파도풀" onerror="this.parentElement.parentElement.style.display='none'"></div><div class="pbody"><h5>🌊 파도풀</h5><p>실제 바다 파도를 재현한 대형 파도풀.</p></div></div>
+      <div class="pcard"><div class="pimg"><img src="products/오션월드/오션월드 _ 어트랙션/오션월드_실내존_실내유수풀_01.jpg.jpg" alt="실내 유수풀" onerror="this.parentElement.parentElement.style.display='none'"></div><div class="pbody"><h5>🚣 실내 유수풀</h5><p>이집트 신전 테마의 여유로운 유수풀 코스.</p></div></div>
+      <div class="pcard"><div class="pimg"><img src="products/오션월드/오션월드 _ 어트랙션/오션월드_실내존_워터플렉스_02.jpg.jpg" alt="워터플렉스" onerror="this.parentElement.parentElement.style.display='none'"></div><div class="pbody"><h5>💦 워터플렉스</h5><p>물 대포와 물통 쏟아붓기로 즐기는 복합 공간.</p></div></div>
+      <div class="pcard"><div class="pimg"><img src="products/오션월드/오션월드 _ 어트랙션/오션월드_실내존_키즈풀_01.jpg.jpg" alt="키즈풀" onerror="this.parentElement.parentElement.style.display='none'"></div><div class="pbody"><h5>👶 키즈풀</h5><p>어린이 전용 얕은 수심의 안전한 키즈풀.</p></div></div>
+    </div>
+    <div class="zone-head"><span class="zone-tag">Slide</span><h4>실내 슬라이드</h4></div>
+    <div class="pgrid">
+      <div class="pcard"><div class="pimg"><img src="products/오션월드/오션월드 _ 어트랙션/오션월드_실내존_실내슬라이드_01.jpg.jpg" alt="실내 슬라이드" onerror="this.parentElement.parentElement.style.display='none'"></div><div class="pbody"><h5>실내 슬라이드</h5><p>날씨와 계절 관계없이 연중 즐기는 워터 슬라이드.</p></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 야외존 -->
+<div class="sec alt" id="outdoor">
+  <div class="sec-label">OUTDOOR ZONE</div>
+  <div class="sec-title">야외존 · 짜릿한 스릴의 향연</div>
+  <div class="sec-desc">하계 시즌(4월~10월)에만 즐길 수 있는 야외존. 국내 최대급 슬라이드와 익스트림 어트랙션이 집결해 있습니다.</div>
+  <div class="pgrid">
+    <div class="pcard"><div class="pimg"><span class="ptag">Extreme</span><img src="products/오션월드/오션월드 _ 어트랙션/오션월드_야외존_더블토네이도_03.jpg.jpg" alt="더블토네이도" onerror="this.parentElement.parentElement.style.display='none'"></div><div class="pbody"><h5>더블토네이도 & 더블스핀</h5><p>거대한 깔때기 속을 빙글빙글 회전하며 내려오는 짜릿함.</p></div></div>
+    <div class="pcard"><div class="pimg"><img src="products/오션월드/오션월드 _ 어트랙션/오션월드_야외존_몬스터블라스터_01.jpg.jpg" alt="몬스터블라스터" onerror="this.parentElement.parentElement.style.display='none'"></div><div class="pbody"><h5>몬스터블라스터</h5><p>국내 최고 난이도의 슬라이드.</p></div></div>
+    <div class="pcard"><div class="pimg"><img src="products/오션월드/오션월드 _ 어트랙션/오션월드_야외존_슈퍼S라이드_02.jpg.jpg" alt="슈퍼S라이드" onerror="this.parentElement.parentElement.style.display='none'"></div><div class="pbody"><h5>슈퍼S라이드</h5><p>S자 곡선을 타고 고속으로 내려오는 스피드 슬라이드.</p></div></div>
+    <div class="pcard"><div class="pimg"><img src="products/오션월드/오션월드 _ 어트랙션/오션월드_야외존_익스트림리버_01.jpg.jpg" alt="익스트림리버" onerror="this.parentElement.parentElement.style.display='none'"></div><div class="pbody"><h5>익스트림리버</h5><p>튜브를 타고 신나게 흘러가는 야외 유수풀 코스.</p></div></div>
+    <div class="pcard"><div class="pimg"><img src="products/오션월드/오션월드 _ 어트랙션/오션월드_야외존_자이언트워터플렉스_01.jpg.jpg" alt="자이언트워터플렉스" onerror="this.parentElement.parentElement.style.display='none'"></div><div class="pbody"><h5>자이언트워터플렉스</h5><p>야외 대형 워터플렉스로 시원함 폭발.</p></div></div>
+    <div class="pcard"><div class="pimg"><img src="products/오션월드/오션월드 _ 어트랙션/오션월드_야외존_파라오스파_01.jpg.jpg" alt="파라오스파" onerror="this.parentElement.parentElement.style.display='none'"></div><div class="pbody"><h5>파라오스파</h5><p>이집트 파라오 테마의 이국적인 스파존.</p></div></div>
+  </div>
+</div>
+
+<!-- 준비물/안전 -->
+<div class="sec">
+  <div class="sec-label">SAFETY</div>
+  <div class="sec-title">안전하고 즐거운 이용을 위한 준비물</div>
+  <div class="dress-grid">
+    <div class="dress-item"><div class="di">👟</div><span>아쿠아슈즈 필수</span></div>
+    <div class="dress-item"><div class="di">👙</div><span>수영복 착용</span></div>
+    <div class="dress-item"><div class="di">🦺</div><span>구명조끼 무료 제공</span></div>
+    <div class="dress-item"><div class="di">👨‍👧</div><span>미취학·저학년 보호자 동반</span></div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div class="sec alt">
+  <div class="sec-label">FAQ</div>
+  <div class="sec-title">자주 묻는 질문</div>
+  <div class="faq-item">
+    <div class="faq-q"><span class="qmark">Q</span>모집형은 어떻게 진행되나요?</div>
+    <div class="faq-a">I-ON이 지정한 회차(1차/2차/3차 중 선택)에 신청자가 모여 최소 10명을 충족하면 행사가 확정되는 방식입니다. 참가 접수 후 결제 안내가 진행되며, 실명 참가자 명단 기반으로 안전하게 운영됩니다.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q"><span class="qmark">Q</span>최소 인원이 다 안 모이면 어떻게 되나요?</div>
+    <div class="faq-a">회차 기준 최소 10명 미달 시 담당자가 안내드리며, 다른 회차로 이동하거나 환불해드립니다.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q"><span class="qmark">Q</span>신청 마감일이 지나면 신청할 수 없나요?</div>
+    <div class="faq-a">네, 각 회차는 표시된 마감일까지만 신청 가능합니다. 마감된 회차는 목록에서 "마감"으로 표시되며 선택할 수 없어요. 다음 회차를 이용해주세요.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q"><span class="qmark">Q</span>티켓은 개별로 사용할 수 있나요?</div>
+    <div class="faq-a">아니요, 지정 회차에 단체로 입장하는 프로그램이라 개별 사용은 불가합니다. 신청하신 회차의 지정 시간에 함께 집결해 입장합니다.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q"><span class="qmark">Q</span>몇 살까지 참여할 수 있나요?</div>
+    <div class="faq-a">유아부터 고등학생, 그리고 동반 가족까지 함께 참여하실 수 있습니다.</div>
+  </div>
+</div>
+
+<!-- TICKETS -->
+<div class="ticket-band" id="tickets">
+  <div class="ticket-band-head">
+    <div class="label">Group Recruit</div>
+    <h2>오션월드 단체모집 신청</h2>
+  </div>
+
+  <div class="info-card">
+    <div class="info-price-badge">
+      <div class="ic">🎫</div>
+      <div class="txt">
+        <div class="l">1인 참가비</div>
+        <div class="amt" id="card-price">25,000원</div>
+        <div class="sub">종일권 + 구명조끼 포함</div>
+      </div>
+    </div>
+    <div class="round-table" id="card-round-table">
+      <div class="round-row"><span class="rnd">-</span><span class="rdate">회차 정보를 불러오는 중...</span></div>
+    </div>
+    <div class="info-icon-grid">
+      <div class="info-icon-item"><div class="ii">👨‍👩‍👧</div><span>유아~고등학생<br>및 동반 가족</span></div>
+      <div class="info-icon-item"><div class="ii">✉️</div><span>참가접수 후<br>결제 안내 발송</span></div>
+      <div class="info-icon-item"><div class="ii">👥</div><span>최소 10명<br>모집 시 진행</span></div>
+      <div class="info-icon-item"><div class="ii">🎟️</div><span>지정 단체입장<br>개별사용 불가</span></div>
+    </div>
+  </div>
+
+  <div class="ticket-card">
+    <div class="thead">
+      <div class="ttag">모집형 · 단체확정</div>
+      <div class="tname">오션월드 단체모집</div>
+    </div>
+    <div class="tbody">
+      <div class="tdesc">원하는 회차를 선택해 신청하고, 최소 인원이 모이면 행사가 확정됩니다. 확정 후 지정 시간에 집결해 함께 입장해요. 실명 참가자 명단으로 안전하게 운영됩니다.</div>
+      <div class="tnote" id="group-progress-note">모집 현황 확인 중...</div>
+      <div class="tprice" id="group-price">-<small>원 / 1인</small></div>
+      <button type="button" class="tbtn" onclick="openModal()">모집형 신청하기</button>
+    </div>
+  </div>
+  <div class="price-disclaimer">* 회차·가격은 admin에서 관리되며 변동될 수 있습니다. 신청 마감일이 지난 회차는 자동으로 마감 처리됩니다.</div>
+</div>
+
+<div class="sec">
+  <div class="sec-label">LOCATION</div>
+  <div class="sec-title">찾아오시는 길</div>
+  <div class="loc-info">
+    <div class="loc-row"><b>주소</b><span>강원도 홍천군 서면 · 비발디파크 내 오션월드</span></div>
+    <div class="loc-row"><b>교통</b><span>서울 출발 버스 약 1시간 30분 · 단체 버스 섭외 가능</span></div>
+    <div class="loc-row"><b>실내존</b><span>연중 운영 (파도풀·유수풀·키즈풀 등)</span></div>
+    <div class="loc-row"><b>야외존</b><span>하계 시즌 운영 (4월~10월, 날씨 따라 변동)</span></div>
+    <div class="loc-row"><b>주차</b><span>대형 버스 주차 가능 · 단체 차량 별도 배치</span></div>
+  </div>
+</div>
+
+<div class="footnote">
+  I-ON은 (주)더블에이치컴퍼니가 운영하는 자모 동반 체험학습 브랜드입니다.<br>
+  (주)더블에이치컴퍼니 · 사업자등록번호 420-88-03868 · 문의 031-339-2999 · hpaircop@gmail.com<br>
+  시설 정보 및 이미지 출처: 비발디파크 오션월드 공식 안내자료.<br>
+  <a href="oceanworld.html">← 오션월드 소개 페이지로</a>
+</div>
+
+<script>
+const SB_URL = 'https://xoupacfmkhuuvxebgfqi.supabase.co';
+const SB_KEY = 'sb_publishable_46KQebvC7_S-_JDramvDmA_jk9aSeVc';
+const FN_URL = `${SB_URL}/functions/v1/payment-confirm`;
+const sb = supabase.createClient(SB_URL, SB_KEY);
+
+const PRODUCT_ID = 'oceanworld_group';
+const MIN_GROUP_SIZE = 10;
+const TOSS_CLIENT_KEY = 'test_ck_mBZ1gQ4YVXjkO0AlJW968l2KPoqN';
+
+// 회차(참여 지정일) 목록은 admin(상품관리 > 오션월드 모집형)에서 등록한 값을
+// products.group_dates 컬럼에서 실시간으로 불러옵니다 — 코드 수정 없이
+// 관리자가 직접 회차/날짜/마감일을 추가·삭제할 수 있습니다.
+let GROUP_DATES = [];
+let PRICE = null;
+let progressCache = {};
+
+function money(n) { return Number(n || 0).toLocaleString('ko-KR') + '원'; }
+function todayStr() { return new Date().toISOString().slice(0, 10); }
+function isClosed(d) { return d.deadline && d.deadline < todayStr(); }
+function fmtDeadline(d) {
+  if (!d.deadline) return '';
+  const m = d.deadline.split('-');
+  return `${parseInt(m[1],10)}월 ${parseInt(m[2],10)}일 마감`;
+}
+
+async function fnFetch(path, body) {
+  const res = await fetch(`${FN_URL}/${path}`, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body || {}),
+  });
+  const data = await res.json().catch(() => ({}));
+  return { ok: res.ok, status: res.status, data };
+}
+
+async function loadGroupProgress() {
+  try {
+    const { data } = await sb.from('group_recruit_progress').select('*').eq('product_id', PRODUCT_ID);
+    (data || []).forEach(row => { progressCache[row.visit_date] = row.ticket_count || 0; });
+  } catch (e) { /* 뷰가 아직 없으면 조용히 무시 */ }
+}
+
+function renderRoundCard() {
+  const wrap = document.getElementById('card-round-table');
+  if (!GROUP_DATES.length) {
+    wrap.innerHTML = `<div class="round-row"><span class="rdate">현재 신청 가능한 회차가 없습니다. 031-339-2999로 문의해주세요.</span></div>`;
+    return;
+  }
+  wrap.innerHTML = GROUP_DATES.map((d, i) => `
+    <div class="round-row ${isClosed(d) ? 'closed' : ''}">
+      <span class="rnd">${i + 1}차</span>
+      <span class="rdate">${d.label.replace(/^\d+차\s*·\s*/, '')}</span>
+      <span class="rdeadline">${isClosed(d) ? '마감' : fmtDeadline(d)}</span>
+    </div>`).join('');
+}
+
+async function boot() {
+  const { data: productRow } = await sb.from('products').select('id, indiv_price, group_dates').eq('id', PRODUCT_ID).maybeSingle();
+  PRICE = productRow ? productRow.indiv_price : null;
+  GROUP_DATES = (productRow && productRow.group_dates) || [];
+  await loadGroupProgress();
+
+  document.getElementById('group-price').innerHTML = money(PRICE) + '<small>원 / 1인</small>';
+  document.getElementById('card-price').textContent = money(PRICE);
+  renderRoundCard();
+
+  const openCount = GROUP_DATES.filter(d => !isClosed(d)).length;
+  const note = document.getElementById('group-progress-note');
+  note.textContent = openCount > 0
+    ? `현재 ${openCount}개 회차 신청 가능 · 회차별 최소 ${MIN_GROUP_SIZE}명 확정`
+    : `현재 신청 가능한 회차가 없습니다`;
+}
+
+function openModal() {
+  const overlay = document.getElementById('ionOverlay');
+  renderModalBody();
+  overlay.classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('ionOverlay').classList.remove('open');
+}
+
+function renderModalBody() {
+  const body = document.getElementById('m-body');
+  const openDates = GROUP_DATES.filter(d => !isClosed(d));
+  const dateOptions = openDates.map(d => {
+    const cnt = progressCache[d.value] || 0;
+    return `<option value="${d.value}">${d.label} · 현재 ${cnt}명 신청</option>`;
+  }).join('');
+  const closedOptions = GROUP_DATES.filter(isClosed).map(d => `<option disabled>${d.label} (마감)</option>`).join('');
+
+  if (!openDates.length) {
+    body.innerHTML = `<div class="mstate"><strong>현재 신청 가능한 회차가 없습니다</strong>모든 회차가 마감되었습니다.<div class="sub">문의: 031-339-2999</div></div>`;
+    return;
+  }
+
+  body.innerHTML = `
+    <div class="mfield">
+      <label>참여 회차</label>
+      <select id="m-date">${dateOptions}${closedOptions}</select>
+    </div>
+    <div class="progress-wrap">
+      <span class="progress-note" id="m-progress-text">최소 ${MIN_GROUP_SIZE}명 모이면 행사가 확정됩니다.</span>
+      <div class="progress-bar-track"><div class="progress-bar-fill" id="m-progress-fill"></div></div>
+    </div>
+    <div class="mfield"><label>참가자(보호자) 이름</label><input type="text" id="m-name" placeholder="이름을 입력해주세요"></div>
+    <div class="mfield"><label>연락처</label><input type="tel" id="m-phone" placeholder="010-0000-0000"></div>
+    <div class="mfield"><label>이메일 (선택)</label><input type="email" id="m-email" placeholder="안내 발송용"></div>
+    <div class="mfield"><label>인원 수</label><input type="number" id="m-qty" value="1" min="1" max="20"></div>
+    <div class="mprice-row"><span class="l">결제 예정 금액</span><span class="amt" id="m-amount">${money(PRICE)}</span></div>
+    <button type="button" class="msubmit" id="m-submit">신청 및 결제하기</button>
+    <div class="mmsg" id="m-msg"></div>
+  `;
+
+  const qtyInput = document.getElementById('m-qty');
+  const amountEl = document.getElementById('m-amount');
+  qtyInput.oninput = () => {
+    const q = Math.max(1, parseInt(qtyInput.value, 10) || 1);
+    amountEl.textContent = money(PRICE * q);
+  };
+  const dateSel = document.getElementById('m-date');
+  const updateProgress = () => {
+    const cnt = progressCache[dateSel.value] || 0;
+    const pct = Math.min(100, Math.round((cnt / MIN_GROUP_SIZE) * 100));
+    document.getElementById('m-progress-fill').style.width = pct + '%';
+    document.getElementById('m-progress-text').textContent = `현재 ${cnt}명 / 최소 ${MIN_GROUP_SIZE}명 (${pct}%)`;
+  };
+  dateSel.onchange = updateProgress;
+  updateProgress();
+  document.getElementById('m-submit').onclick = submitTicket;
+}
+
+async function submitTicket() {
+  const name = document.getElementById('m-name').value.trim();
+  const phone = document.getElementById('m-phone').value.trim();
+  const email = document.getElementById('m-email').value.trim();
+  const qty = Math.max(1, parseInt(document.getElementById('m-qty').value, 10) || 1);
+  const visitDate = document.getElementById('m-date').value;
+  const msg = document.getElementById('m-msg');
+  const btn = document.getElementById('m-submit');
+
+  if (!name) { msg.textContent = '이름을 입력해주세요.'; return; }
+  if (!phone) { msg.textContent = '연락처를 입력해주세요.'; return; }
+  msg.textContent = '';
+
+  btn.disabled = true; btn.textContent = '신청 접수 중...';
+  const created = await fnFetch('create', {
+    productId: PRODUCT_ID, quantity: qty, buyerName: name, buyerPhone: phone,
+    buyerEmail: email || undefined, visitDate,
+  });
+
+  if (!created.ok) {
+    btn.disabled = false; btn.textContent = '신청 및 결제하기';
+    msg.textContent = created.data?.message || '신청 처리에 실패했습니다.';
+    return;
+  }
+
+  const orderId = created.data.data.orderId;
+  const amount = created.data.data.amount;
+  renderPaymentStep(orderId, amount, name, email);
+}
+
+function renderPaymentStep(orderId, amount, buyerName, buyerEmail) {
+  const body = document.getElementById('m-body');
+  body.innerHTML = `
+    <div class="test-badge">테스트 결제 모드 · 실제 청구 없음</div>
+    <div class="mprice-row"><span class="l">결제 금액</span><span class="amt">${money(amount)}</span></div>
+    <div class="pay-method-grid" id="pay-method-grid">
+      <button type="button" class="paymethod-btn" data-method="카드">💳 카드로 결제</button>
+      <button type="button" class="paymethod-btn" data-method="계좌이체">🏦 계좌이체로 결제</button>
+      <button type="button" class="paymethod-btn" data-method="토스페이">🅣 토스페이로 결제</button>
+    </div>
+    <div class="mmsg" id="m-msg"></div>
+  `;
+
+  if (location.protocol === 'file:') {
+    document.getElementById('m-msg').innerHTML =
+      '⚠️ file://로 직접 열면 결제창이 정상 동작하지 않을 수 있습니다.<br>실제 배포 주소(https://)로 열어서 테스트해주세요.';
+  }
+
+  let tossPayments;
+  try {
+    tossPayments = TossPayments(TOSS_CLIENT_KEY);
+  } catch (e) {
+    document.getElementById('m-msg').textContent = '결제 모듈을 불러오지 못했습니다: ' + (e?.message || e);
+    return;
+  }
+
+  document.querySelectorAll('.paymethod-btn').forEach(btn => {
+    btn.onclick = async () => {
+      const msg = document.getElementById('m-msg');
+      msg.textContent = '';
+      document.querySelectorAll('.paymethod-btn').forEach(b => b.disabled = true);
+      try {
+        await tossPayments.requestPayment(btn.dataset.method, {
+          amount, orderId, orderName: 'I-ON × 오션월드 단체모집',
+          customerName: buyerName, customerEmail: buyerEmail || undefined,
+          successUrl: location.origin + location.pathname,
+          failUrl: location.origin + location.pathname,
+        });
+      } catch (e) {
+        document.querySelectorAll('.paymethod-btn').forEach(b => b.disabled = false);
+        if (e?.code === 'USER_CANCEL') { msg.textContent = '결제가 취소되었습니다.'; return; }
+        msg.textContent = '결제창을 여는 데 실패했습니다: ' + (e?.message || e || '알 수 없는 오류');
+      }
+    };
+  });
+}
+
+function showConfirmingState() {
+  document.getElementById('m-body').innerHTML = `<div class="mstate"><strong>결제 확인 중입니다...</strong>잠시만 기다려주세요.</div>`;
+}
+function showConfirmFailedState(message) {
+  document.getElementById('m-body').innerHTML = `
+    <div class="mstate">
+      <strong>결제 확인에 실패했습니다</strong>
+      ${message || '결제 승인 중 문제가 발생했습니다.'}
+      <div class="sub">문의: 031-339-2999</div>
+    </div>`;
+}
+
+async function handleTossRedirectReturn() {
+  const params = new URLSearchParams(location.search);
+  const paymentKey = params.get('paymentKey');
+  const orderId = params.get('orderId');
+  const amount = params.get('amount');
+  const failCode = params.get('code');
+
+  if (paymentKey && orderId && amount) {
+    openModal();
+    showConfirmingState();
+    const confirmed = await fnFetch('confirm', { orderId, paymentKey, amount: Number(amount) });
+    if (confirmed.ok) {
+      const pins = confirmed.data.data.pins || [];
+      location.href = 'ticket.html?pin=' + encodeURIComponent(pins[0] || '');
+      return;
+    }
+    showConfirmFailedState(confirmed.data?.message);
+    history.replaceState(null, '', location.pathname);
+  } else if (failCode) {
+    const orderIdFromFail = params.get('orderId') || '';
+    openModal();
+    document.getElementById('m-body').innerHTML = `
+      <div class="mstate">
+        <strong>결제가 취소됐어요</strong>
+        ${params.get('message') || '결제가 완료되지 않았습니다.'}
+        <div class="sub">${orderIdFromFail ? '접수번호 ' + orderIdFromFail + ' · ' : ''}다시 시도하시려면 신청서를 새로 작성해주세요.</div>
+      </div>`;
+    history.replaceState(null, '', location.pathname);
+  }
+}
+
+(async () => {
+  await boot();
+  await handleTossRedirectReturn();
+})();
+</script>
+</body>
+</html>
