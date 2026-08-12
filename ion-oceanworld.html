@@ -16,6 +16,7 @@
 <meta name="description" content="I-ON — 자모 동반 체험학습 브랜드. 오션월드 단체모집 프로그램, 지정 회차에 신청하고 최소 인원이 모이면 확정됩니다.">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://js.tosspayments.com/v1/payment"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -387,6 +388,21 @@ const PRODUCT_ID = 'oceanworld_group';
 const MIN_GROUP_SIZE = 10;
 const TOSS_CLIENT_KEY = 'test_ck_mBZ1gQ4YVXjkO0AlJW968l2KPoqN';
 
+// ── 대표메일 알림 (EmailJS) — oceanworld.html/reserve.html과 같은 설정값 재사용 ──
+const EMAILJS_PUBLIC_KEY = 'x4v1t-GUbsUgOBqpF';
+const EMAILJS_SERVICE_ID = 'service_edpe1je';
+const EMAILJS_TEMPLATE_RESERVE = 'template_ul8bspr';
+const ADMIN_EMAIL = 'hpaircop@gmail.com';
+if (typeof emailjs !== 'undefined' && !EMAILJS_PUBLIC_KEY.startsWith('YOUR_')) {
+  emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+}
+function notifyAdminEmail(params) {
+  if (typeof emailjs === 'undefined') return;
+  if (EMAILJS_PUBLIC_KEY.startsWith('YOUR_')) return;
+  emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_RESERVE, { to_email: ADMIN_EMAIL, ...params })
+    .catch(e => console.warn('메일 알림 발송 실패(신청은 정상 등록됨):', e));
+}
+
 // ⚠️ 토스페이먼츠 정식 연동 전까지는 인라인 결제창을 띄우지 않고,
 // 신청 접수만 받은 뒤 담당자가 결제 링크를 문자/카카오로 별도 발송합니다.
 // 나중에 토스 연동이 끝나면 이 값을 true로 바꾸면 바로 인라인 결제로 전환됩니다.
@@ -553,6 +569,12 @@ async function submitTicket() {
 
   const orderId = created.data.data.orderId;
   const amount = created.data.data.amount;
+  const roundLabel = document.getElementById('m-date').selectedOptions[0]?.text || visitDate || '(회차 정보 없음)';
+  notifyAdminEmail({
+    subject: '[오션월드 단체모집] 새 신청 접수: ' + name,
+    group_name: name, phone, venue_name: '오션월드 (I-ON 모집형)',
+    event_date: roundLabel, note: `접수번호 ${orderId} · 인원 ${qty}명 · 금액 ${money(amount)}${email ? ' · 이메일 ' + email : ''}`,
+  });
   if (ENABLE_INLINE_PAYMENT) {
     renderPaymentStep(orderId, amount, name, email);
   } else {
