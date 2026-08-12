@@ -189,7 +189,11 @@
       </div>
 
       <div id="step-complete-profile" style="display:none">
-        <p class="lead-msg">회원 정보를 조금만 더 채워주세요. 연락처는 예약·결제 안내에 꼭 필요해요.</p>
+        <p class="lead-msg">회원 정보를 조금만 더 채워주세요. 이름과 연락처는 예약·결제 안내에 꼭 필요해요.</p>
+        <div class="field">
+          <label>이름</label>
+          <input type="text" id="cp-name" placeholder="홍길동">
+        </div>
         <div class="field">
           <label>연락처</label>
           <input type="tel" id="cp-phone" placeholder="010-0000-0000">
@@ -350,10 +354,12 @@ async function resendCode() {
 
 // 소셜 간편가입/일반가입 모두에서 연락처가 비어있는 회원은 여기서 한 번 채우게 함
 async function completeProfile() {
+  const name = document.getElementById('cp-name').value.trim();
   const phone = document.getElementById('cp-phone').value.trim();
   const birthdate = document.getElementById('cp-birthdate').value || null;
   const marketing = document.getElementById('cp-marketing').checked;
   const msg = document.getElementById('cp-msg');
+  if (!name) { msg.textContent = '이름을 입력해주세요.'; msg.className = 'msg error'; return; }
   if (!phone) { msg.textContent = '연락처를 입력해주세요.'; msg.className = 'msg error'; return; }
 
   const { data: { session } } = await sb.auth.getSession();
@@ -361,7 +367,7 @@ async function completeProfile() {
 
   const btn = document.getElementById('cp-save-btn');
   btn.disabled = true; btn.textContent = '저장 중...';
-  const patch = { phone, marketing_consent: marketing, marketing_consent_at: marketing ? new Date().toISOString() : null };
+  const patch = { name, phone, marketing_consent: marketing, marketing_consent_at: marketing ? new Date().toISOString() : null };
   if (birthdate) patch.birthdate = birthdate;
   const { error } = await sb.from('profiles').update(patch).eq('id', session.user.id);
   btn.disabled = false; btn.textContent = '완료';
@@ -440,10 +446,16 @@ async function finishAuth(session) {
     } catch (e) { /* 동의 기록 실패해도 로그인 자체는 계속 진행 */ }
   }
 
-  // 연락처가 비어있으면(주로 소셜 간편가입, 또는 그 이전에 만들어진 계정) 프로필 완성 단계를 한 번 거치게 함
+  // 이름/연락처가 비어있으면(주로 소셜 간편가입, 또는 그 이전에 만들어진 계정) 프로필 완성 단계를 한 번 거치게 함
+  // — 카카오는 실명(name) 항목을 심사받지 않는 한 넘겨주지 않고, 구글도 항상 이름을 준다는 보장이 없어서
+  //   가입 경로와 무관하게 이 단계에서 한 번은 꼭 이름을 직접 입력받도록 함
   try {
-    const { data: profile } = await sb.from('profiles').select('phone').eq('id', session.user.id).maybeSingle();
-    if (profile && !profile.phone) {
+    const { data: profile } = await sb.from('profiles').select('name, phone').eq('id', session.user.id).maybeSingle();
+    if (profile && (!profile.name || !profile.phone)) {
+      // 소셜 로그인 제공자가 닉네임/이름을 줬다면 미리 채워둬서 다시 입력하는 수고를 줄여줌
+      const metaName = session.user.user_metadata?.name || session.user.user_metadata?.full_name || '';
+      if (!profile.name && metaName) document.getElementById('cp-name').value = metaName;
+      if (profile.phone) document.getElementById('cp-phone').value = profile.phone;
       showStep('complete-profile');
       return;
     }
