@@ -297,11 +297,11 @@ a{color:inherit}
   <div class="sec-title">자주 묻는 질문</div>
   <div class="faq-item">
     <div class="faq-q"><span class="qmark">Q</span>모집형은 어떻게 진행되나요?</div>
-    <div class="faq-a">I-ON이 지정한 회차(1차/2차/3차 중 선택)에 신청자가 모여 최소 10명을 충족하면 행사가 확정되는 방식입니다. 참가 접수 후 결제 안내가 진행되며, 실명 참가자 명단 기반으로 안전하게 운영됩니다.</div>
+    <div class="faq-a">I-ON이 지정한 회차(1차/2차/3차 중 선택)에 신청자가 모여 최소 20명을 충족하면 행사가 확정되는 방식입니다. 참가 접수 후 결제 안내가 진행되며, 실명 참가자 명단 기반으로 안전하게 운영됩니다.</div>
   </div>
   <div class="faq-item">
     <div class="faq-q"><span class="qmark">Q</span>최소 인원이 다 안 모이면 어떻게 되나요?</div>
-    <div class="faq-a">회차 기준 최소 10명 미달 시 담당자가 안내드리며, 다른 회차로 이동하거나 환불해드립니다.</div>
+    <div class="faq-a">회차 기준 최소 20명 미달 시 담당자가 안내드리며, 다른 회차로 이동하거나 환불해드립니다.</div>
   </div>
   <div class="faq-item">
     <div class="faq-q"><span class="qmark">Q</span>신청 마감일이 지나면 신청할 수 없나요?</div>
@@ -339,7 +339,7 @@ a{color:inherit}
     <div class="info-icon-grid">
       <div class="info-icon-item"><div class="ii">👨‍👩‍👧</div><span>유아~고등학생<br>및 동반 가족</span></div>
       <div class="info-icon-item"><div class="ii">✉️</div><span>참가접수 후<br>결제 안내 발송</span></div>
-      <div class="info-icon-item"><div class="ii">👥</div><span>최소 10명<br>모집 시 진행</span></div>
+      <div class="info-icon-item"><div class="ii">👥</div><span>최소 20명<br>모집 시 진행</span></div>
       <div class="info-icon-item"><div class="ii">🎟️</div><span>지정 단체입장<br>개별사용 불가</span></div>
     </div>
   </div>
@@ -385,7 +385,7 @@ const FN_URL = `${SB_URL}/functions/v1/payment-confirm`;
 const sb = supabase.createClient(SB_URL, SB_KEY);
 
 const PRODUCT_ID = 'oceanworld_group';
-const MIN_GROUP_SIZE = 10;
+const MIN_GROUP_SIZE = 20;
 const TOSS_CLIENT_KEY = 'test_ck_mBZ1gQ4YVXjkO0AlJW968l2KPoqN';
 
 // ── 대표메일 알림 (EmailJS) — oceanworld.html/reserve.html과 같은 설정값 재사용 ──
