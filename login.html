@@ -378,9 +378,6 @@ function backToEmail() {
 async function oauthLogin(provider) {
   const target = getRedirectTarget();
   const opts = { redirectTo: location.origin + location.pathname + '?redirect=' + encodeURIComponent(target) };
-  // 카카오는 아직 비즈니스 인증 전이라 이메일(account_email) 동의항목 권한이 없음 —
-  // 기본 요청 범위에 이메일이 포함되면 KOE205(잘못된 요청) 에러가 남. 닉네임/프로필사진만 요청.
-  if (provider === 'kakao') opts.scopes = 'profile_nickname profile_image';
   const { error } = await sb.auth.signInWithOAuth({ provider, options: opts });
   if (error) {
     const msg = document.getElementById('login-msg');
@@ -408,8 +405,6 @@ async function oauthSignup(provider) {
   sessionStorage.setItem('hh_oauth_marketing_pref', document.getElementById('signup-consent-marketing').checked ? '1' : '0');
   const target = getRedirectTarget();
   const opts = { redirectTo: location.origin + location.pathname + '?redirect=' + encodeURIComponent(target) };
-  // oauthLogin()과 동일한 이유 — 카카오는 이메일 동의항목 권한이 아직 없어서 닉네임/프로필사진만 요청
-  if (provider === 'kakao') opts.scopes = 'profile_nickname profile_image';
   const { error } = await sb.auth.signInWithOAuth({ provider, options: opts });
   if (error) {
     sessionStorage.removeItem('hh_oauth_consent_pending');
