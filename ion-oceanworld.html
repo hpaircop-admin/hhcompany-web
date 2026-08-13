@@ -477,8 +477,13 @@ async function boot() {
     : `현재 신청 가능한 회차가 없습니다`;
 }
 
-function openModal() {
+async function openModal() {
   const overlay = document.getElementById('ionOverlay');
+  // 모집 인원수는 boot() 시점에 한 번만 불러온 뒤 캐시돼 있어서, 페이지를 오래 띄워둔
+  // 채로 신청창을 열면 그 사이 들어온 다른 신청이 반영 안 된 숫자가 보일 수 있었음.
+  // 신청창을 열 때마다 최신 값으로 다시 불러와서 이 문제를 줄임(신청 시점 최종 확인은
+  // submitTicket()에서 한 번 더 함).
+  await loadGroupProgress();
   renderModalBody();
   overlay.classList.add('open');
 }
@@ -569,11 +574,26 @@ async function submitTicket() {
 
   const orderId = created.data.data.orderId;
   const amount = created.data.data.amount;
-  const roundLabel = document.getElementById('m-date').selectedOptions[0]?.text || visitDate || '(회차 정보 없음)';
+  const dateInfo = GROUP_DATES.find(d => d.value === visitDate);
+  const roundLabel = dateInfo?.label || visitDate || '(회차 정보 없음)';
+
+  // ⚠️ 알림 메일의 "현재 N명" 숫자는 신청 직후 다시 조회해서 넣음.
+  // 예전엔 페이지 로드 시점에 캐시된 progressCache 값을 그대로 썼는데, 이 값은
+  // (1) 본인이 방금 넣은 신청분이 반영 안 돼 있고, (2) 페이지를 열어둔 사이 다른 사람이
+  // 신청했으면 그것도 반영이 안 돼 있어서 — 실제 누적 인원보다 적게 표시되는 문제가 있었음.
+  // (예: 11명으로 메일이 왔는데 실제론 19명이 신청된 상태였던 사례로 확인됨, 2026-08-13)
+  let freshCount = (progressCache[visitDate] || 0) + qty;
+  try {
+    const { data: freshRow } = await sb.from('group_recruit_progress')
+      .select('ticket_count').eq('product_id', PRODUCT_ID).eq('visit_date', visitDate).maybeSingle();
+    if (freshRow && typeof freshRow.ticket_count === 'number') freshCount = freshRow.ticket_count;
+  } catch (e) { /* 재조회 실패해도 신청 자체는 이미 완료된 상태 — 추정치(직전 캐시+이번 인원)로 진행 */ }
+
   notifyAdminEmail({
     subject: '[오션월드 단체모집] 새 신청 접수: ' + name,
     group_name: name, phone, venue_name: '오션월드 (I-ON 모집형)',
-    event_date: roundLabel, note: `접수번호 ${orderId} · 인원 ${qty}명 · 금액 ${money(amount)}${email ? ' · 이메일 ' + email : ''}`,
+    event_date: roundLabel,
+    note: `접수번호 ${orderId} · 이번 신청 ${qty}명 · 해당 회차 누적 ${freshCount}명/최소 ${MIN_GROUP_SIZE}명 · 금액 ${money(amount)}${email ? ' · 이메일 ' + email : ''}`,
   });
   if (ENABLE_INLINE_PAYMENT) {
     renderPaymentStep(orderId, amount, name, email);
