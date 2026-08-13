@@ -14,10 +14,59 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>(주)더블에이치컴퍼니 — 단체를 특별한 하루로</title>
 <meta name="description" content="아일랜드캐슬, 오션월드, 키자니아, 롯데월드 단체 입장권 최저가 예약. 학교·어린이집·복지관·체육관 단체 전문.">
+<meta name="keywords" content="단체입장권,단체예약,아일랜드캐슬,오션월드,키자니아,롯데월드,학교단체,어린이집단체,복지관단체,체육관단체,워터파크단체,테마파크단체할인">
+<meta name="robots" content="index, follow">
+<meta name="author" content="(주)더블에이치컴퍼니">
+
+<!-- 검색엔진 노출용: 정규 URL -->
+<link rel="canonical" href="https://hhcompany.co.kr/">
+
+<!-- 카카오톡/페이스북 등 링크 공유 시 미리보기 (Open Graph) -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="(주)더블에이치컴퍼니">
+<meta property="og:title" content="(주)더블에이치컴퍼니 — 단체를 특별한 하루로">
+<meta property="og:description" content="아일랜드캐슬, 오션월드, 키자니아, 롯데월드 단체 입장권 최저가 예약. 학교·어린이집·복지관·체육관 단체 전문.">
+<meta property="og:url" content="https://hhcompany.co.kr/">
+<meta property="og:image" content="https://hhcompany.co.kr/icons/icon-512.png">
+<meta property="og:locale" content="ko_KR">
+
+<!-- 트위터/X 카드 -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="(주)더블에이치컴퍼니 — 단체를 특별한 하루로">
+<meta name="twitter:description" content="아일랜드캐슬, 오션월드, 키자니아, 롯데월드 단체 입장권 최저가 예약. 학교·어린이집·복지관·체육관 단체 전문.">
+<meta name="twitter:image" content="https://hhcompany.co.kr/icons/icon-512.png">
+
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0e2a47">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
 <link rel="apple-touch-icon" href="icons/icon-180.png">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- 구글 등 검색엔진이 회사 정보를 바로 이해할 수 있도록 하는 구조화 데이터 -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TravelAgency",
+  "name": "(주)더블에이치컴퍼니",
+  "alternateName": "HHCOMPANY",
+  "url": "https://hhcompany.co.kr/",
+  "logo": "https://hhcompany.co.kr/icons/icon-512.png",
+  "image": "https://hhcompany.co.kr/icons/icon-512.png",
+  "description": "아일랜드캐슬, 오션월드, 키자니아, 롯데월드 등 단체 입장권 최저가 예약. 학교·어린이집·복지관·체육관 단체 전문 여행/이벤트 대행사.",
+  "telephone": "+82-31-339-2999",
+  "email": "hpaircop@gmail.com",
+  "founder": { "@type": "Person", "name": "김경훈" },
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "용현로155 105호",
+    "addressLocality": "의정부시",
+    "addressRegion": "경기도",
+    "addressCountry": "KR"
+  },
+  "areaServed": "KR",
+  "sameAs": ["http://pf.kakao.com/_vvZxen/chat"]
+}
+</script>
 <style>
   @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css');
   @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700;900&display=swap');
@@ -58,8 +107,8 @@
     transition: border-color .3s, box-shadow .3s;
   }
   header.scrolled { border-color: var(--line); box-shadow: 0 2px 20px rgba(14,42,71,0.05); }
-  .nav { display: grid; grid-template-columns: auto 1fr auto; align-items: center; height: 74px; max-width: 1320px; column-gap: 24px; }
-  .logo { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+  .nav { display: flex; align-items: center; justify-content: space-between; height: 74px; }
+  .logo { display: flex; align-items: center; gap: 10px; }
   .brand-icon { width: 38px; height: 38px; flex-shrink: 0; object-fit: contain; }
   .logo-text { display: flex; flex-direction: column; line-height: 1.2; }
   .logo-tag { font-size: 9px; font-weight: 700; letter-spacing: 0.14em; color: #6b8e23; text-transform: uppercase; }
@@ -70,26 +119,27 @@
   .foot-brand .logo-word span { color: var(--sky); }
   .foot-brand .logo-tag { color: #a9d43f; }
   .foot-brand .logo-kr { color: rgba(255,255,255,0.55); }
-  .nav-cta-group { display: flex; align-items: center; gap: 6px; justify-self: end; }
-  .member-btn { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; background: transparent; color: var(--navy); padding: 6px 4px; border-radius: 4px; font-size: 11px; font-weight: 700; border: none; text-decoration: underline; text-underline-offset: 3px; transition: color .2s; }
-  .member-btn:hover { color: var(--blue); }
-  .member-btn.is-member { color: var(--blue); }
-  .logout-link { display: inline-flex; align-items: center; white-space: nowrap; background: transparent; color: var(--ink); opacity: .55; padding: 6px 4px; border-radius: 4px; font-size: 10.5px; font-weight: 600; border: none; transition: opacity .2s, color .2s; }
-  .logout-link:hover { opacity: 1; color: var(--blue); }
-  .nav-menu .member-link { display: none; }
-  .nav-menu .member-link a { color: var(--blue) !important; }
+  .nav-cta-group { display: flex; align-items: center; gap: 10px; }
+  .kakao-btn { display: inline-flex; align-items: center; gap: 6px; background: #FEE500; color: #191919; padding: 10px 18px; border-radius: 4px; font-size: 13px; font-weight: 700; transition: transform .2s, box-shadow .2s; }
+  .kakao-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(254,229,0,0.45); }
+  .kakao-btn svg { width: 16px; height: 16px; }
   .foot-kakao { display: inline-flex; align-items: center; gap: 6px; color: #FEE500 !important; font-weight: 700; }
   .foot-kakao svg { width: 14px; height: 14px; }
-  .nav-menu { display: flex; justify-content: center; gap: 20px; list-style: none; }
+  .nav-menu { display: flex; gap: 34px; list-style: none; }
   .nav-menu a {
-    display: inline-block; font-size: 12px; font-weight: 600; color: var(--ink); white-space: nowrap;
-    letter-spacing: 0; position: relative; padding: 4px 0;
+    font-size: 12px; font-weight: 600; color: var(--ink);
+    letter-spacing: 0.06em; text-transform: uppercase; position: relative; padding: 4px 0;
   }
   .nav-menu a::after {
     content: ''; position: absolute; left: 0; bottom: 0; width: 0; height: 2px;
     background: var(--blue); transition: width .25s;
   }
   .nav-menu a:hover::after { width: 100%; }
+  .nav-cta {
+    background: var(--navy); color: #fff; padding: 10px 22px; border-radius: 4px;
+    font-size: 13px; font-weight: 700; transition: background .2s, transform .2s;
+  }
+  .nav-cta:hover { background: var(--blue); transform: translateY(-1px); }
   .burger { display: none; background: none; border: none; cursor: pointer; }
 
   /* ── 히어로 ── */
@@ -104,43 +154,7 @@
   .blob-2 { width: 400px; height: 400px; background: var(--sky); bottom: -140px; left: -60px; opacity: 0.35; }
   .blob-3 { width: 300px; height: 300px; background: var(--coral); top: 40%; right: 20%; opacity: 0.22; }
 
-  /* ══════════════════════════════════════════
-     히어로 배경을 "영상처럼" 보이게 하는 캔버스 씬
-     (구름/관람차/버스가 다니는 길/반짝임) + 시네마틱 연출
-     ══════════════════════════════════════════ */
-  .hero-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; display: block; }
-  .hero-canvas.kenburns { animation: kenBurns 26s ease-in-out infinite alternate; transform-origin: 60% 55%; }
-  @keyframes kenBurns { from { transform: scale(1); } to { transform: scale(1.045); } }
-
-  .hero-vignette {
-    position: absolute; inset: 0; z-index: 2; pointer-events: none;
-    background: radial-gradient(ellipse at 55% 45%, transparent 40%, rgba(8,27,48,0.55) 100%);
-  }
-  .hero-grain {
-    position: absolute; inset: -60px; z-index: 2; pointer-events: none; opacity: 0.05; mix-blend-mode: overlay;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
-    animation: grainShift 1s steps(6) infinite;
-  }
-  @keyframes grainShift {
-    0% { transform: translate(0,0); } 20% { transform: translate(-3%,2%); } 40% { transform: translate(2%,-3%); }
-    60% { transform: translate(-2%,3%); } 80% { transform: translate(3%,-2%); } 100% { transform: translate(0,0); }
-  }
-  .hero-letterbox { position: absolute; left: 0; right: 0; height: 10px; background: #050f1c; z-index: 4; pointer-events: none; }
-  .hero-letterbox.top { top: 0; }
-  .hero-letterbox.bottom { bottom: 0; }
-  .hero-letterbox::after { content: ''; position: absolute; left: 0; right: 0; height: 1px; background: linear-gradient(90deg,transparent,rgba(255,182,72,.5),transparent); }
-  .hero-letterbox.top::after { bottom: 0; }
-  .hero-letterbox.bottom::after { top: 0; }
-
-  .hero-rec {
-    position: absolute; top: 96px; right: 32px; z-index: 5; pointer-events: none;
-    display: flex; align-items: center; gap: 6px;
-    font-size: 11px; font-weight: 700; letter-spacing: 0.08em; color: rgba(255,255,255,0.55);
-  }
-  .hero-rec .dot3 { width: 6px; height: 6px; border-radius: 50%; background: var(--coral); animation: pulse 1.4s infinite; }
-  @media (max-width: 900px) { .hero-rec { display: none; } }
-
-  .hero-content { position: relative; z-index: 6; padding-top: 74px; }
+  .hero-content { position: relative; z-index: 2; padding-top: 74px; }
   .eyebrow {
     display: inline-flex; align-items: center; gap: 8px;
     font-size: 13px; font-weight: 600; letter-spacing: 0.08em;
@@ -180,7 +194,7 @@
 
   .scroll-hint {
     position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
-    z-index: 6; display: flex; flex-direction: column; align-items: center; gap: 8px;
+    z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 8px;
     color: rgba(255,255,255,0.5);
     font-size: 11px; font-weight: 600; letter-spacing: 0.15em;
     animation: bob 2.2s ease-in-out infinite;
@@ -224,9 +238,9 @@
   .about-points { list-style: none; margin-top: 28px; }
   .about-points li { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 18px; font-size: 15px; font-weight: 500; }
   .about-points .ic { flex-shrink: 0; width: 28px; height: 28px; border-radius: 6px; background: var(--blue); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; }
-  .about-visual { position: relative; aspect-ratio: 1/1; border-radius: 12px; overflow: hidden; background: linear-gradient(160deg, var(--navy), var(--blue)); display: flex; align-items: center; justify-content: center; box-shadow: 0 30px 60px rgba(14,42,71,0.25); }
+  .about-visual { position: relative; aspect-ratio: 4/5; border-radius: 12px; overflow: hidden; background: linear-gradient(160deg, var(--navy), var(--blue)); display: flex; align-items: center; justify-content: center; box-shadow: 0 30px 60px rgba(14,42,71,0.25); }
   .about-visual .big-num { text-align: center; color: #fff; padding: 40px; }
-  .about-visual .big-num .n-text { font-family: var(--serif); font-size: clamp(30px, 4.6vw, 48px); font-weight: 700; line-height: 1.3; letter-spacing: -0.01em; }
+  .about-visual .big-num .n-text { font-family: var(--serif); font-size: clamp(28px, 4vw, 42px); font-weight: 700; line-height: 1.3; letter-spacing: -0.01em; }
   .about-visual .big-num .n-text span { color: var(--amber); }
   .about-visual .big-num .t { font-size: 14px; letter-spacing: 0.2em; color: rgba(255,255,255,0.55); margin-top: 20px; font-weight: 600; }
   .about-visual .float-card { position: absolute; background: #fff; border-radius: 8px; padding: 14px 18px; box-shadow: 0 12px 30px rgba(0,0,0,0.15); font-size: 13px; font-weight: 600; }
@@ -339,9 +353,8 @@
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
   @media (max-width: 900px) {
-    .nav { display: flex; justify-content: space-between; height: auto; flex-wrap: wrap; row-gap: 10px; padding: 12px 0; }
+    .nav { height: auto; flex-wrap: wrap; row-gap: 10px; padding: 12px 0; }
     .nav-cta-group { display: none; }
-    .nav-menu .member-link { display: block; }
     .burger { display: flex; align-items: center; justify-content: center; }
     .nav { position: relative; }
     .nav-menu {
@@ -392,10 +405,8 @@
       <li><a href="press.html">언론보도</a></li>
       <li><a href="board.html">문의게시판</a></li>
       <li><a href="reserve.html">예약게시판</a></li>
-      <li class="member-link"><a href="login.html?redirect=personal.html" id="memberLinkMobile">회원가입 / 로그인</a></li>
-      <li class="member-link" id="logoutLiMobile" style="display:none"><a href="#" id="logoutLinkMobile">로그아웃</a></li>
     </ul>
-    <div class="nav-cta-group"><a href="login.html?redirect=personal.html" class="member-btn" id="memberBtn">회원가입</a><a href="#" class="logout-link" id="logoutLink" style="display:none">로그아웃</a></div>
+    <div class="nav-cta-group"><a href="http://pf.kakao.com/_vvZxen/chat" target="_blank" rel="noopener" class="kakao-btn"><svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 3C6.48 3 2 6.58 2 11c0 2.8 1.83 5.26 4.6 6.71-.2.75-.73 2.72-.83 3.14-.13.52.19.51.4.37.17-.11 2.68-1.82 3.77-2.56.66.1 1.35.15 2.06.15 5.52 0 10-3.58 10-8s-4.48-8-10-8z"/></svg>카카오톡 상담</a><a href="reserve.html" class="nav-cta">단체 예약 문의</a></div>
     <button class="burger" aria-label="메뉴">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0e2a47" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </button>
@@ -409,12 +420,6 @@
     <div class="blob blob-2"></div>
     <div class="blob blob-3"></div>
   </div>
-  <canvas class="hero-canvas kenburns" id="heroCanvas" aria-hidden="true"></canvas>
-  <div class="hero-vignette" aria-hidden="true"></div>
-  <div class="hero-grain" aria-hidden="true"></div>
-  <div class="hero-letterbox top" aria-hidden="true"></div>
-  <div class="hero-letterbox bottom" aria-hidden="true"></div>
-  <div class="hero-rec" aria-hidden="true"><span class="dot3"></span>매일, 새로운 하루</div>
   <div class="wrap hero-content">
     <span class="eyebrow"><span class="dot"></span>단체·체험 여행 전문 파트너</span>
     <h1>모두의 하루를<br><span class="hl">특별한 추억</span>으로 잇습니다</h1>
@@ -526,175 +531,6 @@
   const header = document.getElementById('header');
   window.addEventListener('scroll', () => header.classList.toggle('scrolled', window.scrollY > 20));
 
-  // ── 히어로 시네마틱 캔버스 ──────────────────────────────────────
-  // 실제 영상 파일 없이도 "구름이 흐르고 관람차가 돌고 버스가 길을 오가는"
-  // 루프 씬을 캔버스로 매 프레임 그려서 영상처럼 보이게 만든다.
-  (function heroCinematic() {
-    const canvas = document.getElementById('heroCanvas');
-    const heroSection = document.querySelector('.hero');
-    if (!canvas || !heroSection) return;
-    const ctx = canvas.getContext('2d');
-    const heroReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    let W = 0, H = 0, roadPts = [];
-
-    function bez(t, p0, p1, p2, p3) {
-      const mt = 1 - t;
-      return mt * mt * mt * p0 + 3 * mt * mt * t * p1 + 3 * mt * t * t * p2 + t * t * t * p3;
-    }
-
-    function buildRoad() {
-      const y0 = H * 0.86, y1 = H * 0.78, y2 = H * 0.90, y3 = H * 0.82;
-      const pts = []; const N = 120;
-      for (let i = 0; i <= N; i++) {
-        const t = i / N;
-        pts.push({ x: bez(t, -40, W * 0.32, W * 0.68, W + 40), y: bez(t, y0, y1, y2, y3) });
-      }
-      roadPts = pts;
-    }
-
-    function roadPoint(t) {
-      const n = roadPts.length - 1;
-      const f = Math.max(0, Math.min(1, t)) * n;
-      const i = Math.floor(f), frac = f - i;
-      const a = roadPts[i], b = roadPts[Math.min(i + 1, n)];
-      return { x: a.x + (b.x - a.x) * frac, y: a.y + (b.y - a.y) * frac, angle: Math.atan2(b.y - a.y, b.x - a.x) };
-    }
-
-    function resize() {
-      const rect = heroSection.getBoundingClientRect();
-      W = rect.width; H = rect.height;
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      canvas.width = Math.round(W * dpr);
-      canvas.height = Math.round(H * dpr);
-      canvas.style.width = W + 'px';
-      canvas.style.height = H + 'px';
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      buildRoad();
-    }
-
-    const clouds = Array.from({ length: 5 }, () => ({
-      offset: Math.random(), y: 0.08 + Math.random() * 0.16,
-      r: 46 + Math.random() * 40, period: 70000 + Math.random() * 60000,
-      alpha: 0.10 + Math.random() * 0.08
-    }));
-
-    const sparkles = Array.from({ length: 24 }, () => ({
-      xr: Math.random(), offset: Math.random(), period: 14000 + Math.random() * 16000,
-      size: 1 + Math.random() * 1.8, flickerPhase: Math.random() * Math.PI * 2, flickerFreq: 0.0006 + Math.random() * 0.0008
-    }));
-
-    const wheelCx = () => W * 0.80, wheelCy = () => H * 0.50, wheelR = () => Math.min(H * 0.16, 90);
-
-    function drawClouds(t) {
-      clouds.forEach(c => {
-        const frac = (t / c.period + c.offset) % 1;
-        const x = frac * (W + 260) - 130, y = c.y * H;
-        const g = ctx.createRadialGradient(x, y, 0, x, y, c.r * 1.3);
-        g.addColorStop(0, `rgba(255,255,255,${c.alpha})`);
-        g.addColorStop(1, 'rgba(255,255,255,0)');
-        ctx.save();
-        ctx.fillStyle = g;
-        ctx.beginPath(); ctx.ellipse(x, y, c.r * 1.3, c.r * 0.68, 0, 0, Math.PI * 2); ctx.fill();
-        ctx.restore();
-      });
-    }
-
-    function drawWheel(t) {
-      const cx = wheelCx(), cy = wheelCy(), r = wheelR(), angle = t * 0.00028;
-      ctx.save();
-      ctx.strokeStyle = 'rgba(255,255,255,0.16)'; ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.stroke();
-      for (let i = 0; i < 8; i++) {
-        const a = angle + (i / 8) * Math.PI * 2;
-        const x = cx + Math.cos(a) * r, y = cy + Math.sin(a) * r;
-        ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(x, y);
-        ctx.strokeStyle = 'rgba(255,255,255,0.10)'; ctx.stroke();
-        ctx.beginPath(); ctx.arc(x, y, 3.4, 0, Math.PI * 2);
-        ctx.fillStyle = i % 2 === 0 ? 'rgba(255,182,72,0.4)' : 'rgba(255,255,255,0.28)';
-        ctx.fill();
-      }
-      ctx.beginPath();
-      ctx.moveTo(cx, cy + r); ctx.lineTo(cx - r * 0.42, cy + r + 34);
-      ctx.moveTo(cx, cy + r); ctx.lineTo(cx + r * 0.42, cy + r + 34);
-      ctx.strokeStyle = 'rgba(255,255,255,0.14)'; ctx.stroke();
-      ctx.restore();
-    }
-
-    function drawRoad() {
-      if (roadPts.length < 2) return;
-      ctx.save();
-      ctx.strokeStyle = 'rgba(255,255,255,0.08)'; ctx.lineWidth = 2; ctx.setLineDash([10, 10]);
-      ctx.beginPath();
-      roadPts.forEach((p, i) => i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y));
-      ctx.stroke();
-      ctx.restore();
-    }
-
-    function drawBus(t) {
-      const period = 10000, tt = (t % period) / period, p = roadPoint(tt);
-      ctx.save();
-      ctx.translate(p.x, p.y); ctx.rotate(p.angle);
-      const bw = 46, bh = 20;
-      ctx.fillStyle = 'rgba(255,182,72,0.9)';
-      ctx.beginPath();
-      if (ctx.roundRect) ctx.roundRect(-bw / 2, -bh, bw, bh, 5); else ctx.rect(-bw / 2, -bh, bw, bh);
-      ctx.fill();
-      ctx.fillStyle = 'rgba(14,42,71,0.55)';
-      ctx.fillRect(-bw / 2 + 5, -bh + 4, 10, 7);
-      ctx.fillRect(-bw / 2 + 18, -bh + 4, 10, 7);
-      ctx.fillRect(-bw / 2 + 31, -bh + 4, 9, 7);
-      ctx.fillStyle = 'rgba(8,27,48,0.85)';
-      ctx.beginPath(); ctx.arc(-bw / 2 + 10, 1, 4, 0, Math.PI * 2); ctx.fill();
-      ctx.beginPath(); ctx.arc(bw / 2 - 10, 1, 4, 0, Math.PI * 2); ctx.fill();
-      ctx.restore();
-    }
-
-    function drawSparkles(t) {
-      sparkles.forEach(s => {
-        const frac = (t / s.period + s.offset) % 1;
-        const x = s.xr * W, y = H - frac * (H + 40) + 20;
-        const a = 0.15 + 0.25 * (0.5 + 0.5 * Math.sin(t * s.flickerFreq + s.flickerPhase));
-        ctx.beginPath(); ctx.arc(x, y, s.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255,255,255,${Math.max(0, a)})`; ctx.fill();
-      });
-    }
-
-    function drawOnce(t) {
-      ctx.clearRect(0, 0, W, H);
-      drawClouds(t); drawWheel(t); drawRoad(); drawBus(t); drawSparkles(t);
-    }
-
-    // 히어로가 화면에 보일 때만 그리고, 스크롤로 벗어나면 즉시 멈춘다 (스크롤 성능 보호)
-    let heroVisible = true;
-    let rafRunning = false;
-    let lastDraw = 0;
-
-    function frame(t) {
-      if (heroReduced || document.hidden || !heroVisible) { rafRunning = false; return; }
-      if (t - lastDraw >= 33) { lastDraw = t; drawOnce(t); } // ~30fps로 제한 (배경 장식이라 60fps 불필요)
-      requestAnimationFrame(frame);
-    }
-
-    function startLoop() {
-      if (!rafRunning && !heroReduced) { rafRunning = true; requestAnimationFrame(frame); }
-    }
-
-    window.addEventListener('resize', resize);
-    resize();
-
-    if (heroReduced) {
-      drawOnce(4500); // 정지 모션: 대표 프레임 한 장만 그림
-    } else {
-      const heroIo = new IntersectionObserver((entries) => {
-        entries.forEach((e) => { heroVisible = e.isIntersecting; if (heroVisible) startLoop(); });
-      }, { threshold: 0 });
-      heroIo.observe(heroSection);
-      document.addEventListener('visibilitychange', () => { if (!document.hidden && heroVisible) startLoop(); });
-      startLoop();
-    }
-  })();
-
   const io = new IntersectionObserver((entries) => {
     entries.forEach((e, i) => {
       if (e.isIntersecting) { setTimeout(() => e.target.classList.add('on'), (i % 4) * 80); io.unobserve(e.target); }
@@ -725,50 +561,6 @@
     if (!res.ok) { const err = await res.text(); throw new Error(`오류 ${res.status}: ${err}`); }
     return res.status === 204 ? null : res.json();
   }
-
-  // ── 개인 회원(B2C) 로그인 상태에 따라 "회원가입 ↔ 개인구매" 버튼 전환 ──
-  // 로그인 전에는 개인구매채널(personal.html)로 가는 진입점이 안 보이고,
-  // login.html에서 이메일 인증(=회원가입 겸용)을 마치면 바로 "개인구매"로 바뀐다.
-  (function memberNav() {
-    if (typeof supabase === 'undefined') return;
-    const sbAuth = supabase.createClient(SB_URL, SB_KEY);
-    const desktopBtn = document.getElementById('memberBtn');
-    const mobileBtn = document.getElementById('memberLinkMobile');
-    const logoutBtn = document.getElementById('logoutLink');
-    const logoutLiMobile = document.getElementById('logoutLiMobile');
-    const logoutBtnMobile = document.getElementById('logoutLinkMobile');
-
-    function render(session) {
-      const loggedIn = !!session;
-      const href = loggedIn ? 'personal.html' : 'login.html?redirect=personal.html';
-      if (desktopBtn) {
-        desktopBtn.href = href;
-        desktopBtn.textContent = loggedIn ? '개인구매 →' : '회원가입';
-        desktopBtn.classList.toggle('is-member', loggedIn);
-      }
-      if (mobileBtn) {
-        mobileBtn.href = href;
-        mobileBtn.textContent = loggedIn ? '개인구매 →' : '회원가입 / 로그인';
-      }
-      if (logoutBtn) {
-        logoutBtn.style.display = loggedIn ? '' : 'none';
-      }
-      if (logoutLiMobile) {
-        logoutLiMobile.style.display = loggedIn ? '' : 'none';
-      }
-    }
-
-    async function doSignOut(e) {
-      e.preventDefault();
-      await sbAuth.auth.signOut();
-      location.href = 'index.html';
-    }
-    if (logoutBtn) logoutBtn.addEventListener('click', doSignOut);
-    if (logoutBtnMobile) logoutBtnMobile.addEventListener('click', doSignOut);
-
-    sbAuth.auth.getSession().then(({ data }) => render(data.session)).catch(() => {});
-    sbAuth.auth.onAuthStateChange((_event, session) => render(session));
-  })();
 
 
 
