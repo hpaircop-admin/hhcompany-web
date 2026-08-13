@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /Artifacts/
+Disallow: /devsign-platform/
+Disallow: /INDEX_UPDATE/
+Disallow: /golmok_navi_demo.html
+Disallow: /golmok_navi_realmap.html
+Disallow: /hero-animation-sample.html
+Disallow: /supabase_email_template_confirm_signup.html
+
+Sitemap: https://hhcompany.co.kr/sitemap.xml

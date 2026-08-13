@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <url>
+    <loc>https://hhcompany.co.kr/</loc>
+    <lastmod>2026-08-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- 핵심 소개/문의 페이지 -->
+  <url><loc>https://hhcompany.co.kr/business.html</loc><lastmod>2026-08-13</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://hhcompany.co.kr/products.html</loc><lastmod>2026-08-13</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://hhcompany.co.kr/ceo.html</loc><lastmod>2026-08-13</lastmod><changefreq>yearly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://hhcompany.co.kr/cases.html</loc><lastmod>2026-08-13</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://hhcompany.co.kr/press.html</loc><lastmod>2026-08-13</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://hhcompany.co.kr/reserve.html</loc><lastmod>2026-08-13</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://hhcompany.co.kr/board.html</loc><lastmod>2026-08-13</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://hhcompany.co.kr/personal.html</loc><lastmod>2026-08-13</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+
+  <!-- 업장/상품 랜딩페이지 -->
+  <url><loc>https://hhcompany.co.kr/islandcastle.html</loc><lastmod>2026-08-13</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://hhcompany.co.kr/islandcastle-personal.html</loc><lastmod>2026-08-13</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://hhcompany.co.kr/oceanworld.html</loc><lastmod>2026-08-13</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://hhcompany.co.kr/oceanworld-group.html</loc><lastmod>2026-08-13</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://hhcompany.co.kr/ion-oceanworld.html</loc><lastmod>2026-08-13</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://hhcompany.co.kr/kidzania.html</loc><lastmod>2026-08-13</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://hhcompany.co.kr/lotteworld.html</loc><lastmod>2026-08-13</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://hhcompany.co.kr/wavepark.html</loc><lastmod>2026-08-13</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://hhcompany.co.kr/nanta.html</loc><lastmod>2026-08-13</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://hhcompany.co.kr/duriland.html</loc><lastmod>2026-08-13</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://hhcompany.co.kr/painters.html</loc><lastmod>2026-08-13</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://hhcompany.co.kr/noljasup.html</loc><lastmod>2026-08-13</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://hhcompany.co.kr/aquaplanet.html</loc><lastmod>2026-08-13</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://hhcompany.co.kr/aquaplanet-gwanggyo.html</loc><lastmod>2026-08-13</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://hhcompany.co.kr/seoulland.html</loc><lastmod>2026-08-13</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://hhcompany.co.kr/jangsutang.html</loc><lastmod>2026-08-13</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://hhcompany.co.kr/sinheung.html</loc><lastmod>2026-08-13</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://hhcompany.co.kr/alsatang.html</loc><lastmod>2026-08-13</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://hhcompany.co.kr/folkvillage.html</loc><lastmod>2026-08-13</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://hhcompany.co.kr/woongjin.html</loc><lastmod>2026-08-13</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://hhcompany.co.kr/caribbean.html</loc><lastmod>2026-08-13</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://hhcompany.co.kr/caterpillar.html</loc><lastmod>2026-08-13</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://hhcompany.co.kr/museumhei.html</loc><lastmod>2026-08-13</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://hhcompany.co.kr/onemount.html</loc><lastmod>2026-08-13</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://hhcompany.co.kr/nowonjump.html</loc><lastmod>2026-08-13</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://hhcompany.co.kr/ion-jumpkids.html</loc><lastmod>2026-08-13</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://hhcompany.co.kr/jump-event.html</loc><lastmod>2026-08-13</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://hhcompany.co.kr/ganghwa.html</loc><lastmod>2026-08-13</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
+
+  <!-- 정책 페이지 -->
+  <url><loc>https://hhcompany.co.kr/privacy.html</loc><lastmod>2026-08-13</lastmod><changefreq>yearly</changefreq><priority>0.2</priority></url>
+  <url><loc>https://hhcompany.co.kr/terms.html</loc><lastmod>2026-08-13</lastmod><changefreq>yearly</changefreq><priority>0.2</priority></url>
+
+</urlset>
