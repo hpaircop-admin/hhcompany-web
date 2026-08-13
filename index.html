@@ -108,7 +108,7 @@
     transition: border-color .3s, box-shadow .3s;
   }
   header.scrolled { border-color: var(--line); box-shadow: 0 2px 20px rgba(14,42,71,0.05); }
-  .nav { display: flex; align-items: center; justify-content: space-between; height: 74px; }
+  .nav { display: grid; grid-template-columns: auto 1fr auto; align-items: center; height: 74px; max-width: 1320px; column-gap: 24px; }
   .logo { display: flex; align-items: center; gap: 10px; }
   .brand-icon { width: 38px; height: 38px; flex-shrink: 0; object-fit: contain; }
   .logo-text { display: flex; flex-direction: column; line-height: 1.2; }
@@ -120,13 +120,13 @@
   .foot-brand .logo-word span { color: var(--sky); }
   .foot-brand .logo-tag { color: #a9d43f; }
   .foot-brand .logo-kr { color: rgba(255,255,255,0.55); }
-  .nav-cta-group { display: flex; align-items: center; gap: 10px; }
+  .nav-cta-group { display: flex; align-items: center; gap: 10px; justify-self: end; }
   .kakao-btn { display: inline-flex; align-items: center; gap: 6px; background: #FEE500; color: #191919; padding: 10px 18px; border-radius: 4px; font-size: 13px; font-weight: 700; transition: transform .2s, box-shadow .2s; }
   .kakao-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(254,229,0,0.45); }
   .kakao-btn svg { width: 16px; height: 16px; }
   .foot-kakao { display: inline-flex; align-items: center; gap: 6px; color: #FEE500 !important; font-weight: 700; }
   .foot-kakao svg { width: 14px; height: 14px; }
-  .nav-menu { display: flex; gap: 34px; list-style: none; }
+  .nav-menu { display: flex; justify-content: center; gap: 20px; list-style: none; }
   .nav-menu a {
     font-size: 12px; font-weight: 600; color: var(--ink);
     letter-spacing: 0.06em; text-transform: uppercase; position: relative; padding: 4px 0;
@@ -354,7 +354,7 @@
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
   @media (max-width: 900px) {
-    .nav { height: auto; flex-wrap: wrap; row-gap: 10px; padding: 12px 0; }
+    .nav { display: flex; justify-content: space-between; height: auto; flex-wrap: wrap; row-gap: 10px; padding: 12px 0; }
     .nav-cta-group { display: none; }
     .burger { display: flex; align-items: center; justify-content: center; }
     .nav { position: relative; }
