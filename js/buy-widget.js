@@ -115,7 +115,7 @@
       console.error('[HHBuyWidget] getSession() 실패:', e);
     }
     try {
-      priceResult = await client.from('products').select('id, indiv_price').eq('id', state.productId).maybeSingle();
+      priceResult = await client.from('products').select('id, indiv_price, indiv_sale_enabled').eq('id', state.productId).maybeSingle();
     } catch (e) {
       priceResult = { data: null, error: e };
     }
@@ -125,6 +125,15 @@
     state.session = sessionData?.session || null;
     state.price = priceResult.data ? priceResult.data.indiv_price : null;
     state.priceError = priceResult.error || null;
+    state.saleEnabled = priceResult.data ? priceResult.data.indiv_sale_enabled === true : false;
+
+    // 관리자가 "개인 판매 여부"를 비활성으로 꺼둔 상품은 "준비 중" 안내를 보여주는 대신
+    // 개인 구매 탭 자체를 완전히 숨김 (조회 자체가 실패한 경우(priceError)는 설정을 못 읽은 것뿐이므로
+    // 탭은 유지하고 기존 오류 메시지를 보여줌 — 실수로 다 숨겨버리는 걸 방지)
+    if (!state.priceError && !state.saleEnabled) {
+      hideIndivTab(state);
+      return;
+    }
 
     if (state.session) {
       try {
@@ -139,6 +148,27 @@
     // 자체적으로 #buy 앵커로 넘어온 경우 스크롤 위치 보정 (로그인 후 돌아왔을 때)
     if (location.hash === '#' + (state.mountEl.id || '')) {
       state.mountEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+
+  // 개인 판매가 꺼져있는 상품의 "개인 구매" 탭 버튼/패널을 완전히 숨기고,
+  // 단체 예약 탭만 보이는 상태로 되돌림. 두 가지 탭 마크업(rtab-*/tab-*)을 모두 지원.
+  function hideIndivTab(state) {
+    const { mountEl } = state;
+    mountEl.innerHTML = '';
+    mountEl.style.display = 'none';
+
+    const indivBtn = document.getElementById('rtab-indiv') || document.getElementById('tab-indiv');
+    const groupBtn = document.getElementById('rtab-group') || document.getElementById('tab-group');
+    const indivPanel = document.getElementById('rpanel-indiv') || document.getElementById('panel-indiv');
+    const groupPanel = document.getElementById('rpanel-group') || document.getElementById('panel-group');
+
+    if (indivBtn) indivBtn.style.display = 'none';
+    if (indivPanel) indivPanel.style.display = 'none';
+    if (groupPanel) groupPanel.style.display = '';
+    if (groupBtn) {
+      groupBtn.style.background = '#152238';
+      groupBtn.style.color = '#fff';
     }
   }
 
