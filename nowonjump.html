@@ -406,6 +406,27 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
         location.href = 'reserve.html?venue=' + encodeURIComponent(RV_VENUE_NAME) + '&count=' + count;
       }
       if (location.hash === '#buy') rvSwitchTab('indiv');
+
+      // 관리자 "개인 판매 여부"가 비활성이면 개인 구매 탭을 완전히 숨김 (p18 = 노원 JUMP)
+      (function () {
+        var SB_URL = 'https://xoupacfmkhuuvxebgfqi.supabase.co';
+        var SB_KEY = 'sb_publishable_46KQebvC7_S-_JDramvDmA_jk9aSeVc';
+        fetch(SB_URL + '/rest/v1/products?id=eq.p18&select=indiv_sale_enabled', {
+          headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY },
+        })
+          .then(function (res) { return res.ok ? res.json() : []; })
+          .then(function (rows) {
+            var enabled = rows && rows[0] && rows[0].indiv_sale_enabled === true;
+            if (enabled) return;
+            var indivBtn = document.getElementById('rtab-indiv');
+            if (indivBtn) indivBtn.style.display = 'none';
+            document.getElementById('rpanel-indiv').style.display = 'none';
+            document.getElementById('rpanel-group').style.display = '';
+            document.getElementById('rtab-group').style.background = '#152238';
+            document.getElementById('rtab-group').style.color = '#fff';
+          })
+          .catch(function (e) { console.error('[nowonjump] 개인판매여부 조회 실패:', e); });
+      })();
     </script>
   </div>
 </div>
