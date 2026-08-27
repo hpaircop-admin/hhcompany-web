@@ -73,11 +73,16 @@ async function loadTicket() {
   }
 
   try {
-    const res = await fetch(`${SB_URL}/rest/v1/pin_inventory?select=venue_name,ticket_name,pin_number,valid_from,valid_to,buyer_name,status&pin_number=eq.${encodeURIComponent(pin)}&limit=1`, {
-      headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` }
+    // 2026-08-23 보안 조치: pin_inventory는 anon 키로 직접 조회할 수 없도록
+    // 막았습니다(입장권 바코드 전체공개 방지). 대신 정확히 이 핀번호 1건만
+    // 조회해주는 공개 Edge Function(pin-lookup)을 거칩니다.
+    const res = await fetch(`${SB_URL}/functions/v1/pin-lookup`, {
+      method: 'POST',
+      headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ pin }),
     });
-    const rows = await res.json();
-    const p = Array.isArray(rows) ? rows[0] : null;
+    const data = await res.json();
+    const p = data && data.ticket ? data.ticket : null;
 
     if (!p) {
       card.innerHTML = `<div class="state"><strong>바코드 정보를 찾을 수 없습니다</strong>링크가 올바른지 확인해주세요.<br>문제가 계속되면 031-339-2999로 문의해주세요.</div>`;
