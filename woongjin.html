@@ -16,6 +16,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://js.tosspayments.com/v1/payment"></script>
 <script src="js/buy-widget.js"></script>
+<script src="js/group-deposit-widget.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -156,6 +157,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
         <div id="rv-group-err" style="display:none;font-size:12px;color:#dc2626;margin-bottom:10px">단체 예약은 최소 10명부터 가능합니다. 10명 미만이시면 개인 구매 탭을 이용해주세요.</div>
         <button type="button" onclick="rvGoGroupReserve()" style="display:block;width:100%;padding:13px;border:none;border-radius:10px;background:#152238;color:#fff;font-weight:800;font-size:14.5px;cursor:pointer">단체 예약 문의하기 →</button>
         <p style="font-size:12px;color:#666;line-height:1.7;margin-top:10px">문의 접수 후 담당자가 시즌별 요금과 일정을 맞춤 안내해드립니다.</p>
+        <div class="hhgd-mount" id="group-deposit"></div>
       </div>
 
       <div id="rpanel-indiv" style="display:none">
@@ -200,6 +202,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
 
 <script>
   HHBuyWidget.init({ mount: '#buy', productId: 'p12', venueName: '웅진플레이도시' });
+  HHGroupDepositWidget.init({ mount: '#group-deposit', productId: 'p12_dep', venueName: '웅진플레이도시', countInputId: 'rv-group-count' });
 </script>
 </body>
 </html>
