@@ -341,6 +341,13 @@
       showConfirmingState(state);
       const confirmed = await fnFetch('confirm', { orderId, paymentKey, amount: Number(amount) });
       if (confirmed.ok) {
+        if (confirmed.data?.data?.deposit === true) {
+          // 이 결제는 단체 예약금 주문(HHGroupDepositWidget 담당) — 개인구매 위젯이 처리할
+          // 대상이 아니므로 조용히 넘겨서 boot()가 평소 개인구매 화면을 그리도록 함.
+          // (2026-09-01 단체 예약금 결제 기능 추가 시, 같은 페이지에 두 위젯이 함께
+          //  마운트되는 경우를 위해 추가)
+          return false;
+        }
         const pins = confirmed.data.data.pins || [];
         location.href = 'ticket.html?pin=' + encodeURIComponent(pins[0] || '');
         return true;
