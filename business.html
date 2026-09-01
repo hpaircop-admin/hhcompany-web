@@ -13,6 +13,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>사업분야 | (주)더블에이치컴퍼니</title>
+<meta name="description" content="오프라인 단체 트래픽과 온라인·인플루언서 판매를 결합한 융합 모델로, 더블에이치컴퍼니가 운영하는 5대 핵심 사업 영역입니다.">
+<link rel="canonical" href="https://hhcompany.co.kr/business.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="(주)더블에이치컴퍼니">
+<meta property="og:title" content="사업분야 | (주)더블에이치컴퍼니">
+<meta property="og:description" content="오프라인 단체 트래픽과 온라인·인플루언서 판매를 결합한 융합 모델로, 더블에이치컴퍼니가 운영하는 5대 핵심 사업 영역입니다.">
+<meta property="og:url" content="https://hhcompany.co.kr/business.html">
+<meta property="og:image" content="https://hhcompany.co.kr/icons/icon-512.png">
+<meta property="og:locale" content="ko_KR">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css');
@@ -356,10 +365,10 @@
       <li><a href="press.html">언론보도</a></li>
       <li><a href="board.html">문의게시판</a></li>
       <li><a href="reserve.html">예약게시판</a></li>
-      <li class="member-link"><a href="login.html?redirect=personal.html" id="memberLinkMobile">회원가입 / 로그인</a></li>
+      <li class="member-link"><a href="login.html?redirect=personal.html" id="memberLinkMobile">로그인</a></li>
       <li class="member-link" id="logoutLiMobile" style="display:none"><a href="#" id="logoutLinkMobile">로그아웃</a></li>
     </ul>
-    <div class="nav-cta-group"><a href="login.html?redirect=personal.html" class="member-btn" id="memberBtn">회원가입</a><a href="#" class="logout-link" id="logoutLink" style="display:none">로그아웃</a></div>
+    <div class="nav-cta-group"><a href="login.html?redirect=personal.html" class="member-btn" id="memberBtn">로그인</a><a href="#" class="logout-link" id="logoutLink" style="display:none">로그아웃</a></div>
     <button class="burger" aria-label="메뉴">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0e2a47" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </button>
@@ -507,12 +516,12 @@
     const href = loggedIn ? 'personal.html' : 'login.html?redirect=personal.html';
     if (desktopBtn) {
       desktopBtn.href = href;
-      desktopBtn.textContent = loggedIn ? '개인구매 →' : '회원가입';
+      desktopBtn.textContent = loggedIn ? '개인구매 →' : '로그인';
       desktopBtn.classList.toggle('is-member', loggedIn);
     }
     if (mobileBtn) {
       mobileBtn.href = href;
-      mobileBtn.textContent = loggedIn ? '개인구매 →' : '회원가입 / 로그인';
+      mobileBtn.textContent = loggedIn ? '개인구매 →' : '로그인';
     }
     if (logoutBtn) logoutBtn.style.display = loggedIn ? '' : 'none';
     if (logoutLiMobile) logoutLiMobile.style.display = loggedIn ? '' : 'none';
