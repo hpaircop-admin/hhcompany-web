@@ -337,37 +337,6 @@
   .page-hero .sec-tag { color: var(--sky); }
   .page-hero h1 { font-family: var(--serif); font-size: clamp(28px,4vw,44px); font-weight:700; color:#fff; margin-bottom:14px; }
   .page-hero p { font-size:15px; color:rgba(255,255,255,0.72); max-width:520px; margin:0 auto; }
-
-  /* ── 개인구매 안내 팝업 ── */
-  .personal-popup-overlay {
-    display:none; position:fixed; inset:0; background:rgba(8,20,36,.55); z-index:9999;
-    align-items:center; justify-content:center; padding:20px;
-  }
-  .personal-popup-overlay.show { display:flex; }
-  .personal-popup {
-    background:#fff; border-radius:16px; max-width:380px; width:100%; padding:32px 28px 26px;
-    text-align:center; box-shadow:0 24px 60px rgba(8,20,36,.28); position:relative;
-    animation: popupIn .25s ease;
-  }
-  @keyframes popupIn { from { opacity:0; transform:translateY(10px) scale(.98); } to { opacity:1; transform:none; } }
-  .personal-popup .pp-close {
-    position:absolute; top:12px; right:14px; background:none; border:none; cursor:pointer;
-    font-size:20px; color:var(--gray); line-height:1; padding:4px;
-  }
-  .personal-popup .pp-close:hover { color:var(--ink); }
-  .personal-popup .pp-icon { font-size:34px; margin-bottom:10px; }
-  .personal-popup h3 { font-family:var(--serif); font-size:19px; font-weight:700; color:var(--navy); margin-bottom:10px; }
-  .personal-popup p { font-size:13.5px; color:var(--gray); line-height:1.6; margin-bottom:22px; }
-  .personal-popup .pp-actions { display:flex; flex-direction:column; gap:10px; }
-  .personal-popup .pp-primary {
-    display:block; background:var(--navy); color:#fff; padding:13px; border-radius:8px;
-    font-size:14.5px; font-weight:700; text-decoration:none; transition:background .2s;
-  }
-  .personal-popup .pp-primary:hover { background:var(--blue); }
-  .personal-popup .pp-secondary {
-    display:block; background:none; border:none; color:var(--gray); font-size:12.5px;
-    cursor:pointer; padding:4px; text-decoration:underline; font-family:inherit;
-  }
 </style>
 <link rel="icon" type="image/png" href="logo-icon.png">
 </head>
@@ -402,44 +371,6 @@
     <p>더블에이치컴퍼니가 공식 총판·제휴로 연결하는 체험시설입니다. 자세한 견적과 예약은 예약게시판으로 문의해주세요.</p>
   </div>
 </section>
-
-<div class="personal-popup-overlay" id="personalPopupOverlay">
-  <div class="personal-popup">
-    <button type="button" class="pp-close" id="personalPopupClose" aria-label="닫기">✕</button>
-    <div class="pp-icon">🎫</div>
-    <h3>개인 고객이신가요?</h3>
-    <p>회원가입 후 개인구매관에서 단체 문의 없이 바로 개인 구매가 가능합니다.</p>
-    <div class="pp-actions">
-      <a href="login.html?redirect=personal.html" class="pp-primary">회원가입 / 로그인하러 가기</a>
-      <button type="button" class="pp-secondary" id="personalPopupDismiss">괜찮아요, 계속 둘러볼게요</button>
-    </div>
-  </div>
-</div>
-<script>
-(function personalPopup() {
-  if (typeof supabase === 'undefined') return;
-  const SB_URL = 'https://xoupacfmkhuuvxebgfqi.supabase.co';
-  const SB_KEY = 'sb_publishable_46KQebvC7_S-_JDramvDmA_jk9aSeVc';
-  const sbAuth = supabase.createClient(SB_URL, SB_KEY);
-  const overlay = document.getElementById('personalPopupOverlay');
-  const closeBtn = document.getElementById('personalPopupClose');
-  const dismissBtn = document.getElementById('personalPopupDismiss');
-  if (!overlay) return;
-
-  function hide() { overlay.classList.remove('show'); }
-  if (closeBtn) closeBtn.addEventListener('click', hide);
-  if (dismissBtn) dismissBtn.addEventListener('click', hide);
-  overlay.addEventListener('click', function (e) { if (e.target === overlay) hide(); });
-
-  sbAuth.auth.getSession().then(function (res) {
-    const loggedIn = !!(res && res.data && res.data.session);
-    if (loggedIn) return; // 이미 회원이면 안내 불필요
-    if (sessionStorage.getItem('hh_personal_popup_shown')) return; // 세션당 1회만 노출
-    sessionStorage.setItem('hh_personal_popup_shown', '1');
-    setTimeout(function () { overlay.classList.add('show'); }, 900);
-  }).catch(function () {});
-})();
-</script>
 
 <section class="products">
   <div class="wrap">
