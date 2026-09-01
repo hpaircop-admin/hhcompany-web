@@ -68,6 +68,7 @@
   "sameAs": ["http://pf.kakao.com/_vvZxen/chat"]
 }
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css');
   @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700;900&display=swap');
@@ -120,7 +121,14 @@
   .foot-brand .logo-word span { color: var(--sky); }
   .foot-brand .logo-tag { color: #a9d43f; }
   .foot-brand .logo-kr { color: rgba(255,255,255,0.55); }
-  .nav-cta-group { display: flex; align-items: center; gap: 10px; justify-self: end; }
+  .nav-cta-group { display: flex; align-items: center; gap: 6px; justify-self: end; }
+  .member-btn { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; background: transparent; color: var(--navy); padding: 6px 4px; border-radius: 4px; font-size: 11px; font-weight: 700; border: none; text-decoration: underline; text-underline-offset: 3px; transition: color .2s; }
+  .member-btn:hover { color: var(--blue); }
+  .member-btn.is-member { color: var(--blue); }
+  .logout-link { display: inline-flex; align-items: center; white-space: nowrap; background: transparent; color: var(--ink); opacity: .55; padding: 6px 4px; border-radius: 4px; font-size: 10.5px; font-weight: 600; border: none; transition: opacity .2s, color .2s; }
+  .logout-link:hover { opacity: 1; color: var(--blue); }
+  .nav-menu .member-link { display: none; }
+  .nav-menu .member-link a { color: var(--blue) !important; }
   .kakao-btn { display: inline-flex; align-items: center; gap: 6px; background: #FEE500; color: #191919; padding: 10px 18px; border-radius: 4px; font-size: 13px; font-weight: 700; transition: transform .2s, box-shadow .2s; }
   .kakao-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(254,229,0,0.45); }
   .kakao-btn svg { width: 16px; height: 16px; }
@@ -356,6 +364,7 @@
   @media (max-width: 900px) {
     .nav { display: flex; justify-content: space-between; height: auto; flex-wrap: wrap; row-gap: 10px; padding: 12px 0; }
     .nav-cta-group { display: none; }
+    .nav-menu .member-link { display: block; }
     .burger { display: flex; align-items: center; justify-content: center; }
     .nav { position: relative; }
     .nav-menu {
@@ -406,8 +415,10 @@
       <li><a href="press.html">언론보도</a></li>
       <li><a href="board.html">문의게시판</a></li>
       <li><a href="reserve.html">예약게시판</a></li>
+      <li class="member-link"><a href="login.html?redirect=personal.html" id="memberLinkMobile">회원가입 / 로그인</a></li>
+      <li class="member-link" id="logoutLiMobile" style="display:none"><a href="#" id="logoutLinkMobile">로그아웃</a></li>
     </ul>
-    <div class="nav-cta-group"><a href="http://pf.kakao.com/_vvZxen/chat" target="_blank" rel="noopener" class="kakao-btn"><svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 3C6.48 3 2 6.58 2 11c0 2.8 1.83 5.26 4.6 6.71-.2.75-.73 2.72-.83 3.14-.13.52.19.51.4.37.17-.11 2.68-1.82 3.77-2.56.66.1 1.35.15 2.06.15 5.52 0 10-3.58 10-8s-4.48-8-10-8z"/></svg>카카오톡 상담</a><a href="reserve.html" class="nav-cta">단체 예약 문의</a></div>
+    <div class="nav-cta-group"><a href="login.html?redirect=personal.html" class="member-btn" id="memberBtn">회원가입</a><a href="#" class="logout-link" id="logoutLink" style="display:none">로그아웃</a></div>
     <button class="burger" aria-label="메뉴">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0e2a47" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </button>
@@ -576,6 +587,44 @@
       a.addEventListener('click', function () { header.classList.remove('nav-open'); });
     });
   }
+})();
+
+// ── 개인 회원(B2C) 로그인 상태에 따라 "회원가입 ↔ 개인구매" 버튼 전환 + 로그아웃 ──
+(function memberNav() {
+  if (typeof supabase === 'undefined') return;
+  const desktopBtn = document.getElementById('memberBtn');
+  const mobileBtn = document.getElementById('memberLinkMobile');
+  const logoutBtn = document.getElementById('logoutLink');
+  const logoutLiMobile = document.getElementById('logoutLiMobile');
+  const logoutBtnMobile = document.getElementById('logoutLinkMobile');
+  const sbAuth = supabase.createClient(SB_URL, SB_KEY);
+
+  function render(session) {
+    const loggedIn = !!session;
+    const href = loggedIn ? 'personal.html' : 'login.html?redirect=personal.html';
+    if (desktopBtn) {
+      desktopBtn.href = href;
+      desktopBtn.textContent = loggedIn ? '개인구매 →' : '회원가입';
+      desktopBtn.classList.toggle('is-member', loggedIn);
+    }
+    if (mobileBtn) {
+      mobileBtn.href = href;
+      mobileBtn.textContent = loggedIn ? '개인구매 →' : '회원가입 / 로그인';
+    }
+    if (logoutBtn) logoutBtn.style.display = loggedIn ? '' : 'none';
+    if (logoutLiMobile) logoutLiMobile.style.display = loggedIn ? '' : 'none';
+  }
+
+  async function doSignOut(e) {
+    e.preventDefault();
+    await sbAuth.auth.signOut();
+    location.href = 'index.html';
+  }
+  if (logoutBtn) logoutBtn.addEventListener('click', doSignOut);
+  if (logoutBtnMobile) logoutBtnMobile.addEventListener('click', doSignOut);
+
+  sbAuth.auth.getSession().then(({ data }) => render(data.session)).catch(() => {});
+  sbAuth.auth.onAuthStateChange((_event, session) => render(session));
 })();
 </script>
 <script>
