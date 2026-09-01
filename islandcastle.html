@@ -237,7 +237,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
   }
 
   HHBuyWidget.init({ mount: '#buy', productId: 'p14', venueName: VENUE_NAME });
-  HHGroupDepositWidget.init({ mount: '#group-deposit', productId: 'p14_dep', venueName: VENUE_NAME, countInputId: 'group-count' });
+  HHGroupDepositWidget.init({ mount: '#group-deposit', productId: 'p14', venueName: VENUE_NAME, countInputId: 'group-count' });
   // 로그인 후 #buy로 돌아오면 자동으로 개인 구매 탭으로 전환
   if (location.hash === '#buy') switchBookingTab('indiv');
 </script>
