@@ -84,10 +84,6 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
 .pt-row .p{font-weight:800;color:#fff}
 .indiv-wrap{background:var(--cream);padding:64px 24px}
 .indiv-inner{max-width:760px;margin:0 auto}
-.ticket-select-wrap{margin-bottom:16px}
-.ticket-select-lbl{display:block;font-size:12px;font-weight:700;color:var(--dark);margin-bottom:8px}
-.ticket-select{width:100%;max-width:480px;padding:13px 14px;border:1.5px solid rgba(90,107,66,.25);border-radius:10px;font-size:14.5px;font-family:inherit;background:#fff;color:var(--text);cursor:pointer}
-.ticket-select:focus{outline:none;border-color:var(--olive-mid)}
 .info-wrap{background:var(--sand-light);padding:52px 24px}
 .info-inner{max-width:760px;margin:0 auto}
 .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
@@ -252,14 +248,6 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
     <h2 class="section-title">개인 방문은<br>바로 온라인 결제</h2>
     <p class="section-desc">10인 미만 개인·소규모 방문은 아래에서 이용권을 선택하고 바로 결제하실 수 있습니다. 결제 완료 후 모바일 이용권이 발송되며, 수신 즉시 현장에서 바로 이용(입장) 가능합니다.</p>
 
-    <div class="ticket-select-wrap">
-      <label class="ticket-select-lbl" for="ticket-select">이용권 선택</label>
-      <select id="ticket-select" class="ticket-select">
-        <option value="p25">서바이벌 + 짚라인 1종(5번레일) or 고카트 3바퀴 — 30,000원</option>
-        <option value="p26" selected>서바이벌 + 짚라인 3종(3,4,5번)+고카트 3바퀴 — 43,000원</option>
-      </select>
-    </div>
-
     <div class="hhbw-mount" id="buy"></div>
 
     <div class="notice" style="margin-top:20px">
@@ -313,19 +301,10 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
 <script src="https://js.tosspayments.com/v1/payment"></script>
 <script src="js/buy-widget.js"></script>
 <script>
-  const GANGHWA_TICKETS = {
-    p25: { venueName: '강화레포츠파크', orderLabel: '서바이벌+짚라인 1종(5번레일) or 고카트 3바퀴' },
-    p26: { venueName: '강화레포츠파크', orderLabel: '서바이벌+짚라인 3종(3,4,5번)+고카트 3바퀴' },
-  };
-  function mountGanghwaTicket(productId) {
-    const opt = GANGHWA_TICKETS[productId];
-    const mountEl = document.getElementById('buy');
-    mountEl.innerHTML = '';
-    mountEl.className = 'hhbw-mount';
-    HHBuyWidget.init({ mount: '#buy', productId, venueName: opt.venueName, orderLabel: opt.orderLabel });
-  }
-  document.getElementById('ticket-select').addEventListener('change', (e) => mountGanghwaTicket(e.target.value));
-  mountGanghwaTicket(document.getElementById('ticket-select').value);
+  // buy-widget.js가 상품의 indiv_tickets(권종 2개: 30,000원/43,000원)를 DB에서 직접
+  // 읽어와서 "이용권 선택" 드롭다운까지 알아서 그려줍니다 — 페이지에서 따로 권종을
+  // 나열할 필요 없이 상품 하나만 지정하면 됩니다.
+  HHBuyWidget.init({ mount: '#buy', productId: 'p25', venueName: '강화레포츠파크' });
 </script>
 
 </body>
