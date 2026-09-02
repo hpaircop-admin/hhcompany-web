@@ -19,7 +19,7 @@
       <script>
         HHGroupDepositWidget.init({
           mount: '#group-deposit',
-          productId: 'p14_dep',
+          productId: 'p14',   // ⚠ 2026-09-01부터 "_dep" 접미사 없이, 그 업장의 진짜 상품 id를 그대로 씁니다
           venueName: VENUE_NAME,
           countInputId: 'group-count',   // Template B는 'rv-group-count'
         });
@@ -30,13 +30,18 @@
    - 로그인 불필요. 기존 "예상 인원" 입력창(countInputId) 값을 그대로 공유해서 사용.
    - 인원 10명 미만이면 결제 버튼 비활성화 + 안내 문구 표시 (기존 문의하기 버튼의
      최소인원 규칙과 동일하게 10명 기준)
-   - 결제 금액 = 상품(productId)의 indiv_price(1인당 예약금) × 예상 인원 (실시간 계산 표시)
+   - 결제 금액 = 상품(productId)의 group_deposit_price(1인당 예약금) × 예상 인원 (실시간 계산 표시)
+     ※ 2026-09-01부터: 예전에는 "{id}_dep"로 된 별도 숨김 상품에서 가격을 가져왔지만,
+       지금은 같은 상품 안의 group_deposit_price/group_deposit_enabled 필드를 그대로
+       씁니다 (관리자 상품 수정 화면 안에서 바로 편집). productId는 개인구매 위젯과
+       동일한 그 업장의 진짜 상품 id입니다.
      ⚠ 실제 청구 금액은 결제 직전 서버(payment-confirm)가 인원수 기준으로 다시 계산하며,
        클라이언트가 보낸 금액을 신뢰하지 않음 (buy-widget.js와 동일한 서버 검증 방식)
    - 담당자 이름/연락처 입력 → 토스페이먼츠 결제창(V1) 호출 → payment-confirm Edge Function 승인
    - 승인 성공 시 발권(바코드 배정) 없이 "예약금 결제 완료" 안내만 표시
-     (실제 발권/재고 소모는 payment-confirm이 productId가 "_dep"로 끝나는 주문에 대해
-      자동으로 건너뜀 — finalizePaidOrder()의 단체 예약금 분기 참고)
+     (실제 발권/재고 소모는 payment-confirm이 orders.is_deposit=true인 주문에 대해
+      자동으로 건너뜀 — finalizePaidOrder()의 단체 예약금 분기 참고. 이 위젯은
+      create 호출 시 depositMode:true를 함께 보내서 is_deposit이 설정되게 합니다)
    - 결제창에서 successUrl/failUrl로 돌아왔을 때(새로고침 후)도 자동으로 이어서 처리.
      단, 같은 페이지에 개인구매 위젯(HHBuyWidget)도 함께 있는 경우, 돌아온 주문이
      "내 것"(단체 예약금)이 아니면 조용히 넘겨서 개인구매 위젯 쪽이 처리하도록 함
@@ -130,16 +135,16 @@
     const client = getClient();
     let priceResult = { data: null, error: null };
     try {
-      priceResult = await client.from('products').select('id, indiv_price, indiv_sale_enabled').eq('id', state.productId).maybeSingle();
+      priceResult = await client.from('products').select('id, group_deposit_price, group_deposit_enabled').eq('id', state.productId).maybeSingle();
     } catch (e) {
       priceResult = { data: null, error: e };
     }
     if (priceResult.error) {
       console.error('[HHGroupDepositWidget] 상품 가격 조회 실패 (productId=' + state.productId + '):', priceResult.error);
     }
-    state.price = priceResult.data ? priceResult.data.indiv_price : null;
+    state.price = priceResult.data ? priceResult.data.group_deposit_price : null;
     state.priceError = priceResult.error || null;
-    state.saleEnabled = priceResult.data ? priceResult.data.indiv_sale_enabled === true : false;
+    state.saleEnabled = priceResult.data ? priceResult.data.group_deposit_enabled === true : false;
 
     // 예약금 상품이 아직 준비되지 않았거나(가격 미설정) 판매 비활성 상태면
     // 위젯을 완전히 숨김 — 기존 "문의하기" 버튼만 그대로 노출됨.
@@ -199,7 +204,7 @@
     btn.disabled = true; btn.textContent = '신청 접수 중...';
     const created = await fnFetch('create', {
       productId: state.productId, quantity: count, buyerName: name, buyerPhone: phone,
-      buyerEmail: email || undefined,
+      buyerEmail: email || undefined, depositMode: true,
     });
 
     if (!created.ok) {
