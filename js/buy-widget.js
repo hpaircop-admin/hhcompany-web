@@ -47,6 +47,21 @@
     return { ok: res.ok, status: res.status, data };
   }
 
+  // 토스 결제창에서 돌아온 직후 /confirm 호출은 딱 한 번만 나가야 합니다. 한 페이지에
+  // 개인구매(HHBuyWidget)와 단체예약금(HHGroupDepositWidget) 위젯이 함께 마운트된 경우
+  // (2026-09-02부터 여러 업장 페이지에서 발생) 둘 다 같은 orderId로 동시에 /confirm을
+  // 부르면, 토스 결제 서버가 두 번째 요청을 "이미 처리 중인 요청입니다" 같은 에러로
+  // 거절합니다 — 실제 결제/문자발송은 정상 처리됐는데도 화면엔 결제 실패로 보이는
+  // 문제가 생깁니다. window 전역에 진행 중인 확인 요청을 캐싱해서, 두 위젯이 항상 같은
+  // 요청(Promise) 하나만 공유하도록 합니다.
+  function confirmOnce(orderId, paymentKey, amount) {
+    global.__hhConfirmPromises = global.__hhConfirmPromises || {};
+    if (!global.__hhConfirmPromises[orderId]) {
+      global.__hhConfirmPromises[orderId] = fnFetch('confirm', { orderId, paymentKey, amount });
+    }
+    return global.__hhConfirmPromises[orderId];
+  }
+
   let cssInjected = false;
   function injectCss() {
     if (cssInjected) return;
@@ -378,7 +393,7 @@
 
     if (paymentKey && orderId && amount) {
       showConfirmingState(state);
-      const confirmed = await fnFetch('confirm', { orderId, paymentKey, amount: Number(amount) });
+      const confirmed = await confirmOnce(orderId, paymentKey, Number(amount));
       if (confirmed.ok) {
         if (confirmed.data?.data?.deposit === true) {
           // 이 결제는 단체 예약금 주문(HHGroupDepositWidget 담당) — 개인구매 위젯이 처리할
