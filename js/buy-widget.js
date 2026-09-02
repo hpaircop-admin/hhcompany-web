@@ -115,7 +115,7 @@
       console.error('[HHBuyWidget] getSession() 실패:', e);
     }
     try {
-      priceResult = await client.from('products').select('id, indiv_price, indiv_sale_enabled').eq('id', state.productId).maybeSingle();
+      priceResult = await client.from('products').select('id, indiv_price, indiv_sale_enabled, indiv_tickets').eq('id', state.productId).maybeSingle();
     } catch (e) {
       priceResult = { data: null, error: e };
     }
@@ -123,7 +123,14 @@
       console.error('[HHBuyWidget] 상품 가격 조회 실패 (productId=' + state.productId + '):', priceResult.error);
     }
     state.session = sessionData?.session || null;
-    state.price = priceResult.data ? priceResult.data.indiv_price : null;
+    // 권종(indiv_tickets)이 여러 개 등록된 상품은 그 중 하나를 골라야 가격이 정해지므로,
+    // 화면에 선택창을 보여주기 위해 배열 자체를 들고 있는다 (state.price는 "현재 선택된
+    // 권종의 가격"으로 취급 — 기본값은 첫 번째 권종). 권종이 없는 상품은 기존처럼
+    // indiv_price 하나만 쓰는 단일가 상품으로 동작한다 (다른 업장 전부 이 경로 그대로 유지).
+    const tickets = priceResult.data && Array.isArray(priceResult.data.indiv_tickets) ? priceResult.data.indiv_tickets.filter(t => t && t.type && t.price > 0) : [];
+    state.indivTickets = tickets.length ? tickets : null;
+    state.ticketIndex = 0;
+    state.price = state.indivTickets ? state.indivTickets[0].price : (priceResult.data ? priceResult.data.indiv_price : null);
     state.priceError = priceResult.error || null;
     state.saleEnabled = priceResult.data ? priceResult.data.indiv_sale_enabled === true : false;
 
@@ -172,13 +179,29 @@
     }
   }
 
+  // 권종(indiv_tickets)이 있는 상품의 "이용권 선택" <select> 마크업. 없는 상품(대부분)은 빈 문자열.
+  function ticketSelectHtml(state) {
+    if (!state.indivTickets) return '';
+    return `<div class="hhbw-field"><label>이용권 선택</label>
+      <select id="hhbw-ticket-select" style="width:100%;padding:11px 12px;border:1px solid #e2e9f2;border-radius:8px;font-size:14.5px;font-family:inherit;background:#fafbfd;box-sizing:border-box">
+        ${state.indivTickets.map((t, i) => `<option value="${i}"${i === state.ticketIndex ? ' selected' : ''}>${escapeAttr(t.type)} — ${money(t.price)}</option>`).join('')}
+      </select>
+    </div>`;
+  }
+
+  // 현재 선택된 권종(또는 단일가)에 맞춰 라벨/가격을 갱신
+  function currentTicketLabel(state) {
+    if (state.indivTickets) return state.indivTickets[state.ticketIndex].type;
+    return state.orderLabel;
+  }
+
   function render(state) {
     const { mountEl, price } = state;
 
     if (!price) {
       if (state.priceError) {
         // 실제로 상품이 미설정인 게 아니라 조회 자체가 실패한 경우 — 콘솔에 이미 상세 에러를 남겼으니
-        // 화면에는 문의 유도 + 개발자용 힌트만 짧게 표시 (F12 콘솔에서 정확한 원인 확인 가능)
+        // 화면에는 문의 유도 + 개발자용 힌트만 짧게 표시 (F12 콘솔에서 정확한 오류 메시지를 확인할 수 있습니다)
         mountEl.innerHTML = `
           <div class="hhbw-label">개인 구매</div>
           <div class="hhbw-price">가격 정보를 불러오지 못했습니다</div>
@@ -197,11 +220,14 @@
     if (!state.session) {
       const redirectTo = encodeURIComponent(location.pathname + location.search + '#' + (mountEl.id || 'buy'));
       mountEl.innerHTML = `
-        <div class="hhbw-label">${state.orderLabel} (1인)</div>
-        <div class="hhbw-price">${money(price)}<small> / 1인</small></div>
+        <div class="hhbw-label">${currentTicketLabel(state)} (1인)</div>
+        <div class="hhbw-price" id="hhbw-price">${money(price)}<small> / 1인</small></div>
+        ${ticketSelectHtml(state)}
         <a class="hhbw-btn" href="login.html?redirect=${redirectTo}">로그인하고 구매하기 →</a>
         <div class="hhbw-note">회원가입/로그인 후 온라인으로 바로 결제하실 수 있어요. 처음이시면 로그인 화면에서 바로 가입도 가능합니다.</div>
       `;
+      const sel = mountEl.querySelector('#hhbw-ticket-select');
+      if (sel) sel.onchange = () => { state.ticketIndex = parseInt(sel.value, 10) || 0; state.price = state.indivTickets[state.ticketIndex].price; render(state); };
       return;
     }
 
@@ -210,8 +236,9 @@
     const prefillEmail = state.profile?.email || '';
 
     mountEl.innerHTML = `
-      <div class="hhbw-label">${state.orderLabel} (1인)</div>
-      <div class="hhbw-price">${money(price)}<small> / 1인</small></div>
+      <div class="hhbw-label">${currentTicketLabel(state)} (1인)</div>
+      <div class="hhbw-price" id="hhbw-price">${money(price)}<small> / 1인</small></div>
+      ${ticketSelectHtml(state)}
       <div class="hhbw-field"><label>구매자 이름</label><input type="text" id="hhbw-name" value="${escapeAttr(prefillName)}" placeholder="이름을 입력해주세요"></div>
       <div class="hhbw-field"><label>연락처</label><input type="tel" id="hhbw-phone" value="${escapeAttr(prefillPhone)}" placeholder="010-0000-0000"></div>
       <div class="hhbw-field"><label>이메일 (선택)</label><input type="email" id="hhbw-email" value="${escapeAttr(prefillEmail)}" placeholder="안내 발송용"></div>
@@ -223,9 +250,18 @@
 
     const qtyInput = mountEl.querySelector('#hhbw-qty');
     const amountEl = mountEl.querySelector('#hhbw-amount');
-    qtyInput.oninput = () => {
+    const syncAmount = () => {
       const q = Math.max(1, parseInt(qtyInput.value, 10) || 1);
-      amountEl.textContent = money(price * q);
+      amountEl.textContent = money(state.price * q);
+    };
+    qtyInput.oninput = syncAmount;
+    const sel = mountEl.querySelector('#hhbw-ticket-select');
+    if (sel) sel.onchange = () => {
+      state.ticketIndex = parseInt(sel.value, 10) || 0;
+      state.price = state.indivTickets[state.ticketIndex].price;
+      mountEl.querySelector('.hhbw-label').textContent = currentTicketLabel(state) + ' (1인)';
+      mountEl.querySelector('#hhbw-price').innerHTML = `${money(state.price)}<small> / 1인</small>`;
+      syncAmount();
     };
     mountEl.querySelector('#hhbw-submit').onclick = () => submitTicket(state);
   }
@@ -251,6 +287,9 @@
     const created = await fnFetch('create', {
       productId: state.productId, quantity: qty, buyerName: name, buyerPhone: phone,
       buyerEmail: email || undefined,
+      // 권종(indiv_tickets)이 있는 상품이면 어떤 권종을 골랐는지 서버에 같이 전달
+      // (서버가 그 권종의 가격을 다시 조회해서 금액을 확정 — 클라이언트 price는 참고용일 뿐 신뢰하지 않음)
+      ticketType: state.indivTickets ? state.indivTickets[state.ticketIndex].type : undefined,
     });
 
     if (!created.ok) {
@@ -300,7 +339,7 @@
           await tossPayments.requestPayment(btn.dataset.method, {
             amount,
             orderId,
-            orderName: state.orderLabel,
+            orderName: currentTicketLabel(state),
             customerName: buyerName,
             customerEmail: buyerEmail || undefined,
             successUrl: location.origin + location.pathname,
