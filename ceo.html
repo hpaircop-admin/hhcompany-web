@@ -25,20 +25,19 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css');
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700;900&display=swap');
 
   :root {
-    --navy: #0e2a47;
-    --navy-deep: #081b30;
-    --blue: #1d6fe0;
-    --sky: #47b6e8;
-    --coral: #ff6b5c;
-    --amber: #ffb648;
-    --cream: #f5f8fc;
-    --ink: #16202e;
-    --gray: #64748b;
-    --line: #e2e9f2;
-    --serif: 'Noto Serif KR', Georgia, 'Times New Roman', serif;
+    --navy: #17302e;
+    --navy-deep: #0f211f;
+    --blue: #1f4f49;
+    --sky: #a9d02a;
+    --coral: #a9d02a;
+    --amber: #a9d02a;
+    --cream: #eef1ee;
+    --ink: #17302e;
+    --gray: #5d6b68;
+    --line: rgba(23,48,46,0.14);
+    --serif: 'Pretendard', -apple-system, sans-serif;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -100,7 +99,7 @@
   /* ── 히어로 ── */
   .hero {
     position: relative; min-height: 92vh; display: flex; align-items: center;
-    background: linear-gradient(150deg, var(--navy-deep) 0%, var(--navy) 45%, #123c56 100%);
+    background: var(--navy);
     overflow: hidden;
   }
   .hero-bg { position: absolute; inset: 0; overflow: hidden; }
@@ -114,8 +113,8 @@
     display: inline-flex; align-items: center; gap: 8px;
     font-size: 13px; font-weight: 600; letter-spacing: 0.08em;
     color: var(--sky); margin-bottom: 26px;
-    border: 1px solid rgba(71,182,232,0.35); padding: 7px 16px; border-radius: 20px;
-    background: rgba(71,182,232,0.08);
+    border: 1px solid rgba(169,208,42,0.35); padding: 7px 16px; border-radius: 20px;
+    background: rgba(169,208,42,0.08);
   }
   .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--sky); animation: pulse 2s infinite; }
   @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
@@ -137,9 +136,9 @@
   .btn-primary {
     background: var(--coral); color: #fff; padding: 15px 30px; border-radius: 4px;
     font-size: 14px; font-weight: 700; transition: transform .2s, box-shadow .2s; border: none;
-    box-shadow: 0 8px 24px rgba(255,107,92,0.3); display: inline-block;
+    box-shadow: 0 8px 24px rgba(169,208,42,0.3); display: inline-block;
   }
-  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(255,107,92,0.45); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(169,208,42,0.45); }
   .btn-ghost {
     background: transparent; color: #fff; padding: 14px 30px; border-radius: 4px;
     font-size: 14px; font-weight: 600; border: 1.5px solid rgba(255,255,255,0.35);
@@ -191,7 +190,7 @@
   .biz-icon { width: 54px; height: 54px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 26px; margin-bottom: 22px; background: var(--accent-soft); }
   .biz-card h3 { font-family: var(--serif); font-size: 19px; font-weight: 700; margin-bottom: 12px; }
   .biz-card p { font-size: 14px; color: var(--gray); }
-  .biz-card .more { display: inline-flex; align-items: center; gap: 6px; margin-top: 20px; font-size: 13px; font-weight: 700; color: var(--accent); }
+  .biz-card .more { display: inline-flex; align-items: center; gap: 6px; margin-top: 20px; font-size: 13px; font-weight: 700; color: var(--blue); }
   .biz-card .more::after { content: '→'; transition: transform .2s; }
   .biz-card:hover .more::after { transform: translateX(4px); }
 
@@ -228,7 +227,7 @@
   .badge-status { display: inline-block; padding: 3px 9px; border-radius: 20px; font-size: 10px; font-weight: 700; }
   .badge-pending { background: #fff3df; color: #b5730a; }
   .badge-answered { background: #e6f6ea; color: #1c8a45; }
-  .badge-new { background: #e7f0fd; color: var(--blue); }
+  .badge-new { background: #e8ede7; color: var(--blue); }
   .badge-confirmed { background: #e6f6ea; color: #1c8a45; }
 
   .board-form { padding: 22px 20px; border-bottom: 1px solid var(--line); display: none; }
@@ -239,8 +238,8 @@
   .bf-input { width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: 4px; font-size: 13px; color: var(--ink); background: #fff; }
   .bf-input:focus { outline: none; border-color: var(--blue); }
   textarea.bf-input { resize: vertical; min-height: 80px; }
-  .bf-submit { background: var(--coral); color: #fff; border: none; padding: 11px 22px; border-radius: 4px; font-size: 13px; font-weight: 700; }
-  .bf-submit:hover { background: #ff8172; }
+  .bf-submit { background: var(--coral); color: var(--ink); border: none; padding: 11px 22px; border-radius: 4px; font-size: 13px; font-weight: 700; }
+  .bf-submit:hover { background: #8fb824; color: #fff; }
   .bf-hint { font-size: 11px; color: var(--gray); margin-top: 8px; }
 
   .board-detail { padding: 22px 20px; border-bottom: 1px solid var(--line); display: none; }
@@ -248,15 +247,15 @@
   .bd-title { font-family: var(--serif); font-size: 17px; font-weight: 700; margin-bottom: 6px; }
   .bd-meta { font-size: 12px; color: var(--gray); margin-bottom: 16px; }
   .bd-content { font-size: 14px; color: var(--ink); line-height: 1.8; white-space: pre-wrap; padding: 16px; background: var(--cream); border-radius: 6px; margin-bottom: 12px; }
-  .bd-reply { font-size: 14px; color: var(--ink); line-height: 1.8; white-space: pre-wrap; padding: 16px; background: #e7f0fd; border-radius: 6px; border-left: 3px solid var(--blue); }
+  .bd-reply { font-size: 14px; color: var(--ink); line-height: 1.8; white-space: pre-wrap; padding: 16px; background: #e8ede7; border-radius: 6px; border-left: 3px solid var(--blue); }
   .bd-reply-label { font-size: 11px; font-weight: 700; color: var(--blue); margin-bottom: 8px; }
   .bd-close { font-size: 12px; color: var(--gray); font-weight: 600; margin-top: 14px; display: inline-block; }
 
   /* ── CONTACT / CTA ── */
-  .cta { text-align: center; background: linear-gradient(135deg, var(--blue), var(--sky)); color: #fff; }
+  .cta { text-align: center; background: var(--navy); color: #fff; }
   .cta h2 { font-family: var(--serif); font-size: clamp(26px, 4vw, 42px); font-weight: 700; letter-spacing: -0.01em; margin-bottom: 20px; }
   .cta p { font-size: 17px; color: rgba(255,255,255,0.85); margin-bottom: 36px; }
-  .cta .btn-primary { background: #fff; color: var(--blue); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+  .cta .btn-primary { background: var(--coral); color: var(--ink); box-shadow: none; }
   .cta .btn-primary:hover { box-shadow: 0 12px 32px rgba(0,0,0,0.25); }
 
   /* ── 푸터 ── */
@@ -331,7 +330,7 @@
   .legal-block h3 { font-size: 15px; font-weight: 700; color: var(--ink); margin: 26px 0 8px; }
   .legal-block p { font-size: 13.5px; line-height: 1.9; color: var(--gray); margin-bottom: 4px; }
   /* ── 대표인사말 ── */
-  .ceo { background: linear-gradient(150deg, var(--navy-deep) 0%, var(--navy) 55%, #123c56 100%); color: #fff; }
+  .ceo { background: var(--navy); color: #fff; }
   .ceo .sec-tag { color: var(--sky); }
   .ceo-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 64px; align-items: center; }
   .ceo-quote-mark { font-family: var(--serif); font-size: 90px; line-height: 1; color: var(--sky); opacity: 0.35; margin-bottom: -10px; }
@@ -342,7 +341,7 @@
   .ceo-values { display: flex; flex-direction: column; gap: 22px; }
   .ceo-value { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 28px 30px; }
   .ceo-value .cv-h { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-  .ceo-value .cv-badge { width: 38px; height: 38px; border-radius: 8px; background: rgba(71,182,232,0.15); color: var(--sky); display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-weight: 700; font-size: 15px; flex-shrink: 0; }
+  .ceo-value .cv-badge { width: 38px; height: 38px; border-radius: 8px; background: rgba(169,208,42,0.15); color: var(--sky); display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-weight: 700; font-size: 15px; flex-shrink: 0; }
   .ceo-value h4 { font-family: var(--serif); font-size: 18px; font-weight: 700; color: #fff; }
   .ceo-value h4 span { font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.5); margin-left: 8px; }
   .ceo-value p { font-size: 14px; color: rgba(255,255,255,0.65); line-height: 1.7; }
@@ -351,7 +350,7 @@
   @media (max-width: 900px) { .ceo-grid { grid-template-columns: 1fr; gap: 40px; } }
 </style>
 <style>
-  .page-hero { background: linear-gradient(150deg, var(--navy-deep) 0%, var(--navy) 45%, #123c56 100%); padding: 150px 0 70px; text-align:center; }
+  .page-hero { background: var(--navy); padding: 150px 0 70px; text-align:center; }
   .page-hero .sec-tag { color: var(--sky); }
   .page-hero h1 { font-family: var(--serif); font-size: clamp(28px,4vw,44px); font-weight:700; color:#fff; margin-bottom:14px; }
   .page-hero p { font-size:15px; color:rgba(255,255,255,0.72); max-width:520px; margin:0 auto; }
@@ -364,7 +363,7 @@
   .legal-block h3 { font-size: 15px; font-weight: 700; color: var(--ink); margin: 26px 0 8px; }
   .legal-block p { font-size: 13.5px; line-height: 1.9; color: var(--gray); margin-bottom: 4px; }
   /* ── 대표인사말 ── */
-  .ceo { background: linear-gradient(150deg, var(--navy-deep) 0%, var(--navy) 55%, #123c56 100%); color: #fff; }
+  .ceo { background: var(--navy); color: #fff; }
   .ceo .sec-tag { color: var(--sky); }
   .ceo-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 64px; align-items: center; }
   .ceo-quote-mark { font-family: var(--serif); font-size: 90px; line-height: 1; color: var(--sky); opacity: 0.35; margin-bottom: -10px; }
@@ -375,7 +374,7 @@
   .ceo-values { display: flex; flex-direction: column; gap: 22px; }
   .ceo-value { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 28px 30px; }
   .ceo-value .cv-h { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-  .ceo-value .cv-badge { width: 38px; height: 38px; border-radius: 8px; background: rgba(71,182,232,0.15); color: var(--sky); display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-weight: 700; font-size: 15px; flex-shrink: 0; }
+  .ceo-value .cv-badge { width: 38px; height: 38px; border-radius: 8px; background: rgba(169,208,42,0.15); color: var(--sky); display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-weight: 700; font-size: 15px; flex-shrink: 0; }
   .ceo-value h4 { font-family: var(--serif); font-size: 18px; font-weight: 700; color: #fff; }
   .ceo-value h4 span { font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.5); margin-left: 8px; }
   .ceo-value p { font-size: 14px; color: rgba(255,255,255,0.65); line-height: 1.7; }
@@ -390,7 +389,7 @@
 <!-- ── 헤더 ── -->
 <header id="header" class="scrolled">
   <div class="wrap nav">
-    <a href="index.html" class="logo"><img src="logo-icon.png" class="brand-icon" alt="HHCOMPANY 로고"><span class="logo-text"><span class="logo-tag">The Way To Success</span><span class="logo-word">HH<span>COMPANY</span></span></span></a>
+    <a href="index.html" class="logo"><img src="assets/hh-logo.png" class="brand-icon" alt="더블에이치컴퍼니 로고"><span class="logo-text"><span class="logo-tag">The Way To Success</span><span class="logo-word">더블에이치컴퍼니</span></span></a>
     <ul class="nav-menu">
       <li><a href="ceo.html">대표인사말</a></li>
       <li><a href="index.html#about">회사소개</a></li>
@@ -451,7 +450,7 @@
   <div class="wrap">
     <div class="foot-top">
       <div class="foot-brand">
-        <a href="index.html" class="logo"><img src="logo-icon.png" class="brand-icon" alt="HHCOMPANY 로고"><span class="logo-text"><span class="logo-tag">The Way To Success</span><span class="logo-word">HH<span>COMPANY</span></span><span class="logo-kr">(주)더블에이치컴퍼니</span></span></a>
+        <a href="index.html" class="logo"><img src="assets/hh-logo.png" class="brand-icon" alt="더블에이치컴퍼니 로고"><span class="logo-text"><span class="logo-tag">The Way To Success</span><span class="logo-word">더블에이치컴퍼니</span></span></a>
         <p>단체와 체험시설을 잇는 B2B 단체여행 파트너, (주)더블에이치컴퍼니입니다.</p>
       </div>
       <div class="foot-info-row">
@@ -460,6 +459,7 @@
           <p><strong>주소</strong><span>경기도 의정부시 용현로155 105호</span></p>
           <p><strong>사업자등록번호</strong><span>420-88-03868</span></p>
           <p><strong>통신판매업신고</strong><span>제 2026-의정부송산-0430 호</span></p>
+          <p><strong>관광사업자등록번호</strong><span>제2026-000005호</span></p>
           <p><strong>대표메일</strong><span>hpaircop@gmail.com</span></p>
           <p><strong>개인정보관리책임자</strong><span>김성훈</span></p>
           <p><strong>고객센터</strong><span>031-339-2999</span></p>

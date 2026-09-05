@@ -25,20 +25,19 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css');
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700;900&display=swap');
 
   :root {
-    --navy: #0e2a47;
-    --navy-deep: #081b30;
-    --blue: #1d6fe0;
-    --sky: #47b6e8;
-    --coral: #ff6b5c;
-    --amber: #ffb648;
-    --cream: #f5f8fc;
-    --ink: #16202e;
-    --gray: #64748b;
-    --line: #e2e9f2;
-    --serif: 'Noto Serif KR', Georgia, 'Times New Roman', serif;
+    --navy: #17302e;
+    --navy-deep: #0f211f;
+    --blue: #1f4f49;
+    --sky: #a9d02a;
+    --coral: #a9d02a;
+    --amber: #a9d02a;
+    --cream: #eef1ee;
+    --ink: #17302e;
+    --gray: #5d6b68;
+    --line: rgba(23,48,46,0.14);
+    --serif: 'Pretendard', -apple-system, sans-serif;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -97,7 +96,7 @@
   .burger { display: none; background: none; border: none; cursor: pointer; }
 
   /* -- 페이지 히어로 -- */
-  .page-hero { background: linear-gradient(150deg, var(--navy-deep) 0%, var(--navy) 45%, #123c56 100%); padding: 150px 0 70px; text-align:center; }
+  .page-hero { background: var(--navy); padding: 150px 0 70px; text-align:center; }
   .page-hero .sec-tag { font-size: 12px; font-weight: 700; letter-spacing: 0.14em; color: var(--sky); text-transform: uppercase; margin-bottom: 14px; }
   .page-hero h1 { font-family: var(--serif); font-size: clamp(28px,4vw,44px); font-weight:700; color:#fff; margin-bottom:14px; }
   .page-hero p { font-size:15px; color:rgba(255,255,255,0.72); max-width:560px; margin:0 auto; }
@@ -127,7 +126,7 @@
   .bp-head { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 800; color: var(--navy); padding: 0 22px 16px; }
   .bp-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
   .bp-dot.done { background: #34c98f; box-shadow: 0 0 0 4px rgba(52,201,143,0.15); }
-  .bp-dot.upcoming { background: var(--coral); box-shadow: 0 0 0 4px rgba(255,107,92,0.15); }
+  .bp-dot.upcoming { background: var(--coral); box-shadow: 0 0 0 4px rgba(169,208,42,0.15); }
 
   .blur-list-mask { position: relative; height: 340px; overflow: hidden; -webkit-mask-image: linear-gradient(to bottom, transparent, #000 8%, #000 88%, transparent); mask-image: linear-gradient(to bottom, transparent, #000 8%, #000 88%, transparent); }
   .blur-list { position: absolute; top: 0; left: 0; right: 0; animation: scrollUp 34s linear infinite; animation-duration: var(--scroll-dur, 90s); }
@@ -138,10 +137,10 @@
   .bl-row:hover { filter: blur(0.4px); opacity: 1; }
   .bl-left { display: flex; align-items: center; gap: 8px; min-width: 0; }
   .bl-name { font-size: 13px; font-weight: 700; color: var(--navy); white-space: nowrap; }
-  .bl-gtype { font-size: 10.5px; font-weight: 700; color: var(--blue); background: rgba(29,111,224,0.08); padding: 3px 8px; border-radius: 5px; white-space: nowrap; }
+  .bl-gtype { font-size: 10.5px; font-weight: 700; color: var(--blue); background: rgba(31,79,73,0.08); padding: 3px 8px; border-radius: 5px; white-space: nowrap; }
   .bl-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
   .bl-date { font-size: 11px; color: var(--gray); font-weight: 600; }
-  .bl-count { font-size: 11.5px; font-weight: 700; color: var(--coral); }
+  .bl-count { font-size: 11.5px; font-weight: 700; color: var(--ink); }
 
   .blur-note { text-align: center; font-size: 11.5px; color: var(--gray); margin-top: 22px; }
 
@@ -149,10 +148,10 @@
     .blur-grid { grid-template-columns: 1fr; }
   }
 
-  .cta-band { background: linear-gradient(135deg, var(--navy), var(--blue)); text-align: center; padding: 70px 0; }
+  .cta-band { background: var(--navy); text-align: center; padding: 70px 0; }
   .cta-band h3 { font-family: var(--serif); color: #fff; font-size: clamp(22px,3vw,30px); margin-bottom: 16px; }
   .cta-band p { color: rgba(255,255,255,0.78); font-size: 14px; margin-bottom: 28px; }
-  .cta-btn { display: inline-block; background: var(--coral); color: #fff; font-weight: 700; font-size: 14px; padding: 14px 30px; border-radius: 4px; transition: transform .2s; }
+  .cta-btn { display: inline-block; background: var(--coral); color: var(--ink); font-weight: 700; font-size: 14px; padding: 14px 30px; border-radius: 4px; transition: transform .2s; }
   .cta-btn:hover { transform: translateY(-2px); }
 
   /* -- 푸터 -- */
@@ -209,7 +208,7 @@
 
 <header id="header">
   <div class="wrap nav">
-    <a href="index.html" class="logo"><img src="logo-icon.png" class="brand-icon" alt="HHCOMPANY 로고"><span class="logo-text"><span class="logo-tag">The Way To Success</span><span class="logo-word">HH<span>COMPANY</span></span></span></a>
+    <a href="index.html" class="logo"><img src="assets/hh-logo.png" class="brand-icon" alt="더블에이치컴퍼니 로고"><span class="logo-text"><span class="logo-tag">The Way To Success</span><span class="logo-word">더블에이치컴퍼니</span></span></a>
     <ul class="nav-menu">
       <li><a href="ceo.html">대표인사말</a></li>
       <li><a href="index.html#about">회사소개</a></li>
@@ -284,7 +283,7 @@
   <div class="wrap">
     <div class="foot-top">
       <div class="foot-brand">
-        <a href="index.html" class="logo"><img src="logo-icon.png" class="brand-icon" alt="HHCOMPANY 로고"><span class="logo-text"><span class="logo-tag">The Way To Success</span><span class="logo-word">HH<span>COMPANY</span></span><span class="logo-kr">(주)더블에이치컴퍼니</span></span></a>
+        <a href="index.html" class="logo"><img src="assets/hh-logo.png" class="brand-icon" alt="더블에이치컴퍼니 로고"><span class="logo-text"><span class="logo-tag">The Way To Success</span><span class="logo-word">더블에이치컴퍼니</span></span></a>
         <p>단체와 체험시설을 잇는 B2B 단체여행 파트너, (주)더블에이치컴퍼니입니다.</p>
       </div>
       <div class="foot-info-row">
@@ -293,6 +292,7 @@
           <p><strong>주소</strong><span>경기도 의정부시 용현로155 105호</span></p>
           <p><strong>사업자등록번호</strong><span>420-88-03868</span></p>
           <p><strong>통신판매업신고</strong><span>제 2026-의정부송산-0430 호</span></p>
+          <p><strong>관광사업자등록번호</strong><span>제2026-000005호</span></p>
           <p><strong>대표메일</strong><span>hpaircop@gmail.com</span></p>
           <p><strong>개인정보관리책임자</strong><span>김성훈</span></p>
           <p><strong>고객센터</strong><span>031-339-2999</span></p>
