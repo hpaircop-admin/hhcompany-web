@@ -1,10 +1,69 @@
-<!doctype html>
-<html lang="ko">
-<head>
+<!doctype html><html lang="ko"><head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-N4BWKWXEQ4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-N4BWKWXEQ4');
+</script>
+
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>(주)더블에이치컴퍼니 | 지자체 사업 · MICE · 인바운드 · 학생단체</title>
-<meta name="description" content="지자체 예산 사업과 지역 행사, MICE 행사, 해외 관광객 유치와 인바운드 관광, 학생단체행사를 기획·운영합니다." />
+<meta name="description" content="지자체 예산 사업과 지역 행사, MICE 행사 운영, 해외 관광객 유치·인바운드, 학생단체 체험학습과 단체 입장권 예약까지 — (주)더블에이치컴퍼니가 기획부터 정산까지 함께합니다.">
+<meta name="keywords" content="지자체예산사업,지역행사,MICE,인바운드관광,학생단체행사,단체입장권,단체예약,아일랜드캐슬,오션월드,키자니아,롯데월드">
+<meta name="robots" content="index, follow">
+<meta name="author" content="(주)더블에이치컴퍼니">
+<meta name="naver-site-verification" content="6c536b2a3087589c4bbc20f0006fd4166c11ad3f" />
+
+<link rel="canonical" href="https://hhcompany.co.kr/">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="(주)더블에이치컴퍼니">
+<meta property="og:title" content="(주)더블에이치컴퍼니 | 지자체 사업 · MICE · 인바운드 · 학생단체">
+<meta property="og:description" content="지자체 예산 사업과 지역 행사, MICE 행사 운영, 해외 관광객 유치·인바운드, 학생단체 체험학습과 단체 입장권 예약까지 함께합니다.">
+<meta property="og:url" content="https://hhcompany.co.kr/">
+<meta property="og:image" content="https://hhcompany.co.kr/icons/icon-512.png">
+<meta property="og:locale" content="ko_KR">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="(주)더블에이치컴퍼니 | 지자체 사업 · MICE · 인바운드 · 학생단체">
+<meta name="twitter:description" content="지자체 예산 사업과 지역 행사, MICE 행사 운영, 해외 관광객 유치·인바운드, 학생단체 체험학습과 단체 입장권 예약까지 함께합니다.">
+<meta name="twitter:image" content="https://hhcompany.co.kr/icons/icon-512.png">
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#17302e">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TravelAgency",
+  "name": "(주)더블에이치컴퍼니",
+  "alternateName": "HHCOMPANY",
+  "url": "https://hhcompany.co.kr/",
+  "logo": "https://hhcompany.co.kr/icons/icon-512.png",
+  "image": "https://hhcompany.co.kr/icons/icon-512.png",
+  "description": "지자체 예산 사업, 지역 행사, MICE 행사, 해외 관광객 유치·인바운드, 학생단체 체험학습, 단체 입장권 예약을 수행하는 행사 운영 전문 회사.",
+  "telephone": "+82-31-339-2999",
+  "email": "hpaircop@gmail.com",
+  "founder": { "@type": "Person", "name": "김경훈" },
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "용현로155 105호",
+    "addressLocality": "의정부시",
+    "addressRegion": "경기도",
+    "addressCountry": "KR"
+  },
+  "areaServed": "KR",
+  "sameAs": ["http://pf.kakao.com/_vvZxen/chat"]
+}
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
 <style>
   * { box-sizing:border-box; }
@@ -41,17 +100,19 @@
 </head>
 <body>
 <div class="site">
-<div style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:11px 52px;border-bottom:1px solid rgba(23,48,46,0.08)">
+
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:11px 52px;border-bottom:1px solid rgba(23,48,46,0.08)">
     <span style="font:9.5px/1 ui-monospace,monospace;letter-spacing:0.28em;color:#5d6b68">THE WAY TO SUCCESS · HHCOMPANY</span>
     <div style="display:flex;gap:20px;font-size:12px;font-weight:500;color:#4a5b58">
-      <a href="#join" style="color:inherit">회원가입</a>
-      <a href="#login" style="color:inherit">로그인</a>
-      <a href="#mypage" style="color:inherit">마이페이지</a>
+      <a href="login.html?redirect=personal.html" id="authJoin" style="color:inherit">회원가입</a>
+      <a href="login.html?redirect=personal.html" id="authLogin" style="color:inherit">로그인</a>
+      <a href="personal.html" id="authMypage" style="color:inherit;display:none">마이페이지</a>
+      <a href="#" id="authLogout" style="color:inherit;display:none">로그아웃</a>
     </div>
   </div>
 
   <header style="display:flex;align-items:center;justify-content:space-between;gap:32px;padding:22px 52px">
-    <a href="#top" style="display:flex;align-items:center;gap:14px;color:#17302e">
+    <a href="index.html" style="display:flex;align-items:center;gap:14px;color:#17302e">
       <img src="assets/hh-logo.png" alt="더블에이치컴퍼니 로고" style="width:52px;height:52px;display:block" />
       <span style="display:flex;flex-direction:column;gap:4px">
         <span style="font-size:21px;font-weight:700;letter-spacing:-0.03em">더블에이치컴퍼니</span>
@@ -62,27 +123,27 @@
   </header>
 
   <nav class="nav-desktop" style="display:flex;align-items:center;gap:38px;padding:0 52px 18px;font-size:14.5px;font-weight:600;letter-spacing:-0.02em;border-bottom:1px solid rgba(23,48,46,0.1)">
-    <a href="#ceo" style="color:#17302e">대표인사말</a>
+    <a href="ceo.html" style="color:#17302e">대표인사말</a>
     <a href="company.html" style="color:#17302e">회사소개</a>
     <a href="#business" style="color:#17302e">사업분야</a>
-    <a href="#products" style="color:#17302e">상품소개</a>
-    <a href="#cases" style="color:#17302e">이용사례</a>
-    <a href="#press" style="color:#17302e">언론보도</a>
-    <a href="#board" style="color:#17302e">문의게시판</a>
-    <a href="#booking" style="color:#17302e">예약게시판</a>
+    <a href="products.html" style="color:#17302e">상품소개</a>
+    <a href="cases.html" style="color:#17302e">이용사례</a>
+    <a href="press.html" style="color:#17302e">언론보도</a>
+    <a href="board.html" style="color:#17302e">문의게시판</a>
+    <a href="reserve.html" style="color:#17302e">예약게시판</a>
   </nav>
 
   <details class="nav-mobile">
     <summary>전체 메뉴</summary>
     <div class="nav-mobile-links">
-      <a href="#ceo">대표인사말</a>
+      <a href="ceo.html">대표인사말</a>
       <a href="company.html">회사소개</a>
       <a href="#business">사업분야</a>
-      <a href="#products">상품소개</a>
-      <a href="#cases">이용사례</a>
-      <a href="#press">언론보도</a>
-      <a href="#board">문의게시판</a>
-      <a href="#booking">예약게시판</a>
+      <a href="products.html">상품소개</a>
+      <a href="cases.html">이용사례</a>
+      <a href="press.html">언론보도</a>
+      <a href="board.html">문의게시판</a>
+      <a href="reserve.html">예약게시판</a>
       <a href="tel:031-339-2999">031-339-2999</a>
     </div>
   </details>
@@ -98,7 +159,7 @@
       </p>
       <div style="display:flex;gap:10px;margin-top:8px">
         <a href="#contact" style="padding:16px 30px;background:#a9d02a;color:#17302e;font-size:14.5px;font-weight:700">협업 문의하기</a>
-        <a href="record.html" style="padding:16px 30px;border:1px solid rgba(23,48,46,0.2);color:#17302e;font-size:14.5px;font-weight:600">수행 실적 보기</a>
+        <a href="#business" style="padding:16px 30px;border:1px solid rgba(23,48,46,0.2);color:#17302e;font-size:14.5px;font-weight:600">사업분야 보기</a>
       </div>
       <div style="display:flex;gap:32px;margin-top:20px;padding-top:24px;border-top:1px solid rgba(23,48,46,0.12)">
         <div style="display:flex;flex-direction:column;gap:5px"><span style="font-size:13.5px;font-weight:700;letter-spacing:-0.02em">예산 기준 설계</span><span style="font-size:12.5px;color:#5d6b68">집행·정산까지 고려한 기획</span></div>
@@ -145,11 +206,11 @@
           <span style="font-size:15px;color:#5d6b68;text-align:right">&nearr;</span>
         </a>
       </div>
-      <a href="#contact" style="font-size:13px;font-weight:600;color:#1f4f49;align-self:flex-start">사업분야 전체 보기 &nearr;</a>
+      <a href="#business" style="font-size:13px;font-weight:600;color:#1f4f49;align-self:flex-start">사업분야 전체 보기 &nearr;</a>
     </div>
   </section>
 
-  <section id="ceo" style="padding:76px 52px;border-top:1px solid rgba(23,48,46,0.1);display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start">
+  <section id="about" style="padding:76px 52px;border-top:1px solid rgba(23,48,46,0.1);display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start">
     <div style="display:flex;flex-direction:column;gap:22px">
       <span style="font:11px/1 ui-monospace,monospace;letter-spacing:0.2em;color:#1f4f49">ABOUT HHCOMPANY</span>
       <h2 style="margin:0;font-size:38px;line-height:1.3;font-weight:800;letter-spacing:-0.045em;text-wrap:pretty">
@@ -157,7 +218,7 @@
       </h2>
     </div>
     <p style="margin:0;font-size:16px;line-height:2.05;color:#5d6b68;text-wrap:pretty">
-      더블에이치컴퍼니는 지자체 예산으로 진행하는 지역 행사, MICE 행사, 해외 관광객 유치와 인바운드 관광 등 다양한 사업을 수행합니다. 학생단체행사도 함께 진행하며, 각 사업의 목적과 조건에 맞춰 기획·운영의 범위를 설계합니다.
+      더블에이치컴퍼니는 지자체 예산으로 진행하는 지역 행사, MICE 행사, 해외 관광객 유치와 인바운드 관광 등 다양한 사업을 수행합니다. 학생단체행사도 함께 진행하며, 각 사업의 목적과 조건에 맞춰 기획·운영의 범위를 설계합니다. 더 자세한 회사 소개는 <a href="company.html">회사소개 페이지</a>에서 확인하실 수 있습니다.
     </p>
   </section>
 
@@ -265,34 +326,6 @@
     </div>
   </section>
 
-  <section id="record" style="background:#17302e;color:rgba(255,255,255,0.72);padding:78px 52px;display:flex;flex-direction:column;gap:36px">
-    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px">
-      <div style="display:flex;flex-direction:column;gap:14px">
-        <span style="font:11px/1 ui-monospace,monospace;letter-spacing:0.2em;color:#a9d02a">TRACK RECORD</span>
-        <h2 style="margin:0;font-size:34px;font-weight:800;letter-spacing:-0.045em;color:#fff">수행 실적</h2>
-      </div>
-      <a href="record.html" style="font-size:13.5px;font-weight:600;color:rgba(255,255,255,0.75)">전체 실적 보기 &nearr;</a>
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0 36px">
-      <div style="display:flex;flex-direction:column;gap:9px;padding:24px 0;border-top:1px solid rgba(255,255,255,0.2)">
-        <span style="font:10.5px/1 ui-monospace,monospace;letter-spacing:0.14em;color:#a9d02a">2025 · 지자체</span>
-        <span style="font-size:16.5px;font-weight:700;color:#fff;letter-spacing:-0.03em">지역 문화축제 위탁운영</span>
-        <span style="font-size:13.5px;line-height:1.75">3일 · 방문객 4만 명 규모 · 무대·부스·안전 인력 운영</span>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:9px;padding:24px 0;border-top:1px solid rgba(255,255,255,0.2)">
-        <span style="font:10.5px/1 ui-monospace,monospace;letter-spacing:0.14em;color:#a9d02a">2025 · MICE</span>
-        <span style="font-size:16.5px;font-weight:700;color:#fff;letter-spacing:-0.03em">해외 기업 인센티브 투어</span>
-        <span style="font-size:13.5px;line-height:1.75">4박 5일 · 320명 · 회의장·의전·통역 포함 전 일정 운영</span>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:9px;padding:24px 0;border-top:1px solid rgba(255,255,255,0.2)">
-        <span style="font:10.5px/1 ui-monospace,monospace;letter-spacing:0.14em;color:#a9d02a">2024 · 공공기관</span>
-        <span style="font-size:16.5px;font-weight:700;color:#fff;letter-spacing:-0.03em">기념행사 및 초청 프로그램</span>
-        <span style="font-size:13.5px;line-height:1.75">1일 · 800명 · 초청 관리·의전·기록 촬영</span>
-      </div>
-    </div>
-    <span style="font-size:12px;line-height:1.6;color:rgba(255,255,255,0.35)">※ 실적 문구는 예시입니다. 실제 계약 건으로 교체 필요.</span>
-  </section>
-
   <section id="products" style="padding:78px 52px;display:flex;flex-direction:column;gap:32px">
     <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;padding-bottom:26px;border-bottom:1px solid rgba(23,48,46,0.12)">
       <div style="display:flex;flex-direction:column;gap:10px">
@@ -300,10 +333,10 @@
         <h2 style="margin:0;font-size:30px;font-weight:800;letter-spacing:-0.045em">관광·체험 연계 상품</h2>
         <span style="font-size:14.5px;line-height:1.75;color:#4a5b58">사업 목적에 따라 함께 검토할 수 있는 상품을 확인하세요.</span>
       </div>
-      <a href="#products" style="font-size:13.5px;font-weight:600;color:#1f4f49">상품 전체 보기 &nearr;</a>
+      <a href="products.html" style="font-size:13.5px;font-weight:600;color:#1f4f49">상품 전체 보기 &nearr;</a>
     </div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">
-      <div style="display:flex;flex-direction:column;gap:18px">
+      <a href="products.html" style="display:flex;flex-direction:column;gap:18px;color:inherit">
         <div style="height:210px;background:repeating-linear-gradient(135deg,#e9ece8 0 10px,#e3e7e2 10px 20px);display:flex;align-items:center;justify-content:center">
           <span style="font:10.5px/1.7 ui-monospace,monospace;letter-spacing:0.1em;color:#6f7d7a;text-align:center">시설 사진<br />680 × 460</span>
         </div>
@@ -312,8 +345,8 @@
           <span style="font-size:18px;font-weight:700;letter-spacing:-0.03em">실내 테마파크 단체</span>
           <span style="font-size:13.5px;line-height:1.8;color:#5d6b68">날씨와 무관한 실내 코스. 20인 이상 단체 요금 적용.</span>
         </div>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:18px">
+      </a>
+      <a href="products.html" style="display:flex;flex-direction:column;gap:18px;color:inherit">
         <div style="height:210px;background:repeating-linear-gradient(135deg,#e9ece8 0 10px,#e3e7e2 10px 20px);display:flex;align-items:center;justify-content:center">
           <span style="font:10.5px/1.7 ui-monospace,monospace;letter-spacing:0.1em;color:#6f7d7a;text-align:center">시설 사진<br />680 × 460</span>
         </div>
@@ -322,8 +355,8 @@
           <span style="font-size:18px;font-weight:700;letter-spacing:-0.03em">워터파크 단체</span>
           <span style="font-size:13.5px;line-height:1.8;color:#5d6b68">성수기 물량 확보. 식사·버스 연계 가능.</span>
         </div>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:18px">
+      </a>
+      <a href="products.html" style="display:flex;flex-direction:column;gap:18px;color:inherit">
         <div style="height:210px;background:repeating-linear-gradient(135deg,#e9ece8 0 10px,#e3e7e2 10px 20px);display:flex;align-items:center;justify-content:center">
           <span style="font:10.5px/1.7 ui-monospace,monospace;letter-spacing:0.1em;color:#6f7d7a;text-align:center">체험 현장<br />680 × 460</span>
         </div>
@@ -332,64 +365,30 @@
           <span style="font-size:18px;font-weight:700;letter-spacing:-0.03em">지역 연계 체험 코스</span>
           <span style="font-size:13.5px;line-height:1.8;color:#5d6b68">연령별 맞춤 프로그램으로 구성.</span>
         </div>
-      </div>
+      </a>
     </div>
   </section>
 
   <section style="background:#eef1ee;padding:78px 52px;display:grid;grid-template-columns:1fr 1fr;gap:48px">
-    <div id="cases" style="display:flex;flex-direction:column;gap:24px">
+    <div style="display:flex;flex-direction:column;gap:24px">
       <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px">
         <div style="display:flex;flex-direction:column;gap:10px">
           <span style="font:11px/1 ui-monospace,monospace;letter-spacing:0.2em;color:#1f4f49">CASES</span>
           <h2 style="margin:0;font-size:24px;font-weight:800;letter-spacing:-0.04em">이용사례</h2>
         </div>
-        <a href="#cases" style="font-size:13px;font-weight:600;color:#1f4f49">더 보기 &nearr;</a>
+        <a href="cases.html" style="font-size:13px;font-weight:600;color:#1f4f49">더 보기 &nearr;</a>
       </div>
-      <div style="display:flex;flex-direction:column">
-        <a href="#cases" style="display:flex;align-items:baseline;justify-content:space-between;gap:20px;padding:17px 0;border-top:1px solid rgba(23,48,46,0.14);color:#17302e">
-          <span style="font-size:14.5px;font-weight:600;letter-spacing:-0.02em">○○초등학교 체험학습 단체 진행</span>
-          <span style="font:11px/1 ui-monospace,monospace;color:#6f7d7a;flex-shrink:0">2025.06</span>
-        </a>
-        <a href="#cases" style="display:flex;align-items:baseline;justify-content:space-between;gap:20px;padding:17px 0;border-top:1px solid rgba(23,48,46,0.14);color:#17302e">
-          <span style="font-size:14.5px;font-weight:600;letter-spacing:-0.02em">○○기업 임직원 워크숍 운영</span>
-          <span style="font:11px/1 ui-monospace,monospace;color:#6f7d7a;flex-shrink:0">2025.05</span>
-        </a>
-        <a href="#cases" style="display:flex;align-items:baseline;justify-content:space-between;gap:20px;padding:17px 0;border-top:1px solid rgba(23,48,46,0.14);color:#17302e">
-          <span style="font-size:14.5px;font-weight:600;letter-spacing:-0.02em">○○복지관 어르신 나들이 단체</span>
-          <span style="font:11px/1 ui-monospace,monospace;color:#6f7d7a;flex-shrink:0">2025.04</span>
-        </a>
-        <a href="#cases" style="display:flex;align-items:baseline;justify-content:space-between;gap:20px;padding:17px 0;border-top:1px solid rgba(23,48,46,0.14);border-bottom:1px solid rgba(23,48,46,0.14);color:#17302e">
-          <span style="font-size:14.5px;font-weight:600;letter-spacing:-0.02em">해외 단체 인바운드 3박 4일 코스</span>
-          <span style="font:11px/1 ui-monospace,monospace;color:#6f7d7a;flex-shrink:0">2025.03</span>
-        </a>
-      </div>
+      <p style="margin:0;font-size:14px;line-height:1.85;color:#5d6b68">학교·기업·공공기관 단체가 실제로 진행한 사례를 이용사례 페이지에서 확인하실 수 있습니다.</p>
     </div>
-    <div id="press" style="display:flex;flex-direction:column;gap:24px">
+    <div style="display:flex;flex-direction:column;gap:24px">
       <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px">
         <div style="display:flex;flex-direction:column;gap:10px">
           <span style="font:11px/1 ui-monospace,monospace;letter-spacing:0.2em;color:#1f4f49">PRESS</span>
           <h2 style="margin:0;font-size:24px;font-weight:800;letter-spacing:-0.04em">언론보도</h2>
         </div>
-        <a href="#press" style="font-size:13px;font-weight:600;color:#1f4f49">더 보기 &nearr;</a>
+        <a href="press.html" style="font-size:13px;font-weight:600;color:#1f4f49">더 보기 &nearr;</a>
       </div>
-      <div style="display:flex;flex-direction:column">
-        <a href="#press" style="display:flex;align-items:baseline;justify-content:space-between;gap:20px;padding:17px 0;border-top:1px solid rgba(23,48,46,0.14);color:#17302e">
-          <span style="font-size:14.5px;font-weight:600;letter-spacing:-0.02em">지역 축제 운영사로 선정</span>
-          <span style="font:11px/1 ui-monospace,monospace;color:#6f7d7a;flex-shrink:0">2025.07</span>
-        </a>
-        <a href="#press" style="display:flex;align-items:baseline;justify-content:space-between;gap:20px;padding:17px 0;border-top:1px solid rgba(23,48,46,0.14);color:#17302e">
-          <span style="font-size:14.5px;font-weight:600;letter-spacing:-0.02em">해외 단체 관광객 유치 성과 보도</span>
-          <span style="font:11px/1 ui-monospace,monospace;color:#6f7d7a;flex-shrink:0">2025.05</span>
-        </a>
-        <a href="#press" style="display:flex;align-items:baseline;justify-content:space-between;gap:20px;padding:17px 0;border-top:1px solid rgba(23,48,46,0.14);color:#17302e">
-          <span style="font-size:14.5px;font-weight:600;letter-spacing:-0.02em">MICE 행사 운영 사례 소개</span>
-          <span style="font:11px/1 ui-monospace,monospace;color:#6f7d7a;flex-shrink:0">2025.02</span>
-        </a>
-        <a href="#press" style="display:flex;align-items:baseline;justify-content:space-between;gap:20px;padding:17px 0;border-top:1px solid rgba(23,48,46,0.14);border-bottom:1px solid rgba(23,48,46,0.14);color:#17302e">
-          <span style="font-size:14.5px;font-weight:600;letter-spacing:-0.02em">학생단체 체험 프로그램 협약 체결</span>
-          <span style="font:11px/1 ui-monospace,monospace;color:#6f7d7a;flex-shrink:0">2024.11</span>
-        </a>
-      </div>
+      <p style="margin:0;font-size:14px;line-height:1.85;color:#5d6b68">더블에이치컴퍼니 관련 보도 내용을 언론보도 페이지에서 확인하실 수 있습니다.</p>
     </div>
   </section>
 
@@ -407,41 +406,93 @@
       <div style="display:flex;flex-direction:column;gap:8px;padding-top:20px;border-top:1px solid rgba(23,48,46,0.12)">
         <span style="font:10.5px/1 ui-monospace,monospace;letter-spacing:0.2em;color:#5d6b68">BOARD</span>
         <div style="display:flex;gap:10px;margin-top:4px">
-          <a href="#board" style="flex:1;padding:15px 0;background:#17302e;color:#fff;font-size:14px;font-weight:600;text-align:center">문의게시판</a>
-          <a href="#booking" style="flex:1;padding:15px 0;background:#a9d02a;color:#17302e;font-size:14px;font-weight:700;text-align:center">예약게시판</a>
+          <a href="board.html" style="flex:1;padding:15px 0;background:#17302e;color:#fff;font-size:14px;font-weight:600;text-align:center">문의게시판</a>
+          <a href="reserve.html" style="flex:1;padding:15px 0;background:#a9d02a;color:#17302e;font-size:14px;font-weight:700;text-align:center">예약게시판</a>
         </div>
       </div>
     </div>
   </section>
 
-  <footer style="background:#17302e;color:rgba(255,255,255,0.6);padding:52px;display:flex;align-items:flex-start;justify-content:space-between;gap:40px">
-    <div style="display:flex;align-items:flex-start;gap:18px">
+  <footer style="background:#17302e;color:rgba(255,255,255,0.6);padding:52px;display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:40px">
+    <div style="display:flex;align-items:flex-start;gap:18px;max-width:360px">
       <img src="assets/hh-logo.png" alt="" style="width:44px;height:44px;display:block;opacity:0.9" />
-      <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;flex-direction:column;gap:7px">
         <span style="font-size:15px;font-weight:700;color:#fff;letter-spacing:-0.02em">(주)더블에이치컴퍼니</span>
-        <span style="font-size:12.5px;line-height:1.8">경기도 고양시 · 대표전화 031-339-2999<br />사업자등록번호 · 관광사업자 등록번호 입력</span>
+        <span style="font-size:12px;line-height:1.85">
+          대표자 김경훈 · 개인정보관리책임자 김성훈<br />
+          경기도 의정부시 용현로155 105호<br />
+          사업자등록번호 420-88-03868<br />
+          통신판매업신고 제 2026-의정부송산-0430 호<br />
+          대표메일 hpaircop@gmail.com · 고객센터 031-339-2999
+        </span>
       </div>
     </div>
-    <div style="display:flex;gap:44px">
+    <div style="display:flex;gap:44px;flex-wrap:wrap">
       <div style="display:flex;flex-direction:column;gap:11px">
         <span style="font:10px/1 ui-monospace,monospace;letter-spacing:0.2em;color:rgba(255,255,255,0.35)">COMPANY</span>
-        <a href="#ceo" style="font-size:13px;color:rgba(255,255,255,0.72)">대표인사말</a>
+        <a href="ceo.html" style="font-size:13px;color:rgba(255,255,255,0.72)">대표인사말</a>
         <a href="company.html" style="font-size:13px;color:rgba(255,255,255,0.72)">회사소개</a>
         <a href="#business" style="font-size:13px;color:rgba(255,255,255,0.72)">사업분야</a>
       </div>
       <div style="display:flex;flex-direction:column;gap:11px">
         <span style="font:10px/1 ui-monospace,monospace;letter-spacing:0.2em;color:rgba(255,255,255,0.35)">SERVICE</span>
-        <a href="#products" style="font-size:13px;color:rgba(255,255,255,0.72)">상품소개</a>
-        <a href="#cases" style="font-size:13px;color:rgba(255,255,255,0.72)">이용사례</a>
-        <a href="record.html" style="font-size:13px;color:rgba(255,255,255,0.72)">수행 실적</a>
+        <a href="products.html" style="font-size:13px;color:rgba(255,255,255,0.72)">상품소개</a>
+        <a href="cases.html" style="font-size:13px;color:rgba(255,255,255,0.72)">이용사례</a>
+        <a href="press.html" style="font-size:13px;color:rgba(255,255,255,0.72)">언론보도</a>
       </div>
       <div style="display:flex;flex-direction:column;gap:11px">
         <span style="font:10px/1 ui-monospace,monospace;letter-spacing:0.2em;color:rgba(255,255,255,0.35)">SUPPORT</span>
-        <a href="#board" style="font-size:13px;color:rgba(255,255,255,0.72)">문의게시판</a>
-        <a href="#booking" style="font-size:13px;color:rgba(255,255,255,0.72)">예약게시판</a>
-        <a href="#press" style="font-size:13px;color:rgba(255,255,255,0.72)">언론보도</a>
+        <a href="board.html" style="font-size:13px;color:rgba(255,255,255,0.72)">문의게시판</a>
+        <a href="reserve.html" style="font-size:13px;color:rgba(255,255,255,0.72)">예약게시판</a>
+        <a href="http://pf.kakao.com/_vvZxen/chat" target="_blank" rel="noopener" style="font-size:13px;color:#FEE500;font-weight:700">카카오톡 상담</a>
+        <a href="https://hhcompany-admin.pages.dev" target="_blank" rel="noopener" style="font-size:13px;color:rgba(255,255,255,0.72)">관리자 로그인</a>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:11px">
+        <span style="font:10px/1 ui-monospace,monospace;letter-spacing:0.2em;color:rgba(255,255,255,0.35)">LEGAL</span>
+        <a href="terms.html" style="font-size:13px;color:rgba(255,255,255,0.72)">이용약관</a>
+        <a href="privacy.html" style="font-size:13px;color:#ff8f99">개인정보처리방침</a>
       </div>
     </div>
-  </footer></div>
+    <div style="width:100%;border-top:1px solid rgba(255,255,255,0.1);padding-top:20px;font-size:12px;color:rgba(255,255,255,0.4)">© 2026 (주)더블에이치컴퍼니. All rights reserved.</div>
+  </footer>
+</div>
+
+<script>
+  // ── 개인 회원(B2C) 로그인 상태에 따라 상단 회원가입/로그인 ↔ 마이페이지/로그아웃 전환 ──
+  const SB_URL = 'https://xoupacfmkhuuvxebgfqi.supabase.co';
+  const SB_KEY = 'sb_publishable_46KQebvC7_S-_JDramvDmA_jk9aSeVc';
+  (function memberNav() {
+    if (typeof supabase === 'undefined') return;
+    const elJoin = document.getElementById('authJoin');
+    const elLogin = document.getElementById('authLogin');
+    const elMypage = document.getElementById('authMypage');
+    const elLogout = document.getElementById('authLogout');
+    const sbAuth = supabase.createClient(SB_URL, SB_KEY);
+
+    function render(session) {
+      const loggedIn = !!session;
+      if (elJoin) elJoin.style.display = loggedIn ? 'none' : '';
+      if (elLogin) elLogin.style.display = loggedIn ? 'none' : '';
+      if (elMypage) elMypage.style.display = loggedIn ? '' : 'none';
+      if (elLogout) elLogout.style.display = loggedIn ? '' : 'none';
+    }
+
+    async function doSignOut(e) {
+      e.preventDefault();
+      await sbAuth.auth.signOut();
+      location.href = 'index.html';
+    }
+    if (elLogout) elLogout.addEventListener('click', doSignOut);
+
+    sbAuth.auth.getSession().then(({ data }) => render(data.session)).catch(() => {});
+    sbAuth.auth.onAuthStateChange((_event, session) => render(session));
+  })();
+
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js').catch(function () {});
+    });
+  }
+</script>
 </body>
 </html>
