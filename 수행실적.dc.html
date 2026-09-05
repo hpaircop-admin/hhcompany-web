@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+  body { margin:0; background:#fff; -webkit-font-smoothing:antialiased; }
+  a { color:#1c3a6b; text-decoration:none; }
+  a:hover { color:#5a7ba6; }
+</style>
+</helmet>
+<div style="font-family:Pretendard,system-ui,sans-serif;color:#16233a;background:#fff">
+
+  <header style="display:flex;align-items:center;justify-content:space-between;gap:32px;padding:20px 44px;border-bottom:1px solid rgba(22,35,58,0.08)">
+    <div style="display:flex;flex-direction:column;gap:3px">
+      <a href="index.html" style="font-size:17px;font-weight:700;letter-spacing:-0.02em;color:#16233a">더블에이치컴퍼니</a>
+      <span style="font:9.5px/1 ui-monospace,monospace;letter-spacing:0.2em;color:#8d97a8">HHCOMPANY · MICE &amp; EVENT</span>
+    </div>
+    <nav class="nav-desktop" style="display:flex;flex-wrap:wrap;gap:26px;font-size:14px;font-weight:500;color:#44526b">
+      <a href="company.html" style="color:inherit">회사소개</a><a href="index.html#mice" style="color:inherit">MICE·인바운드</a><a href="index.html#event" style="color:inherit">행사 운영</a><a href="index.html#tour" style="color:inherit">단체 관광</a><a href="record.html" style="color:#1c3a6b;font-weight:700">수행 실적</a><a href="index.html#contact" style="color:inherit">문의</a>
+    </nav>
+    <a href="index.html#contact" style="padding:11px 20px;background:#1c3a6b;color:#fff;font-size:13px;font-weight:600;letter-spacing:-0.01em">사업 문의 &rarr;</a>
+  </header>
+
+  <div style="background:#16233a;color:#fff;padding:72px 44px 68px;display:flex;flex-direction:column;gap:20px">
+    <span style="font:11px/1 ui-monospace,monospace;letter-spacing:0.22em;color:rgba(255,255,255,0.45)">TRACK RECORD · 수행 실적</span>
+    <h1 style="margin:0;font-size:40px;line-height:1.32;font-weight:700;letter-spacing:-0.035em;max-width:22em;text-wrap:pretty">
+      맡았던 행사와<br />그때의 규모를 그대로 적었습니다
+    </h1>
+    <p style="margin:0;font-size:16px;line-height:1.85;color:rgba(255,255,255,0.68);max-width:38em;text-wrap:pretty">
+      발주처, 기간, 참가 규모, 수행 범위를 사업별로 정리했습니다. 유사 과업 검토가 필요하시면 해당 건의 결과보고 자료를 별도로 보내드립니다.
+    </p>
+  </div>
+
+  <div style="padding:56px 44px 20px;display:flex;flex-direction:column;gap:24px">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap">
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <span style="font:11px/1 ui-monospace,monospace;letter-spacing:0.22em;color:#8d97a8">PROJECT LIST</span>
+        <h2 style="margin:0;font-size:27px;font-weight:700;letter-spacing:-0.03em">사업별 수행 내역</h2>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px">
+        <span style="padding:9px 16px;background:#1c3a6b;color:#fff;font-size:13px;font-weight:600">전체</span>
+        <span style="padding:9px 16px;border:1px solid rgba(22,35,58,0.18);font-size:13px;font-weight:600;color:#44526b">MICE·인바운드</span>
+        <span style="padding:9px 16px;border:1px solid rgba(22,35,58,0.18);font-size:13px;font-weight:600;color:#44526b">지자체 행사</span>
+        <span style="padding:9px 16px;border:1px solid rgba(22,35,58,0.18);font-size:13px;font-weight:600;color:#44526b">단체 관광</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="padding:0 44px 56px;display:flex;flex-direction:column">
+    <div style="display:grid;grid-template-columns:80px 1.1fr 1.5fr 1fr;gap:24px;padding:14px 0;border-bottom:2px solid #16233a">
+      <span style="font:11px/1 ui-monospace,monospace;letter-spacing:0.12em;color:#8d97a8">YEAR</span>
+      <span style="font-size:12.5px;font-weight:600;color:#8d97a8">발주처 · 구분</span>
+      <span style="font-size:12.5px;font-weight:600;color:#8d97a8">사업명</span>
+      <span style="font-size:12.5px;font-weight:600;color:#8d97a8">규모 · 수행 범위</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:80px 1.1fr 1.5fr 1fr;gap:24px;padding:22px 0;border-bottom:1px solid rgba(22,35,58,0.12);align-items:baseline">
+      <span style="font:13px/1 ui-monospace,monospace;font-weight:600;color:#1c3a6b">2025</span>
+      <div style="display:flex;flex-direction:column;gap:5px">
+        <span style="font-size:14.5px;font-weight:600;letter-spacing:-0.02em">○○시청</span>
+        <span style="padding:4px 9px;background:#f0f3f8;font-size:11px;font-weight:600;color:#44526b;align-self:flex-start">지자체 행사</span>
+      </div>
+      <span style="font-size:15px;line-height:1.7;font-weight:600;letter-spacing:-0.02em">지역 문화축제 위탁운영</span>
+      <span style="font-size:13.5px;line-height:1.75;color:#5b6779">3일 · 방문객 4만 명<br />무대·부스·안전 인력 운영</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:80px 1.1fr 1.5fr 1fr;gap:24px;padding:22px 0;border-bottom:1px solid rgba(22,35,58,0.12);align-items:baseline">
+      <span style="font:13px/1 ui-monospace,monospace;font-weight:600;color:#1c3a6b">2025</span>
+      <div style="display:flex;flex-direction:column;gap:5px">
+        <span style="font-size:14.5px;font-weight:600;letter-spacing:-0.02em">해외 기업 단체</span>
+        <span style="padding:4px 9px;background:#f0f3f8;font-size:11px;font-weight:600;color:#44526b;align-self:flex-start">MICE·인바운드</span>
+      </div>
+      <span style="font-size:15px;line-height:1.7;font-weight:600;letter-spacing:-0.02em">인센티브 투어 및 회의 운영</span>
+      <span style="font-size:13.5px;line-height:1.75;color:#5b6779">4박 5일 · 320명<br />회의장·의전·통역 전 일정</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:80px 1.1fr 1.5fr 1fr;gap:24px;padding:22px 0;border-bottom:1px solid rgba(22,35,58,0.12);align-items:baseline">
+      <span style="font:13px/1 ui-monospace,monospace;font-weight:600;color:#1c3a6b">2024</span>
+      <div style="display:flex;flex-direction:column;gap:5px">
+        <span style="font-size:14.5px;font-weight:600;letter-spacing:-0.02em">○○공공기관</span>
+        <span style="padding:4px 9px;background:#f0f3f8;font-size:11px;font-weight:600;color:#44526b;align-self:flex-start">지자체 행사</span>
+      </div>
+      <span style="font-size:15px;line-height:1.7;font-weight:600;letter-spacing:-0.02em">기념행사 및 초청 프로그램</span>
+      <span style="font-size:13.5px;line-height:1.75;color:#5b6779">1일 · 800명<br />초청 관리·의전·기록 촬영</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:80px 1.1fr 1.5fr 1fr;gap:24px;padding:22px 0;border-bottom:1px solid rgba(22,35,58,0.12);align-items:baseline">
+      <span style="font:13px/1 ui-monospace,monospace;font-weight:600;color:#1c3a6b">2024</span>
+      <div style="display:flex;flex-direction:column;gap:5px">
+        <span style="font-size:14.5px;font-weight:600;letter-spacing:-0.02em">○○교육지원청</span>
+        <span style="padding:4px 9px;background:#f0f3f8;font-size:11px;font-weight:600;color:#44526b;align-self:flex-start">단체 관광</span>
+      </div>
+      <span style="font-size:15px;line-height:1.7;font-weight:600;letter-spacing:-0.02em">학교 단체 체험학습 운영</span>
+      <span style="font-size:13.5px;line-height:1.75;color:#5b6779">1일 · 1,200명<br />입장·식사·버스·인솔</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:80px 1.1fr 1.5fr 1fr;gap:24px;padding:22px 0;border-bottom:1px solid rgba(22,35,58,0.12);align-items:baseline">
+      <span style="font:13px/1 ui-monospace,monospace;font-weight:600;color:#1c3a6b">2023</span>
+      <div style="display:flex;flex-direction:column;gap:5px">
+        <span style="font-size:14.5px;font-weight:600;letter-spacing:-0.02em">○○재단</span>
+        <span style="padding:4px 9px;background:#f0f3f8;font-size:11px;font-weight:600;color:#44526b;align-self:flex-start">지자체 행사</span>
+      </div>
+      <span style="font-size:15px;line-height:1.7;font-weight:600;letter-spacing:-0.02em">주민 참여 프로그램 기획·운영</span>
+      <span style="font-size:13.5px;line-height:1.75;color:#5b6779">6주 · 회차별 200명<br />기획·강사 섭외·운영</span>
+    </div>
+
+    <p style="margin:22px 0 0;font-size:12.5px;line-height:1.7;color:#8d97a8">※ 위 내역은 화면 구성을 위한 예시입니다. 실제 발주처명, 연도, 규모로 교체해 주세요. 발주처명 공개가 어려운 건은 「○○시청」처럼 익명 표기하고 규모만 남기는 방식을 권합니다.</p>
+  </div>
+
+  <div style="background:#f5f7fa;padding:60px 44px;display:grid;grid-template-columns:0.8fr 1.2fr;gap:44px;align-items:start">
+    <div style="display:flex;flex-direction:column;gap:9px">
+      <span style="font:11px/1 ui-monospace,monospace;letter-spacing:0.22em;color:#8d97a8">CAPABILITY</span>
+      <h2 style="margin:0;font-size:27px;line-height:1.4;font-weight:700;letter-spacing:-0.03em">수행 가능 범위</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:0 40px">
+      <div style="display:flex;flex-direction:column;gap:7px;padding:20px 0;border-top:1px solid rgba(22,35,58,0.14)">
+        <span style="font-size:15.5px;font-weight:600;letter-spacing:-0.02em">기획·제안</span>
+        <span style="font-size:13.5px;line-height:1.75;color:#5b6779">과업 분석, 제안서, 예산 계획서 작성</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:7px;padding:20px 0;border-top:1px solid rgba(22,35,58,0.14)">
+        <span style="font-size:15.5px;font-weight:600;letter-spacing:-0.02em">현장 인력</span>
+        <span style="font-size:13.5px;line-height:1.75;color:#5b6779">진행 요원, 안내, 안전 관리, 통역</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:7px;padding:20px 0;border-top:1px solid rgba(22,35,58,0.14)">
+        <span style="font-size:15.5px;font-weight:600;letter-spacing:-0.02em">시설·장비</span>
+        <span style="font-size:13.5px;line-height:1.75;color:#5b6779">무대, 부스, 음향, 사인물 제작·설치</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:7px;padding:20px 0;border-top:1px solid rgba(22,35,58,0.14)">
+        <span style="font-size:15.5px;font-weight:600;letter-spacing:-0.02em">이동·식사</span>
+        <span style="font-size:13.5px;line-height:1.75;color:#5b6779">차량 배차, 단체 식사, 숙박 예약</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:7px;padding:20px 0;border-top:1px solid rgba(22,35,58,0.14)">
+        <span style="font-size:15.5px;font-weight:600;letter-spacing:-0.02em">기록</span>
+        <span style="font-size:13.5px;line-height:1.75;color:#5b6779">사진·영상 촬영, 참가 집계</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:7px;padding:20px 0;border-top:1px solid rgba(22,35,58,0.14)">
+        <span style="font-size:15.5px;font-weight:600;letter-spacing:-0.02em">정산</span>
+        <span style="font-size:13.5px;line-height:1.75;color:#5b6779">결과보고서, 회계 증빙 서류 제출</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="padding:52px 44px;display:flex;align-items:center;justify-content:space-between;gap:40px">
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <h2 style="margin:0;font-size:26px;font-weight:700;letter-spacing:-0.03em">유사 과업 실적 자료가 필요하시면</h2>
+      <span style="font-size:14.5px;line-height:1.75;color:#5b6779">과업 성격을 알려주시면 해당 건의 결과보고 자료와 증빙 목록을 정리해 보내드립니다.</span>
+    </div>
+    <div style="display:flex;gap:10px;flex-shrink:0">
+      <a href="index.html#contact" style="padding:15px 28px;background:#1c3a6b;color:#fff;font-size:14.5px;font-weight:600">자료 요청</a>
+      <a href="tel:031-339-2999" style="padding:15px 28px;border:1px solid rgba(22,35,58,0.2);color:#16233a;font-size:14.5px;font-weight:600">031-339-2999</a>
+    </div>
+  </div>
+
+  <footer style="background:#16233a;color:rgba(255,255,255,0.62);padding:40px 44px;display:flex;align-items:center;justify-content:space-between;gap:24px">
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <span style="font-size:14px;font-weight:600;color:#fff">(주)더블에이치컴퍼니</span>
+      <span style="font-size:12.5px;line-height:1.7">경기도 고양시 · 대표전화 031-339-2999</span>
+    </div>
+    <span style="font:10.5px/1 ui-monospace,monospace;letter-spacing:0.2em;color:rgba(255,255,255,0.35)">THE WAY TO SUCCESS</span>
+  </footer>
+</div>
+
+</x-dc>
+</body>
+</html>

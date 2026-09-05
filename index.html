@@ -1,638 +1,447 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-N4BWKWXEQ4"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-N4BWKWXEQ4');
-</script>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>(주)더블에이치컴퍼니 — 단체를 특별한 하루로</title>
-<meta name="description" content="아일랜드캐슬, 오션월드, 키자니아, 롯데월드 단체 입장권 최저가 예약. 학교·어린이집·복지관·체육관 단체 전문.">
-<meta name="keywords" content="단체입장권,단체예약,아일랜드캐슬,오션월드,키자니아,롯데월드,학교단체,어린이집단체,복지관단체,체육관단체,워터파크단체,테마파크단체할인">
-<meta name="robots" content="index, follow">
-<meta name="author" content="(주)더블에이치컴퍼니">
-<meta name="naver-site-verification" content="6c536b2a3087589c4bbc20f0006fd4166c11ad3f" />
-
-<!-- 검색엔진 노출용: 정규 URL -->
-<link rel="canonical" href="https://hhcompany.co.kr/">
-
-<!-- 카카오톡/페이스북 등 링크 공유 시 미리보기 (Open Graph) -->
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="(주)더블에이치컴퍼니">
-<meta property="og:title" content="(주)더블에이치컴퍼니 — 단체를 특별한 하루로">
-<meta property="og:description" content="아일랜드캐슬, 오션월드, 키자니아, 롯데월드 단체 입장권 최저가 예약. 학교·어린이집·복지관·체육관 단체 전문.">
-<meta property="og:url" content="https://hhcompany.co.kr/">
-<meta property="og:image" content="https://hhcompany.co.kr/icons/icon-512.png">
-<meta property="og:locale" content="ko_KR">
-
-<!-- 트위터/X 카드 -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="(주)더블에이치컴퍼니 — 단체를 특별한 하루로">
-<meta name="twitter:description" content="아일랜드캐슬, 오션월드, 키자니아, 롯데월드 단체 입장권 최저가 예약. 학교·어린이집·복지관·체육관 단체 전문.">
-<meta name="twitter:image" content="https://hhcompany.co.kr/icons/icon-512.png">
-
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0e2a47">
-<link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
-<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
-<link rel="apple-touch-icon" href="icons/icon-180.png">
-
-<!-- 구글 등 검색엔진이 회사 정보를 바로 이해할 수 있도록 하는 구조화 데이터 -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "TravelAgency",
-  "name": "(주)더블에이치컴퍼니",
-  "alternateName": "HHCOMPANY",
-  "url": "https://hhcompany.co.kr/",
-  "logo": "https://hhcompany.co.kr/icons/icon-512.png",
-  "image": "https://hhcompany.co.kr/icons/icon-512.png",
-  "description": "아일랜드캐슬, 오션월드, 키자니아, 롯데월드 등 단체 입장권 최저가 예약. 학교·어린이집·복지관·체육관 단체 전문 여행/이벤트 대행사.",
-  "telephone": "+82-31-339-2999",
-  "email": "hpaircop@gmail.com",
-  "founder": { "@type": "Person", "name": "김경훈" },
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "용현로155 105호",
-    "addressLocality": "의정부시",
-    "addressRegion": "경기도",
-    "addressCountry": "KR"
-  },
-  "areaServed": "KR",
-  "sameAs": ["http://pf.kakao.com/_vvZxen/chat"]
-}
-</script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>(주)더블에이치컴퍼니 | 지자체 사업 · MICE · 인바운드 · 학생단체</title>
+<meta name="description" content="지자체 예산 사업과 지역 행사, MICE 행사, 해외 관광객 유치와 인바운드 관광, 학생단체행사를 기획·운영합니다." />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
 <style>
-  @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css');
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700;900&display=swap');
-
-  :root {
-    --navy: #0e2a47;
-    --navy-deep: #081b30;
-    --blue: #1d6fe0;
-    --sky: #47b6e8;
-    --coral: #ff6b5c;
-    --amber: #ffb648;
-    --cream: #f5f8fc;
-    --ink: #16202e;
-    --gray: #64748b;
-    --line: #e2e9f2;
-    --serif: 'Noto Serif KR', Georgia, 'Times New Roman', serif;
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
   body {
-    font-family: 'Pretendard', -apple-system, sans-serif;
-    color: var(--ink); background: #fff; line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
+    margin:0; background:#f7f8f7; color:#17302e;
+    font-family:Pretendard,-apple-system,system-ui,sans-serif; -webkit-font-smoothing:antialiased;
   }
-  a { text-decoration: none; }
-  button { cursor: pointer; font-family: inherit; }
-  input, select, textarea { font-family: inherit; }
-
-  .wrap { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
-
-  /* ── 헤더 ── */
-  header {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    background: rgba(255,255,255,0.92);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid transparent;
-    transition: border-color .3s, box-shadow .3s;
+  body, h1, h2, h3, p, span, a { word-break:keep-all; }
+  a { color:#1f4f49; text-decoration:none; }
+  a:hover { color:#7ba020; }
+  img { max-width:100%; }
+  .site { max-width:1240px; margin:0 auto; background:#f7f8f7; }
+  [id] { scroll-margin-top:20px; }
+  .nav-mobile { display:none; }
+  .nav-mobile > summary {
+    list-style:none; cursor:pointer; padding:12px 18px;
+    border:1px solid rgba(23,48,46,0.2); font-size:13px; font-weight:700; color:#17302e;
   }
-  header.scrolled { border-color: var(--line); box-shadow: 0 2px 20px rgba(14,42,71,0.05); }
-  .nav { display: grid; grid-template-columns: auto 1fr auto; align-items: center; height: 74px; max-width: 1320px; column-gap: 24px; }
-  .logo { display: flex; align-items: center; gap: 10px; }
-  .brand-icon { width: 38px; height: 38px; flex-shrink: 0; object-fit: contain; }
-  .logo-text { display: flex; flex-direction: column; line-height: 1.2; }
-  .logo-tag { font-size: 9px; font-weight: 700; letter-spacing: 0.14em; color: #6b8e23; text-transform: uppercase; }
-  .logo-word { font-family: var(--serif); font-size: 19px; font-weight: 700; letter-spacing: 0.01em; color: var(--navy); }
-  .logo-word span { color: var(--blue); }
-  .logo-kr { font-size: 10px; font-weight: 500; color: var(--gray); letter-spacing: 0.02em; margin-top: 1px; font-family: 'Pretendard', sans-serif; }
-  .foot-brand .logo-word { color: #fff; }
-  .foot-brand .logo-word span { color: var(--sky); }
-  .foot-brand .logo-tag { color: #a9d43f; }
-  .foot-brand .logo-kr { color: rgba(255,255,255,0.55); }
-  .nav-cta-group { display: flex; align-items: center; gap: 6px; justify-self: end; }
-  .member-btn { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; background: transparent; color: var(--navy); padding: 6px 4px; border-radius: 4px; font-size: 11px; font-weight: 700; border: none; text-decoration: underline; text-underline-offset: 3px; transition: color .2s; }
-  .member-btn:hover { color: var(--blue); }
-  .member-btn.is-member { color: var(--blue); }
-  .logout-link { display: inline-flex; align-items: center; white-space: nowrap; background: transparent; color: var(--ink); opacity: .55; padding: 6px 4px; border-radius: 4px; font-size: 10.5px; font-weight: 600; border: none; transition: opacity .2s, color .2s; }
-  .logout-link:hover { opacity: 1; color: var(--blue); }
-  .nav-menu .member-link { display: none; }
-  .nav-menu .member-link a { color: var(--blue) !important; }
-  .kakao-btn { display: inline-flex; align-items: center; gap: 6px; background: #FEE500; color: #191919; padding: 10px 18px; border-radius: 4px; font-size: 13px; font-weight: 700; transition: transform .2s, box-shadow .2s; }
-  .kakao-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(254,229,0,0.45); }
-  .kakao-btn svg { width: 16px; height: 16px; }
-  .foot-kakao { display: inline-flex; align-items: center; gap: 6px; color: #FEE500 !important; font-weight: 700; }
-  .foot-kakao svg { width: 14px; height: 14px; }
-  .nav-menu { display: flex; justify-content: center; gap: 20px; list-style: none; }
-  .nav-menu a {
-    font-size: 12px; font-weight: 600; color: var(--ink);
-    letter-spacing: 0.06em; text-transform: uppercase; position: relative; padding: 4px 0;
-  }
-  .nav-menu a::after {
-    content: ''; position: absolute; left: 0; bottom: 0; width: 0; height: 2px;
-    background: var(--blue); transition: width .25s;
-  }
-  .nav-menu a:hover::after { width: 100%; }
-  .nav-cta {
-    background: var(--navy); color: #fff; padding: 10px 22px; border-radius: 4px;
-    font-size: 13px; font-weight: 700; transition: background .2s, transform .2s;
-  }
-  .nav-cta:hover { background: var(--blue); transform: translateY(-1px); }
-  .burger { display: none; background: none; border: none; cursor: pointer; }
-
-  /* ── 히어로 ── */
-  .hero {
-    position: relative; min-height: 92vh; display: flex; align-items: center;
-    background: linear-gradient(150deg, var(--navy-deep) 0%, var(--navy) 45%, #123c56 100%);
-    overflow: hidden;
-  }
-  .hero-bg { position: absolute; inset: 0; overflow: hidden; }
-  .blob { position: absolute; border-radius: 50%; filter: blur(70px); opacity: 0.5; }
-  .blob-1 { width: 480px; height: 480px; background: var(--blue); top: -120px; right: -80px; }
-  .blob-2 { width: 400px; height: 400px; background: var(--sky); bottom: -140px; left: -60px; opacity: 0.35; }
-  .blob-3 { width: 300px; height: 300px; background: var(--coral); top: 40%; right: 20%; opacity: 0.22; }
-
-  .hero-content { position: relative; z-index: 2; padding-top: 74px; }
-  .eyebrow {
-    display: inline-flex; align-items: center; gap: 8px;
-    font-size: 13px; font-weight: 600; letter-spacing: 0.08em;
-    color: var(--sky); margin-bottom: 26px;
-    border: 1px solid rgba(71,182,232,0.35); padding: 7px 16px; border-radius: 20px;
-    background: rgba(71,182,232,0.08);
-  }
-  .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--sky); animation: pulse 2s infinite; }
-  @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
-
-  .hero h1 {
-    font-family: var(--serif);
-    font-size: clamp(34px, 5.6vw, 66px); font-weight: 700; line-height: 1.24;
-    letter-spacing: -0.01em; color: #fff; margin-bottom: 28px;
-  }
-  .hero h1 .hl {
-    background: linear-gradient(120deg, var(--sky), var(--amber));
-    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
-  }
-  .hero p {
-    font-size: clamp(16px, 2vw, 19px); color: rgba(255,255,255,0.72);
-    max-width: 560px; margin-bottom: 42px; font-weight: 400;
-  }
-  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
-  .btn-primary {
-    background: var(--coral); color: #fff; padding: 15px 30px; border-radius: 4px;
-    font-size: 14px; font-weight: 700; transition: transform .2s, box-shadow .2s; border: none;
-    box-shadow: 0 8px 24px rgba(255,107,92,0.3); display: inline-block;
-  }
-  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(255,107,92,0.45); }
-  .btn-ghost {
-    background: transparent; color: #fff; padding: 14px 30px; border-radius: 4px;
-    font-size: 14px; font-weight: 600; border: 1.5px solid rgba(255,255,255,0.35);
-    transition: background .2s, border-color .2s; display: inline-block;
-  }
-  .btn-ghost:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.6); }
-
-  .scroll-hint {
-    position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
-    z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 8px;
-    color: rgba(255,255,255,0.5);
-    font-size: 11px; font-weight: 600; letter-spacing: 0.15em;
-    animation: bob 2.2s ease-in-out infinite;
-  }
-  .scroll-hint:hover { color: rgba(255,255,255,0.9); }
-  @keyframes bob { 0%,100%{transform:translateX(-50%) translateY(0);} 50%{transform:translateX(-50%) translateY(6px);} }
-
-  /* ── 섹션 공통 ── */
-  section { padding: 100px 0; }
-  .sec-head { text-align: center; margin-bottom: 56px; }
-  .sec-tag { font-size: 12px; font-weight: 700; letter-spacing: 0.14em; color: var(--blue); text-transform: uppercase; margin-bottom: 14px; }
-  .sec-title { font-family: var(--serif); font-size: clamp(26px, 3.6vw, 40px); font-weight: 700; letter-spacing: -0.01em; line-height: 1.3; }
-  .sec-desc { font-size: 16px; color: var(--gray); max-width: 620px; margin: 18px auto 0; }
-
-  /* ── 대표인사말 ── */
-  .ceo { background: linear-gradient(150deg, var(--navy-deep) 0%, var(--navy) 55%, #123c56 100%); color: #fff; }
-  .ceo .sec-tag { color: var(--sky); }
-  .ceo-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 64px; align-items: center; }
-  .ceo-quote-mark { font-family: var(--serif); font-size: 90px; line-height: 1; color: var(--sky); opacity: 0.35; margin-bottom: -10px; }
-  .ceo-quote { font-family: var(--serif); font-size: clamp(17px, 1.9vw, 20px); line-height: 1.85; color: rgba(255,255,255,0.92); margin-bottom: 30px; }
-  .ceo-quote strong { color: var(--sky); font-weight: 700; }
-  .ceo-sign { font-size: 14px; color: rgba(255,255,255,0.6); }
-  .ceo-sign strong { display: block; font-family: var(--serif); font-size: 17px; color: #fff; margin-top: 4px; }
-  .ceo-values { display: flex; flex-direction: column; gap: 22px; }
-  .ceo-value { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 28px 30px; }
-  .ceo-value .cv-h { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-  .ceo-value .cv-badge { width: 38px; height: 38px; border-radius: 8px; background: rgba(71,182,232,0.15); color: var(--sky); display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-weight: 700; font-size: 15px; flex-shrink: 0; }
-  .ceo-value h4 { font-family: var(--serif); font-size: 18px; font-weight: 700; color: #fff; }
-  .ceo-value h4 span { font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.5); margin-left: 8px; }
-  .ceo-value p { font-size: 14px; color: rgba(255,255,255,0.65); line-height: 1.7; }
-  .ceo-tagline { margin-top: 8px; text-align: center; font-size: 13px; font-weight: 600; letter-spacing: 0.04em; color: rgba(255,255,255,0.55); }
-  .ceo-tagline b { color: var(--sky); font-weight: 700; }
-  @media (max-width: 900px) { .ceo-grid { grid-template-columns: 1fr; gap: 40px; } }
-
-  /* ── ABOUT ── */
-  .about { background: var(--cream); }
-  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; align-items: center; }
-  .about-text h2 { font-family: var(--serif); font-size: clamp(24px, 3.2vw, 34px); font-weight: 700; letter-spacing: -0.01em; line-height: 1.35; margin-bottom: 24px; }
-  .about-text h2 em { font-style: normal; color: var(--blue); }
-  .about-text p { font-size: 16px; color: var(--gray); margin-bottom: 18px; }
-  .about-points { list-style: none; margin-top: 28px; }
-  .about-points li { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 18px; font-size: 15px; font-weight: 500; }
-  .about-points .ic { flex-shrink: 0; width: 28px; height: 28px; border-radius: 6px; background: var(--blue); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; }
-  .about-visual { position: relative; aspect-ratio: 4/5; border-radius: 12px; overflow: hidden; background: linear-gradient(160deg, var(--navy), var(--blue)); display: flex; align-items: center; justify-content: center; box-shadow: 0 30px 60px rgba(14,42,71,0.25); }
-  .about-visual .big-num { text-align: center; color: #fff; padding: 40px; }
-  .about-visual .big-num .n-text { font-family: var(--serif); font-size: clamp(28px, 4vw, 42px); font-weight: 700; line-height: 1.3; letter-spacing: -0.01em; }
-  .about-visual .big-num .n-text span { color: var(--amber); }
-  .about-visual .big-num .t { font-size: 14px; letter-spacing: 0.2em; color: rgba(255,255,255,0.55); margin-top: 20px; font-weight: 600; }
-  .about-visual .float-card { position: absolute; background: #fff; border-radius: 8px; padding: 14px 18px; box-shadow: 0 12px 30px rgba(0,0,0,0.15); font-size: 13px; font-weight: 600; }
-  .fc-1 { top: 30px; left: 24px; color: var(--coral); }
-  .fc-2 { bottom: 30px; right: 24px; color: var(--blue); }
-
-  /* ── BUSINESS ── */
-  .biz-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 22px; }
-  .biz-card { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 30px 24px; transition: transform .3s, box-shadow .3s, border-color .3s; position: relative; overflow: hidden; }
-  .biz-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform .3s; }
-  .biz-card:hover { transform: translateY(-6px); box-shadow: 0 24px 50px rgba(14,42,71,0.1); border-color: transparent; }
-  .biz-card:hover::before { transform: scaleX(1); }
-  .biz-icon { width: 48px; height: 48px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 18px; background: var(--accent-soft); }
-  .biz-card .biz-en { display: block; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; color: var(--accent); text-transform: uppercase; margin-bottom: 6px; }
-  .biz-card h3 { font-family: var(--serif); font-size: 17px; font-weight: 700; margin-bottom: 10px; }
-  .biz-card p { font-size: 13px; color: var(--gray); line-height: 1.6; }
-  .biz-card .more { display: inline-flex; align-items: center; gap: 6px; margin-top: 20px; font-size: 13px; font-weight: 700; color: var(--accent); }
-  .biz-card .more::after { content: '→'; transition: transform .2s; }
-  .biz-card:hover .more::after { transform: translateX(4px); }
-
-  /* ── 상품소개 ── */
-  .products { background: #fff; }
-  .prod-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
-  .prod-card { border: 1px solid var(--line); border-radius: 8px; overflow: hidden; transition: transform .25s, box-shadow .25s; background: #fff; }
-  .prod-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(14,42,71,0.1); }
-  .prod-thumb { height: 140px; display: flex; align-items: center; justify-content: center; font-size: 44px; }
-  .prod-body { padding: 20px 22px 22px; }
-  .prod-name { font-family: var(--serif); font-size: 17px; font-weight: 700; color: var(--ink); margin-bottom: 3px; }
-  .prod-sub { font-size: 12px; color: var(--gray); margin-bottom: 10px; }
-  .prod-desc { font-size: 13px; color: var(--gray); line-height: 1.6; margin-bottom: 16px; min-height: 42px; }
-  .prod-foot { display: flex; align-items: center; justify-content: space-between; padding-top: 14px; border-top: 1px solid var(--line); }
-  .prod-price { font-size: 15px; font-weight: 800; color: var(--blue); }
-  .prod-price small { font-size: 11px; font-weight: 500; color: var(--gray); }
-  .prod-btn { background: var(--navy); color: #fff; border: none; padding: 8px 16px; border-radius: 4px; font-size: 12px; font-weight: 700; }
-  .prod-btn:hover { background: var(--blue); }
-  .prod-empty { text-align: center; color: var(--gray); padding: 40px; grid-column: 1/-1; }
-
-  /* ── 게시판 공통 ── */
-  .board { background: var(--cream); }
-  .board + .board { background: #fff; }
-  .board-panel { background: #fff; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
-  .board-toolbar { display: flex; justify-content: flex-end; padding: 16px 20px; border-bottom: 1px solid var(--line); }
-  .board-write-btn { background: var(--navy); color: #fff; border: none; padding: 9px 18px; border-radius: 4px; font-size: 13px; font-weight: 700; }
-  .board-write-btn:hover { background: var(--blue); }
-  table.board-table { width: 100%; border-collapse: collapse; }
-  table.board-table th { text-align: left; font-size: 11px; color: var(--gray); font-weight: 700; letter-spacing: .04em; text-transform: uppercase; padding: 12px 20px; border-bottom: 1px solid var(--line); background: var(--cream); }
-  table.board-table td { padding: 14px 20px; font-size: 13px; color: var(--ink); border-bottom: 1px solid var(--line); }
-  table.board-table tbody tr:hover { background: var(--cream); cursor: pointer; }
-  table.board-table tbody tr:last-child td { border-bottom: none; }
-  .board-empty { text-align: center; color: var(--gray); padding: 36px; font-size: 13px; }
-  .badge-status { display: inline-block; padding: 3px 9px; border-radius: 20px; font-size: 10px; font-weight: 700; }
-  .badge-pending { background: #fff3df; color: #b5730a; }
-  .badge-answered { background: #e6f6ea; color: #1c8a45; }
-  .badge-new { background: #e7f0fd; color: var(--blue); }
-  .badge-confirmed { background: #e6f6ea; color: #1c8a45; }
-
-  .board-form { padding: 22px 20px; border-bottom: 1px solid var(--line); display: none; }
-  .board-form.open { display: block; }
-  .bf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-  .bf-grid .full { grid-column: 1/-1; }
-  .bf-label { display: block; font-size: 12px; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
-  .bf-input { width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: 4px; font-size: 13px; color: var(--ink); background: #fff; }
-  .bf-input:focus { outline: none; border-color: var(--blue); }
-  textarea.bf-input { resize: vertical; min-height: 80px; }
-  .bf-submit { background: var(--coral); color: #fff; border: none; padding: 11px 22px; border-radius: 4px; font-size: 13px; font-weight: 700; }
-  .bf-submit:hover { background: #ff8172; }
-  .bf-hint { font-size: 11px; color: var(--gray); margin-top: 8px; }
-
-  .board-detail { padding: 22px 20px; border-bottom: 1px solid var(--line); display: none; }
-  .board-detail.open { display: block; }
-  .bd-title { font-family: var(--serif); font-size: 17px; font-weight: 700; margin-bottom: 6px; }
-  .bd-meta { font-size: 12px; color: var(--gray); margin-bottom: 16px; }
-  .bd-content { font-size: 14px; color: var(--ink); line-height: 1.8; white-space: pre-wrap; padding: 16px; background: var(--cream); border-radius: 6px; margin-bottom: 12px; }
-  .bd-reply { font-size: 14px; color: var(--ink); line-height: 1.8; white-space: pre-wrap; padding: 16px; background: #e7f0fd; border-radius: 6px; border-left: 3px solid var(--blue); }
-  .bd-reply-label { font-size: 11px; font-weight: 700; color: var(--blue); margin-bottom: 8px; }
-  .bd-close { font-size: 12px; color: var(--gray); font-weight: 600; margin-top: 14px; display: inline-block; }
-
-  /* ── CONTACT / CTA ── */
-  .cta { text-align: center; background: linear-gradient(135deg, var(--blue), var(--sky)); color: #fff; }
-  .cta h2 { font-family: var(--serif); font-size: clamp(26px, 4vw, 42px); font-weight: 700; letter-spacing: -0.01em; margin-bottom: 20px; }
-  .cta p { font-size: 17px; color: rgba(255,255,255,0.85); margin-bottom: 36px; }
-  .cta .btn-primary { background: #fff; color: var(--blue); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
-  .cta .btn-primary:hover { box-shadow: 0 12px 32px rgba(0,0,0,0.25); }
-
-  /* ── 푸터 ── */
-  footer { background: var(--ink); color: rgba(255,255,255,0.6); padding: 56px 0 36px; }
-  .foot-top { display: flex; flex-direction: column; gap: 26px; margin-bottom: 40px; }
-  .foot-brand .logo { color: #fff; }
-  .foot-brand p { font-size: 13px; margin-top: 14px; max-width: 420px; }
-  .foot-info-row { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 40px; }
-  .foot-cols { display: flex; gap: 64px; flex-wrap: wrap; }
-  .foot-col h5 { font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 16px; letter-spacing: 0.05em; }
-  .foot-col a, .foot-col p { display: block; font-size: 13px; color: rgba(255,255,255,0.55); margin-bottom: 10px; }
-  .foot-col a:hover { color: var(--sky); }
-  .foot-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 22px; font-size: 12px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
-  .foot-legal-inline { display: flex; flex-direction: column; gap: 7px; max-width: 340px; }
-  .foot-legal-inline p { display: flex; align-items: baseline; gap: 6px; font-size: 12.5px; color: rgba(255,255,255,0.5); margin: 0; }
-  .foot-legal-inline p strong { flex: 0 0 128px; color: rgba(255,255,255,0.75); font-weight: 700; }
-  .foot-legal-inline p span { color: rgba(255,255,255,0.5); }
-  .foot-links { display: flex; gap: 24px; margin-top: 28px; flex-wrap: wrap; }
-  .foot-links a { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.7); }
-  .foot-links a:hover { color: var(--sky); }
-  .foot-links a.accent { color: #ff6b78; }
-  .foot-links a.accent:hover { color: #ff8f99; }
-
-  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s, transform .7s; }
-  .reveal.on { opacity: 1; transform: none; }
-
-  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--ink); color: #fff; padding: 12px 22px; border-radius: 6px; font-size: 13px; font-weight: 600; opacity: 0; pointer-events: none; transition: all .25s; z-index: 999; }
-  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
+  .nav-mobile > summary::-webkit-details-marker { display:none; }
+  .nav-mobile-links { display:flex; flex-direction:column; background:#fff; border:1px solid rgba(23,48,46,0.12); border-top:0; }
+  .nav-mobile-links a { padding:15px 18px; font-size:15px; font-weight:600; color:#17302e; border-bottom:1px solid rgba(23,48,46,0.08); }
   @media (max-width: 900px) {
-    .nav { display: flex; justify-content: space-between; height: auto; flex-wrap: wrap; row-gap: 10px; padding: 12px 0; }
-    .nav-cta-group { display: none; }
-    .nav-menu .member-link { display: block; }
-    .burger { display: flex; align-items: center; justify-content: center; }
-    .nav { position: relative; }
-    .nav-menu {
-      display: flex; flex-direction: column; list-style: none;
-      position: absolute; top: 100%; left: 0; right: 0;
-      background: #fff; box-shadow: 0 16px 32px rgba(14,42,71,.14);
-      border-radius: 0 0 12px 12px; max-height: 0; overflow: hidden; opacity: 0;
-      transition: max-height .3s ease, opacity .25s ease; gap: 0;
-    }
-    header.nav-open .nav-menu { max-height: 640px; opacity: 1; border-top: 1px solid var(--line); }
-    .nav-menu li { flex: none; width: 100%; }
-    .nav-menu a {
-      display: block; text-align: left; font-size: 15px; font-weight: 600;
-      letter-spacing: 0; text-transform: none; white-space: normal;
-      padding: 16px 24px; border-bottom: 1px solid var(--line);
-    }
-    .nav-menu a::after { display: none; }
-    .hero-content { padding-top: 118px; }
-    .page-hero { padding-top: 168px; }
-    .about-grid { grid-template-columns: 1fr; gap: 40px; }
-    .biz-grid, .prod-grid { grid-template-columns: 1fr; }
-    .bf-grid { grid-template-columns: 1fr; }
-    section { padding: 64px 0; }
-    .wrap { padding: 0 20px; }
-    .foot-top { flex-direction: column; }
-    table.board-table { font-size: 12px; }
-    table.board-table th, table.board-table td { padding: 10px 12px; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    * { animation: none !important; transition: none !important; }
-    .reveal { opacity: 1; transform: none; }
+    .nav-desktop { display:none !important; }
+    .nav-mobile { display:block; margin:0 20px 18px; }
+    .site > div, .site > header, .site > section, .site > footer { padding-left:20px !important; padding-right:20px !important; }
+    .site [style*="grid-template-columns"] { grid-template-columns:1fr !important; gap:24px !important; }
+    .site h1 { font-size:30px !important; line-height:1.32 !important; }
+    .site h2 { font-size:24px !important; }
+    .site [style*="justify-content:space-between"] { flex-wrap:wrap; }
+    .site footer { flex-direction:column !important; }
   }
 </style>
-<link rel="icon" type="image/png" href="logo-icon.png">
 </head>
 <body>
-
-<!-- ── 헤더 ── -->
-<header id="header">
-  <div class="wrap nav">
-    <a href="index.html" class="logo"><img src="logo-icon.png" class="brand-icon" alt="HHCOMPANY 로고"><span class="logo-text"><span class="logo-tag">The Way To Success</span><span class="logo-word">HH<span>COMPANY</span></span></span></a>
-    <ul class="nav-menu">
-      <li><a href="ceo.html">대표인사말</a></li>
-      <li><a href="#about">회사소개</a></li>
-      <li><a href="business.html">사업분야</a></li>
-      <li><a href="products.html">상품소개</a></li>
-      <li><a href="cases.html">이용사례</a></li>
-      <li><a href="press.html">언론보도</a></li>
-      <li><a href="board.html">문의게시판</a></li>
-      <li><a href="reserve.html">예약게시판</a></li>
-      <li class="member-link"><a href="login.html?redirect=personal.html" id="memberLinkMobile">회원가입 / 로그인</a></li>
-      <li class="member-link" id="logoutLiMobile" style="display:none"><a href="#" id="logoutLinkMobile">로그아웃</a></li>
-    </ul>
-    <div class="nav-cta-group"><a href="login.html?redirect=personal.html" class="member-btn" id="memberBtn">회원가입</a><a href="#" class="logout-link" id="logoutLink" style="display:none">로그아웃</a></div>
-    <button class="burger" aria-label="메뉴">
-      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0e2a47" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-    </button>
-  </div>
-</header>
-
-<!-- ── 히어로 ── -->
-<section class="hero">
-  <div class="hero-bg">
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
-    <div class="blob blob-3"></div>
-  </div>
-  <div class="wrap hero-content">
-    <span class="eyebrow"><span class="dot"></span>단체·체험 여행 전문 파트너</span>
-    <h1>모두의 하루를<br><span class="hl">특별한 추억</span>으로 잇습니다</h1>
-    <p>어린이집·학교·복지관·기업까지. 더블에이치컴퍼니는 전국의 체험시설과 단체를 연결하고, 예약부터 정산까지 하나로 관리하는 B2B 단체여행 파트너입니다.</p>
-    <div class="hero-actions">
-      <a href="reserve.html" class="btn-primary">단체 예약 문의하기</a>
-      <a href="business.html" class="btn-ghost">사업 분야 보기</a>
+<div class="site">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:11px 52px;border-bottom:1px solid rgba(23,48,46,0.08)">
+    <span style="font:9.5px/1 ui-monospace,monospace;letter-spacing:0.28em;color:#5d6b68">THE WAY TO SUCCESS · HHCOMPANY</span>
+    <div style="display:flex;gap:20px;font-size:12px;font-weight:500;color:#4a5b58">
+      <a href="#join" style="color:inherit">회원가입</a>
+      <a href="#login" style="color:inherit">로그인</a>
+      <a href="#mypage" style="color:inherit">마이페이지</a>
     </div>
   </div>
-  <a href="#about" class="scroll-hint" aria-label="아래로 스크롤">
-    <span>SCROLL</span>
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-  </a>
-</section>
 
-<!-- ── ABOUT ── -->
-<section class="about" id="about">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <div class="sec-tag">About Us</div>
-      <h2 class="sec-title">단체의 하루를 설계하는 사람들</h2>
-      <p class="sec-desc">복잡한 단체 예약, 시설 섭외, 인원 관리, 정산까지 — 번거로운 모든 과정을 더블에이치컴퍼니가 대신합니다.</p>
+  <header style="display:flex;align-items:center;justify-content:space-between;gap:32px;padding:22px 52px">
+    <a href="#top" style="display:flex;align-items:center;gap:14px;color:#17302e">
+      <img src="assets/hh-logo.png" alt="더블에이치컴퍼니 로고" style="width:52px;height:52px;display:block" />
+      <span style="display:flex;flex-direction:column;gap:4px">
+        <span style="font-size:21px;font-weight:700;letter-spacing:-0.03em">더블에이치컴퍼니</span>
+        <span style="font:9px/1 ui-monospace,monospace;letter-spacing:0.26em;color:#5d6b68">THE WAY TO SUCCESS</span>
+      </span>
+    </a>
+    <a href="#contact" style="padding:16px 26px;background:#17302e;color:#fff;font-size:13.5px;font-weight:600;letter-spacing:-0.01em">프로젝트 문의 &nearr;</a>
+  </header>
+
+  <nav class="nav-desktop" style="display:flex;align-items:center;gap:38px;padding:0 52px 18px;font-size:14.5px;font-weight:600;letter-spacing:-0.02em;border-bottom:1px solid rgba(23,48,46,0.1)">
+    <a href="#ceo" style="color:#17302e">대표인사말</a>
+    <a href="company.html" style="color:#17302e">회사소개</a>
+    <a href="#business" style="color:#17302e">사업분야</a>
+    <a href="#products" style="color:#17302e">상품소개</a>
+    <a href="#cases" style="color:#17302e">이용사례</a>
+    <a href="#press" style="color:#17302e">언론보도</a>
+    <a href="#board" style="color:#17302e">문의게시판</a>
+    <a href="#booking" style="color:#17302e">예약게시판</a>
+  </nav>
+
+  <details class="nav-mobile">
+    <summary>전체 메뉴</summary>
+    <div class="nav-mobile-links">
+      <a href="#ceo">대표인사말</a>
+      <a href="company.html">회사소개</a>
+      <a href="#business">사업분야</a>
+      <a href="#products">상품소개</a>
+      <a href="#cases">이용사례</a>
+      <a href="#press">언론보도</a>
+      <a href="#board">문의게시판</a>
+      <a href="#booking">예약게시판</a>
+      <a href="tel:031-339-2999">031-339-2999</a>
     </div>
-    <div class="about-grid">
-      <div class="about-text reveal">
-        <h2>수백 명의 단체도 <em>한 번의 연락</em>으로 끝냅니다</h2>
-        <p>워터파크, 놀이공원, 직업체험관까지. 흩어진 체험시설을 일일이 알아보고 예약하는 일은 쉽지 않습니다. 더블에이치컴퍼니는 검증된 시설과 단체를 직접 연결해, 대규모 단체 행사를 매끄럽게 진행합니다.</p>
-        <ul class="about-points">
-          <li><span class="ic">✓</span><div><strong>맞춤 견적</strong> — 단체 규모·연령·예산에 맞는 시설과 상품을 제안합니다.</div></li>
-          <li><span class="ic">✓</span><div><strong>통합 관리</strong> — 예약, 인원 변경, 식사, 버스까지 한 곳에서 관리합니다.</div></li>
-          <li><span class="ic">✓</span><div><strong>투명 정산</strong> — 시설·채널별 정산을 정확하게 처리합니다.</div></li>
-        </ul>
+  </details>
+
+  <section id="top" style="display:grid;grid-template-columns:1.06fr 0.94fr;gap:56px;align-items:center;padding:84px 52px 88px">
+    <div style="display:flex;flex-direction:column;gap:26px">
+      <span style="font:11px/1 ui-monospace,monospace;letter-spacing:0.2em;color:#1f4f49">HHCOMPANY / PROJECT &amp; OPERATION</span>
+      <h1 style="margin:0;font-size:clamp(30px,4vw,50px);line-height:1.24;font-weight:800;letter-spacing:-0.045em;text-wrap:pretty">
+        사업의 의도를 읽고,<br /><span style="color:#1f4f49">현장의 답을 만듭니다.</span>
+      </h1>
+      <p style="margin:0;font-size:16.5px;line-height:1.85;color:#5d6b68;max-width:27em;text-wrap:pretty">
+        지자체 예산 사업, MICE 행사, 인바운드 관광, 학생단체행사. 서로 다른 사업의 목적에 맞춰 기획과 운영을 함께합니다.
+      </p>
+      <div style="display:flex;gap:10px;margin-top:8px">
+        <a href="#contact" style="padding:16px 30px;background:#a9d02a;color:#17302e;font-size:14.5px;font-weight:700">협업 문의하기</a>
+        <a href="record.html" style="padding:16px 30px;border:1px solid rgba(23,48,46,0.2);color:#17302e;font-size:14.5px;font-weight:600">수행 실적 보기</a>
       </div>
-      <div class="about-visual reveal">
-        <div class="big-num">
-          <div class="n-text">단체와<br>체험시설을<br><span>잇습니다</span></div>
-          <div class="t">HHCOMPANY</div>
+      <div style="display:flex;gap:32px;margin-top:20px;padding-top:24px;border-top:1px solid rgba(23,48,46,0.12)">
+        <div style="display:flex;flex-direction:column;gap:5px"><span style="font-size:13.5px;font-weight:700;letter-spacing:-0.02em">예산 기준 설계</span><span style="font-size:12.5px;color:#5d6b68">집행·정산까지 고려한 기획</span></div>
+        <div style="display:flex;flex-direction:column;gap:5px"><span style="font-size:13.5px;font-weight:700;letter-spacing:-0.02em">현장 직접 운영</span><span style="font-size:12.5px;color:#5d6b68">인력·안전·진행 총괄</span></div>
+      </div>
+    </div>
+
+    <div style="background:#fff;border:1px solid rgba(23,48,46,0.1);padding:36px 34px 30px;display:flex;flex-direction:column;gap:22px">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px">
+        <span style="font:10.5px/1 ui-monospace,monospace;letter-spacing:0.22em;color:#5d6b68">OUR BUSINESS</span>
+        <span style="font:10.5px/1.7 ui-monospace,monospace;letter-spacing:0.14em;color:#6f7d7a;text-align:right">FOUR AREAS.<br />ONE PARTNER.</span>
+      </div>
+      <div style="display:flex;flex-direction:column">
+        <a href="#business" style="display:grid;grid-template-columns:34px 1fr 20px;gap:16px;align-items:center;padding:20px 0;border-top:1px solid rgba(23,48,46,0.12);color:#17302e">
+          <span style="font:11px/1 ui-monospace,monospace;color:#6f7d7a">01</span>
+          <span style="display:flex;flex-direction:column;gap:6px">
+            <span style="font:9.5px/1 ui-monospace,monospace;letter-spacing:0.18em;color:#5d6b68">PUBLIC PROJECTS</span>
+            <span style="font-size:16.5px;font-weight:700;letter-spacing:-0.03em">지자체 예산 사업·지역 행사</span>
+          </span>
+          <span style="font-size:15px;color:#5d6b68;text-align:right">&nearr;</span>
+        </a>
+        <a href="#business" style="display:grid;grid-template-columns:34px 1fr 20px;gap:16px;align-items:center;padding:20px 0;border-top:1px solid rgba(23,48,46,0.12);color:#17302e">
+          <span style="font:11px/1 ui-monospace,monospace;color:#6f7d7a">02</span>
+          <span style="display:flex;flex-direction:column;gap:6px">
+            <span style="font:9.5px/1 ui-monospace,monospace;letter-spacing:0.18em;color:#5d6b68">MICE &amp; EVENTS</span>
+            <span style="font-size:16.5px;font-weight:700;letter-spacing:-0.03em">MICE 행사 기획·운영</span>
+          </span>
+          <span style="font-size:15px;color:#5d6b68;text-align:right">&nearr;</span>
+        </a>
+        <a href="#business" style="display:grid;grid-template-columns:34px 1fr 20px;gap:16px;align-items:center;padding:20px 0;border-top:1px solid rgba(23,48,46,0.12);color:#17302e">
+          <span style="font:11px/1 ui-monospace,monospace;color:#6f7d7a">03</span>
+          <span style="display:flex;flex-direction:column;gap:6px">
+            <span style="font:9.5px/1 ui-monospace,monospace;letter-spacing:0.18em;color:#5d6b68">INBOUND TOURISM</span>
+            <span style="font-size:16.5px;font-weight:700;letter-spacing:-0.03em">해외 관광객 유치·인바운드</span>
+          </span>
+          <span style="font-size:15px;color:#5d6b68;text-align:right">&nearr;</span>
+        </a>
+        <a href="#business" style="display:grid;grid-template-columns:34px 1fr 20px;gap:16px;align-items:center;padding:20px 0;border-top:1px solid rgba(23,48,46,0.12);border-bottom:1px solid rgba(23,48,46,0.12);color:#17302e">
+          <span style="font:11px/1 ui-monospace,monospace;color:#6f7d7a">04</span>
+          <span style="display:flex;flex-direction:column;gap:6px">
+            <span style="font:9.5px/1 ui-monospace,monospace;letter-spacing:0.18em;color:#5d6b68">STUDENT GROUPS</span>
+            <span style="font-size:16.5px;font-weight:700;letter-spacing:-0.03em">학생단체행사·체험학습</span>
+          </span>
+          <span style="font-size:15px;color:#5d6b68;text-align:right">&nearr;</span>
+        </a>
+      </div>
+      <a href="#contact" style="font-size:13px;font-weight:600;color:#1f4f49;align-self:flex-start">사업분야 전체 보기 &nearr;</a>
+    </div>
+  </section>
+
+  <section id="ceo" style="padding:76px 52px;border-top:1px solid rgba(23,48,46,0.1);display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start">
+    <div style="display:flex;flex-direction:column;gap:22px">
+      <span style="font:11px/1 ui-monospace,monospace;letter-spacing:0.2em;color:#1f4f49">ABOUT HHCOMPANY</span>
+      <h2 style="margin:0;font-size:38px;line-height:1.3;font-weight:800;letter-spacing:-0.045em;text-wrap:pretty">
+        공공의 사업부터<br />국경을 넘는<br />만남까지.
+      </h2>
+    </div>
+    <p style="margin:0;font-size:16px;line-height:2.05;color:#5d6b68;text-wrap:pretty">
+      더블에이치컴퍼니는 지자체 예산으로 진행하는 지역 행사, MICE 행사, 해외 관광객 유치와 인바운드 관광 등 다양한 사업을 수행합니다. 학생단체행사도 함께 진행하며, 각 사업의 목적과 조건에 맞춰 기획·운영의 범위를 설계합니다.
+    </p>
+  </section>
+
+  <section id="business" style="background:#eef1ee;padding:80px 52px;display:flex;flex-direction:column;gap:44px">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <span style="font:11px/1 ui-monospace,monospace;letter-spacing:0.2em;color:#1f4f49">BUSINESS AREAS</span>
+        <h2 style="margin:0;font-size:34px;line-height:1.32;font-weight:800;letter-spacing:-0.045em">사업 목적에 맞춰<br />상담을 시작하세요.</h2>
+      </div>
+      <a href="#contact" style="font-size:13.5px;font-weight:600;color:#1f4f49">상담 절차 보기 &nearr;</a>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:24px">
+      <div style="background:#fff;border:1px solid rgba(23,48,46,0.1);padding:34px;display:flex;flex-direction:column;gap:16px">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px">
+          <span style="font:9.5px/1 ui-monospace,monospace;letter-spacing:0.18em;color:#5d6b68">01 / PUBLIC PROJECTS</span>
+          <span style="width:26px;height:3px;background:#a9d02a"></span>
         </div>
-        <div class="float-card fc-1">🎢 즐거운 하루</div>
-        <div class="float-card fc-2">🚌 맞춤 진행</div>
+        <h3 style="margin:0;font-size:21px;font-weight:700;letter-spacing:-0.035em">지자체 예산 사업·지역 행사</h3>
+        <p style="margin:0;font-size:14px;line-height:1.85;color:#5d6b68">지역 축제, 기념행사, 주민 참여 프로그램의 기획과 위탁운영. 제안서 작성부터 현장 인력 운영, 결과보고와 정산 증빙까지 담당합니다.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:4px">
+          <span style="padding:6px 11px;background:#f1f4f0;font-size:11.5px;font-weight:600;color:#4a5b58">용역 입찰</span>
+          <span style="padding:6px 11px;background:#f1f4f0;font-size:11.5px;font-weight:600;color:#4a5b58">지역 축제</span>
+          <span style="padding:6px 11px;background:#f1f4f0;font-size:11.5px;font-weight:600;color:#4a5b58">정산 증빙</span>
+        </div>
+      </div>
+      <div style="background:#fff;border:1px solid rgba(23,48,46,0.1);padding:34px;display:flex;flex-direction:column;gap:16px">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px">
+          <span style="font:9.5px/1 ui-monospace,monospace;letter-spacing:0.18em;color:#5d6b68">02 / MICE &amp; EVENTS</span>
+          <span style="width:26px;height:3px;background:#a9d02a"></span>
+        </div>
+        <h3 style="margin:0;font-size:21px;font-weight:700;letter-spacing:-0.035em">MICE 행사 기획·운영</h3>
+        <p style="margin:0;font-size:14px;line-height:1.85;color:#5d6b68">회의, 인센티브 투어, 컨벤션, 전시 행사의 운영. 회의장과 숙박, 의전과 통역, 차량까지 일정 전체를 하나의 계획으로 묶습니다.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:4px">
+          <span style="padding:6px 11px;background:#f1f4f0;font-size:11.5px;font-weight:600;color:#4a5b58">인센티브 투어</span>
+          <span style="padding:6px 11px;background:#f1f4f0;font-size:11.5px;font-weight:600;color:#4a5b58">의전·통역</span>
+          <span style="padding:6px 11px;background:#f1f4f0;font-size:11.5px;font-weight:600;color:#4a5b58">회의장 운영</span>
+        </div>
+      </div>
+      <div style="background:#fff;border:1px solid rgba(23,48,46,0.1);padding:34px;display:flex;flex-direction:column;gap:16px">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px">
+          <span style="font:9.5px/1 ui-monospace,monospace;letter-spacing:0.18em;color:#5d6b68">03 / INBOUND TOURISM</span>
+          <span style="width:26px;height:3px;background:#a9d02a"></span>
+        </div>
+        <h3 style="margin:0;font-size:21px;font-weight:700;letter-spacing:-0.035em">해외 관광객 유치·인바운드</h3>
+        <p style="margin:0;font-size:14px;line-height:1.85;color:#5d6b68">해외 기업·기관 단체의 국내 방문 코스 설계와 운영. 지역 자원과 연계한 일정으로 방문 목적에 맞는 프로그램을 구성합니다.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:4px">
+          <span style="padding:6px 11px;background:#f1f4f0;font-size:11.5px;font-weight:600;color:#4a5b58">단체 유치</span>
+          <span style="padding:6px 11px;background:#f1f4f0;font-size:11.5px;font-weight:600;color:#4a5b58">코스 설계</span>
+          <span style="padding:6px 11px;background:#f1f4f0;font-size:11.5px;font-weight:600;color:#4a5b58">기업 시찰</span>
+        </div>
+      </div>
+      <div style="background:#fff;border:1px solid rgba(23,48,46,0.1);padding:34px;display:flex;flex-direction:column;gap:16px">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px">
+          <span style="font:9.5px/1 ui-monospace,monospace;letter-spacing:0.18em;color:#5d6b68">04 / STUDENT GROUPS</span>
+          <span style="width:26px;height:3px;background:#a9d02a"></span>
+        </div>
+        <h3 style="margin:0;font-size:21px;font-weight:700;letter-spacing:-0.035em">학생단체행사·체험학습</h3>
+        <p style="margin:0;font-size:14px;line-height:1.85;color:#5d6b68">학교와 기관 단체의 체험학습, 수련활동, 단체 입장. 제휴 시설 단체 요금으로 입장과 식사, 이동, 인솔까지 함께 진행합니다.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:4px">
+          <span style="padding:6px 11px;background:#f1f4f0;font-size:11.5px;font-weight:600;color:#4a5b58">단체 입장권</span>
+          <span style="padding:6px 11px;background:#f1f4f0;font-size:11.5px;font-weight:600;color:#4a5b58">체험 프로그램</span>
+          <span style="padding:6px 11px;background:#f1f4f0;font-size:11.5px;font-weight:600;color:#4a5b58">버스·식사</span>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ── CTA ── -->
-<section class="cta" id="contact">
-  <div class="wrap reveal">
-    <h2>단체 행사, 어디서부터 시작할지<br>고민이신가요?</h2>
-    <p>규모와 예산만 알려주시면, 딱 맞는 시설과 견적을 제안해 드립니다.</p>
-    <a href="tel:0313392999" class="btn-primary">전화로 상담하기 (031-339-2999)</a>
-  </div>
-</section>
-
-<!-- ── 푸터 ── -->
-<footer>
-  <div class="wrap">
-    <div class="foot-top">
-      <div class="foot-brand">
-        <a href="index.html" class="logo"><img src="logo-icon.png" class="brand-icon" alt="HHCOMPANY 로고"><span class="logo-text"><span class="logo-tag">The Way To Success</span><span class="logo-word">HH<span>COMPANY</span></span><span class="logo-kr">(주)더블에이치컴퍼니</span></span></a>
-        <p>단체와 체험시설을 잇는 B2B 단체여행 파트너, (주)더블에이치컴퍼니입니다.</p>
-      </div>
-      <div class="foot-info-row">
-        <div class="foot-legal-inline">
-          <p><strong>대표자</strong><span>김경훈</span></p>
-          <p><strong>주소</strong><span>경기도 의정부시 용현로155 105호</span></p>
-          <p><strong>사업자등록번호</strong><span>420-88-03868</span></p>
-          <p><strong>통신판매업신고</strong><span>제 2026-의정부송산-0430 호</span></p>
-          <p><strong>대표메일</strong><span>hpaircop@gmail.com</span></p>
-          <p><strong>개인정보관리책임자</strong><span>김성훈</span></p>
-          <p><strong>고객센터</strong><span>031-339-2999</span></p>
+  <section style="padding:80px 52px;display:grid;grid-template-columns:0.78fr 1.22fr;gap:52px;align-items:start">
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <span style="font:11px/1 ui-monospace,monospace;letter-spacing:0.2em;color:#1f4f49">HOW WE START</span>
+      <h2 style="margin:0;font-size:32px;line-height:1.34;font-weight:800;letter-spacing:-0.045em">상담은 네 가지<br />확인에서 시작합니다</h2>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:32px">
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px">
+        <div style="display:flex;flex-direction:column;gap:10px;padding-top:16px;border-top:2px solid #17302e">
+          <span style="font:11px/1 ui-monospace,monospace;color:#1f4f49">01</span>
+          <span style="font-size:15px;font-weight:700;letter-spacing:-0.025em">사업 이해</span>
+          <span style="font-size:13px;line-height:1.75;color:#4a5b58">추진 배경과 목적, 발주·협업 구조, 참여 대상과 요청사항을 확인합니다.</span>
         </div>
-        <div class="foot-cols">
-          <div class="foot-col">
-            <h5>바로가기</h5>
-            <a href="ceo.html">대표인사말</a>
-            <a href="#about">회사소개</a>
-            <a href="business.html">사업분야</a>
-            <a href="products.html">상품소개</a>
-            <a href="cases.html">이용사례</a>
-            <a href="press.html">언론보도</a>
-            <a href="board.html">문의게시판</a>
-            <a href="reserve.html">예약게시판</a>
+        <div style="display:flex;flex-direction:column;gap:10px;padding-top:16px;border-top:2px solid rgba(23,48,46,0.14)">
+          <span style="font:11px/1 ui-monospace,monospace;color:#6f7d7a">02</span>
+          <span style="font-size:15px;font-weight:700;letter-spacing:-0.025em">범위 협의</span>
+          <span style="font-size:13px;line-height:1.75;color:#4a5b58">예산 범위와 일정에 맞춰 프로그램·인력·현장 구성을 협의합니다.</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;padding-top:16px;border-top:2px solid rgba(23,48,46,0.14)">
+          <span style="font:11px/1 ui-monospace,monospace;color:#6f7d7a">03</span>
+          <span style="font-size:15px;font-weight:700;letter-spacing:-0.025em">운영 조율</span>
+          <span style="font-size:13px;line-height:1.75;color:#4a5b58">파트너와 진행 조건을 조율하고 현장 운영 범위와 역할을 정리합니다.</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;padding-top:16px;border-top:2px solid rgba(23,48,46,0.14)">
+          <span style="font:11px/1 ui-monospace,monospace;color:#6f7d7a">04</span>
+          <span style="font-size:15px;font-weight:700;letter-spacing:-0.025em">결과·정산</span>
+          <span style="font-size:13px;line-height:1.75;color:#4a5b58">사업별로 필요한 결과 정리와 정산·보고 항목을 사전에 협의합니다.</span>
+        </div>
+      </div>
+      <div style="background:#eef1ee;padding:28px 30px;display:flex;align-items:center;justify-content:space-between;gap:28px">
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <span style="font-size:16px;font-weight:700;letter-spacing:-0.03em">프로젝트 상담을 위한 네 가지 정보</span>
+          <div style="display:flex;flex-wrap:wrap;gap:18px;font-size:13px;color:#4a5b58">
+            <span>사업 목적</span><span style="color:#6f7d7a">/</span><span>희망 일정·지역</span><span style="color:#6f7d7a">/</span><span>예산 범위</span><span style="color:#6f7d7a">/</span><span>참여 대상·규모</span>
           </div>
-          <div class="foot-col">
-            <h5>문의</h5>
-            <p>hhcompany.co.kr</p>
-            <a href="http://pf.kakao.com/_vvZxen/chat" target="_blank" rel="noopener" class="foot-kakao"><svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 3C6.48 3 2 6.58 2 11c0 2.8 1.83 5.26 4.6 6.71-.2.75-.73 2.72-.83 3.14-.13.52.19.51.4.37.17-.11 2.68-1.82 3.77-2.56.66.1 1.35.15 2.06.15 5.52 0 10-3.58 10-8s-4.48-8-10-8z"/></svg>카카오톡 상담</a>
-            <a href="https://hhcompany-admin.pages.dev" target="_blank">관리자 로그인</a>
-          </div>
+        </div>
+        <a href="#contact" style="font-size:13.5px;font-weight:700;color:#1f4f49;flex-shrink:0">협업 이야기 시작하기 &nearr;</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="record" style="background:#17302e;color:rgba(255,255,255,0.72);padding:78px 52px;display:flex;flex-direction:column;gap:36px">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <span style="font:11px/1 ui-monospace,monospace;letter-spacing:0.2em;color:#a9d02a">TRACK RECORD</span>
+        <h2 style="margin:0;font-size:34px;font-weight:800;letter-spacing:-0.045em;color:#fff">수행 실적</h2>
+      </div>
+      <a href="record.html" style="font-size:13.5px;font-weight:600;color:rgba(255,255,255,0.75)">전체 실적 보기 &nearr;</a>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0 36px">
+      <div style="display:flex;flex-direction:column;gap:9px;padding:24px 0;border-top:1px solid rgba(255,255,255,0.2)">
+        <span style="font:10.5px/1 ui-monospace,monospace;letter-spacing:0.14em;color:#a9d02a">2025 · 지자체</span>
+        <span style="font-size:16.5px;font-weight:700;color:#fff;letter-spacing:-0.03em">지역 문화축제 위탁운영</span>
+        <span style="font-size:13.5px;line-height:1.75">3일 · 방문객 4만 명 규모 · 무대·부스·안전 인력 운영</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:9px;padding:24px 0;border-top:1px solid rgba(255,255,255,0.2)">
+        <span style="font:10.5px/1 ui-monospace,monospace;letter-spacing:0.14em;color:#a9d02a">2025 · MICE</span>
+        <span style="font-size:16.5px;font-weight:700;color:#fff;letter-spacing:-0.03em">해외 기업 인센티브 투어</span>
+        <span style="font-size:13.5px;line-height:1.75">4박 5일 · 320명 · 회의장·의전·통역 포함 전 일정 운영</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:9px;padding:24px 0;border-top:1px solid rgba(255,255,255,0.2)">
+        <span style="font:10.5px/1 ui-monospace,monospace;letter-spacing:0.14em;color:#a9d02a">2024 · 공공기관</span>
+        <span style="font-size:16.5px;font-weight:700;color:#fff;letter-spacing:-0.03em">기념행사 및 초청 프로그램</span>
+        <span style="font-size:13.5px;line-height:1.75">1일 · 800명 · 초청 관리·의전·기록 촬영</span>
+      </div>
+    </div>
+    <span style="font-size:12px;line-height:1.6;color:rgba(255,255,255,0.35)">※ 실적 문구는 예시입니다. 실제 계약 건으로 교체 필요.</span>
+  </section>
+
+  <section id="products" style="padding:78px 52px;display:flex;flex-direction:column;gap:32px">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;padding-bottom:26px;border-bottom:1px solid rgba(23,48,46,0.12)">
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <span style="font:11px/1 ui-monospace,monospace;letter-spacing:0.2em;color:#1f4f49">PRODUCTS</span>
+        <h2 style="margin:0;font-size:30px;font-weight:800;letter-spacing:-0.045em">관광·체험 연계 상품</h2>
+        <span style="font-size:14.5px;line-height:1.75;color:#4a5b58">사업 목적에 따라 함께 검토할 수 있는 상품을 확인하세요.</span>
+      </div>
+      <a href="#products" style="font-size:13.5px;font-weight:600;color:#1f4f49">상품 전체 보기 &nearr;</a>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div style="height:210px;background:repeating-linear-gradient(135deg,#e9ece8 0 10px,#e3e7e2 10px 20px);display:flex;align-items:center;justify-content:center">
+          <span style="font:10.5px/1.7 ui-monospace,monospace;letter-spacing:0.1em;color:#6f7d7a;text-align:center">시설 사진<br />680 × 460</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <span style="font:9.5px/1 ui-monospace,monospace;letter-spacing:0.18em;color:#5d6b68">INDOOR PARK</span>
+          <span style="font-size:18px;font-weight:700;letter-spacing:-0.03em">실내 테마파크 단체</span>
+          <span style="font-size:13.5px;line-height:1.8;color:#5d6b68">날씨와 무관한 실내 코스. 20인 이상 단체 요금 적용.</span>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div style="height:210px;background:repeating-linear-gradient(135deg,#e9ece8 0 10px,#e3e7e2 10px 20px);display:flex;align-items:center;justify-content:center">
+          <span style="font:10.5px/1.7 ui-monospace,monospace;letter-spacing:0.1em;color:#6f7d7a;text-align:center">시설 사진<br />680 × 460</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <span style="font:9.5px/1 ui-monospace,monospace;letter-spacing:0.18em;color:#5d6b68">WATER PARK</span>
+          <span style="font-size:18px;font-weight:700;letter-spacing:-0.03em">워터파크 단체</span>
+          <span style="font-size:13.5px;line-height:1.8;color:#5d6b68">성수기 물량 확보. 식사·버스 연계 가능.</span>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div style="height:210px;background:repeating-linear-gradient(135deg,#e9ece8 0 10px,#e3e7e2 10px 20px);display:flex;align-items:center;justify-content:center">
+          <span style="font:10.5px/1.7 ui-monospace,monospace;letter-spacing:0.1em;color:#6f7d7a;text-align:center">체험 현장<br />680 × 460</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <span style="font:9.5px/1 ui-monospace,monospace;letter-spacing:0.18em;color:#5d6b68">EXPERIENCE</span>
+          <span style="font-size:18px;font-weight:700;letter-spacing:-0.03em">지역 연계 체험 코스</span>
+          <span style="font-size:13.5px;line-height:1.8;color:#5d6b68">연령별 맞춤 프로그램으로 구성.</span>
         </div>
       </div>
     </div>
-    <div class="foot-links">
-      <a href="terms.html">이용약관</a>
-      <a href="privacy.html" class="accent">개인정보처리방침</a>
-      <a href="http://pf.kakao.com/_vvZxen/chat" target="_blank" rel="noopener">카카오톡 1:1 문의</a>
+  </section>
+
+  <section style="background:#eef1ee;padding:78px 52px;display:grid;grid-template-columns:1fr 1fr;gap:48px">
+    <div id="cases" style="display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <span style="font:11px/1 ui-monospace,monospace;letter-spacing:0.2em;color:#1f4f49">CASES</span>
+          <h2 style="margin:0;font-size:24px;font-weight:800;letter-spacing:-0.04em">이용사례</h2>
+        </div>
+        <a href="#cases" style="font-size:13px;font-weight:600;color:#1f4f49">더 보기 &nearr;</a>
+      </div>
+      <div style="display:flex;flex-direction:column">
+        <a href="#cases" style="display:flex;align-items:baseline;justify-content:space-between;gap:20px;padding:17px 0;border-top:1px solid rgba(23,48,46,0.14);color:#17302e">
+          <span style="font-size:14.5px;font-weight:600;letter-spacing:-0.02em">○○초등학교 체험학습 단체 진행</span>
+          <span style="font:11px/1 ui-monospace,monospace;color:#6f7d7a;flex-shrink:0">2025.06</span>
+        </a>
+        <a href="#cases" style="display:flex;align-items:baseline;justify-content:space-between;gap:20px;padding:17px 0;border-top:1px solid rgba(23,48,46,0.14);color:#17302e">
+          <span style="font-size:14.5px;font-weight:600;letter-spacing:-0.02em">○○기업 임직원 워크숍 운영</span>
+          <span style="font:11px/1 ui-monospace,monospace;color:#6f7d7a;flex-shrink:0">2025.05</span>
+        </a>
+        <a href="#cases" style="display:flex;align-items:baseline;justify-content:space-between;gap:20px;padding:17px 0;border-top:1px solid rgba(23,48,46,0.14);color:#17302e">
+          <span style="font-size:14.5px;font-weight:600;letter-spacing:-0.02em">○○복지관 어르신 나들이 단체</span>
+          <span style="font:11px/1 ui-monospace,monospace;color:#6f7d7a;flex-shrink:0">2025.04</span>
+        </a>
+        <a href="#cases" style="display:flex;align-items:baseline;justify-content:space-between;gap:20px;padding:17px 0;border-top:1px solid rgba(23,48,46,0.14);border-bottom:1px solid rgba(23,48,46,0.14);color:#17302e">
+          <span style="font-size:14.5px;font-weight:600;letter-spacing:-0.02em">해외 단체 인바운드 3박 4일 코스</span>
+          <span style="font:11px/1 ui-monospace,monospace;color:#6f7d7a;flex-shrink:0">2025.03</span>
+        </a>
+      </div>
     </div>
-    <div class="foot-bottom">
-      <span>© 2026 (주)더블에이치컴퍼니. All rights reserved.</span>
+    <div id="press" style="display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <span style="font:11px/1 ui-monospace,monospace;letter-spacing:0.2em;color:#1f4f49">PRESS</span>
+          <h2 style="margin:0;font-size:24px;font-weight:800;letter-spacing:-0.04em">언론보도</h2>
+        </div>
+        <a href="#press" style="font-size:13px;font-weight:600;color:#1f4f49">더 보기 &nearr;</a>
+      </div>
+      <div style="display:flex;flex-direction:column">
+        <a href="#press" style="display:flex;align-items:baseline;justify-content:space-between;gap:20px;padding:17px 0;border-top:1px solid rgba(23,48,46,0.14);color:#17302e">
+          <span style="font-size:14.5px;font-weight:600;letter-spacing:-0.02em">지역 축제 운영사로 선정</span>
+          <span style="font:11px/1 ui-monospace,monospace;color:#6f7d7a;flex-shrink:0">2025.07</span>
+        </a>
+        <a href="#press" style="display:flex;align-items:baseline;justify-content:space-between;gap:20px;padding:17px 0;border-top:1px solid rgba(23,48,46,0.14);color:#17302e">
+          <span style="font-size:14.5px;font-weight:600;letter-spacing:-0.02em">해외 단체 관광객 유치 성과 보도</span>
+          <span style="font:11px/1 ui-monospace,monospace;color:#6f7d7a;flex-shrink:0">2025.05</span>
+        </a>
+        <a href="#press" style="display:flex;align-items:baseline;justify-content:space-between;gap:20px;padding:17px 0;border-top:1px solid rgba(23,48,46,0.14);color:#17302e">
+          <span style="font-size:14.5px;font-weight:600;letter-spacing:-0.02em">MICE 행사 운영 사례 소개</span>
+          <span style="font:11px/1 ui-monospace,monospace;color:#6f7d7a;flex-shrink:0">2025.02</span>
+        </a>
+        <a href="#press" style="display:flex;align-items:baseline;justify-content:space-between;gap:20px;padding:17px 0;border-top:1px solid rgba(23,48,46,0.14);border-bottom:1px solid rgba(23,48,46,0.14);color:#17302e">
+          <span style="font-size:14.5px;font-weight:600;letter-spacing:-0.02em">학생단체 체험 프로그램 협약 체결</span>
+          <span style="font:11px/1 ui-monospace,monospace;color:#6f7d7a;flex-shrink:0">2024.11</span>
+        </a>
+      </div>
     </div>
-  </div>
-</footer>
+  </section>
 
-<div class="toast" id="toast"></div>
+  <section id="contact" style="padding:80px 52px;display:grid;grid-template-columns:1.1fr 0.9fr;gap:52px;align-items:center">
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <span style="font:11px/1 ui-monospace,monospace;letter-spacing:0.2em;color:#1f4f49">CONTACT</span>
+      <h2 style="margin:0;font-size:34px;line-height:1.32;font-weight:800;letter-spacing:-0.045em;text-wrap:pretty">과업지시서만 있어도<br />검토해 드립니다</h2>
+      <p style="margin:0;font-size:15.5px;line-height:1.85;color:#5d6b68;max-width:28em">규모와 예산 범위를 알려주시면 수행 가능 여부와 개략 계획을 정리해 회신합니다.</p>
+    </div>
+    <div style="background:#fff;border:1px solid rgba(23,48,46,0.1);padding:34px;display:flex;flex-direction:column;gap:22px">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <span style="font:10.5px/1 ui-monospace,monospace;letter-spacing:0.2em;color:#5d6b68">TEL</span>
+        <a href="tel:031-339-2999" style="font-size:28px;font-weight:800;letter-spacing:-0.04em;color:#17302e">031-339-2999</a>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;padding-top:20px;border-top:1px solid rgba(23,48,46,0.12)">
+        <span style="font:10.5px/1 ui-monospace,monospace;letter-spacing:0.2em;color:#5d6b68">BOARD</span>
+        <div style="display:flex;gap:10px;margin-top:4px">
+          <a href="#board" style="flex:1;padding:15px 0;background:#17302e;color:#fff;font-size:14px;font-weight:600;text-align:center">문의게시판</a>
+          <a href="#booking" style="flex:1;padding:15px 0;background:#a9d02a;color:#17302e;font-size:14px;font-weight:700;text-align:center">예약게시판</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<script>
-  // 헤더 스크롤 효과
-  const header = document.getElementById('header');
-  window.addEventListener('scroll', () => header.classList.toggle('scrolled', window.scrollY > 20));
-
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((e, i) => {
-      if (e.isIntersecting) { setTimeout(() => e.target.classList.add('on'), (i % 4) * 80); io.unobserve(e.target); }
-    });
-  }, { threshold: 0.12 });
-  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-
-  function showToast(msg, type) {
-    const t = document.getElementById('toast');
-    t.textContent = msg; t.className = 'toast show';
-    clearTimeout(t._tt); t._tt = setTimeout(() => t.classList.remove('show'), 3000);
-  }
-
-  // ══════════════════════════════════════════════
-  // Supabase 연결
-  // ══════════════════════════════════════════════
-  const SB_URL = 'https://xoupacfmkhuuvxebgfqi.supabase.co';
-  const SB_KEY = 'sb_publishable_46KQebvC7_S-_JDramvDmA_jk9aSeVc';
-  async function sbFetch(path, opts={}) {
-    const res = await fetch(`${SB_URL}/rest/v1/${path}`, {
-      headers: {
-        'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`,
-        'Content-Type': 'application/json',
-        'Prefer': opts.prefer || 'return=representation',
-        ...opts.headers,
-      }, ...opts,
-    });
-    if (!res.ok) { const err = await res.text(); throw new Error(`오류 ${res.status}: ${err}`); }
-    return res.status === 204 ? null : res.json();
-  }
-
-
-
-(function () {
-  var header = document.getElementById('header');
-  var burger = document.querySelector('.burger');
-  if (header && burger) {
-    burger.addEventListener('click', function () {
-      header.classList.toggle('nav-open');
-    });
-    document.querySelectorAll('.nav-menu a, .nav-cta-group a').forEach(function (a) {
-      a.addEventListener('click', function () { header.classList.remove('nav-open'); });
-    });
-  }
-})();
-
-// ── 개인 회원(B2C) 로그인 상태에 따라 "회원가입 ↔ 개인구매" 버튼 전환 + 로그아웃 ──
-(function memberNav() {
-  if (typeof supabase === 'undefined') return;
-  const desktopBtn = document.getElementById('memberBtn');
-  const mobileBtn = document.getElementById('memberLinkMobile');
-  const logoutBtn = document.getElementById('logoutLink');
-  const logoutLiMobile = document.getElementById('logoutLiMobile');
-  const logoutBtnMobile = document.getElementById('logoutLinkMobile');
-  const sbAuth = supabase.createClient(SB_URL, SB_KEY);
-
-  function render(session) {
-    const loggedIn = !!session;
-    const href = loggedIn ? 'personal.html' : 'login.html?redirect=personal.html';
-    if (desktopBtn) {
-      desktopBtn.href = href;
-      desktopBtn.textContent = loggedIn ? '개인구매 →' : '회원가입';
-      desktopBtn.classList.toggle('is-member', loggedIn);
-    }
-    if (mobileBtn) {
-      mobileBtn.href = href;
-      mobileBtn.textContent = loggedIn ? '개인구매 →' : '회원가입 / 로그인';
-    }
-    if (logoutBtn) logoutBtn.style.display = loggedIn ? '' : 'none';
-    if (logoutLiMobile) logoutLiMobile.style.display = loggedIn ? '' : 'none';
-  }
-
-  async function doSignOut(e) {
-    e.preventDefault();
-    await sbAuth.auth.signOut();
-    location.href = 'index.html';
-  }
-  if (logoutBtn) logoutBtn.addEventListener('click', doSignOut);
-  if (logoutBtnMobile) logoutBtnMobile.addEventListener('click', doSignOut);
-
-  sbAuth.auth.getSession().then(({ data }) => render(data.session)).catch(() => {});
-  sbAuth.auth.onAuthStateChange((_event, session) => render(session));
-})();
-</script>
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function () {
-      navigator.serviceWorker.register('sw.js').catch(function () {});
-    });
-  }
-</script>
+  <footer style="background:#17302e;color:rgba(255,255,255,0.6);padding:52px;display:flex;align-items:flex-start;justify-content:space-between;gap:40px">
+    <div style="display:flex;align-items:flex-start;gap:18px">
+      <img src="assets/hh-logo.png" alt="" style="width:44px;height:44px;display:block;opacity:0.9" />
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <span style="font-size:15px;font-weight:700;color:#fff;letter-spacing:-0.02em">(주)더블에이치컴퍼니</span>
+        <span style="font-size:12.5px;line-height:1.8">경기도 고양시 · 대표전화 031-339-2999<br />사업자등록번호 · 관광사업자 등록번호 입력</span>
+      </div>
+    </div>
+    <div style="display:flex;gap:44px">
+      <div style="display:flex;flex-direction:column;gap:11px">
+        <span style="font:10px/1 ui-monospace,monospace;letter-spacing:0.2em;color:rgba(255,255,255,0.35)">COMPANY</span>
+        <a href="#ceo" style="font-size:13px;color:rgba(255,255,255,0.72)">대표인사말</a>
+        <a href="company.html" style="font-size:13px;color:rgba(255,255,255,0.72)">회사소개</a>
+        <a href="#business" style="font-size:13px;color:rgba(255,255,255,0.72)">사업분야</a>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:11px">
+        <span style="font:10px/1 ui-monospace,monospace;letter-spacing:0.2em;color:rgba(255,255,255,0.35)">SERVICE</span>
+        <a href="#products" style="font-size:13px;color:rgba(255,255,255,0.72)">상품소개</a>
+        <a href="#cases" style="font-size:13px;color:rgba(255,255,255,0.72)">이용사례</a>
+        <a href="record.html" style="font-size:13px;color:rgba(255,255,255,0.72)">수행 실적</a>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:11px">
+        <span style="font:10px/1 ui-monospace,monospace;letter-spacing:0.2em;color:rgba(255,255,255,0.35)">SUPPORT</span>
+        <a href="#board" style="font-size:13px;color:rgba(255,255,255,0.72)">문의게시판</a>
+        <a href="#booking" style="font-size:13px;color:rgba(255,255,255,0.72)">예약게시판</a>
+        <a href="#press" style="font-size:13px;color:rgba(255,255,255,0.72)">언론보도</a>
+      </div>
+    </div>
+  </footer></div>
 </body>
 </html>
