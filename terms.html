@@ -54,15 +54,14 @@
   .wrap { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
 
   /* ── 헤더 ── */
-  header {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    background: rgba(255,255,255,0.92);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid transparent;
-    transition: border-color .3s, box-shadow .3s;
-  }
-  header.scrolled { border-color: var(--line); box-shadow: 0 2px 20px rgba(14,42,71,0.05); }
-  .nav { display: grid; grid-template-columns: auto 1fr auto; align-items: center; height: 74px; max-width: 1320px; column-gap: 24px; }
+  header { background: #fff; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .topbar-tag { font: 9.5px/1 ui-monospace, monospace; letter-spacing: 0.24em; color: var(--gray); }
+  .topbar-auth { display: flex; gap: 18px; font-size: 12px; font-weight: 500; color: #4a5b58; }
+  .topbar-auth a { color: inherit; }
+  .topbar-auth a:hover { color: var(--blue); }
+  .header-row { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 18px 0; }
+  .header-cta { display: inline-block; padding: 13px 22px; background: var(--navy); color: #fff; font-size: 13px; font-weight: 600; letter-spacing: -0.01em; border-radius: 2px; white-space: nowrap; }
   .logo { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
   .brand-icon { width: 38px; height: 38px; flex-shrink: 0; object-fit: contain; }
   .logo-text { display: flex; flex-direction: column; line-height: 1.2; }
@@ -74,16 +73,9 @@
   .foot-brand .logo-word span { color: var(--sky); }
   .foot-brand .logo-tag { color: #a9d43f; }
   .foot-brand .logo-kr { color: rgba(255,255,255,0.55); }
-  .nav-cta-group { display: flex; align-items: center; gap: 6px; justify-self: end; }
-  .member-btn { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; background: transparent; color: var(--navy); padding: 6px 4px; border-radius: 4px; font-size: 11px; font-weight: 700; border: none; text-decoration: underline; text-underline-offset: 3px; transition: color .2s; }
-  .member-btn:hover { color: var(--blue); }
-  .member-btn.is-member { color: var(--blue); }
-  .logout-link { display: inline-flex; align-items: center; white-space: nowrap; background: transparent; color: var(--ink); opacity: .55; padding: 6px 4px; border-radius: 4px; font-size: 10.5px; font-weight: 600; border: none; transition: opacity .2s, color .2s; }
-  .logout-link:hover { opacity: 1; color: var(--blue); }
-  .nav-menu .member-link { display: none; }
-  .nav-menu .member-link a { color: var(--blue) !important; }
   .foot-kakao { display: inline-flex; align-items: center; gap: 6px; color: #FEE500 !important; font-weight: 700; }
   .foot-kakao svg { width: 14px; height: 14px; }
+  .nav { display: flex; align-items: center; justify-content: center; position: relative; padding: 13px 0; border-top: 1px solid var(--line); }
   .nav-menu { display: flex; justify-content: center; gap: 20px; list-style: none; }
   .nav-menu a {
     display: inline-block; font-size: 12px; font-weight: 600; color: var(--ink); white-space: nowrap;
@@ -93,8 +85,9 @@
     content: ''; position: absolute; left: 0; bottom: 0; width: 0; height: 2px;
     background: var(--blue); transition: width .25s;
   }
-  .nav-menu a:hover::after { width: 100%; }
-  .burger { display: none; background: none; border: none; cursor: pointer; }
+  .nav-menu a:hover::after, .nav-menu a.active::after { width: 100%; }
+  .nav-menu a.active { color: var(--blue); }
+  .burger { display: none; background: none; border: none; cursor: pointer; position: absolute; right: 0; top: 50%; transform: translateY(-50%); }
 
   /* ── 히어로 ── */
   .hero {
@@ -286,11 +279,10 @@
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
   @media (max-width: 900px) {
-    .nav { display: flex; justify-content: space-between; height: auto; flex-wrap: wrap; row-gap: 10px; padding: 12px 0; }
-    .nav-cta-group { display: none; }
-    .nav-menu .member-link { display: block; }
+    .topbar { flex-wrap: wrap; row-gap: 6px; }
+    .header-row { flex-wrap: wrap; row-gap: 10px; padding: 14px 0; }
+    .nav { justify-content: flex-start; padding: 10px 0; }
     .burger { display: flex; align-items: center; justify-content: center; }
-    .nav { position: relative; }
     .nav-menu {
       display: flex; flex-direction: column; list-style: none;
       position: absolute; top: 100%; left: 0; right: 0;
@@ -306,8 +298,8 @@
       padding: 16px 24px; border-bottom: 1px solid var(--line);
     }
     .nav-menu a::after { display: none; }
-    .hero-content { padding-top: 118px; }
-    .page-hero { padding-top: 168px; }
+    .hero-content { padding-top: 20px; }
+    .page-hero { padding-top: 40px; }
     .about-grid { grid-template-columns: 1fr; gap: 40px; }
     .biz-grid, .prod-grid { grid-template-columns: 1fr; }
     .bf-grid { grid-template-columns: 1fr; }
@@ -331,7 +323,7 @@
   .legal-block p { font-size: 13.5px; line-height: 1.9; color: var(--gray); margin-bottom: 4px; }
 </style>
 <style>
-  .page-hero { background: var(--navy); padding: 150px 0 70px; text-align:center; }
+  .page-hero { background: var(--navy); padding: 56px 0 70px; text-align:center; }
   .page-hero .sec-tag { color: var(--sky); }
   .page-hero h1 { font-family: var(--serif); font-size: clamp(28px,4vw,44px); font-weight:700; color:#fff; margin-bottom:14px; }
   .page-hero p { font-size:15px; color:rgba(255,255,255,0.72); max-width:520px; margin:0 auto; }
@@ -349,22 +341,31 @@
 <body>
 
 <!-- ── 헤더 ── -->
-<header id="header" class="scrolled">
-  <div class="wrap nav">
+<header id="header">
+  <div class="wrap topbar">
+    <span class="topbar-tag">THE WAY TO SUCCESS · HHCOMPANY</span>
+    <div class="topbar-auth">
+      <a href="login.html?redirect=personal.html" id="authJoin">회원가입</a>
+      <a href="login.html?redirect=personal.html" id="authLogin">로그인</a>
+      <a href="personal.html" id="authMypage" style="display:none">마이페이지</a>
+      <a href="#" id="authLogout" style="display:none">로그아웃</a>
+    </div>
+  </div>
+  <div class="wrap header-row">
     <a href="index.html" class="logo"><img src="assets/hh-logo.png" class="brand-icon" alt="더블에이치컴퍼니 로고"><span class="logo-text"><span class="logo-tag">The Way To Success</span><span class="logo-word">더블에이치컴퍼니</span></span></a>
+    <a href="index.html#contact" class="header-cta">프로젝트 문의 &nearr;</a>
+  </div>
+  <div class="wrap nav">
     <ul class="nav-menu">
       <li><a href="ceo.html">대표인사말</a></li>
-      <li><a href="index.html#about">회사소개</a></li>
-      <li><a href="business.html">사업분야</a></li>
+      <li><a href="company.html">회사소개</a></li>
+      <li><a href="index.html#business">사업분야</a></li>
       <li><a href="products.html">상품소개</a></li>
       <li><a href="cases.html">이용사례</a></li>
       <li><a href="press.html">언론보도</a></li>
       <li><a href="board.html">문의게시판</a></li>
       <li><a href="reserve.html">예약게시판</a></li>
-      <li class="member-link"><a href="login.html?redirect=personal.html" id="memberLinkMobile">로그인</a></li>
-      <li class="member-link" id="logoutLiMobile" style="display:none"><a href="#" id="logoutLinkMobile">로그아웃</a></li>
     </ul>
-    <div class="nav-cta-group"><a href="login.html?redirect=personal.html" class="member-btn" id="memberBtn">로그인</a><a href="#" class="logout-link" id="logoutLink" style="display:none">로그아웃</a></div>
     <button class="burger" aria-label="메뉴">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0e2a47" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </button>
@@ -539,62 +540,57 @@
 </section>
 
 <!-- ── 푸터 ── -->
-<footer>
-  <div class="wrap">
-    <div class="foot-top">
-      <div class="foot-brand">
-        <a href="index.html" class="logo"><img src="assets/hh-logo.png" class="brand-icon" alt="더블에이치컴퍼니 로고"><span class="logo-text"><span class="logo-tag">The Way To Success</span><span class="logo-word">더블에이치컴퍼니</span></span></a>
-        <p>단체와 체험시설을 잇는 B2B 단체여행 파트너, (주)더블에이치컴퍼니입니다.</p>
-      </div>
-      <div class="foot-info-row">
-        <div class="foot-legal-inline">
-          <p><strong>대표자</strong><span>김경훈</span></p>
-          <p><strong>주소</strong><span>경기도 의정부시 용현로155 105호</span></p>
-          <p><strong>사업자등록번호</strong><span>420-88-03868</span></p>
-          <p><strong>통신판매업신고</strong><span>제 2026-의정부송산-0430 호</span></p>
-          <p><strong>관광사업자등록번호</strong><span>제2026-000005호</span></p>
-          <p><strong>대표메일</strong><span>hpaircop@gmail.com</span></p>
-          <p><strong>개인정보관리책임자</strong><span>김성훈</span></p>
-          <p><strong>고객센터</strong><span>031-339-2999</span></p>
-        </div>
-        <div class="foot-cols">
-          <div class="foot-col">
-            <h5>바로가기</h5>
-            <a href="ceo.html">대표인사말</a>
-            <a href="index.html#about">회사소개</a>
-            <a href="business.html">사업분야</a>
-            <a href="products.html">상품소개</a>
-            <a href="cases.html">이용사례</a>
-            <a href="press.html">언론보도</a>
-            <a href="board.html">문의게시판</a>
-            <a href="reserve.html">예약게시판</a>
-          </div>
-          <div class="foot-col">
-            <h5>문의</h5>
-            <p>hhcompany.co.kr</p>
-            <a href="http://pf.kakao.com/_vvZxen/chat" target="_blank" rel="noopener" class="foot-kakao"><svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 3C6.48 3 2 6.58 2 11c0 2.8 1.83 5.26 4.6 6.71-.2.75-.73 2.72-.83 3.14-.13.52.19.51.4.37.17-.11 2.68-1.82 3.77-2.56.66.1 1.35.15 2.06.15 5.52 0 10-3.58 10-8s-4.48-8-10-8z"/></svg>카카오톡 상담</a>
-            <a href="https://hhcompany-admin.pages.dev" target="_blank">관리자 로그인</a>
-          </div>
-        </div>
+<footer style="background: var(--navy); color: rgba(255,255,255,0.6);">
+  <div class="wrap" style="padding: 52px 32px; display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 40px;">
+    <div style="display:flex;align-items:flex-start;gap:18px;max-width:360px">
+      <img src="assets/hh-logo.png" alt="" style="width:44px;height:44px;display:block;opacity:0.9" />
+      <div style="display:flex;flex-direction:column;gap:7px">
+        <span style="font-size:15px;font-weight:700;color:#fff;letter-spacing:-0.02em">(주)더블에이치컴퍼니</span>
+        <span style="font-size:12px;line-height:1.85">
+          대표자 김경훈<br />
+          개인정보관리책임자 김성훈<br />
+          경기도 의정부시 용현로155 105호<br />
+          사업자등록번호 420-88-03868<br />
+          통신판매업신고 제 2026-의정부송산-0430호<br />
+          관광사업자(종합여행업) 등록번호 제2026-000005호<br />
+          대표메일 hpaircop@gmail.com<br />
+          고객센터 031-339-2999
+        </span>
       </div>
     </div>
-    <div class="foot-links">
-      <a href="terms.html">이용약관</a>
-      <a href="privacy.html" class="accent">개인정보처리방침</a>
-      <a href="http://pf.kakao.com/_vvZxen/chat" target="_blank" rel="noopener">카카오톡 1:1 문의</a>
+    <div style="display:flex;gap:44px;flex-wrap:wrap">
+      <div style="display:flex;flex-direction:column;gap:11px">
+        <span style="font:10px/1 ui-monospace,monospace;letter-spacing:0.2em;color:rgba(255,255,255,0.35)">COMPANY</span>
+        <a href="ceo.html" style="font-size:13px;color:rgba(255,255,255,0.72)">대표인사말</a>
+        <a href="company.html" style="font-size:13px;color:rgba(255,255,255,0.72)">회사소개</a>
+        <a href="index.html#business" style="font-size:13px;color:rgba(255,255,255,0.72)">사업분야</a>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:11px">
+        <span style="font:10px/1 ui-monospace,monospace;letter-spacing:0.2em;color:rgba(255,255,255,0.35)">SERVICE</span>
+        <a href="products.html" style="font-size:13px;color:rgba(255,255,255,0.72)">상품소개</a>
+        <a href="cases.html" style="font-size:13px;color:rgba(255,255,255,0.72)">이용사례</a>
+        <a href="press.html" style="font-size:13px;color:rgba(255,255,255,0.72)">언론보도</a>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:11px">
+        <span style="font:10px/1 ui-monospace,monospace;letter-spacing:0.2em;color:rgba(255,255,255,0.35)">SUPPORT</span>
+        <a href="board.html" style="font-size:13px;color:rgba(255,255,255,0.72)">문의게시판</a>
+        <a href="reserve.html" style="font-size:13px;color:rgba(255,255,255,0.72)">예약게시판</a>
+        <a href="http://pf.kakao.com/_vvZxen/chat" target="_blank" rel="noopener" style="font-size:13px;color:#FEE500;font-weight:700">카카오톡 상담</a>
+        <a href="https://hhcompany-admin.pages.dev" target="_blank" rel="noopener" style="font-size:13px;color:rgba(255,255,255,0.72)">관리자 로그인</a>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:11px">
+        <span style="font:10px/1 ui-monospace,monospace;letter-spacing:0.2em;color:rgba(255,255,255,0.35)">LEGAL</span>
+        <a href="terms.html" style="font-size:13px;color:rgba(255,255,255,0.72)">이용약관</a>
+        <a href="privacy.html" style="font-size:13px;color:#ff8f99">개인정보처리방침</a>
+      </div>
     </div>
-    <div class="foot-bottom">
-      <span>© 2026 (주)더블에이치컴퍼니. All rights reserved.</span>
-    </div>
+    <div style="width:100%;border-top:1px solid rgba(255,255,255,0.1);padding-top:20px;font-size:12px;color:rgba(255,255,255,0.4)">© 2026 (주)더블에이치컴퍼니. All rights reserved.</div>
   </div>
 </footer>
 
 <div class="toast" id="toast"></div>
 
 <script>
-  const header = document.getElementById('header');
-  window.addEventListener('scroll', () => header.classList.toggle('scrolled', window.scrollY > 20));
-
   const io = new IntersectionObserver((entries) => {
     entries.forEach((e, i) => {
       if (e.isIntersecting) { setTimeout(() => e.target.classList.add('on'), (i % 4) * 80); io.unobserve(e.target); }
@@ -609,48 +605,35 @@
     burger.addEventListener('click', function () {
       header.classList.toggle('nav-open');
     });
-    document.querySelectorAll('.nav-menu a, .nav-cta-group a').forEach(function (a) {
+    document.querySelectorAll('.nav-menu a').forEach(function (a) {
       a.addEventListener('click', function () { header.classList.remove('nav-open'); });
     });
   }
 })();
 
-// ── 개인 회원(B2C) 로그인 상태에 따라 "회원가입 ↔ 개인구매" 버튼 전환 + 로그아웃 ──
+// ── 회원(B2C) 로그인 상태에 따라 상단바 회원가입/로그인/마이페이지/로그아웃 전환 ──
 (function memberNav() {
   if (typeof supabase === 'undefined') return;
   const SB_URL = 'https://xoupacfmkhuuvxebgfqi.supabase.co';
   const SB_KEY = 'sb_publishable_46KQebvC7_S-_JDramvDmA_jk9aSeVc';
   const sbAuth = supabase.createClient(SB_URL, SB_KEY);
-  const desktopBtn = document.getElementById('memberBtn');
-  const mobileBtn = document.getElementById('memberLinkMobile');
-  const logoutBtn = document.getElementById('logoutLink');
-  const logoutLiMobile = document.getElementById('logoutLiMobile');
-  const logoutBtnMobile = document.getElementById('logoutLinkMobile');
-
+  const elJoin = document.getElementById('authJoin');
+  const elLogin = document.getElementById('authLogin');
+  const elMypage = document.getElementById('authMypage');
+  const elLogout = document.getElementById('authLogout');
   function render(session) {
     const loggedIn = !!session;
-    const href = loggedIn ? 'personal.html' : 'login.html?redirect=personal.html';
-    if (desktopBtn) {
-      desktopBtn.href = href;
-      desktopBtn.textContent = loggedIn ? '개인구매 →' : '로그인';
-      desktopBtn.classList.toggle('is-member', loggedIn);
-    }
-    if (mobileBtn) {
-      mobileBtn.href = href;
-      mobileBtn.textContent = loggedIn ? '개인구매 →' : '로그인';
-    }
-    if (logoutBtn) logoutBtn.style.display = loggedIn ? '' : 'none';
-    if (logoutLiMobile) logoutLiMobile.style.display = loggedIn ? '' : 'none';
+    if (elJoin) elJoin.style.display = loggedIn ? 'none' : '';
+    if (elLogin) elLogin.style.display = loggedIn ? 'none' : '';
+    if (elMypage) elMypage.style.display = loggedIn ? '' : 'none';
+    if (elLogout) elLogout.style.display = loggedIn ? '' : 'none';
   }
-
   async function doSignOut(e) {
     e.preventDefault();
     await sbAuth.auth.signOut();
     location.href = 'index.html';
   }
-  if (logoutBtn) logoutBtn.addEventListener('click', doSignOut);
-  if (logoutBtnMobile) logoutBtnMobile.addEventListener('click', doSignOut);
-
+  if (elLogout) elLogout.addEventListener('click', doSignOut);
   sbAuth.auth.getSession().then(({ data }) => render(data.session)).catch(() => {});
   sbAuth.auth.onAuthStateChange((_event, session) => render(session));
 })();
