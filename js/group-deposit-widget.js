@@ -51,9 +51,9 @@
   const SB_URL = 'https://xoupacfmkhuuvxebgfqi.supabase.co';
   const SB_KEY = 'sb_publishable_46KQebvC7_S-_JDramvDmA_jk9aSeVc';
   const FN_URL = `${SB_URL}/functions/v1/payment-confirm`;
-  // ⚠️ 테스트 키. 정식 오픈 시 live_ck_ 키로 교체 + Edge Function Secrets의 TOSS_SECRET_KEY도 함께 교체.
+  // ✅ 라이브(실결제) 키. 실제 카드 청구가 발생합니다. Edge Function Secrets의 TOSS_SECRET_KEY도 live_sk_ 키여야 정상 동작(API 개별연동 키 사용).
   // (buy-widget.js의 TOSS_CLIENT_KEY와 반드시 같은 값으로 유지)
-  const TOSS_CLIENT_KEY = 'test_ck_mBZ1gQ4YVXjkO0AlJW968l2KPoqN';
+  const TOSS_CLIENT_KEY = 'live_ck_BX7zk2yd8yqLIQDyRAXv8x9POLqK';
   const MIN_GROUP_SIZE = 10;
 
   let sb = null;
