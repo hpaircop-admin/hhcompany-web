@@ -592,9 +592,15 @@
     const venue = params.get('venue');
     const count = params.get('count');
     const write = params.get('write');
-    if (!venue && !count && !write) return;
+    const pkg = params.get('package');
+    if (!venue && !count && !write && !pkg) return;
     if (venue) document.getElementById('rb-venue').value = venue;
     if (count) document.getElementById('rb-count').value = count;
+    if (pkg) {
+      const noteEl = document.getElementById('rb-note');
+      const pkgLine = '희망 상품: ' + pkg;
+      noteEl.value = noteEl.value ? (pkgLine + '\n' + noteEl.value) : pkgLine;
+    }
     document.getElementById('reserve-form').classList.add('open');
     document.getElementById('reserve-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
