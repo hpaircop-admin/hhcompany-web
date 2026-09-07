@@ -236,7 +236,7 @@
   function renderPaymentStep(state, orderId, amount, buyerName, buyerEmail) {
     const { mountEl } = state;
     mountEl.innerHTML = `
-      <div class="hhgd-test-badge">테스트 결제 모드 · 실제 청구 없음</div>
+      ${TOSS_CLIENT_KEY.startsWith('test_') ? '<div class=\"hhgd-test-badge\">테스트 결제 모드 · 실제 청구 없음</div>' : ''}
       <div class="hhgd-amount-row"><span class="l">예약금 결제 금액</span><span class="amt">${money(amount)}</span></div>
       <div class="hhgd-methods" id="hhgd-method-grid">
         <button type="button" class="hhgd-method-btn" data-method="카드">💳 카드로 결제</button>
