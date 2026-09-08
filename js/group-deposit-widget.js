@@ -22,6 +22,7 @@
           productId: 'p14',   // ⚠ 2026-09-01부터 "_dep" 접미사 없이, 그 업장의 진짜 상품 id를 그대로 씁니다
           venueName: VENUE_NAME,
           countInputId: 'group-count',   // Template B는 'rv-group-count'
+          tierInputId: 'rv-group-tier',  // (선택, 2026-09-08 추가) 연령대별 가격을 쓰는 상품이면 <select> id 지정
         });
       </script>
 
@@ -30,13 +31,19 @@
    - 로그인 불필요. 기존 "예상 인원" 입력창(countInputId) 값을 그대로 공유해서 사용.
    - 인원 10명 미만이면 결제 버튼 비활성화 + 안내 문구 표시 (기존 문의하기 버튼의
      최소인원 규칙과 동일하게 10명 기준)
-   - 결제 금액 = 상품(productId)의 group_deposit_price(1인당 예약금) × 예상 인원 (실시간 계산 표시)
+   - 결제 금액 = 상품(productId)의 1인당 예약금 × 예상 인원 (실시간 계산 표시)
      ※ 2026-09-01부터: 예전에는 "{id}_dep"로 된 별도 숨김 상품에서 가격을 가져왔지만,
        지금은 같은 상품 안의 group_deposit_price/group_deposit_enabled 필드를 그대로
        씁니다 (관리자 상품 수정 화면 안에서 바로 편집). productId는 개인구매 위젯과
        동일한 그 업장의 진짜 상품 id입니다.
-     ⚠ 실제 청구 금액은 결제 직전 서버(payment-confirm)가 인원수 기준으로 다시 계산하며,
-       클라이언트가 보낸 금액을 신뢰하지 않음 (buy-widget.js와 동일한 서버 검증 방식)
+     ※ 2026-09-08부터: 상품에 group_deposit_tiers(jsonb, 연령대별 가격 — 예:
+       {"유아단체":22000,"초등단체":27000,"중고등단체":31000,"대학생":33000})가
+       설정돼 있으면, tierInputId로 지정한 <select>에서 고른 연령대 가격을 쓴다.
+       이 jsonb가 없는(NULL) 상품은 예전처럼 group_deposit_price 1개 값 그대로 사용
+       — tierInputId를 안 넘긴 기존 페이지들은 손댈 필요 없이 그대로 동작함.
+     ⚠ 실제 청구 금액은 결제 직전 서버(payment-confirm)가 인원수·연령대 기준으로
+       다시 계산하며, 클라이언트가 보낸 금액을 신뢰하지 않음 (buy-widget.js와 동일한
+       서버 검증 방식)
    - 담당자 이름/연락처 입력 → 토스페이먼츠 결제창(V1) 호출 → payment-confirm Edge Function 승인
    - 승인 성공 시 발권(바코드 배정) 없이 "예약금 결제 완료" 안내만 표시
      (실제 발권/재고 소모는 payment-confirm이 orders.is_deposit=true인 주문에 대해
@@ -98,6 +105,7 @@
       .hhgd-amount-row{display:flex;align-items:center;justify-content:space-between;background:#fff;border-radius:10px;padding:13px 15px;margin-bottom:12px;border:1px solid #e2e9f2}
       .hhgd-amount-row .l{font-size:12px;color:#64748b;font-weight:600}
       .hhgd-amount-row .amt{font-size:18px;font-weight:800;color:#ff6b5c}
+      .hhgd-tier-note{font-size:12px;color:#dc2626;line-height:1.6;margin-bottom:12px}
       .hhgd-field{margin-bottom:10px}
       .hhgd-field label{display:block;font-size:12px;font-weight:700;color:#16202e;margin-bottom:6px}
       .hhgd-field input{width:100%;padding:11px 12px;border:1px solid #e2e9f2;border-radius:8px;font-size:14.5px;font-family:inherit;background:#fff;box-sizing:border-box}
@@ -126,15 +134,20 @@
     if (!mountEl) { console.error('[HHGroupDepositWidget] mount element not found:', opts.mount); return; }
     const countInput = document.getElementById(opts.countInputId);
     if (!countInput) { console.error('[HHGroupDepositWidget] countInputId element not found:', opts.countInputId); return; }
+    // tierInputId(선택): 연령대별 가격(group_deposit_tiers)을 쓰는 상품에서만 넘겨주면 됨.
+    // 안 넘기거나, 넘겼는데 해당 id의 엘리먼트가 없으면 예전처럼 단일가격 방식으로 동작.
+    const tierInput = opts.tierInputId ? document.getElementById(opts.tierInputId) : null;
 
     const state = {
       mountEl,
       countInput,
+      tierInput,
       productId: opts.productId,
       venueName: opts.venueName || '',
       orderLabel: opts.orderLabel || (opts.venueName ? `${opts.venueName} 단체 예약금` : '단체 예약금'),
       minCount: opts.minCount || MIN_GROUP_SIZE,
       price: null,
+      tiers: null,
     };
 
     mountEl.classList.add('hhgd-box');
@@ -150,7 +163,9 @@
     const client = getClient();
     let priceResult = { data: null, error: null };
     try {
-      priceResult = await client.from('products').select('id, group_deposit_price, group_deposit_enabled').eq('id', state.productId).maybeSingle();
+      priceResult = await client.from('products')
+        .select('id, group_deposit_price, group_deposit_enabled, group_deposit_tiers')
+        .eq('id', state.productId).maybeSingle();
     } catch (e) {
       priceResult = { data: null, error: e };
     }
@@ -160,10 +175,14 @@
     state.price = priceResult.data ? priceResult.data.group_deposit_price : null;
     state.priceError = priceResult.error || null;
     state.saleEnabled = priceResult.data ? priceResult.data.group_deposit_enabled === true : false;
+    const rawTiers = priceResult.data ? priceResult.data.group_deposit_tiers : null;
+    // 연령대별 가격이 있고(jsonb) + 이 페이지가 연령대 <select>를 갖고 있을 때만 사용
+    state.tiers = (rawTiers && typeof rawTiers === 'object' && state.tierInput) ? rawTiers : null;
 
     // 예약금 상품이 아직 준비되지 않았거나(가격 미설정) 판매 비활성 상태면
     // 위젯을 완전히 숨김 — 기존 "문의하기" 버튼만 그대로 노출됨.
-    if (!state.price || (!state.priceError && !state.saleEnabled)) {
+    const hasAnyPrice = state.tiers ? true : !!state.price;
+    if (!hasAnyPrice || (!state.priceError && !state.saleEnabled)) {
       state.mountEl.style.display = 'none';
       return;
     }
@@ -171,12 +190,30 @@
     render(state);
   }
 
+  // 현재 선택된 연령대의 1인당 가격을 계산. 연령대 select가 없는 페이지(기존 25개 업장)는
+  // 그냥 group_deposit_price 고정값. 연령대 select가 있으면:
+  //  - 아직 아무것도 안 골랐으면 null (금액 표시 안 함, 결제 버튼 비활성)
+  //  - 고른 연령대가 이 상품 조합에서 가격이 없으면(예: 패키지 상품의 "유아단체") -1 (안내 문구 표시)
+  //  - 있으면 그 가격
+  function currentUnitPrice(state) {
+    if (!state.tiers) return state.price;
+    const t = state.tierInput.value;
+    if (!t) return null;
+    const p = state.tiers[t];
+    return (p && p > 0) ? p : -1;
+  }
+
   function render(state) {
-    const { mountEl, price } = state;
+    const { mountEl } = state;
+
+    const tierOptionsHtml = state.tiers ? `
+      <div class="hhgd-tier-note" id="hhgd-tier-note" style="display:none"></div>
+    ` : '';
 
     mountEl.innerHTML = `
       <div class="hhgd-label">온라인으로 바로 예약금 결제</div>
-      <div class="hhgd-amount-row"><span class="l">1인 ${money(price)} × <span id="hhgd-count-display">${state.countInput.value || 0}</span>명</span><span class="amt" id="hhgd-amount">${money(price * (parseInt(state.countInput.value, 10) || 0))}</span></div>
+      ${tierOptionsHtml}
+      <div class="hhgd-amount-row"><span class="l" id="hhgd-amount-label">1인 ${state.tiers ? '연령대를 선택해주세요' : money(state.price)} × <span id="hhgd-count-display">${state.countInput.value || 0}</span>명</span><span class="amt" id="hhgd-amount">${state.tiers ? '—' : money(state.price * (parseInt(state.countInput.value, 10) || 0))}</span></div>
       <div class="hhgd-field"><label>담당자 이름</label><input type="text" id="hhgd-name" placeholder="이름을 입력해주세요"></div>
       <div class="hhgd-field"><label>연락처</label><input type="tel" id="hhgd-phone" placeholder="010-0000-0000"></div>
       <div class="hhgd-field"><label>이메일 (선택)</label><input type="email" id="hhgd-email" placeholder="안내 발송용"></div>
@@ -186,16 +223,52 @@
     `;
 
     const amountEl = mountEl.querySelector('#hhgd-amount');
+    const amountLabelEl = mountEl.querySelector('#hhgd-amount-label');
     const countDisplayEl = mountEl.querySelector('#hhgd-count-display');
+    const tierNoteEl = mountEl.querySelector('#hhgd-tier-note');
+    const submitBtn = mountEl.querySelector('#hhgd-submit');
+
     const syncAmount = () => {
       const c = Math.max(0, parseInt(state.countInput.value, 10) || 0);
       countDisplayEl.textContent = c;
-      amountEl.textContent = money(price * c);
+      const unit = currentUnitPrice(state);
+
+      if (!state.tiers) {
+        amountEl.textContent = money(unit * c);
+        return;
+      }
+
+      if (unit === null) {
+        // 연령대 미선택
+        amountLabelEl.innerHTML = '1인 연령대를 선택해주세요 × <span id="hhgd-count-display">' + c + '</span>명';
+        amountEl.textContent = '—';
+        if (tierNoteEl) tierNoteEl.style.display = 'none';
+        if (submitBtn) submitBtn.disabled = true;
+      } else if (unit === -1) {
+        // 이 상품 조합에는 해당 연령대 가격이 없음
+        amountLabelEl.innerHTML = '1인 — × <span id="hhgd-count-display">' + c + '</span>명';
+        amountEl.textContent = '—';
+        if (tierNoteEl) {
+          tierNoteEl.style.display = 'block';
+          tierNoteEl.textContent = '선택하신 연령대(' + state.tierInput.value + ')는 이 상품 조합으로 온라인 결제가 어려워요. 전화(031-339-2999) 또는 카카오톡으로 문의해주세요.';
+        }
+        if (submitBtn) submitBtn.disabled = true;
+      } else {
+        amountLabelEl.innerHTML = '1인 ' + money(unit) + ' × <span id="hhgd-count-display">' + c + '</span>명';
+        amountEl.textContent = money(unit * c);
+        if (tierNoteEl) tierNoteEl.style.display = 'none';
+        if (submitBtn) submitBtn.disabled = false;
+      }
     };
+
     // 기존 "예상 인원" 입력창(문의하기 버튼과 공유)이 바뀔 때마다 금액을 실시간으로 다시 계산
     state.countInput.addEventListener('input', syncAmount);
+    // 연령대 select가 있으면 바뀔 때마다도 다시 계산
+    if (state.tierInput) state.tierInput.addEventListener('change', syncAmount);
 
-    mountEl.querySelector('#hhgd-submit').onclick = () => submitDeposit(state);
+    if (state.tiers) syncAmount(); // 초기 상태(연령대 미선택 안내) 반영
+
+    submitBtn.onclick = () => submitDeposit(state);
   }
 
   async function submitDeposit(state) {
@@ -212,6 +285,13 @@
       countInput.focus();
       return;
     }
+    let tier = null;
+    if (state.tiers) {
+      tier = state.tierInput.value;
+      const unit = currentUnitPrice(state);
+      if (unit === null) { msg.textContent = '연령대를 선택해주세요.'; state.tierInput.focus(); return; }
+      if (unit === -1) { msg.textContent = '선택하신 연령대는 이 상품 조합으로 온라인 결제가 어렵습니다. 전화 또는 카카오톡으로 문의해주세요.'; return; }
+    }
     if (!name) { msg.textContent = '담당자 이름을 입력해주세요.'; return; }
     if (!phone) { msg.textContent = '연락처를 입력해주세요.'; return; }
     msg.textContent = '';
@@ -219,7 +299,7 @@
     btn.disabled = true; btn.textContent = '신청 접수 중...';
     const created = await fnFetch('create', {
       productId: state.productId, quantity: count, buyerName: name, buyerPhone: phone,
-      buyerEmail: email || undefined, depositMode: true,
+      buyerEmail: email || undefined, depositMode: true, tier: tier || undefined,
     });
 
     if (!created.ok) {
