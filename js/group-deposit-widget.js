@@ -22,7 +22,7 @@
           productId: 'p14',   // ⚠ 2026-09-01부터 "_dep" 접미사 없이, 그 업장의 진짜 상품 id를 그대로 씁니다
           venueName: VENUE_NAME,
           countInputId: 'group-count',   // Template B는 'rv-group-count'
-          tierInputId: 'rv-group-tier',  // (선택, 2026-09-08 추가) 연령대별 가격을 쓰는 상품이면 <select> id 지정
+          tierInputId: 'rv-group-tier',  // (선택, 2026-09-08 추가) 단체유형별 가격을 쓰는 상품이면 <select> id 지정
         });
       </script>
 
@@ -36,12 +36,12 @@
        지금은 같은 상품 안의 group_deposit_price/group_deposit_enabled 필드를 그대로
        씁니다 (관리자 상품 수정 화면 안에서 바로 편집). productId는 개인구매 위젯과
        동일한 그 업장의 진짜 상품 id입니다.
-     ※ 2026-09-08부터: 상품에 group_deposit_tiers(jsonb, 연령대별 가격 — 예:
+     ※ 2026-09-08부터: 상품에 group_deposit_tiers(jsonb, 단체유형별 가격 — 예:
        {"유아단체":22000,"초등단체":27000,"중고등단체":31000,"대학생":33000})가
-       설정돼 있으면, tierInputId로 지정한 <select>에서 고른 연령대 가격을 쓴다.
+       설정돼 있으면, tierInputId로 지정한 <select>에서 고른 단체유형 가격을 쓴다.
        이 jsonb가 없는(NULL) 상품은 예전처럼 group_deposit_price 1개 값 그대로 사용
        — tierInputId를 안 넘긴 기존 페이지들은 손댈 필요 없이 그대로 동작함.
-     ⚠ 실제 청구 금액은 결제 직전 서버(payment-confirm)가 인원수·연령대 기준으로
+     ⚠ 실제 청구 금액은 결제 직전 서버(payment-confirm)가 인원수·단체유형 기준으로
        다시 계산하며, 클라이언트가 보낸 금액을 신뢰하지 않음 (buy-widget.js와 동일한
        서버 검증 방식)
    - 담당자 이름/연락처 입력 → 토스페이먼츠 결제창(V1) 호출 → payment-confirm Edge Function 승인
@@ -70,6 +70,21 @@
   }
 
   function money(n) { return Number(n || 0).toLocaleString('ko-KR') + '원'; }
+
+  // countInput/tierInput은 위젯 마운트 영역(#group-deposit) "바깥"의 페이지 자체 엘리먼트라서
+  // rvMountGroupDeposit()이 "희망 상품"을 바꿀 때마다 다시 init()을 호출해도 사라지지 않고
+  // 그대로 남아있습니다. 이 함수 없이 매번 addEventListener만 하면 상품을 바꿀 때마다 리스너가
+  // 계속 쌓여서(옛 리스너는 이미 없어진 화면 조각을 참조), 단체유형을 골라도 금액이 잘 안 바뀌거나
+  // 이상하게 여러 번 갱신되는 문제가 생깁니다. 같은 엘리먼트·같은 이벤트에 새로 걸기 전에
+  // 이전에 이 함수로 걸어둔 리스너를 먼저 지워서, 항상 "가장 최근에 그려진 화면"용 리스너
+  // 1개만 남도록 합니다.
+  function bindOnce(el, eventName, handler) {
+    if (!el) return;
+    const key = '_hhgdListener_' + eventName;
+    if (el[key]) el.removeEventListener(eventName, el[key]);
+    el.addEventListener(eventName, handler);
+    el[key] = handler;
+  }
 
   async function fnFetch(path, body) {
     const res = await fetch(`${FN_URL}/${path}`, {
@@ -134,7 +149,7 @@
     if (!mountEl) { console.error('[HHGroupDepositWidget] mount element not found:', opts.mount); return; }
     const countInput = document.getElementById(opts.countInputId);
     if (!countInput) { console.error('[HHGroupDepositWidget] countInputId element not found:', opts.countInputId); return; }
-    // tierInputId(선택): 연령대별 가격(group_deposit_tiers)을 쓰는 상품에서만 넘겨주면 됨.
+    // tierInputId(선택): 단체유형별 가격(group_deposit_tiers)을 쓰는 상품에서만 넘겨주면 됨.
     // 안 넘기거나, 넘겼는데 해당 id의 엘리먼트가 없으면 예전처럼 단일가격 방식으로 동작.
     const tierInput = opts.tierInputId ? document.getElementById(opts.tierInputId) : null;
 
@@ -176,7 +191,7 @@
     state.priceError = priceResult.error || null;
     state.saleEnabled = priceResult.data ? priceResult.data.group_deposit_enabled === true : false;
     const rawTiers = priceResult.data ? priceResult.data.group_deposit_tiers : null;
-    // 연령대별 가격이 있고(jsonb) + 이 페이지가 연령대 <select>를 갖고 있을 때만 사용
+    // 단체유형별 가격이 있고(jsonb) + 이 페이지가 단체유형 <select>를 갖고 있을 때만 사용
     state.tiers = (rawTiers && typeof rawTiers === 'object' && state.tierInput) ? rawTiers : null;
 
     // 예약금 상품이 아직 준비되지 않았거나(가격 미설정) 판매 비활성 상태면
@@ -190,10 +205,10 @@
     render(state);
   }
 
-  // 현재 선택된 연령대의 1인당 가격을 계산. 연령대 select가 없는 페이지(기존 25개 업장)는
-  // 그냥 group_deposit_price 고정값. 연령대 select가 있으면:
+  // 현재 선택된 단체유형의 1인당 가격을 계산. 단체유형 select가 없는 페이지(기존 25개 업장)는
+  // 그냥 group_deposit_price 고정값. 단체유형 select가 있으면:
   //  - 아직 아무것도 안 골랐으면 null (금액 표시 안 함, 결제 버튼 비활성)
-  //  - 고른 연령대가 이 상품 조합에서 가격이 없으면(예: 패키지 상품의 "유아단체") -1 (안내 문구 표시)
+  //  - 고른 단체유형이 이 상품 조합에서 가격이 없으면(예: 패키지 상품의 "유아단체") -1 (안내 문구 표시)
   //  - 있으면 그 가격
   function currentUnitPrice(state) {
     if (!state.tiers) return state.price;
@@ -213,7 +228,7 @@
     mountEl.innerHTML = `
       <div class="hhgd-label">온라인으로 바로 예약금 결제</div>
       ${tierOptionsHtml}
-      <div class="hhgd-amount-row"><span class="l" id="hhgd-amount-label">1인 ${state.tiers ? '연령대를 선택해주세요' : money(state.price)} × <span id="hhgd-count-display">${state.countInput.value || 0}</span>명</span><span class="amt" id="hhgd-amount">${state.tiers ? '—' : money(state.price * (parseInt(state.countInput.value, 10) || 0))}</span></div>
+      <div class="hhgd-amount-row"><span class="l" id="hhgd-amount-label">1인 ${state.tiers ? '단체유형을 선택해주세요' : money(state.price)} × <span id="hhgd-count-display">${state.countInput.value || 0}</span>명</span><span class="amt" id="hhgd-amount">${state.tiers ? '—' : money(state.price * (parseInt(state.countInput.value, 10) || 0))}</span></div>
       <div class="hhgd-field"><label>담당자 이름</label><input type="text" id="hhgd-name" placeholder="이름을 입력해주세요"></div>
       <div class="hhgd-field"><label>연락처</label><input type="tel" id="hhgd-phone" placeholder="010-0000-0000"></div>
       <div class="hhgd-field"><label>이메일 (선택)</label><input type="email" id="hhgd-email" placeholder="안내 발송용"></div>
@@ -239,18 +254,18 @@
       }
 
       if (unit === null) {
-        // 연령대 미선택
-        amountLabelEl.innerHTML = '1인 연령대를 선택해주세요 × <span id="hhgd-count-display">' + c + '</span>명';
+        // 단체유형 미선택
+        amountLabelEl.innerHTML = '1인 단체유형을 선택해주세요 × <span id="hhgd-count-display">' + c + '</span>명';
         amountEl.textContent = '—';
         if (tierNoteEl) tierNoteEl.style.display = 'none';
         if (submitBtn) submitBtn.disabled = true;
       } else if (unit === -1) {
-        // 이 상품 조합에는 해당 연령대 가격이 없음
+        // 이 상품 조합에는 해당 단체유형 가격이 없음
         amountLabelEl.innerHTML = '1인 — × <span id="hhgd-count-display">' + c + '</span>명';
         amountEl.textContent = '—';
         if (tierNoteEl) {
           tierNoteEl.style.display = 'block';
-          tierNoteEl.textContent = '선택하신 연령대(' + state.tierInput.value + ')는 이 상품 조합으로 온라인 결제가 어려워요. 전화(031-339-2999) 또는 카카오톡으로 문의해주세요.';
+          tierNoteEl.textContent = '선택하신 단체유형(' + state.tierInput.value + ')은 이 상품 조합으로 온라인 결제가 어려워요. 전화(031-339-2999) 또는 카카오톡으로 문의해주세요.';
         }
         if (submitBtn) submitBtn.disabled = true;
       } else {
@@ -261,12 +276,19 @@
       }
     };
 
-    // 기존 "예상 인원" 입력창(문의하기 버튼과 공유)이 바뀔 때마다 금액을 실시간으로 다시 계산
-    state.countInput.addEventListener('input', syncAmount);
-    // 연령대 select가 있으면 바뀔 때마다도 다시 계산
-    if (state.tierInput) state.tierInput.addEventListener('change', syncAmount);
+    // 기존 "예상 인원" 입력창(문의하기 버튼과 공유)이 바뀔 때마다 금액을 실시간으로 다시 계산.
+    // ⚠ 2026-09-08 버그 수정: countInput/tierInput은 이 위젯의 mount(#group-deposit) 바깥의
+    // "페이지 자체" 엘리먼트라서, 사용자가 "희망 상품"을 바꿔서 위젯이 다시 init()될 때마다
+    // 매번 새로 addEventListener가 걸립니다. 예전 코드는 이전 리스너를 지우지 않고 계속
+    // 쌓기만 해서, 상품을 몇 번 바꾸고 나면 단체유형을 골라도 화면이 안 바뀌거나(오래된
+    // 리스너가 이미 사라진 화면 조각을 붙잡고 있음) 여러 번 다시 계산되는 문제가 있었습니다.
+    // bindOnce()로 "이 엘리먼트에 내가 마지막으로 건 리스너"만 기억해뒀다가, 새로 걸기 전에
+    // 지우는 방식으로 항상 최신 리스너 1개만 남도록 고쳤습니다.
+    bindOnce(state.countInput, 'input', syncAmount);
+    // 단체유형 select가 있으면 바뀔 때마다도 다시 계산
+    if (state.tierInput) bindOnce(state.tierInput, 'change', syncAmount);
 
-    if (state.tiers) syncAmount(); // 초기 상태(연령대 미선택 안내) 반영
+    if (state.tiers) syncAmount(); // 초기 상태(단체유형 미선택 안내) 반영
 
     submitBtn.onclick = () => submitDeposit(state);
   }
@@ -289,8 +311,8 @@
     if (state.tiers) {
       tier = state.tierInput.value;
       const unit = currentUnitPrice(state);
-      if (unit === null) { msg.textContent = '연령대를 선택해주세요.'; state.tierInput.focus(); return; }
-      if (unit === -1) { msg.textContent = '선택하신 연령대는 이 상품 조합으로 온라인 결제가 어렵습니다. 전화 또는 카카오톡으로 문의해주세요.'; return; }
+      if (unit === null) { msg.textContent = '단체유형을 선택해주세요.'; state.tierInput.focus(); return; }
+      if (unit === -1) { msg.textContent = '선택하신 단체유형은 이 상품 조합으로 온라인 결제가 어렵습니다. 전화 또는 카카오톡으로 문의해주세요.'; return; }
     }
     if (!name) { msg.textContent = '담당자 이름을 입력해주세요.'; return; }
     if (!phone) { msg.textContent = '연락처를 입력해주세요.'; return; }
