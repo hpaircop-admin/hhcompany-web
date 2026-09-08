@@ -29,7 +29,7 @@
   const SB_KEY = 'sb_publishable_46KQebvC7_S-_JDramvDmA_jk9aSeVc';
   const FN_URL = `${SB_URL}/functions/v1/payment-confirm`;
   // ✅ 라이브(실결제) 키. 실제 카드 청구가 발생합니다. Edge Function Secrets의 TOSS_SECRET_KEY도 live_sk_ 키여야 정상 동작(API 개별연동 키 사용).
-  const TOSS_CLIENT_KEY = 'live_ck_BX7zk2yd8yqLIQDyRAXv8x9POLqK';
+  const TOSS_CLIENT_KEY = 'live_ck_BX7zk2yd8yqLlQDyRAXv8x9POLqK';
 
   let sb = null;
   function getClient() {
