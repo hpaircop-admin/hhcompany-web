@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-N4BWKWXEQ4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-N4BWKWXEQ4');
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>뮤지컬 장수탕 선녀님 | 단체관람 안내</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://js.tosspayments.com/v1/payment"></script>
+<script src="js/buy-widget.js"></script>
+<script src="js/group-deposit-widget.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --blue:#C2410C;--cyan:#FBBF24;--navy:#164e63;
+  --white:#fff;--dark:#14110c;--text:#241f18;--muted:#6b6153;--border:rgba(0,0,0,0.08)
+}
+body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;background:#FAF8F4;color:var(--text);overflow-x:hidden}
+.nav{position:sticky;top:0;z-index:100;background:var(--navy);padding:13px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.nav-logo{display:flex;align-items:center;gap:10px}
+.nav-title{font-size:16px;font-weight:900;color:#fff;letter-spacing:-.02em}
+.nav-sub{font-size:10px;color:rgba(255,255,255,.55);display:block;margin-top:1px;letter-spacing:.08em}
+.nav-back{font-size:12px;color:rgba(255,255,255,.6);text-decoration:none}
+.nav-btn{font-size:13px;font-weight:700;color:var(--navy);background:var(--cyan);padding:9px 18px;border-radius:6px;text-decoration:none}
+.hero{position:relative;width:100%;min-height:78vh;display:flex;align-items:flex-end;overflow:hidden}
+.hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.92) 0%,rgba(0,0,0,.4) 55%,rgba(0,0,0,.08) 100%)}
+.hero-content{position:relative;z-index:2;padding:0 24px 48px;width:100%}
+.hero-badge{display:inline-block;background:var(--cyan);color:var(--navy);font-size:11px;font-weight:900;letter-spacing:.12em;padding:5px 14px;border-radius:3px;margin-bottom:16px}
+.hero-title{font-size:clamp(30px,7.5vw,56px);font-weight:900;color:#fff;line-height:1.1;letter-spacing:-.03em;margin-bottom:12px}
+.hero-title em{color:var(--cyan);font-style:normal}
+.hero-sub{font-size:14px;color:rgba(255,255,255,.75);line-height:1.7;margin-bottom:24px;max-width:560px}
+.hero-tags{display:flex;gap:8px;flex-wrap:wrap}
+.hero-tag{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:12px;padding:6px 14px;border-radius:999px}
+.sec{padding:56px 24px;max-width:800px;margin:0 auto}
+.sec-label{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--blue);font-weight:800;margin-bottom:8px}
+.sec-title{font-size:clamp(21px,4.8vw,30px);font-weight:900;color:var(--dark);line-height:1.2;letter-spacing:-.02em;margin-bottom:14px}
+.sec-desc{font-size:14.5px;color:var(--muted);line-height:1.85;margin-bottom:28px;white-space:pre-line}
+.divider{height:1px;background:linear-gradient(to right,transparent,rgba(0,0,0,.1),transparent)}
+.pills{display:flex;gap:8px;flex-wrap:wrap}
+.pill{background:#C2410C12;border:1px solid #C2410C30;color:var(--blue);font-size:13px;font-weight:600;padding:7px 16px;border-radius:999px}
+.zone-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px}
+.zone-card{background:#fff;border-radius:12px;overflow:hidden;border:1px solid var(--border)}
+.zone-img{width:100%;aspect-ratio:4/3;overflow:hidden;background:#eee}
+.zone-img img{width:100%;height:100%;object-fit:cover;display:block}
+.zone-body{padding:10px 12px}
+.zone-name{font-size:12.5px;font-weight:700;color:var(--dark)}
+.zone-desc{font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.5}
+.cast-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:24px}
+.cast-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 18px}
+.cast-name{font-size:14.5px;font-weight:800;color:var(--blue);margin-bottom:6px}
+.cast-desc{font-size:12.5px;color:var(--muted);line-height:1.65}
+.info-table{width:100%;border-collapse:collapse;margin-top:20px;background:#fff;border-radius:12px;overflow:hidden;border:1px solid var(--border)}
+.info-table th{background:#F2EEE6;font-size:12px;color:var(--muted);font-weight:800;padding:10px 12px;text-align:left;border-bottom:1px solid var(--border);width:26%}
+.info-table td{font-size:13px;color:var(--text);padding:10px 12px;border-bottom:1px solid var(--border);text-align:left}
+.info-table tr:last-child th, .info-table tr:last-child td{border-bottom:none}
+.info-table .sub{font-size:11.5px;color:var(--muted);display:block;margin-top:4px}
+.price-wrap{background:var(--navy);padding:56px 24px}
+.price-inner{max-width:800px;margin:0 auto}
+.price-title{font-size:clamp(21px,4.8vw,30px);font-weight:900;color:#fff;letter-spacing:-.02em;margin-bottom:6px;line-height:1.2}
+.price-sub2{font-size:12.5px;color:rgba(255,255,255,.4);margin-bottom:24px}
+.pt{width:100%;border-collapse:collapse;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:14px;overflow:hidden}
+.pt td{font-size:14px;padding:13px 18px;border-bottom:1px solid rgba(255,255,255,.07);color:rgba(255,255,255,.85)}
+.pt tr:last-child td{border-bottom:none}
+.cy{color:var(--cyan);font-weight:900;font-size:15px}
+.notice-box{background:#FBBF2414;border:1px solid #FBBF2433;border-radius:12px;padding:20px 22px;margin-top:20px}
+.notice-title{font-size:13px;font-weight:800;color:var(--cyan);margin-bottom:12px;letter-spacing:.05em}
+.notice-item{font-size:13px;color:rgba(255,255,255,.72);line-height:1.85;padding-left:14px;position:relative}
+.notice-item::before{content:'·';position:absolute;left:0;color:var(--cyan)}
+.info-wrap{background:#F2EEE6;padding:48px 24px}
+.info-inner{max-width:800px;margin:0 auto}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.info-item{background:#fff;border-radius:12px;padding:16px 18px;border:1px solid var(--border)}
+.info-icon{font-size:19px;margin-bottom:6px;display:block}
+.info-lbl{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:4px;display:block}
+.info-val{font-size:13.5px;font-weight:700;color:var(--dark);line-height:1.55;display:block}
+.cta-wrap{background:linear-gradient(135deg,#C2410C 0%,#FBBF24 100%);padding:64px 24px;text-align:center}
+.cta-inner{max-width:580px;margin:0 auto}
+.cta-title{font-size:clamp(24px,5.5vw,38px);font-weight:900;color:#fff;letter-spacing:-.02em;margin-bottom:12px;line-height:1.2}
+.cta-desc{font-size:14px;color:rgba(255,255,255,.85);margin-bottom:30px;line-height:1.7}
+.cta-btns{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.btn-p{background:#fff;color:#C2410C;font-size:15px;font-weight:900;padding:14px 30px;border-radius:8px;text-decoration:none}
+.btn-s{background:transparent;color:#fff;font-size:15px;font-weight:700;padding:14px 30px;border-radius:8px;text-decoration:none;border:1.5px solid rgba(255,255,255,.55)}
+.footer{background:var(--dark);padding:28px 24px;text-align:center}
+.footer p{font-size:12px;color:rgba(255,255,255,.32);line-height:1.9}
+.footer strong{color:rgba(255,255,255,.55)}
+.footer a{color:rgba(255,255,255,.5)}
+@media(max-width:560px){.info-grid{grid-template-columns:1fr}.cast-grid{grid-template-columns:1fr}.cta-btns{flex-direction:column;align-items:center}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-logo">
+    <div>
+      <span class="nav-title">뮤지컬 장수탕 선녀님</span>
+      <span class="nav-sub">단체관람 안내</span>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:14px">
+    <a href="products.html" class="nav-back">← 상품 목록</a>
+    <a href="#contact" class="nav-btn">단체 관람 문의</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <img class="hero-img" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABA...[B64]..." alt="뮤지컬 장수탕 선녀님 - 거품 속을 나는 환상 장면">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <span class="hero-badge">가족뮤지컬 연간 판매랭킹 1위</span>
+    <h1 class="hero-title">동네 낡은 목욕탕에서 만나는<br><em>신비로운 판타지</em></h1>
+    <p class="hero-sub">시원한 냉탕에서 펼치는 짜릿한 모험! 나만의 비밀친구, 장수탕 선녀 할머니는 오늘도 목욕합니다!</p>
+    <div class="hero-tags"><span class="hero-tag">백희나 원작</span><span class="hero-tag">러닝타임 60분</span><span class="hero-tag">만 12개월 이상</span><span class="hero-tag">서울어린이대공원 아트센터</span></div>
+  </div>
+</div>
+
+<section class="sec">
+  <p class="sec-label">About</p>
+  <h2 class="sec-title">아동·가족뮤지컬상 수상작<br>백희나 그림책 원작 뮤지컬</h2>
+  <p class="sec-desc">"겁먹지 마라, 얘야. 나는 저기 산속에 사는 선녀란다." 우리 동네에는 오래된 목욕탕이 있다. 큰길에 새로 생긴 스파랜드에는 게임방도 있고 얼음방도 있다는데, 엄마는 오늘도 '장수탕'이다. 그런데... 냉탕에 이상한 할머니가 나타났다! 아주아주 오래된 목욕탕에서 펼쳐지는 선녀 할머니와 덕지의 가슴 따뜻하고 웃음 가득한 판타지!
+
+원작자 백희나는 뮤지컬 &lt;알사탕&gt;에 이은 가족뮤지컬 시리즈로, 2020년 아동문학계 노벨상이라 불리는 '아스트리드 린드그렌상'을 수상했으며, 2019 일본 그림책대상 번역그림책상·독자상 동시 수상, 2013 한국출판문화상 등 국내외 유수의 상을 받은 작가입니다.</p>
+  <div class="pills"><span class="pill">🏆 2019~2023 어린이·가족 공연 5년 연속 판매랭킹 1위</span><span class="pill">🏅 제8회 한국뮤지컬어워즈 '아동·가족뮤지컬상'</span><span class="pill">📖 백희나 원작 '아스트리드 린드그렌상' 수상</span></div>
+</section>
+<div class="divider"></div>
+
+<section class="sec">
+  <p class="sec-label">Gallery</p>
+  <h2 class="sec-title">공연 & 공연장 사진</h2>
+  <p class="sec-desc">공연 무대와, 목욕탕 콘셉트로 꾸며진 로비 포토존을 소개합니다.</p>
+  <div class="zone-grid">
+      <div class="zone-card"><div class="zone-img"><img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABA...[B64]..." alt="냉탕에서 선녀님과 덕지" loading="lazy"></div><div class="zone-body"><span class="zone-name">냉탕에서 만난 선녀님과 덕지</span></div></div>
+      <div class="zone-card"><div class="zone-img"><img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABA...[B64]..." alt="장수탕 빨래줄 군무" loading="lazy"></div><div class="zone-body"><span class="zone-name">장수탕 빨래줄 군무 장면</span></div></div>
+      <div class="zone-card"><div class="zone-img"><img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABA...[B64]..." alt="거품 속을 나는 환상 장면" loading="lazy"></div><div class="zone-body"><span class="zone-name">거품 속을 나는 환상적인 비행 장면</span></div></div>
+      <div class="zone-card"><div class="zone-img"><img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABA...[B64]..." alt="선녀와 나무꾼 회상 장면" loading="lazy"></div><div class="zone-body"><span class="zone-name">선녀와 나무꾼 이야기 속 장면</span></div></div>
+      <div class="zone-card"><div class="zone-img"><img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABA...[B64]..." alt="엄마와 덕지의 잠자리 동화" loading="lazy"></div><div class="zone-body"><span class="zone-name">엄마와 덕지의 잠자리 동화 장면</span></div></div>
+      <div class="zone-card"><div class="zone-img"><img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABA...[B64]..." alt="장수탕 로비 포토존" loading="lazy"></div><div class="zone-body"><span class="zone-name">장수탕 로비 포토존</span></div></div>
+    </div>
+</section>
+<div class="divider"></div>
+
+<section class="sec">
+  <p class="sec-label">Characters</p>
+  <h2 class="sec-title">등장인물</h2>
+  <div class="cast-grid"><div class="cast-card"><div class="cast-name">덕지</div><div class="cast-desc">배려심 많은 6살 여자아이. '장수탕'에서 이상한 할머니를 만난다.</div></div><div class="cast-card"><div class="cast-name">선녀님</div><div class="cast-desc">아주 아주 오래전 날개옷을 잃어버려 '장수탕'에서 수백 년째 목욕 중인 선녀. 냉탕에서 노는 법을 놀랄 만큼 많이 알고 있다.</div></div><div class="cast-card"><div class="cast-name">엄마</div><div class="cast-desc">덕지의 짠순이 엄마. 최신 설비를 갖춘 스파랜드 대신 오래된 '장수탕'을 고집한다.</div></div><div class="cast-card"><div class="cast-name">장수탕 사장님</div><div class="cast-desc">불가마도, 얼음방도, 게임방도 없는 '장수탕'을 운영한다.</div></div><div class="cast-card"><div class="cast-name">때밀이 아줌마</div><div class="cast-desc">검은 비키니 차림에 이태리타월을 든 무서운 아줌마.</div></div><div class="cast-card"><div class="cast-name">동네 아줌마들</div><div class="cast-desc">목욕 매니아. '장수탕'의 단골손님들.</div></div></div>
+</section>
+
+<div class="price-wrap">
+  <div class="price-inner">
+    <p class="sec-label" style="color:rgba(255,255,255,.45)">Show Info</p>
+    <p class="price-title">공연 정보</p>
+    <p class="price-sub2">※ 단체관람 예약은 (주)더블에이치컴퍼니로 문의해주세요</p>
+    <table class="pt">
+      <tr><td>단체관람 특별가<br><span style="font-size:11px;color:rgba(255,255,255,.45)">만 12개월 이상, 60분 · 인터미션 없음 · 정상가 66,000원</span></td><td class="cy" style="text-align:right">22,000원</td></tr>
+    </table>
+    <div class="notice-box">
+      <p class="notice-title">이용 안내</p>
+      <p class="notice-item">공연기간 2026.3.14(토)~2026.8.30(일)</p>
+      <p class="notice-item">평일 11:00 / 주말 및 공휴일 11:00, 14:00</p>
+      <p class="notice-item">12~23개월 유아는 좌석 미점유 시 무료입장(생년월일 확인 가능 증빙자료 지참 필수)</p>
+      <p class="notice-item">객석규모 455석(휠체어석 공간 있음) · 대형버스는 서울어린이대공원 후문 주차장 이용(분당 900원/10분)</p>
+      <p class="notice-item">단체관람 문의는 전화로 미리 예약 주시면 확정된 안내를 드립니다</p>
+    </div>
+  </div>
+</div>
+
+<section class="sec">
+  <p class="sec-label">Detail</p>
+  <h2 class="sec-title">공연 상세 정보</h2>
+  <table class="info-table">
+      <tbody>
+        <tr><th>공연기간</th><td>2026.3.14(토) ~ 2026.8.30(일)</td></tr>
+        <tr><th>공연장소</th><td>서울어린이대공원 아트센터 (서울시 광진구 능동로 216)</td></tr>
+        <tr><th>공연시간</th><td>평일 11:00 / 주말 및 공휴일 11:00, 14:00</td></tr>
+        <tr><th>단체관람 특별가</th><td>22,000원 <span class="sub">(정상가 66,000원)</span></td></tr>
+        <tr><th>관람연령</th><td>만 12개월 이상 관람 가능<span class="sub">12~23개월 유아는 좌석 미점유 시 무료입장 · 생년월일 확인 가능 증빙자료 지참 필수</span></td></tr>
+        <tr><th>러닝타임</th><td>60분 (인터미션 없음)</td></tr>
+        <tr><th>객석규모</th><td>455석 (휠체어석 공간 있음)</td></tr>
+        <tr><th>대형버스 주차</th><td>서울어린이대공원 후문 주차장 (분당 900원 / 10분)</td></tr>
+        <tr><th>원작</th><td>백희나 원작 그림책 &lt;장수탕 선녀님&gt;</td></tr>
+        <tr><th>제작진</th><td>프로듀서 김영인 · 대본 정준 · 음악 조한나 · 연출 홍승희</td></tr>
+        <tr><th>주최·제작</th><td>할리퀸크리에이션즈(주)</td></tr>
+      </tbody>
+    </table>
+</section>
+
+<div class="info-wrap">
+  <div class="info-inner">
+    <p class="sec-label" style="margin-bottom:18px">Basic Info</p>
+    <div class="info-grid">
+      <div class="info-item"><span class="info-icon">📍</span><span class="info-lbl">위치</span><span class="info-val">서울시 광진구 능동로 216<br>서울어린이대공원 아트센터</span></div>
+      <div class="info-item"><span class="info-icon">📞</span><span class="info-lbl">단체 예약문의</span><span class="info-val">(주)더블에이치컴퍼니<br>031-339-2999</span></div>
+      <div class="info-item"><span class="info-icon">🕙</span><span class="info-lbl">객석규모</span><span class="info-val">455석 (휠체어석 공간 있음)</span></div>
+      <div class="info-item"><span class="info-icon">🚌</span><span class="info-lbl">대형버스 주차</span><span class="info-val">서울어린이대공원 후문 주차장<br>분당 900원 / 10분</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="cta-wrap" id="contact">
+  <div class="cta-inner">
+    <h2 class="cta-title">지금 바로<br>단체 관람 문의하세요</h2>
+    <p class="cta-desc">더블에이치컴퍼니를 통해 예약하시면 단체 맞춤 일정 조율, 버스 섭외, 식사 연계까지 원스톱으로 도와드립니다.</p>
+
+    <div style="background:#fff;border-radius:16px;padding:26px 22px;box-shadow:0 10px 34px rgba(0,0,0,.18);text-align:left">
+      <div style="display:flex;border-radius:10px;overflow:hidden;margin-bottom:20px;border:1px solid #e2e9f2">
+        <button type="button" id="rtab-group" onclick="rvSwitchTab('group')" style="flex:1;padding:13px 8px;border:none;cursor:pointer;font-weight:800;font-size:13.5px;background:#152238;color:#fff">단체 예약 (10명 이상)</button>
+        <button type="button" id="rtab-indiv" onclick="rvSwitchTab('indiv')" style="flex:1;padding:13px 8px;border:none;cursor:pointer;font-weight:800;font-size:13.5px;background:#fff;color:#152238">개인 구매</button>
+      </div>
+
+      <div id="rpanel-group">
+        <label style="display:block;font-size:12.5px;font-weight:700;color:#16202e;margin-bottom:8px">예상 인원</label>
+        <input type="number" id="rv-group-count" min="1" placeholder="예: 30" value="10" style="width:100%;padding:12px;border:1px solid #e2e9f2;border-radius:8px;font-size:14.5px;margin-bottom:8px;box-sizing:border-box">
+        <div id="rv-group-err" style="display:none;font-size:12px;color:#dc2626;margin-bottom:10px">단체 예약은 최소 10명부터 가능합니다. 10명 미만이시면 개인 구매 탭을 이용해주세요.</div>
+        <button type="button" onclick="rvGoGroupReserve()" style="display:block;width:100%;padding:13px;border:none;border-radius:10px;background:#152238;color:#fff;font-weight:800;font-size:14.5px;cursor:pointer">단체 예약 문의하기 →</button>
+        <p style="font-size:12px;color:#666;line-height:1.7;margin-top:10px">문의 접수 후 담당자가 시즌별 요금과 일정을 맞춤 안내해드립니다.</p>
+        <div class="hhgd-mount" id="group-deposit"></div>
+      </div>
+
+      <div id="rpanel-indiv" style="display:none">
+        <div class="hhbw-mount" id="buy"></div>
+      </div>
+    </div>
+
+    <div class="cta-btns" style="margin-top:20px">
+      <a href="tel:031-339-2999" class="btn-p">📞 031-339-2999</a>
+      <a href="https://pf.kakao.com/_CixkJX/chat" target="_blank" class="btn-s">💬 카카오톡 문의</a>
+    </div>
+
+    <script>
+      var RV_VENUE_NAME = '뮤지컬 장수탕 선녀님';
+      function rvSwitchTab(tab) {
+        var g = document.getElementById('rtab-group'), i = document.getElementById('rtab-indiv');
+        g.style.background = tab === 'group' ? '#152238' : '#fff'; g.style.color = tab === 'group' ? '#fff' : '#152238';
+        i.style.background = tab === 'indiv' ? '#152238' : '#fff'; i.style.color = tab === 'indiv' ? '#fff' : '#152238';
+        document.getElementById('rpanel-group').style.display = tab === 'group' ? '' : 'none';
+        document.getElementById('rpanel-indiv').style.display = tab === 'indiv' ? '' : 'none';
+      }
+      function rvGoGroupReserve() {
+        var countInput = document.getElementById('rv-group-count');
+        var errEl = document.getElementById('rv-group-err');
+        var count = parseInt(countInput.value, 10);
+        if (!count || count < 10) { errEl.style.display = 'block'; countInput.focus(); return; }
+        errEl.style.display = 'none';
+        location.href = 'reserve.html?venue=' + encodeURIComponent(RV_VENUE_NAME) + '&count=' + count;
+      }
+      if (location.hash === '#buy') rvSwitchTab('indiv');
+    </script>
+  </div>
+</div>
+
+<footer class="footer">
+  <p>
+    뮤지컬 장수탕 선녀님 단체 관람 예약 대행 : <strong>(주)더블에이치컴퍼니</strong><br>
+    <a href="products.html">← 상품 목록으로 돌아가기</a><br>
+    <span style="color:rgba(255,255,255,.18);font-size:11px">© 2026 HHCOMPANY. All rights reserved.</span>
+  </p>
+</footer>
+<script>
+  HHBuyWidget.init({ mount: '#buy', productId: 'p20', venueName: '뮤지컬 장수탕 선녀님' });
+  HHGroupDepositWidget.init({ mount: '#group-deposit', productId: 'p20_dep', venueName: '뮤지컬 장수탕 선녀님', countInputId: 'rv-group-count' });
+</script>
+
+</body>
+</html>
