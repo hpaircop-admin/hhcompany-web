@@ -562,7 +562,10 @@ textarea.rsv-input{resize:vertical;min-height:70px}
       }, ...opts,
     });
     if (!res.ok) { const err = await res.text(); throw new Error(`오류 ${res.status}: ${err}`); }
-    return res.status === 204 ? null : res.json();
+    // 2026-09-08 보안 강화 이후: 글쓰기(INSERT)는 응답 본문 없이 오는 경우가 있어서
+    // (return=minimal), 상태코드로만 판단하지 않고 실제 본문이 비어있는지로 판단한다.
+    const text = await res.text();
+    return text ? JSON.parse(text) : null;
   }
 
   // ── 대표메일 알림 (EmailJS) — 예약게시판(reserve.html)과 같은 설정값 재사용 ──
@@ -605,7 +608,10 @@ textarea.rsv-input{resize:vertical;min-height:70px}
       status: 'new',
     };
     try {
-      await sbFetch('web_inquiries', { method:'POST', body: JSON.stringify(rec) });
+      // 2026-09-08 보안 강화: 컬럼 단위 권한이라 등록 후 결과를 되돌려받으려면(select)
+      // note/password 등에도 조회 권한이 있어야 하는데, 그건 일부러 안 열어뒀음.
+      // 그래서 등록만 하고 결과는 안 돌려받는 return=minimal로 호출한다.
+      await sbFetch('web_inquiries', { method:'POST', prefer:'return=minimal', body: JSON.stringify(rec) });
       notifyAdminEmail({
         subject: '[오션월드] 새 날짜 예약 신청: ' + gname,
         group_name: gname, phone, venue_name: '오션월드',
