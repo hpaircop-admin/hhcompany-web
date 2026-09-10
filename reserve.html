@@ -12,13 +12,13 @@
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>예약게시판 | (주)더블에이치컴퍼니</title>
-<meta name="description" content="(주)더블에이치컴퍼니와 함께하는 학교·어린이집·복지관·체육관 단체 예약. 최저가로 안전하고 알차게 준비해드립니다.">
+<title>예약문의 | (주)더블에이치컴퍼니</title>
+<meta name="description" content="(주)더블에이치컴퍼니와 함께하는 학교·어린이집·복지관·체육관 단체 예약 및 제휴·일반 문의를 한 곳에서. 최저가로 안전하고 알차게 준비해드립니다.">
 <link rel="canonical" href="https://hhcompany.co.kr/reserve.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="(주)더블에이치컴퍼니">
-<meta property="og:title" content="예약게시판 | (주)더블에이치컴퍼니">
-<meta property="og:description" content="(주)더블에이치컴퍼니와 함께하는 학교·어린이집·복지관·체육관 단체 예약. 최저가로 안전하고 알차게 준비해드립니다.">
+<meta property="og:title" content="예약문의 | (주)더블에이치컴퍼니">
+<meta property="og:description" content="(주)더블에이치컴퍼니와 함께하는 학교·어린이집·복지관·체육관 단체 예약 및 제휴·일반 문의를 한 곳에서. 최저가로 안전하고 알차게 준비해드립니다.">
 <meta property="og:url" content="https://hhcompany.co.kr/reserve.html">
 <meta property="og:image" content="https://hhcompany.co.kr/icons/icon-512.png">
 <meta property="og:locale" content="ko_KR">
@@ -211,6 +211,13 @@
   .board-toolbar { display: flex; justify-content: flex-end; padding: 16px 20px; border-bottom: 1px solid var(--line); }
   .board-write-btn { background: var(--navy); color: #fff; border: none; padding: 9px 18px; border-radius: 4px; font-size: 13px; font-weight: 700; }
   .board-write-btn:hover { background: var(--blue); }
+  .board-tabs { display: flex; border-bottom: 1px solid var(--line); }
+  .board-tab { flex: 1; padding: 16px 20px; text-align: center; font-size: 14px; font-weight: 700; color: var(--gray); background: var(--cream); border: none; border-bottom: 3px solid transparent; transition: color .2s, background .2s, border-color .2s; }
+  .board-tab:hover { color: var(--ink); }
+  .board-tab.active { color: var(--blue); background: #fff; border-bottom-color: var(--blue); }
+  .board-tab-panel { display: none; }
+  .board-tab-panel.active { display: block; }
+  @media (max-width: 900px) { .board-tab { padding: 14px 8px; font-size: 12.5px; } }
   table.board-table { width: 100%; border-collapse: collapse; }
   table.board-table th { text-align: left; font-size: 11px; color: var(--gray); font-weight: 700; letter-spacing: .04em; text-transform: uppercase; padding: 12px 20px; border-bottom: 1px solid var(--line); background: var(--cream); }
   table.board-table td { padding: 14px 20px; font-size: 13px; color: var(--ink); border-bottom: 1px solid var(--line); }
@@ -347,8 +354,7 @@
       <li><a href="products.html">상품소개</a></li>
       <li><a href="cases.html">이용사례</a></li>
       <li><a href="press.html">언론보도</a></li>
-      <li><a href="board.html">문의게시판</a></li>
-      <li><a href="reserve.html" class="active">예약게시판</a></li>
+      <li><a href="reserve.html" class="active">예약문의</a></li>
     </ul>
     <button class="burger" aria-label="메뉴">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0e2a47" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
@@ -358,80 +364,109 @@
 
 <section class="page-hero">
   <div class="wrap">
-    <div class="sec-tag">Reservation Board</div>
-    <h1>예약게시판</h1>
-    <p>단체 예약을 신청해주시면 담당자가 확인 후 영업일 기준 1일 이내로 연락드립니다.</p>
+    <div class="sec-tag">Reservation &amp; Inquiry</div>
+    <h1>예약문의</h1>
+    <p>단체 예약과 제휴·일반 문의를 한 곳에서 남겨주세요. 담당자가 확인 후 빠르게 연락드립니다.</p>
   </div>
 </section>
 
 <section class="board">
   <div class="wrap">
     <div class="board-panel">
-      <div class="board-toolbar">
-        <button class="board-write-btn" onclick="toggleReserveForm()">예약 문의 작성</button>
+      <div class="board-tabs">
+        <button type="button" class="board-tab active" id="tab-btn-group" onclick="switchBoardTab('group')">단체 예약</button>
+        <button type="button" class="board-tab" id="tab-btn-general" onclick="switchBoardTab('general')">일반 문의</button>
       </div>
-      <div class="board-form" id="reserve-form">
-        <div class="bf-grid">
-          <div><label class="bf-label">단체명 *</label><input class="bf-input" type="text" id="rb-title" placeholder="예) 더블에이치컴퍼니"></div>
-          <div><label class="bf-label">연락처 *</label><input class="bf-input" type="tel" id="rb-phone" placeholder="010-0000-0000"></div>
-          <div><label class="bf-label">희망 업장</label>
-            <select class="bf-input" id="rb-venue">
-              <option value="">선택</option>
-              <option>강화레포츠파크</option>
-              <option>난타(NANTA)</option>
-              <option>노원 JUMP</option>
-              <option>놀자숲</option>
-              <option>두리랜드</option>
-              <option>뮤지엄헤이</option>
-              <option>뮤지컬 AI세계에서 살아남기</option>
-              <option>뮤지컬 알사탕</option>
-              <option>뮤지컬 장수탕 선녀님</option>
-              <option>서울랜드</option>
-              <option>시흥 웨이브파크</option>
-              <option>신흥레져타운</option>
-              <option>아일랜드캐슬</option>
-              <option>아주아주 배고픈 애벌레 쇼</option>
-              <option>아쿠아플라넷 광교</option>
-              <option>아쿠아플라넷 일산</option>
-              <option>오션월드</option>
-              <option>웅진플레이도시</option>
-              <option>원마운트</option>
-              <option>캐리비안베이</option>
-              <option>키자니아 서울</option>
-              <option>페인터즈</option>
-              <option>한국민속촌</option>
-              <option>기타</option>
-            </select>
-          </div>
-          <div><label class="bf-label">행사 희망일</label><input class="bf-input" type="date" id="rb-date"></div>
-          <div><label class="bf-label">단체 구분</label>
-            <select class="bf-input" id="rb-gtype">
-              <option value="">선택</option>
-              <option>어린이집·유치원</option><option>학교·학원</option><option>복지관·지역아동센터</option>
-              <option>체육관·스포츠클럽</option><option>종교단체</option><option>군부대</option><option>기업·단체</option><option>기타</option>
-            </select>
-          </div>
-          <div><label class="bf-label">예상 인원</label><input class="bf-input" type="number" id="rb-count" placeholder="예) 30" min="0"></div>
-          <div><label class="bf-label">비밀번호 *</label><input class="bf-input" type="password" id="rb-pw" placeholder="문의 확인용 비밀번호"></div>
-          <div class="full"><label class="bf-label">문의 내용</label><textarea class="bf-input" id="rb-note" placeholder="식사, 버스 등 추가 요청사항을 적어주세요"></textarea></div>
+
+      <div class="board-tab-panel active" id="panel-group-board">
+        <div class="board-toolbar">
+          <button class="board-write-btn" onclick="toggleReserveForm()">예약 문의 작성</button>
         </div>
-        <button class="bf-submit" onclick="submitReservePost()">문의하기</button>
-        <div class="bf-hint">신청 즉시 확정되는 것은 아니며, 담당자 확인 후 연락드립니다. 등록한 비밀번호로 답변을 확인할 수 있습니다.</div>
-      </div>
-      <div class="board-detail" id="reserve-detail">
-        <div class="bd-title" id="rd-title"></div>
-        <div class="bd-meta" id="rd-meta"></div>
-        <div class="bd-content" id="rd-content"></div>
-        <div id="rd-reply-wrap" style="display:none">
-          <div class="bd-reply-label">담당자 답변</div>
-          <div class="bd-reply" id="rd-reply"></div>
+        <div class="board-form" id="reserve-form">
+          <div class="bf-grid">
+            <div><label class="bf-label">단체명 *</label><input class="bf-input" type="text" id="rb-title" placeholder="예) 더블에이치컴퍼니"></div>
+            <div><label class="bf-label">연락처 *</label><input class="bf-input" type="tel" id="rb-phone" placeholder="010-0000-0000"></div>
+            <div><label class="bf-label">희망 업장</label>
+              <select class="bf-input" id="rb-venue">
+                <option value="">선택</option>
+                <option>강화레포츠파크</option>
+                <option>난타(NANTA)</option>
+                <option>노원 JUMP</option>
+                <option>놀자숲</option>
+                <option>두리랜드</option>
+                <option>뮤지엄헤이</option>
+                <option>뮤지컬 AI세계에서 살아남기</option>
+                <option>뮤지컬 알사탕</option>
+                <option>뮤지컬 장수탕 선녀님</option>
+                <option>서울랜드</option>
+                <option>시흥 웨이브파크</option>
+                <option>신흥레져타운</option>
+                <option>아일랜드캐슬</option>
+                <option>아주아주 배고픈 애벌레 쇼</option>
+                <option>아쿠아플라넷 광교</option>
+                <option>아쿠아플라넷 일산</option>
+                <option>오션월드</option>
+                <option>웅진플레이도시</option>
+                <option>원마운트</option>
+                <option>캐리비안베이</option>
+                <option>키자니아 서울</option>
+                <option>페인터즈</option>
+                <option>한국민속촌</option>
+                <option>기타</option>
+              </select>
+            </div>
+            <div><label class="bf-label">행사 희망일</label><input class="bf-input" type="date" id="rb-date"></div>
+            <div><label class="bf-label">단체 구분</label>
+              <select class="bf-input" id="rb-gtype">
+                <option value="">선택</option>
+                <option>어린이집·유치원</option><option>학교·학원</option><option>복지관·지역아동센터</option>
+                <option>체육관·스포츠클럽</option><option>종교단체</option><option>군부대</option><option>기업·단체</option><option>기타</option>
+              </select>
+            </div>
+            <div><label class="bf-label">예상 인원</label><input class="bf-input" type="number" id="rb-count" placeholder="예) 30" min="0"></div>
+            <div><label class="bf-label">비밀번호 *</label><input class="bf-input" type="password" id="rb-pw" placeholder="문의 확인용 비밀번호"></div>
+            <div class="full"><label class="bf-label">문의 내용</label><textarea class="bf-input" id="rb-note" placeholder="식사, 버스 등 추가 요청사항을 적어주세요"></textarea></div>
+          </div>
+          <button class="bf-submit" onclick="submitReservePost()">문의하기</button>
+          <div class="bf-hint">신청 즉시 확정되는 것은 아니며, 담당자 확인 후 연락드립니다. 등록한 비밀번호로 답변을 확인할 수 있습니다.</div>
         </div>
-        <a class="bd-close" onclick="closeReserveDetail()">← 목록으로</a>
+        <div class="board-detail" id="reserve-detail">
+          <div class="bd-title" id="rd-title"></div>
+          <div class="bd-meta" id="rd-meta"></div>
+          <div class="bd-content" id="rd-content"></div>
+          <div id="rd-reply-wrap" style="display:none">
+            <div class="bd-reply-label">담당자 답변</div>
+            <div class="bd-reply" id="rd-reply"></div>
+          </div>
+          <a class="bd-close" onclick="closeReserveDetail()">← 목록으로</a>
+        </div>
+        <table class="board-table" id="reserve-table">
+          <thead><tr><th style="width:36%">제목</th><th>업장</th><th>희망일</th><th>작성일</th><th>상태</th></tr></thead>
+          <tbody id="reserve-table-body"><tr><td colspan="5" class="board-empty">불러오는 중...</td></tr></tbody>
+        </table>
       </div>
-      <table class="board-table" id="reserve-table">
-        <thead><tr><th style="width:36%">제목</th><th>업장</th><th>희망일</th><th>작성일</th><th>상태</th></tr></thead>
-        <tbody id="reserve-table-body"><tr><td colspan="5" class="board-empty">불러오는 중...</td></tr></tbody>
-      </table>
+
+      <div class="board-tab-panel" id="panel-general-board">
+        <div class="board-toolbar">
+          <button class="board-write-btn" onclick="toggleInquiryForm()">글쓰기</button>
+        </div>
+        <div class="board-form" id="inquiry-form">
+          <div class="bf-grid">
+            <div class="full"><label class="bf-label">제목 *</label><input class="bf-input" type="text" id="iq-title" placeholder="문의 제목을 입력해주세요"></div>
+            <div><label class="bf-label">이름 *</label><input class="bf-input" type="text" id="iq-name" placeholder="이름 또는 업체명"></div>
+            <div><label class="bf-label">연락처</label><input class="bf-input" type="text" id="iq-phone" placeholder="010-0000-0000"></div>
+            <div><label class="bf-label">비밀번호 (4자리) *</label><input class="bf-input" type="password" maxlength="4" id="iq-password" placeholder="본문 확인용 숫자 4자리"></div>
+            <div class="full"><label class="bf-label">내용 *</label><textarea class="bf-input" id="iq-content" placeholder="문의 내용을 입력해주세요"></textarea></div>
+          </div>
+          <button class="bf-submit" onclick="submitInquiryPost()">등록하기</button>
+          <div class="bf-hint">비밀번호는 본인 확인용으로만 사용되며, 목록에는 제목·작성자·날짜만 공개됩니다.</div>
+        </div>
+        <div class="board-detail" id="inquiry-detail"></div>
+        <table class="board-table">
+          <thead><tr><th style="width:52%">제목</th><th>작성자</th><th>작성일</th><th>상태</th></tr></thead>
+          <tbody id="inquiry-table-body"><tr><td colspan="4" class="board-empty">불러오는 중...</td></tr></tbody>
+        </table>
+      </div>
     </div>
   </div>
 </section>
@@ -469,8 +504,7 @@
       </div>
       <div style="display:flex;flex-direction:column;gap:11px">
         <span style="font:10px/1 ui-monospace,monospace;font-weight:700;letter-spacing:0.2em;color:rgba(255,255,255,0.8)">SUPPORT</span>
-        <a href="board.html" style="font-size:13px;color:rgba(255,255,255,0.72)">문의게시판</a>
-        <a href="reserve.html" style="font-size:13px;color:rgba(255,255,255,0.72)">예약게시판</a>
+        <a href="reserve.html" style="font-size:13px;color:rgba(255,255,255,0.72)">예약문의</a>
         <a href="https://pf.kakao.com/_CixkJX/chat" target="_blank" rel="noopener" style="font-size:13px;color:#FEE500;font-weight:700">카카오톡 상담</a>
         <a href="https://hhcompany-admin.pages.dev" target="_blank" rel="noopener" style="font-size:13px;color:rgba(255,255,255,0.72)">관리자 로그인</a>
       </div>
@@ -513,10 +547,11 @@
 
   // ── 대표메일 알림 (EmailJS) ──
   // https://www.emailjs.com 무료 가입 후 아래 3개 값만 채워 넣으면 새 글 등록 시 대표메일로 알림이 발송됩니다.
-  // 설정 방법은 EMAIL_ALERT_SETUP.md 파일을 참고하세요. (board.html과 같은 값을 넣으면 됩니다)
+  // 설정 방법은 EMAIL_ALERT_SETUP.md 파일을 참고하세요.
   const EMAILJS_PUBLIC_KEY = 'x4v1t-GUbsUgOBqpF';
   const EMAILJS_SERVICE_ID = 'service_edpe1je';
   const EMAILJS_TEMPLATE_RESERVE = 'template_ul8bspr';
+  const EMAILJS_TEMPLATE_INQUIRY = 'template_4fc8q8a';
   const ADMIN_EMAIL = 'hpaircop@gmail.com';
   if (typeof emailjs !== 'undefined' && !EMAILJS_PUBLIC_KEY.startsWith('YOUR_')) {
     emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
@@ -526,6 +561,21 @@
     if (EMAILJS_PUBLIC_KEY.startsWith('YOUR_')) return; // 설정 전에는 조용히 건너뜀
     emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_RESERVE, { to_email: ADMIN_EMAIL, ...params })
       .catch(e => console.warn('메일 알림 발송 실패(신청은 정상 등록됨):', e));
+  }
+  function notifyAdminEmailInquiry(params) {
+    if (typeof emailjs === 'undefined') return;
+    if (EMAILJS_PUBLIC_KEY.startsWith('YOUR_')) return; // 설정 전에는 조용히 건너뜀
+    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_INQUIRY, { to_email: ADMIN_EMAIL, ...params })
+      .catch(e => console.warn('메일 알림 발송 실패(게시글은 정상 등록됨):', e));
+  }
+
+  // ── 탭 전환 (단체 예약 / 일반 문의) ──
+  function switchBoardTab(tab) {
+    const isGroup = tab === 'group';
+    document.getElementById('tab-btn-group').classList.toggle('active', isGroup);
+    document.getElementById('tab-btn-general').classList.toggle('active', !isGroup);
+    document.getElementById('panel-group-board').classList.toggle('active', isGroup);
+    document.getElementById('panel-general-board').classList.toggle('active', !isGroup);
   }
 
   function toggleReserveForm() {
@@ -557,7 +607,7 @@
       // 그래서 등록만 하고 결과는 안 돌려받는 return=minimal로 호출한다.
       await sbFetch('web_inquiries', { method:'POST', prefer:'return=minimal', body: JSON.stringify(rec) });
       notifyAdminEmail({
-        subject: '[예약게시판] 새 예약 문의: ' + gname,
+        subject: '[예약문의] 새 단체 예약 문의: ' + gname,
         group_name: gname, phone, venue_name: rec.venue_name || '미지정',
         event_date: rec.event_date || '미정', note: rec.note || '(내용 없음)',
       });
@@ -637,7 +687,88 @@
     document.getElementById('reserve-table').style.display = '';
   }
 
+  // ── 일반 문의 (구 문의게시판, board_posts 테이블) ──
+  function toggleInquiryForm() {
+    document.getElementById('inquiry-form').classList.toggle('open');
+  }
+  async function submitInquiryPost() {
+    const title = document.getElementById('iq-title').value.trim();
+    const name = document.getElementById('iq-name').value.trim();
+    const phone = document.getElementById('iq-phone').value.trim();
+    const password = document.getElementById('iq-password').value.trim();
+    const content = document.getElementById('iq-content').value.trim();
+    if (!title) { showToast('제목을 입력해주세요'); return; }
+    if (!name) { showToast('이름을 입력해주세요'); return; }
+    if (!/^\d{4}$/.test(password)) { showToast('비밀번호는 숫자 4자리로 입력해주세요'); return; }
+    if (!content) { showToast('내용을 입력해주세요'); return; }
+    try {
+      // 2026-09-08 보안 강화: 컬럼 단위 권한이라 등록 후 결과를 되돌려받으려면(select)
+      // content/password 등에도 조회 권한이 있어야 하는데, 그건 일부러 안 열어뒀음.
+      // 그래서 등록만 하고 결과는 안 돌려받는 return=minimal로 호출한다.
+      await sbFetch('board_posts', { method:'POST', prefer:'return=minimal', body: JSON.stringify({ title, name, phone, password, content, status:'pending' }) });
+      notifyAdminEmailInquiry({ subject: '[일반 문의] 새 문의: ' + title, title, name, phone: phone || '연락처 없음', content });
+      showToast('문의가 등록되었습니다');
+      ['iq-title','iq-name','iq-phone','iq-password','iq-content'].forEach(id=>document.getElementById(id).value='');
+      document.getElementById('inquiry-form').classList.remove('open');
+      loadInquiryBoard();
+    } catch(e) {
+      showToast('등록 실패: ' + e.message);
+    }
+  }
+  function maskInquiryText(name) {
+    if (!name) return '익명';
+    const s = name.trim();
+    if (!s) return '익명';
+    return s[0] + 'OO';
+  }
+  async function loadInquiryBoard() {
+    const body = document.getElementById('inquiry-table-body');
+    try {
+      const rows = await sbFetch('board_posts?select=id,title,name,status,created_at&order=created_at.desc&limit=50');
+      if (!rows.length) { body.innerHTML = '<tr><td colspan="4" class="board-empty">등록된 문의가 없습니다.</td></tr>'; return; }
+      body.innerHTML = rows.map(r => `
+        <tr onclick="openInquiryDetail('${r.id}')">
+          <td>${maskInquiryText(r.title)}</td>
+          <td>${maskInquiryText(r.name)}</td>
+          <td>${new Date(r.created_at).toLocaleDateString('ko-KR')}</td>
+          <td><span class="badge-status ${r.status==='answered'?'badge-answered':'badge-pending'}">${r.status==='answered'?'답변완료':'답변대기'}</span></td>
+        </tr>`).join('');
+    } catch(e) {
+      body.innerHTML = '<tr><td colspan="4" class="board-empty">목록을 불러오지 못했습니다.</td></tr>';
+    }
+  }
+  async function openInquiryDetail(id) {
+    const pw = prompt('작성 시 설정한 비밀번호 4자리를 입력해주세요');
+    if (pw === null) return;
+    try {
+      // 2026-09-08 보안 강화: board_posts는 이제 공개 키로 비밀번호·내용을
+      // 통째로 읽어올 수 없다. 대신 public-lookup 서버함수가 비밀번호를
+      // 서버에서 대조해서, 맞을 때만 이 글 1건의 내용만 돌려준다
+      // (ticket.html의 pin-lookup과 동일한 방식).
+      const res = await fetch(`${SB_URL}/functions/v1/public-lookup`, {
+        method: 'POST',
+        headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ table: 'board_posts', id, password: pw.trim() }),
+      });
+      const data = await res.json();
+      const post = data && data.item;
+      if (!res.ok || !post) { showToast((data && data.error) || '비밀번호가 일치하지 않습니다'); return; }
+      const det = document.getElementById('inquiry-detail');
+      det.innerHTML = `
+        <div class="bd-title">${post.title}</div>
+        <div class="bd-meta">${post.name} · ${new Date(post.created_at).toLocaleString('ko-KR')}</div>
+        <div class="bd-content">${post.content}</div>
+        ${post.admin_reply ? `<div class="bd-reply"><div class="bd-reply-label">담당자 답변</div>${post.admin_reply}</div>` : ''}
+        <a class="bd-close" onclick="document.getElementById('inquiry-detail').classList.remove('open')">닫기 ×</a>`;
+      det.classList.add('open');
+      det.scrollIntoView({behavior:'smooth', block:'center'});
+    } catch(e) {
+      showToast('조회 실패: ' + e.message);
+    }
+  }
+
   window.addEventListener('load', loadReserveBoard);
+  window.addEventListener('load', loadInquiryBoard);
 
   // 상품 상세페이지(예: islandcastle.html)에서 ?venue=업장명&count=인원 으로 넘어오면
   // 예약 문의 폼을 미리 채워서 자동으로 펼쳐줍니다.
@@ -646,6 +777,8 @@
     const venue = params.get('venue');
     const count = params.get('count');
     const write = params.get('write');
+    const tab = params.get('tab');
+    if (tab === 'general') { switchBoardTab('general'); return; }
     if (!venue && !count && !write) return;
     if (venue) document.getElementById('rb-venue').value = venue;
     if (count) document.getElementById('rb-count').value = count;
