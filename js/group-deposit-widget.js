@@ -86,6 +86,25 @@
     el[key] = handler;
   }
 
+  // "예약문의하기" 버튼(결제 버튼 옆) 클릭 시: 이 페이지에 이미 있는 기존 "단체 예약
+  // 문의하기 →" 버튼과 완전히 똑같은 동작(최소인원 검증 + reserve.html로 이동)을 하도록
+  // 함. 페이지마다 그 함수 이름이 다를 수 있어서(rvGoGroupReserve 또는 goGroupReserve)
+  // 둘 다 확인해서 있는 쪽을 그대로 호출 — 이렇게 하면 검증 로직을 여기 따로 안 만들어도
+  // 항상 기존 버튼과 동일하게 동작함. 둘 다 없는 페이지를 대비해 최소한의 자체 처리도 둠.
+  // (2026-09-10 추가)
+  function goToInquiry(state) {
+    if (typeof global.rvGoGroupReserve === 'function') { global.rvGoGroupReserve(); return; }
+    if (typeof global.goGroupReserve === 'function') { global.goGroupReserve(); return; }
+    const count = parseInt(state.countInput.value, 10);
+    const msg = state.mountEl.querySelector('#hhgd-msg');
+    if (!count || count < state.minCount) {
+      if (msg) msg.textContent = `단체 예약 문의는 최소 ${state.minCount}명부터 가능합니다. 예상 인원을 확인해주세요.`;
+      state.countInput.focus();
+      return;
+    }
+    location.href = 'reserve.html?venue=' + encodeURIComponent(state.venueName) + '&count=' + count;
+  }
+
   async function fnFetch(path, body) {
     const res = await fetch(`${FN_URL}/${path}`, {
       method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body || {}),
@@ -128,6 +147,10 @@
       .hhgd-btn{display:block;width:100%;padding:13px;border:none;border-radius:10px;background:#ff6b5c;color:#fff;font-size:14.5px;font-weight:800;cursor:pointer;font-family:inherit;text-align:center;box-sizing:border-box}
       .hhgd-btn:hover{background:#ea5647}
       .hhgd-btn:disabled{opacity:.5;cursor:not-allowed}
+      .hhgd-btn-row{display:flex;gap:8px;margin-bottom:6px}
+      .hhgd-btn-row .hhgd-btn{width:auto;flex:1;min-width:0}
+      .hhgd-btn-inquiry{background:#fff;color:#152238;border:1.5px solid #d7dee8}
+      .hhgd-btn-inquiry:hover{background:#f5f8fc;border-color:#152238}
       .hhgd-note{font-size:12px;color:#64748b;line-height:1.7;margin-top:10px}
       .hhgd-methods{display:flex;flex-direction:column;gap:8px;margin-bottom:6px}
       .hhgd-method-btn{width:100%;padding:13px;border:1.5px solid #e2e9f2;border-radius:10px;background:#fff;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer}
@@ -232,7 +255,10 @@
       <div class="hhgd-field"><label>담당자 이름</label><input type="text" id="hhgd-name" placeholder="이름을 입력해주세요"></div>
       <div class="hhgd-field"><label>연락처</label><input type="tel" id="hhgd-phone" placeholder="010-0000-0000"></div>
       <div class="hhgd-field"><label>이메일 (선택)</label><input type="email" id="hhgd-email" placeholder="안내 발송용"></div>
-      <button type="button" class="hhgd-btn" id="hhgd-submit">예약금 결제하기 →</button>
+      <div class="hhgd-btn-row">
+        <button type="button" class="hhgd-btn hhgd-btn-inquiry" id="hhgd-inquiry">예약문의하기</button>
+        <button type="button" class="hhgd-btn" id="hhgd-submit">예약금 결제하기 →</button>
+      </div>
       <div class="hhgd-msg" id="hhgd-msg"></div>
       <p class="hhgd-note">예상 인원은 위 "예상 인원" 입력창과 함께 계산돼요. 결제 후 담당자가 곧 연락드려 세부 일정을 확정 안내해드립니다. (최소 ${state.minCount}명부터 결제 가능)</p>
     `;
@@ -242,6 +268,8 @@
     const countDisplayEl = mountEl.querySelector('#hhgd-count-display');
     const tierNoteEl = mountEl.querySelector('#hhgd-tier-note');
     const submitBtn = mountEl.querySelector('#hhgd-submit');
+    const inquiryBtn = mountEl.querySelector('#hhgd-inquiry');
+    if (inquiryBtn) inquiryBtn.onclick = () => goToInquiry(state);
 
     const syncAmount = () => {
       const c = Math.max(0, parseInt(state.countInput.value, 10) || 0);
