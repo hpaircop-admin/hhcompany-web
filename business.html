@@ -28,17 +28,17 @@
   @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700;900&display=swap');
 
   :root {
-    --navy: #0e2a47;
-    --navy-deep: #081b30;
-    --blue: #1d6fe0;
-    --sky: #47b6e8;
-    --coral: #ff6b5c;
-    --amber: #ffb648;
-    --cream: #f5f8fc;
-    --ink: #16202e;
-    --gray: #64748b;
-    --line: #e2e9f2;
-    --serif: 'Noto Serif KR', Georgia, 'Times New Roman', serif;
+    --navy: #17302e;
+    --navy-deep: #0f211f;
+    --blue: #1f4f49;
+    --sky: #a9d02a;
+    --coral: #a9d02a;
+    --amber: #a9d02a;
+    --cream: #eef1ee;
+    --ink: #17302e;
+    --gray: #5d6b68;
+    --line: rgba(23,48,46,0.14);
+    --serif: 'Pretendard', -apple-system, sans-serif;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -67,7 +67,7 @@
   .logo { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
   .brand-icon { width: 38px; height: 38px; flex-shrink: 0; object-fit: contain; }
   .logo-text { display: flex; flex-direction: column; line-height: 1.2; }
-  .logo-tag { font-size: 9px; font-weight: 700; letter-spacing: 0.14em; color: #6b8e23; text-transform: uppercase; }
+  .logo-tag { font: 9px/1 ui-monospace, monospace; font-weight: 700; letter-spacing: 0.26em; color: #1f4f49; text-transform: uppercase; }
   .logo-word { font-family: var(--serif); font-size: 19px; font-weight: 700; letter-spacing: 0.01em; color: var(--navy); }
   .logo-word span { color: var(--blue); }
   .logo-kr { font-size: 10px; font-weight: 500; color: var(--gray); letter-spacing: 0.02em; margin-top: 1px; font-family: 'Pretendard', sans-serif; }
@@ -87,8 +87,8 @@
   .foot-kakao svg { width: 14px; height: 14px; }
   .nav-menu { display: flex; justify-content: center; gap: 20px; list-style: none; }
   .nav-menu a {
-    display: inline-block; font-size: 12px; font-weight: 600; color: var(--ink); white-space: nowrap;
-    letter-spacing: 0; position: relative; padding: 4px 0;
+    display: inline-block; font-size: 14.5px; font-weight: 600; color: var(--ink); white-space: nowrap;
+    letter-spacing: -0.02em; position: relative; padding: 4px 0;
   }
   .nav-menu a::after {
     content: ''; position: absolute; left: 0; bottom: 0; width: 0; height: 2px;
@@ -137,9 +137,9 @@
   .btn-primary {
     background: var(--coral); color: #fff; padding: 15px 30px; border-radius: 4px;
     font-size: 14px; font-weight: 700; transition: transform .2s, box-shadow .2s; border: none;
-    box-shadow: 0 8px 24px rgba(255,107,92,0.3); display: inline-block;
+    box-shadow: 0 8px 24px rgba(169,208,42,0.3); display: inline-block;
   }
-  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(255,107,92,0.45); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(169,208,42,0.45); }
   .btn-ghost {
     background: transparent; color: #fff; padding: 14px 30px; border-radius: 4px;
     font-size: 14px; font-weight: 600; border: 1.5px solid rgba(255,255,255,0.35);
@@ -369,7 +369,7 @@
     </ul>
     <div class="nav-cta-group"><a href="login.html?redirect=personal.html" class="member-btn" id="memberBtn">로그인</a><a href="#" class="logout-link" id="logoutLink" style="display:none">로그아웃</a></div>
     <button class="burger" aria-label="메뉴">
-      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0e2a47" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#17302e" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </button>
   </div>
 </header>
@@ -383,28 +383,28 @@
       <p class="sec-desc">오프라인 단체 트래픽과 온라인·인플루언서 판매를 결합한 융합 모델로, 더블에이치컴퍼니가 운영하는 5대 핵심 사업 영역입니다.</p>
     </div>
     <div class="biz-grid">
-      <div class="biz-card reveal" style="--accent:#1d6fe0; --accent-soft:#e7f0fd;">
+      <div class="biz-card reveal" style="--accent:#1f4f49; --accent-soft:#e7ede9;">
         <div class="biz-icon">🚌</div>
         <span class="biz-en">01 · Group Attraction</span>
         <h3>국내 단체 유치</h3>
         <p>전국 250여 개 협력 여행사 네트워크로 수학여행·체험학습 단체를 시설에 직접 연결합니다.</p>
         <a href="reserve.html" class="more">예약 문의</a>
       </div>
-      <div class="biz-card reveal" style="--accent:#ff6b5c; --accent-soft:#ffe9e7;">
+      <div class="biz-card reveal" style="--accent:#7ba020; --accent-soft:#eef4de;">
         <div class="biz-icon">✈️</div>
         <span class="biz-en">02 · Global Inbound</span>
         <h3>해외 고객 유치</h3>
         <p>홍콩·대만 등 아시아 현지 여행사와 직접 소통해 방한 프리미엄 가족·단체 여행을 유치합니다.</p>
         <a href="board.html" class="more">제휴 문의</a>
       </div>
-      <div class="biz-card reveal" style="--accent:#ffb648; --accent-soft:#fff3df;">
+      <div class="biz-card reveal" style="--accent:#a9d02a; --accent-soft:#f4f8e3;">
         <div class="biz-icon">🛍️</div>
         <span class="biz-en">03 · B2B·B2C·B2S</span>
         <h3>멀티채널 판매</h3>
         <p>온라인 플랫폼·공동구매·인플루언서 판매망을 결합해 파트너사 콘텐츠를 전방위로 판매합니다.</p>
         <a href="board.html" class="more">제휴 문의</a>
       </div>
-      <div class="biz-card reveal" style="--accent:#47b6e8; --accent-soft:#eaf7fd;">
+      <div class="biz-card reveal" style="--accent:#5d8a2e; --accent-soft:#e9f0dd;">
         <div class="biz-icon">🎪</div>
         <span class="biz-en">04 · Venue Operation</span>
         <h3>대관 사업</h3>
