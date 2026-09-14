@@ -1,10 +1,24 @@
 <!doctype html>
 <html lang="ko">
 <head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-N4BWKWXEQ4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-N4BWKWXEQ4');
+</script>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>언론보도 | (주)더블에이치컴퍼니</title>
 <meta name="description" content="(주)더블에이치컴퍼니와 파트너 시설의 다양한 활동이 언론을 통해 소개되고 있습니다." />
+<link rel="canonical" href="https://hhcompany.co.kr/press.html">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#17302e">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
 <style>
   * { box-sizing:border-box; }
@@ -45,11 +59,12 @@
 <body>
 <div class="site">
   <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:11px 52px;border-bottom:1px solid rgba(23,48,46,0.08)">
-    <span style="font:9.5px/1 ui-monospace,monospace;letter-spacing:0.28em;color:#5d6b68">THE WAY TO SUCCESS · HHCOMPANY</span>
+    <span style="font:9.5px/1 ui-monospace,monospace;font-weight:700;letter-spacing:0.28em;color:#1f4f49">THE WAY TO SUCCESS · HHCOMPANY</span>
     <div style="display:flex;gap:20px;font-size:12px;font-weight:500;color:#4a5b58">
-      <a href="index.html#join" style="color:inherit">회원가입</a>
-      <a href="index.html#login" style="color:inherit">로그인</a>
-      <a href="index.html#mypage" style="color:inherit">마이페이지</a>
+      <a href="login.html?redirect=personal.html" id="authJoin" style="color:inherit">회원가입</a>
+      <a href="login.html?redirect=personal.html" id="authLogin" style="color:inherit">로그인</a>
+      <a href="personal.html" id="authMypage" style="color:inherit;display:none">마이페이지</a>
+      <a href="#" id="authLogout" style="color:inherit;display:none">로그아웃</a>
     </div>
   </div>
   <header style="display:flex;align-items:center;justify-content:space-between;gap:32px;padding:22px 52px">
@@ -57,33 +72,31 @@
       <img src="assets/hh-logo.png" alt="더블에이치컴퍼니 로고" style="width:52px;height:52px;display:block" />
       <span style="display:flex;flex-direction:column;gap:4px">
         <span style="font-size:21px;font-weight:700;letter-spacing:-0.03em">더블에이치컴퍼니</span>
-        <span style="font:9px/1 ui-monospace,monospace;letter-spacing:0.26em;color:#5d6b68">THE WAY TO SUCCESS</span>
+        <span style="font:9px/1 ui-monospace,monospace;font-weight:700;letter-spacing:0.26em;color:#1f4f49">THE WAY TO SUCCESS</span>
       </span>
     </a>
     <a href="index.html#contact" style="padding:16px 26px;background:#17302e;color:#fff;font-size:13.5px;font-weight:600;letter-spacing:-0.01em">프로젝트 문의 &nearr;</a>
   </header>
   <nav class="nav-desktop" style="display:flex;align-items:center;gap:38px;padding:0 52px 18px;font-size:14.5px;font-weight:600;letter-spacing:-0.02em;border-bottom:1px solid rgba(23,48,46,0.1)">
-    <a href="index.html#ceo" style="color:#17302e">대표인사말</a>
+    <a href="ceo.html" style="color:#17302e">대표인사말</a>
     <a href="company.html" style="color:#17302e">회사소개</a>
     <a href="index.html#business" style="color:#17302e">사업분야</a>
-    <a href="index.html#products" style="color:#17302e">상품소개</a>
-    <a href="index.html#cases" style="color:#17302e">이용사례</a>
+    <a href="products.html" style="color:#17302e">상품소개</a>
+    <a href="cases.html" style="color:#17302e">이용사례</a>
     <a href="press.html" style="color:#1f4f49;text-decoration:underline;text-underline-offset:6px">언론보도</a>
-    <a href="index.html#board" style="color:#17302e">문의게시판</a>
-    <a href="index.html#booking" style="color:#17302e">예약게시판</a>
+    <a href="reserve.html" style="color:#17302e">예약문의</a>
   </nav>
 
   <details class="nav-mobile">
     <summary>전체 메뉴</summary>
     <div class="nav-mobile-links">
-      <a href="index.html#ceo">대표인사말</a>
+      <a href="ceo.html">대표인사말</a>
       <a href="company.html">회사소개</a>
       <a href="index.html#business">사업분야</a>
-      <a href="index.html#products">상품소개</a>
-      <a href="index.html#cases">이용사례</a>
+      <a href="products.html">상품소개</a>
+      <a href="cases.html">이용사례</a>
       <a href="press.html">언론보도</a>
-      <a href="index.html#board">문의게시판</a>
-      <a href="index.html#booking">예약게시판</a>
+      <a href="reserve.html">예약문의</a>
       <a href="tel:031-339-2999">031-339-2999</a>
     </div>
   </details>
@@ -159,49 +172,82 @@
       <span style="font-size:14.5px;line-height:1.75;color:#5d6b68">단체 예약, 제휴 문의 등 무엇이든 편하게 남겨주세요.</span>
     </div>
     <div style="display:flex;gap:10px;flex-shrink:0">
-      <a href="index.html#booking" style="padding:15px 28px;background:#17302e;color:#fff;font-size:14.5px;font-weight:600">예약 문의</a>
+      <a href="reserve.html" style="padding:15px 28px;background:#17302e;color:#fff;font-size:14.5px;font-weight:600">예약 문의</a>
       <a href="tel:031-339-2999" style="padding:15px 28px;border:1px solid rgba(23,48,46,0.2);color:#17302e;font-size:14.5px;font-weight:600">031-339-2999</a>
     </div>
   </div>
 
-  <footer style="background:#17302e;color:rgba(255,255,255,0.6);padding:52px;display:flex;flex-direction:column;gap:36px">
-    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:40px;flex-wrap:wrap">
-      <div style="display:flex;align-items:flex-start;gap:18px">
-        <img src="assets/hh-logo.png" alt="" style="width:44px;height:44px;display:block;opacity:0.9" />
-        <div style="display:flex;flex-direction:column;gap:8px">
-          <span style="font-size:15px;font-weight:700;color:#fff;letter-spacing:-0.02em">(주)더블에이치컴퍼니</span>
-          <span style="font-size:12.5px;line-height:1.9">대표자 김경훈<br />개인정보관리책임자 김성훈<br />경기도 의정부시 용현로155 105호<br />사업자등록번호 420-88-03868<br />통신판매업신고 제 2026-의정부송산-0430호<br />관광사업자(종합여행업) 등록번호 제2026-000005호<br />대표메일 hpaircop@gmail.com<br />고객센터 031-339-2999</span>
-        </div>
-      </div>
-      <div style="display:flex;gap:44px">
-        <div style="display:flex;flex-direction:column;gap:11px">
-          <span style="font:10px/1 ui-monospace,monospace;letter-spacing:0.2em;color:rgba(255,255,255,0.45)">COMPANY</span>
-          <a href="index.html#ceo" style="font-size:13px;color:rgba(255,255,255,0.78)">대표인사말</a>
-          <a href="company.html" style="font-size:13px;color:rgba(255,255,255,0.78)">회사소개</a>
-          <a href="index.html#business" style="font-size:13px;color:rgba(255,255,255,0.78)">사업분야</a>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:11px">
-          <span style="font:10px/1 ui-monospace,monospace;letter-spacing:0.2em;color:rgba(255,255,255,0.45)">SERVICE</span>
-          <a href="index.html#products" style="font-size:13px;color:rgba(255,255,255,0.78)">상품소개</a>
-          <a href="index.html#cases" style="font-size:13px;color:rgba(255,255,255,0.78)">이용사례</a>
-          <a href="record.html" style="font-size:13px;color:rgba(255,255,255,0.78)">수행 실적</a>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:11px">
-          <span style="font:10px/1 ui-monospace,monospace;letter-spacing:0.2em;color:rgba(255,255,255,0.45)">SUPPORT</span>
-          <a href="index.html#board" style="font-size:13px;color:rgba(255,255,255,0.78)">문의게시판</a>
-          <a href="index.html#booking" style="font-size:13px;color:rgba(255,255,255,0.78)">예약게시판</a>
-          <a href="press.html" style="font-size:13px;color:rgba(255,255,255,0.78)">언론보도</a>
-        </div>
+  <footer style="background:#17302e;color:rgba(255,255,255,0.6);padding:52px;display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:40px">
+    <div style="display:flex;align-items:flex-start;gap:18px;max-width:360px">
+      <img src="assets/hh-logo.png" alt="" style="width:44px;height:44px;display:block;opacity:0.9" />
+      <div style="display:flex;flex-direction:column;gap:7px">
+        <span style="font-size:15px;font-weight:700;color:#fff;letter-spacing:-0.02em">(주)더블에이치컴퍼니</span>
+        <span style="font-size:12px;line-height:1.85">
+          대표자 김경훈<br />
+          개인정보관리책임자 김성훈<br />
+          경기도 의정부시 용현로155 105호<br />
+          사업자등록번호 420-88-03868<br />
+          통신판매업신고 제 2026-의정부송산-0430호<br />
+          관광사업자(종합여행업) 등록번호 제2026-000005호<br />
+          대표메일 hpaircop@gmail.com<br />
+          고객센터 031-339-2999
+        </span>
       </div>
     </div>
-    <div style="display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;padding-top:26px;border-top:1px solid rgba(255,255,255,0.12)">
-      <span style="font-size:12px;color:rgba(255,255,255,0.4)">© 2026 (주)더블에이치컴퍼니. All rights reserved.</span>
-      <div style="display:flex;gap:20px">
-        <a href="terms.html" style="font-size:12.5px;font-weight:600;color:rgba(255,255,255,0.7)">이용약관</a>
-        <a href="privacy.html" style="font-size:12.5px;font-weight:600;color:#ff9d8f">개인정보처리방침</a>
+    <div style="display:flex;gap:44px;flex-wrap:wrap">
+      <div style="display:flex;flex-direction:column;gap:11px">
+        <span style="font:10px/1 ui-monospace,monospace;font-weight:700;letter-spacing:0.2em;color:rgba(255,255,255,0.8)">COMPANY</span>
+        <a href="ceo.html" style="font-size:13px;color:rgba(255,255,255,0.78)">대표인사말</a>
+        <a href="company.html" style="font-size:13px;color:rgba(255,255,255,0.78)">회사소개</a>
+        <a href="index.html#business" style="font-size:13px;color:rgba(255,255,255,0.78)">사업분야</a>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:11px">
+        <span style="font:10px/1 ui-monospace,monospace;font-weight:700;letter-spacing:0.2em;color:rgba(255,255,255,0.8)">SERVICE</span>
+        <a href="products.html" style="font-size:13px;color:rgba(255,255,255,0.78)">상품소개</a>
+        <a href="cases.html" style="font-size:13px;color:rgba(255,255,255,0.78)">이용사례</a>
+        <a href="press.html" style="font-size:13px;color:rgba(255,255,255,0.78)">언론보도</a>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:11px">
+        <span style="font:10px/1 ui-monospace,monospace;font-weight:700;letter-spacing:0.2em;color:rgba(255,255,255,0.8)">SUPPORT</span>
+        <a href="reserve.html" style="font-size:13px;color:rgba(255,255,255,0.78)">예약문의</a>
+        <a href="https://pf.kakao.com/_CixkJX/chat" target="_blank" rel="noopener" style="font-size:13px;color:#FEE500;font-weight:700">카카오톡 상담</a>
+        <a href="https://hhcompany-admin.pages.dev" target="_blank" rel="noopener" style="font-size:13px;color:rgba(255,255,255,0.78)">관리자 로그인</a>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:11px">
+        <span style="font:10px/1 ui-monospace,monospace;font-weight:700;letter-spacing:0.2em;color:rgba(255,255,255,0.8)">LEGAL</span>
+        <a href="terms.html" style="font-size:13px;color:rgba(255,255,255,0.78)">이용약관</a>
+        <a href="privacy.html" style="font-size:13px;color:#ff8f99">개인정보처리방침</a>
       </div>
     </div>
+    <div style="width:100%;border-top:1px solid rgba(255,255,255,0.1);padding-top:20px;font-size:12px;color:rgba(255,255,255,0.4)">© 2026 (주)더블에이치컴퍼니. All rights reserved.</div>
   </footer>
 </div>
+<script>
+  const SB_URL = 'https://xoupacfmkhuuvxebgfqi.supabase.co';
+  const SB_KEY = 'sb_publishable_46KQebvC7_S-_JDramvDmA_jk9aSeVc';
+  (function memberNav() {
+    if (typeof supabase === 'undefined') return;
+    const elJoin = document.getElementById('authJoin');
+    const elLogin = document.getElementById('authLogin');
+    const elMypage = document.getElementById('authMypage');
+    const elLogout = document.getElementById('authLogout');
+    const sbAuth = supabase.createClient(SB_URL, SB_KEY);
+    function render(session) {
+      const loggedIn = !!session;
+      if (elJoin) elJoin.style.display = loggedIn ? 'none' : '';
+      if (elLogin) elLogin.style.display = loggedIn ? 'none' : '';
+      if (elMypage) elMypage.style.display = loggedIn ? '' : 'none';
+      if (elLogout) elLogout.style.display = loggedIn ? '' : 'none';
+    }
+    async function doSignOut(e) {
+      e.preventDefault();
+      await sbAuth.auth.signOut();
+      location.href = 'index.html';
+    }
+    if (elLogout) elLogout.addEventListener('click', doSignOut);
+    sbAuth.auth.getSession().then(({ data }) => render(data.session)).catch(() => {});
+    sbAuth.auth.onAuthStateChange((_event, session) => render(session));
+  })();
+</script>
 </body>
 </html>
