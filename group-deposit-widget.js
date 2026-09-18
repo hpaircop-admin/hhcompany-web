@@ -1,0 +1,624 @@
+/* ==========================================================================
+   HH 단체 예약금(deposit) 결제 위젯 (공용 모듈)
+   ------------------------------------------------------------------------
+   각 시설 페이지의 "단체 예약" 패널 안, 기존 "단체 예약 문의하기" 버튼 옆에
+   아래 3가지만 추가하면 로그인 없이 바로 결제 가능한 단체 예약금 UI가 삽입됩니다.
+   (buy-widget.js의 개인구매 위젯과 동일한 백엔드/토스 연동 구조를 그대로 재사용)
+
+   1) <head> 또는 </body> 직전에 스크립트 추가 (group-deposit-widget.js는 반드시 마지막):
+      <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+      <script src="https://js.tosspayments.com/v1/payment"></script>
+      <script src="js/group-deposit-widget.js"></script>
+      (buy-widget.js와 같은 페이지에 있다면 supabase-js/tosspayments는 한 번만 로드하면 됨)
+
+   2) 단체 패널(#panel-group 또는 #rpanel-group) 안, 기존 문의하기 버튼 아래에
+      마운트 엘리먼트 추가:
+      <div class="hhgd-mount" id="group-deposit"></div>
+
+   3) 아무 <script> 안에서 초기화 호출 (기존 인원수 입력창 id를 countInputId로 지정):
+      <script>
+        HHGroupDepositWidget.init({
+          mount: '#group-deposit',
+          productId: 'p14',   // ⚠ 2026-09-01부터 "_dep" 접미사 없이, 그 업장의 진짜 상품 id를 그대로 씁니다
+          venueName: VENUE_NAME,
+          countInputId: 'group-count',   // Template B는 'rv-group-count'
+          tierInputId: 'rv-group-tier',  // (선택, 2026-09-08 추가) 단체유형별 가격을 쓰는 상품이면 <select> id 지정
+        });
+      </script>
+
+   ------------------------------------------------------------------------
+   동작:
+   - 로그인 불필요. 기존 "예상 인원" 입력창(countInputId) 값을 그대로 공유해서 사용.
+   - 인원 10명 미만이면 결제 버튼 비활성화 + 안내 문구 표시 (기존 문의하기 버튼의
+     최소인원 규칙과 동일하게 10명 기준)
+   - 결제 금액 = 상품(productId)의 1인당 예약금 × 예상 인원 (실시간 계산 표시)
+     ※ 2026-09-01부터: 예전에는 "{id}_dep"로 된 별도 숨김 상품에서 가격을 가져왔지만,
+       지금은 같은 상품 안의 group_deposit_price/group_deposit_enabled 필드를 그대로
+       씁니다 (관리자 상품 수정 화면 안에서 바로 편집). productId는 개인구매 위젯과
+       동일한 그 업장의 진짜 상품 id입니다.
+     ※ 2026-09-08부터: 상품에 group_deposit_tiers(jsonb, 단체유형별 가격 — 예:
+       {"유아단체":22000,"초등단체":27000,"중고등단체":31000,"대학생":33000})가
+       설정돼 있으면, tierInputId로 지정한 <select>에서 고른 단체유형 가격을 쓴다.
+       이 jsonb가 없는(NULL) 상품은 예전처럼 group_deposit_price 1개 값 그대로 사용
+       — tierInputId를 안 넘긴 기존 페이지들은 손댈 필요 없이 그대로 동작함.
+     ⚠ 실제 청구 금액은 결제 직전 서버(payment-confirm)가 인원수·단체유형 기준으로
+       다시 계산하며, 클라이언트가 보낸 금액을 신뢰하지 않음 (buy-widget.js와 동일한
+       서버 검증 방식)
+   - 담당자 이름/연락처 입력 → 토스페이먼츠 결제창(V1) 호출 → payment-confirm Edge Function 승인
+   - 승인 성공 시 발권(바코드 배정) 없이 "예약금 결제 완료" 안내만 표시
+     (실제 발권/재고 소모는 payment-confirm이 orders.is_deposit=true인 주문에 대해
+      자동으로 건너뜀 — finalizePaidOrder()의 단체 예약금 분기 참고. 이 위젯은
+      create 호출 시 depositMode:true를 함께 보내서 is_deposit이 설정되게 합니다)
+   - 결제창에서 successUrl/failUrl로 돌아왔을 때(새로고침 후)도 자동으로 이어서 처리.
+     단, 같은 페이지에 개인구매 위젯(HHBuyWidget)도 함께 있는 경우, 돌아온 주문이
+     "내 것"(단체 예약금)이 아니면 조용히 넘겨서 개인구매 위젯 쪽이 처리하도록 함
+     (payment-confirm의 confirm 응답에 담긴 deposit:true/false 플래그로 구분).
+   ========================================================================== */
+(function (global) {
+  const SB_URL = 'https://xoupacfmkhuuvxebgfqi.supabase.co';
+  const SB_KEY = 'sb_publishable_46KQebvC7_S-_JDramvDmA_jk9aSeVc';
+  const FN_URL = `${SB_URL}/functions/v1/payment-confirm`;
+  // 휴대폰 본인확인(SMS 인증번호) 전용 Edge Function (2026-09-18 추가)
+  const FN2_URL = `${SB_URL}/functions/v1/phone-verify`;
+  // ✅ 라이브(실결제) 키. 실제 카드 청구가 발생합니다. Edge Function Secrets의 TOSS_SECRET_KEY도 live_sk_ 키여야 정상 동작(API 개별연동 키 사용).
+  // (buy-widget.js의 TOSS_CLIENT_KEY와 반드시 같은 값으로 유지)
+  const TOSS_CLIENT_KEY = 'live_ck_BX7zk2yd8yqLlQDyRAXv8x9POLqK';
+  const MIN_GROUP_SIZE = 10;
+
+  let sb = null;
+  function getClient() {
+    if (!sb) sb = global.supabase.createClient(SB_URL, SB_KEY);
+    return sb;
+  }
+
+  function money(n) { return Number(n || 0).toLocaleString('ko-KR') + '원'; }
+
+  // countInput/tierInput은 위젯 마운트 영역(#group-deposit) "바깥"의 페이지 자체 엘리먼트라서
+  // rvMountGroupDeposit()이 "희망 상품"을 바꿀 때마다 다시 init()을 호출해도 사라지지 않고
+  // 그대로 남아있습니다. 이 함수 없이 매번 addEventListener만 하면 상품을 바꿀 때마다 리스너가
+  // 계속 쌓여서(옛 리스너는 이미 없어진 화면 조각을 참조), 단체유형을 골라도 금액이 잘 안 바뀌거나
+  // 이상하게 여러 번 갱신되는 문제가 생깁니다. 같은 엘리먼트·같은 이벤트에 새로 걸기 전에
+  // 이전에 이 함수로 걸어둔 리스너를 먼저 지워서, 항상 "가장 최근에 그려진 화면"용 리스너
+  // 1개만 남도록 합니다.
+  function bindOnce(el, eventName, handler) {
+    if (!el) return;
+    const key = '_hhgdListener_' + eventName;
+    if (el[key]) el.removeEventListener(eventName, el[key]);
+    el.addEventListener(eventName, handler);
+    el[key] = handler;
+  }
+
+  // "예약문의하기" 버튼(결제 버튼 옆) 클릭 시: 이 페이지에 이미 있는 기존 "단체 예약
+  // 문의하기 →" 버튼과 완전히 똑같은 동작(최소인원 검증 + reserve.html로 이동)을 하도록
+  // 함. 페이지마다 그 함수 이름이 다를 수 있어서(rvGoGroupReserve 또는 goGroupReserve)
+  // 둘 다 확인해서 있는 쪽을 그대로 호출 — 이렇게 하면 검증 로직을 여기 따로 안 만들어도
+  // 항상 기존 버튼과 동일하게 동작함. 둘 다 없는 페이지를 대비해 최소한의 자체 처리도 둠.
+  // (2026-09-10 추가)
+  function goToInquiry(state) {
+    if (typeof global.rvGoGroupReserve === 'function') { global.rvGoGroupReserve(); return; }
+    if (typeof global.goGroupReserve === 'function') { global.goGroupReserve(); return; }
+    const count = parseInt(state.countInput.value, 10);
+    const msg = state.mountEl.querySelector('#hhgd-msg');
+    if (!count || count < state.minCount) {
+      if (msg) msg.textContent = `단체 예약 문의는 최소 ${state.minCount}명부터 가능합니다. 예상 인원을 확인해주세요.`;
+      state.countInput.focus();
+      return;
+    }
+    location.href = 'reserve.html?venue=' + encodeURIComponent(state.venueName) + '&count=' + count;
+  }
+
+  async function fnFetch(path, body) {
+    const res = await fetch(`${FN_URL}/${path}`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body || {}),
+    });
+    const data = await res.json().catch(() => ({}));
+    return { ok: res.ok, status: res.status, data };
+  }
+
+  // phone-verify 전용 fetch (본인확인 send/confirm 호출용, 2026-09-18 추가)
+  async function fnFetch2(path, body) {
+    const res = await fetch(`${FN2_URL}/${path}`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body || {}),
+    });
+    const data = await res.json().catch(() => ({}));
+    return { ok: res.ok, status: res.status, data };
+  }
+
+  function digitsOf(v) { return String(v || '').replace(/[^0-9]/g, ''); }
+  function isValidPhoneDigits(d) { return /^01[0-9]{8,9}$/.test(d); }
+
+  // 토스 결제창에서 돌아온 직후 /confirm 호출은 딱 한 번만 나가야 합니다. 한 페이지에
+  // 개인구매(HHBuyWidget)와 단체예약금(HHGroupDepositWidget) 위젯이 함께 마운트된 경우
+  // 둘 다 같은 orderId로 동시에 /confirm을 부르면, 토스 결제 서버가 두 번째 요청을
+  // "이미 처리 중인 요청입니다" 같은 에러로 거절합니다 — 실제 결제/문자발송은 정상
+  // 처리됐는데도 화면엔 결제 실패로 보이는 문제가 생깁니다. window 전역에 진행 중인
+  // 확인 요청을 캐싱해서, 두 위젯이 항상 같은 요청(Promise) 하나만 공유하도록 합니다.
+  // (buy-widget.js의 confirmOnce와 완전히 동일한 로직 — 반드시 같이 유지해야 합니다)
+  function confirmOnce(orderId, paymentKey, amount) {
+    global.__hhConfirmPromises = global.__hhConfirmPromises || {};
+    if (!global.__hhConfirmPromises[orderId]) {
+      global.__hhConfirmPromises[orderId] = fnFetch('confirm', { orderId, paymentKey, amount });
+    }
+    return global.__hhConfirmPromises[orderId];
+  }
+
+  let cssInjected = false;
+  function injectCss() {
+    if (cssInjected) return;
+    cssInjected = true;
+    const style = document.createElement('style');
+    style.textContent = `
+      .hhgd-box{font-family:inherit;background:#f5f8fc;border:1px solid rgba(15,23,42,.1);border-radius:14px;padding:18px 20px;margin-top:14px;box-sizing:border-box}
+      .hhgd-label{font-size:11.5px;font-weight:700;color:#64748b;letter-spacing:.02em;margin-bottom:6px}
+      .hhgd-amount-row{display:flex;align-items:center;justify-content:space-between;background:#fff;border-radius:10px;padding:13px 15px;margin-bottom:12px;border:1px solid #e2e9f2}
+      .hhgd-amount-row .l{font-size:12px;color:#64748b;font-weight:600}
+      .hhgd-amount-row .amt{font-size:18px;font-weight:800;color:#ff6b5c}
+      .hhgd-tier-note{font-size:12px;color:#dc2626;line-height:1.6;margin-bottom:12px}
+      .hhgd-field{margin-bottom:10px}
+      .hhgd-field label{display:block;font-size:12px;font-weight:700;color:#16202e;margin-bottom:6px}
+      .hhgd-field input{width:100%;padding:11px 12px;border:1px solid #e2e9f2;border-radius:8px;font-size:14.5px;font-family:inherit;background:#fff;box-sizing:border-box}
+      .hhgd-field input:focus{outline:none;border-color:#1d6fe0}
+      .hhgd-btn{display:block;width:100%;padding:13px;border:none;border-radius:10px;background:#ff6b5c;color:#fff;font-size:14.5px;font-weight:800;cursor:pointer;font-family:inherit;text-align:center;box-sizing:border-box}
+      .hhgd-btn:hover{background:#ea5647}
+      .hhgd-btn:disabled{opacity:.5;cursor:not-allowed}
+      .hhgd-btn-row{display:flex;gap:8px;margin-bottom:6px}
+      .hhgd-btn-row .hhgd-btn{width:auto;flex:1;min-width:0}
+      .hhgd-btn-inquiry{background:#fff;color:#152238;border:1.5px solid #d7dee8}
+      .hhgd-btn-inquiry:hover{background:#f5f8fc;border-color:#152238}
+      .hhgd-note{font-size:12px;color:#64748b;line-height:1.7;margin-top:10px}
+      .hhgd-methods{display:flex;flex-direction:column;gap:8px;margin-bottom:6px}
+      .hhgd-method-btn{width:100%;padding:13px;border:1.5px solid #e2e9f2;border-radius:10px;background:#fff;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer}
+      .hhgd-method-btn:hover{border-color:#ff6b5c;color:#ff6b5c}
+      .hhgd-method-btn:disabled{opacity:.5;cursor:not-allowed}
+      .hhgd-msg{font-size:12px;color:#dc2626;margin-top:10px;line-height:1.6}
+      .hhgd-phone-row{display:flex;gap:8px}
+      .hhgd-phone-row input{flex:1;min-width:0}
+      .hhgd-otp-btn{white-space:nowrap;padding:0 14px;border:1.5px solid #1d6fe0;border-radius:8px;background:#fff;color:#1d6fe0;font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit}
+      .hhgd-otp-btn:hover{background:#eef4ff}
+      .hhgd-otp-btn:disabled{opacity:.5;cursor:not-allowed}
+      .hhgd-otp-row{display:flex;gap:8px;margin-top:8px}
+      .hhgd-otp-row input{flex:1;min-width:0;padding:11px 12px;border:1px solid #e2e9f2;border-radius:8px;font-size:14.5px;font-family:inherit;background:#fff;box-sizing:border-box}
+      .hhgd-otp-row input:focus{outline:none;border-color:#1d6fe0}
+      .hhgd-otp-status{font-size:12px;margin-top:6px;line-height:1.6;color:#64748b}
+      .hhgd-otp-status.ok{color:#16a34a;font-weight:700}
+      .hhgd-otp-status.err{color:#dc2626}
+      .hhgd-checkbox-row{display:flex;align-items:center;margin-bottom:12px}
+      .hhgd-checkbox-label{display:flex!important;align-items:center;gap:7px;font-size:13px!important;font-weight:600!important;color:#16202e!important;cursor:pointer;margin-bottom:0!important}
+      .hhgd-checkbox-label input{width:auto!important;padding:0!important}
+      .hhgd-recipient-section{background:#fff;border:1px solid #e2e9f2;border-radius:10px;padding:12px 14px 2px;margin-bottom:12px}
+      .hhgd-test-badge{display:inline-block;background:#ffb648;color:#4a2e00;font-size:11px;font-weight:800;padding:5px 11px;border-radius:999px;margin-bottom:14px}
+      .hhgd-state strong{display:block;font-size:15px;margin-bottom:8px;color:#16202e}
+      .hhgd-state{font-size:13.5px;color:#16202e;line-height:1.8}
+      .hhgd-state .sub{font-size:12px;color:#64748b;margin-top:10px}
+      .hhgd-skel{color:#64748b;font-size:13px;padding:6px 0}
+    `;
+    document.head.appendChild(style);
+  }
+
+  function init(opts) {
+    injectCss();
+    const mountEl = typeof opts.mount === 'string' ? document.querySelector(opts.mount) : opts.mount;
+    if (!mountEl) { console.error('[HHGroupDepositWidget] mount element not found:', opts.mount); return; }
+    const countInput = document.getElementById(opts.countInputId);
+    if (!countInput) { console.error('[HHGroupDepositWidget] countInputId element not found:', opts.countInputId); return; }
+    // tierInputId(선택): 단체유형별 가격(group_deposit_tiers)을 쓰는 상품에서만 넘겨주면 됨.
+    // 안 넘기거나, 넘겼는데 해당 id의 엘리먼트가 없으면 예전처럼 단일가격 방식으로 동작.
+    const tierInput = opts.tierInputId ? document.getElementById(opts.tierInputId) : null;
+
+    const state = {
+      mountEl,
+      countInput,
+      tierInput,
+      productId: opts.productId,
+      venueName: opts.venueName || '',
+      orderLabel: opts.orderLabel || (opts.venueName ? `${opts.venueName} 단체 예약금` : '단체 예약금'),
+      minCount: opts.minCount || MIN_GROUP_SIZE,
+      price: null,
+      tiers: null,
+      // 휴대폰 본인확인 상태 (2026-09-18 추가) — render()가 새로 그려질 때마다 초기화됨
+      otp: { verified: false, token: null, verifiedPhone: null },
+    };
+
+    mountEl.classList.add('hhgd-box');
+    mountEl.innerHTML = `<div class="hhgd-skel">불러오는 중...</div>`;
+
+    handleTossRedirectReturn(state).then((handled) => {
+      if (handled) return;
+      boot(state);
+    });
+  }
+
+  async function boot(state) {
+    const client = getClient();
+    let priceResult = { data: null, error: null };
+    try {
+      priceResult = await client.from('products')
+        .select('id, group_deposit_price, group_deposit_enabled, group_deposit_tiers')
+        .eq('id', state.productId).maybeSingle();
+    } catch (e) {
+      priceResult = { data: null, error: e };
+    }
+    if (priceResult.error) {
+      console.error('[HHGroupDepositWidget] 상품 가격 조회 실패 (productId=' + state.productId + '):', priceResult.error);
+    }
+    state.price = priceResult.data ? priceResult.data.group_deposit_price : null;
+    state.priceError = priceResult.error || null;
+    state.saleEnabled = priceResult.data ? priceResult.data.group_deposit_enabled === true : false;
+    const rawTiers = priceResult.data ? priceResult.data.group_deposit_tiers : null;
+    // 단체유형별 가격이 있고(jsonb) + 이 페이지가 단체유형 <select>를 갖고 있을 때만 사용
+    state.tiers = (rawTiers && typeof rawTiers === 'object' && state.tierInput) ? rawTiers : null;
+
+    // 예약금 상품이 아직 준비되지 않았거나(가격 미설정) 판매 비활성 상태면
+    // 위젯을 완전히 숨김 — 기존 "문의하기" 버튼만 그대로 노출됨.
+    const hasAnyPrice = state.tiers ? true : !!state.price;
+    if (!hasAnyPrice || (!state.priceError && !state.saleEnabled)) {
+      state.mountEl.style.display = 'none';
+      return;
+    }
+
+    render(state);
+  }
+
+  // 현재 선택된 단체유형의 1인당 가격을 계산. 단체유형 select가 없는 페이지(기존 25개 업장)는
+  // 그냥 group_deposit_price 고정값. 단체유형 select가 있으면:
+  //  - 아직 아무것도 안 골랐으면 null (금액 표시 안 함, 결제 버튼 비활성)
+  //  - 고른 단체유형이 이 상품 조합에서 가격이 없으면(예: 패키지 상품의 "유아단체") -1 (안내 문구 표시)
+  //  - 있으면 그 가격
+  function currentUnitPrice(state) {
+    if (!state.tiers) return state.price;
+    const t = state.tierInput.value;
+    if (!t) return null;
+    const p = state.tiers[t];
+    return (p && p > 0) ? p : -1;
+  }
+
+  function render(state) {
+    const { mountEl } = state;
+
+    const tierOptionsHtml = state.tiers ? `
+      <div class="hhgd-tier-note" id="hhgd-tier-note" style="display:none"></div>
+    ` : '';
+
+    mountEl.innerHTML = `
+      <div class="hhgd-label">온라인으로 바로 예약금 결제</div>
+      ${tierOptionsHtml}
+      <div class="hhgd-amount-row"><span class="l" id="hhgd-amount-label">1인 ${state.tiers ? '단체유형을 선택해주세요' : money(state.price)} × <span id="hhgd-count-display">${state.countInput.value || 0}</span>명</span><span class="amt" id="hhgd-amount">${state.tiers ? '—' : money(state.price * (parseInt(state.countInput.value, 10) || 0))}</span></div>
+      <div class="hhgd-field"><label>담당자 이름</label><input type="text" id="hhgd-name" placeholder="이름을 입력해주세요"></div>
+      <div class="hhgd-field">
+        <label>연락처 (본인확인 필요)</label>
+        <div class="hhgd-phone-row">
+          <input type="tel" id="hhgd-phone" placeholder="010-0000-0000">
+          <button type="button" class="hhgd-otp-btn" id="hhgd-otp-send">인증번호 받기</button>
+        </div>
+        <div class="hhgd-otp-row" id="hhgd-otp-row" style="display:none">
+          <input type="text" id="hhgd-otp-code" placeholder="인증번호 6자리" maxlength="6" inputmode="numeric">
+          <button type="button" class="hhgd-otp-btn" id="hhgd-otp-confirm">확인</button>
+        </div>
+        <div class="hhgd-otp-status" id="hhgd-otp-status"></div>
+      </div>
+      <div class="hhgd-field"><label>이메일 (선택)</label><input type="email" id="hhgd-email" placeholder="안내 발송용"></div>
+      <div class="hhgd-field hhgd-checkbox-row">
+        <label class="hhgd-checkbox-label"><input type="checkbox" id="hhgd-recipient-same" checked> 안내문자 받으실 분이 담당자와 동일해요</label>
+      </div>
+      <div class="hhgd-recipient-section" id="hhgd-recipient-section" style="display:none">
+        <div class="hhgd-field"><label>받는사람 이름</label><input type="text" id="hhgd-recipient-name" placeholder="안내를 받으실 분 이름"></div>
+        <div class="hhgd-field"><label>받는사람 연락처</label><input type="tel" id="hhgd-recipient-phone" placeholder="010-0000-0000"></div>
+      </div>
+      <div class="hhgd-btn-row">
+        <button type="button" class="hhgd-btn hhgd-btn-inquiry" id="hhgd-inquiry">예약문의하기</button>
+        <button type="button" class="hhgd-btn" id="hhgd-submit">예약금 결제하기 →</button>
+      </div>
+      <div class="hhgd-msg" id="hhgd-msg"></div>
+      <p class="hhgd-note">예상 인원은 위 "예상 인원" 입력창과 함께 계산돼요. 결제 후 담당자가 곧 연락드려 세부 일정을 확정 안내해드립니다. (최소 ${state.minCount}명부터 결제 가능)</p>
+    `;
+
+    const amountEl = mountEl.querySelector('#hhgd-amount');
+    const amountLabelEl = mountEl.querySelector('#hhgd-amount-label');
+    const countDisplayEl = mountEl.querySelector('#hhgd-count-display');
+    const tierNoteEl = mountEl.querySelector('#hhgd-tier-note');
+    const submitBtn = mountEl.querySelector('#hhgd-submit');
+    const inquiryBtn = mountEl.querySelector('#hhgd-inquiry');
+    if (inquiryBtn) inquiryBtn.onclick = () => goToInquiry(state);
+
+    // ── 휴대폰 본인확인(OTP) — 2026-09-18 추가 ────────────────────────
+    const phoneInput = mountEl.querySelector('#hhgd-phone');
+    const otpSendBtn = mountEl.querySelector('#hhgd-otp-send');
+    const otpRow = mountEl.querySelector('#hhgd-otp-row');
+    const otpCodeInput = mountEl.querySelector('#hhgd-otp-code');
+    const otpConfirmBtn = mountEl.querySelector('#hhgd-otp-confirm');
+    const otpStatusEl = mountEl.querySelector('#hhgd-otp-status');
+
+    function setOtpStatus(text, kind) {
+      otpStatusEl.textContent = text || '';
+      otpStatusEl.className = 'hhgd-otp-status' + (kind ? ' ' + kind : '');
+    }
+
+    // 인증 완료 후에 번호를 바꾸면 그 토큰은 더 이상 이 번호 것이 아니므로 무효화하고
+    // 처음부터 다시 인증하도록 화면을 되돌린다.
+    function resetOtpIfPhoneChanged() {
+      if (!state.otp.verified) return;
+      if (digitsOf(phoneInput.value) === state.otp.verifiedPhone) return;
+      state.otp.verified = false; state.otp.token = null; state.otp.verifiedPhone = null;
+      otpRow.style.display = 'none';
+      otpCodeInput.value = '';
+      phoneInput.disabled = false;
+      otpSendBtn.disabled = false; otpSendBtn.textContent = '인증번호 받기';
+      setOtpStatus('번호가 바뀌어서 본인확인을 다시 해주세요.', 'err');
+    }
+    bindOnce(phoneInput, 'input', resetOtpIfPhoneChanged);
+
+    otpSendBtn.onclick = async () => {
+      const phone = digitsOf(phoneInput.value);
+      if (!isValidPhoneDigits(phone)) {
+        setOtpStatus('휴대폰 번호를 다시 확인해주세요 (010-0000-0000 형식).', 'err');
+        phoneInput.focus();
+        return;
+      }
+      otpSendBtn.disabled = true; otpSendBtn.textContent = '발송 중...';
+      const r = await fnFetch2('send', { phone: phoneInput.value });
+      if (!r.ok) {
+        otpSendBtn.disabled = false; otpSendBtn.textContent = '인증번호 받기';
+        setOtpStatus(r.data?.message || '인증번호 발송에 실패했습니다.', 'err');
+        return;
+      }
+      otpRow.style.display = 'flex';
+      otpSendBtn.disabled = false; otpSendBtn.textContent = '재발송';
+      setOtpStatus('인증번호를 보냈어요. 5분 이내에 입력해주세요.');
+      otpCodeInput.focus();
+    };
+
+    otpConfirmBtn.onclick = async () => {
+      const phone = digitsOf(phoneInput.value);
+      const code = otpCodeInput.value.trim();
+      if (!code) { setOtpStatus('인증번호를 입력해주세요.', 'err'); return; }
+      otpConfirmBtn.disabled = true; otpConfirmBtn.textContent = '확인 중...';
+      const r = await fnFetch2('confirm', { phone: phoneInput.value, code });
+      otpConfirmBtn.disabled = false; otpConfirmBtn.textContent = '확인';
+      if (!r.ok) {
+        setOtpStatus(r.data?.message || '인증번호가 일치하지 않습니다.', 'err');
+        return;
+      }
+      state.otp.verified = true;
+      state.otp.token = r.data?.data?.verificationToken || null;
+      state.otp.verifiedPhone = phone;
+      otpRow.style.display = 'none';
+      phoneInput.disabled = true;
+      otpSendBtn.disabled = true; otpSendBtn.textContent = '인증완료';
+      setOtpStatus('✅ 본인확인이 완료됐어요.', 'ok');
+    };
+
+    // ── 받는사람(구매자와 동일 체크) — 2026-09-18 추가 ─────────────────
+    const recipientSameChk = mountEl.querySelector('#hhgd-recipient-same');
+    const recipientSection = mountEl.querySelector('#hhgd-recipient-section');
+    function syncRecipientSection() {
+      recipientSection.style.display = recipientSameChk.checked ? 'none' : 'block';
+    }
+    bindOnce(recipientSameChk, 'change', syncRecipientSection);
+    syncRecipientSection();
+
+    const syncAmount = () => {
+      const c = Math.max(0, parseInt(state.countInput.value, 10) || 0);
+      countDisplayEl.textContent = c;
+      const unit = currentUnitPrice(state);
+
+      if (!state.tiers) {
+        amountEl.textContent = money(unit * c);
+        return;
+      }
+
+      if (unit === null) {
+        // 단체유형 미선택
+        amountLabelEl.innerHTML = '1인 단체유형을 선택해주세요 × <span id="hhgd-count-display">' + c + '</span>명';
+        amountEl.textContent = '—';
+        if (tierNoteEl) tierNoteEl.style.display = 'none';
+        if (submitBtn) submitBtn.disabled = true;
+      } else if (unit === -1) {
+        // 이 상품 조합에는 해당 단체유형 가격이 없음
+        amountLabelEl.innerHTML = '1인 — × <span id="hhgd-count-display">' + c + '</span>명';
+        amountEl.textContent = '—';
+        if (tierNoteEl) {
+          tierNoteEl.style.display = 'block';
+          tierNoteEl.textContent = '선택하신 단체유형(' + state.tierInput.value + ')은 이 상품 조합으로 온라인 결제가 어려워요. 전화(031-339-2999) 또는 카카오톡으로 문의해주세요.';
+        }
+        if (submitBtn) submitBtn.disabled = true;
+      } else {
+        amountLabelEl.innerHTML = '1인 ' + money(unit) + ' × <span id="hhgd-count-display">' + c + '</span>명';
+        amountEl.textContent = money(unit * c);
+        if (tierNoteEl) tierNoteEl.style.display = 'none';
+        if (submitBtn) submitBtn.disabled = false;
+      }
+    };
+
+    // 기존 "예상 인원" 입력창(문의하기 버튼과 공유)이 바뀔 때마다 금액을 실시간으로 다시 계산.
+    // ⚠ 2026-09-08 버그 수정: countInput/tierInput은 이 위젯의 mount(#group-deposit) 바깥의
+    // "페이지 자체" 엘리먼트라서, 사용자가 "희망 상품"을 바꿔서 위젯이 다시 init()될 때마다
+    // 매번 새로 addEventListener가 걸립니다. 예전 코드는 이전 리스너를 지우지 않고 계속
+    // 쌓기만 해서, 상품을 몇 번 바꾸고 나면 단체유형을 골라도 화면이 안 바뀌거나(오래된
+    // 리스너가 이미 사라진 화면 조각을 붙잡고 있음) 여러 번 다시 계산되는 문제가 있었습니다.
+    // bindOnce()로 "이 엘리먼트에 내가 마지막으로 건 리스너"만 기억해뒀다가, 새로 걸기 전에
+    // 지우는 방식으로 항상 최신 리스너 1개만 남도록 고쳤습니다.
+    bindOnce(state.countInput, 'input', syncAmount);
+    // 단체유형 select가 있으면 바뀔 때마다도 다시 계산
+    if (state.tierInput) bindOnce(state.tierInput, 'change', syncAmount);
+
+    if (state.tiers) syncAmount(); // 초기 상태(단체유형 미선택 안내) 반영
+
+    submitBtn.onclick = () => submitDeposit(state);
+  }
+
+  async function submitDeposit(state) {
+    const { mountEl, countInput } = state;
+    const name = mountEl.querySelector('#hhgd-name').value.trim();
+    const phone = mountEl.querySelector('#hhgd-phone').value.trim();
+    const email = mountEl.querySelector('#hhgd-email').value.trim();
+    const recipientSameChk = mountEl.querySelector('#hhgd-recipient-same');
+    const recipientNameInput = mountEl.querySelector('#hhgd-recipient-name');
+    const recipientPhoneInput = mountEl.querySelector('#hhgd-recipient-phone');
+    const count = parseInt(countInput.value, 10);
+    const msg = mountEl.querySelector('#hhgd-msg');
+    const btn = mountEl.querySelector('#hhgd-submit');
+
+    if (!count || count < state.minCount) {
+      msg.textContent = `단체 예약금 결제는 최소 ${state.minCount}명부터 가능합니다. 예상 인원을 확인해주세요.`;
+      countInput.focus();
+      return;
+    }
+    let tier = null;
+    if (state.tiers) {
+      tier = state.tierInput.value;
+      const unit = currentUnitPrice(state);
+      if (unit === null) { msg.textContent = '단체유형을 선택해주세요.'; state.tierInput.focus(); return; }
+      if (unit === -1) { msg.textContent = '선택하신 단체유형은 이 상품 조합으로 온라인 결제가 어렵습니다. 전화 또는 카카오톡으로 문의해주세요.'; return; }
+    }
+    if (!name) { msg.textContent = '담당자 이름을 입력해주세요.'; return; }
+    if (!phone) { msg.textContent = '연락처를 입력해주세요.'; return; }
+    // 휴대폰 본인확인이 안 끝났거나, 인증 이후 번호를 바꿔서 무효화된 경우 (2026-09-18 추가)
+    if (!state.otp.verified || state.otp.verifiedPhone !== digitsOf(phone)) {
+      msg.textContent = '휴대폰 본인확인을 완료해주세요 ("인증번호 받기" → 확인).';
+      return;
+    }
+    let recipientName = '';
+    let recipientPhone = '';
+    if (!recipientSameChk.checked) {
+      recipientName = recipientNameInput.value.trim();
+      recipientPhone = recipientPhoneInput.value.trim();
+      if (!recipientName) { msg.textContent = '받는사람 이름을 입력해주세요.'; recipientNameInput.focus(); return; }
+      if (!recipientPhone) { msg.textContent = '받는사람 연락처를 입력해주세요.'; recipientPhoneInput.focus(); return; }
+    }
+    msg.textContent = '';
+
+    btn.disabled = true; btn.textContent = '신청 접수 중...';
+    const created = await fnFetch('create', {
+      productId: state.productId, quantity: count, buyerName: name, buyerPhone: phone,
+      buyerEmail: email || undefined, depositMode: true, tier: tier || undefined,
+      recipientName: recipientName || undefined, recipientPhone: recipientPhone || undefined,
+      verificationToken: state.otp.token, guestPurchase: true,
+    });
+
+    if (!created.ok) {
+      btn.disabled = false; btn.textContent = '예약금 결제하기 →';
+      msg.textContent = created.data?.message || '신청 처리에 실패했습니다.';
+      return;
+    }
+
+    const orderId = created.data.data.orderId;
+    const amount = created.data.data.amount;
+    renderPaymentStep(state, orderId, amount, name, email);
+  }
+
+  function renderPaymentStep(state, orderId, amount, buyerName, buyerEmail) {
+    const { mountEl } = state;
+    mountEl.innerHTML = `
+      ${TOSS_CLIENT_KEY.startsWith('test_') ? '<div class=\"hhgd-test-badge\">테스트 결제 모드 · 실제 청구 없음</div>' : ''}
+      <div class="hhgd-amount-row"><span class="l">예약금 결제 금액</span><span class="amt">${money(amount)}</span></div>
+      <div class="hhgd-methods" id="hhgd-method-grid">
+        <button type="button" class="hhgd-method-btn" data-method="카드">💳 카드로 결제</button>
+        <button type="button" class="hhgd-method-btn" data-method="계좌이체">🏦 계좌이체로 결제</button>
+        <button type="button" class="hhgd-method-btn" data-method="토스페이">🅣 토스페이로 결제</button>
+      </div>
+      <div class="hhgd-msg" id="hhgd-msg"></div>
+    `;
+
+    if (location.protocol === 'file:') {
+      mountEl.querySelector('#hhgd-msg').innerHTML =
+        '⚠️ file://로 직접 열면 결제창이 정상 동작하지 않을 수 있습니다.<br>실제 배포 주소(https://)로 열어서 테스트해주세요.';
+    }
+
+    let tossPayments;
+    try {
+      tossPayments = global.TossPayments(TOSS_CLIENT_KEY);
+    } catch (e) {
+      console.error('토스페이먼츠 SDK 초기화 실패:', e);
+      mountEl.querySelector('#hhgd-msg').textContent = '결제 모듈을 불러오지 못했습니다: ' + (e?.message || e);
+      return;
+    }
+
+    mountEl.querySelectorAll('.hhgd-method-btn').forEach(btn => {
+      btn.onclick = async () => {
+        const msg = mountEl.querySelector('#hhgd-msg');
+        msg.textContent = '';
+        mountEl.querySelectorAll('.hhgd-method-btn').forEach(b => b.disabled = true);
+        try {
+          await tossPayments.requestPayment(btn.dataset.method, {
+            amount,
+            orderId,
+            orderName: state.orderLabel,
+            customerName: buyerName,
+            customerEmail: buyerEmail || undefined,
+            successUrl: location.origin + location.pathname,
+            failUrl: location.origin + location.pathname,
+          });
+        } catch (e) {
+          console.error('토스 결제 요청 실패:', e);
+          mountEl.querySelectorAll('.hhgd-method-btn').forEach(b => b.disabled = false);
+          if (e?.code === 'USER_CANCEL') { msg.textContent = '결제가 취소되었습니다.'; return; }
+          msg.textContent = '결제창을 여는 데 실패했습니다: ' + (e?.message || e || '알 수 없는 오류');
+        }
+      };
+    });
+  }
+
+  function showConfirmingState(state) {
+    state.mountEl.innerHTML = `<div class="hhgd-state"><strong>결제 확인 중입니다...</strong>잠시만 기다려주세요.</div>`;
+  }
+  function showConfirmFailedState(state, message) {
+    state.mountEl.innerHTML = `
+      <div class="hhgd-state">
+        <strong>결제 확인에 실패했습니다</strong>
+        ${message || '결제 승인 중 문제가 발생했습니다.'}
+        <div class="sub">문의: 031-339-2999</div>
+      </div>`;
+  }
+  function showDepositDoneState(state, amount) {
+    state.mountEl.innerHTML = `
+      <div class="hhgd-state">
+        <strong>✅ 예약금 결제가 완료됐어요</strong>
+        ${money(amount)} 결제가 확인됐습니다. 담당자가 곧 연락드려 세부 일정을 확정 안내해드립니다.
+        <div class="sub">문의: 031-339-2999</div>
+      </div>`;
+  }
+
+  // 토스 결제창에서 successUrl/failUrl로 돌아왔을 때(페이지 전체가 새로고침된 상태) 처리.
+  // true를 반환하면 이미 mountEl에 결과 상태를 그려놓은 것이므로 boot()로 이어서 진행하지 않음.
+  // false를 반환하면 "내가 처리할 주문이 아니다"(또는 결제 리다이렉트 자체가 아니다)라는 뜻이므로
+  // 평소처럼 boot()가 이어서 실행됨.
+  async function handleTossRedirectReturn(state) {
+    const params = new URLSearchParams(location.search);
+    const paymentKey = params.get('paymentKey');
+    const orderId = params.get('orderId');
+    const amount = params.get('amount');
+    const failCode = params.get('code');
+
+    if (paymentKey && orderId && amount) {
+      showConfirmingState(state);
+      const confirmed = await confirmOnce(orderId, paymentKey, Number(amount));
+      if (confirmed.ok) {
+        if (confirmed.data?.data?.deposit !== true) {
+          // 이 결제는 단체 예약금 주문이 아님(개인 구매 등) — 이 위젯이 처리할 대상이 아니므로
+          // 조용히 넘겨서 boot()가 평소 화면을 그리도록 함.
+          return false;
+        }
+        showDepositDoneState(state, Number(amount));
+        history.replaceState(null, '', location.pathname);
+        return true;
+      }
+      showConfirmFailedState(state, confirmed.data?.message);
+      history.replaceState(null, '', location.pathname);
+      return true;
+    } else if (failCode) {
+      // 실패 리다이렉트에는 상품 구분 정보가 없어 개인구매 위젯과 동시에 뜰 수 있음(허용 가능한 수준의 중복 안내).
+      const orderIdFromFail = params.get('orderId') || '';
+      state.mountEl.innerHTML = `
+        <div class="hhgd-state">
+          <strong>결제가 취소됐어요</strong>
+          ${params.get('message') || '결제가 완료되지 않았습니다.'}
+          <div class="sub">${orderIdFromFail ? '접수번호 ' + orderIdFromFail + ' · ' : ''}다시 시도하시려면 아래에서 다시 결제를 진행해주세요.</div>
+        </div>`;
+      history.replaceState(null, '', location.pathname);
+      return true;
+    }
+    return false;
+  }
+
+  global.HHGroupDepositWidget = { init };
+})(window);
