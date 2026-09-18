@@ -58,6 +58,8 @@
   const SB_URL = 'https://xoupacfmkhuuvxebgfqi.supabase.co';
   const SB_KEY = 'sb_publishable_46KQebvC7_S-_JDramvDmA_jk9aSeVc';
   const FN_URL = `${SB_URL}/functions/v1/payment-confirm`;
+  // 휴대폰 본인확인(SMS 인증번호) 전용 Edge Function (2026-09-18 추가)
+  const FN2_URL = `${SB_URL}/functions/v1/phone-verify`;
   // ✅ 라이브(실결제) 키. 실제 카드 청구가 발생합니다. Edge Function Secrets의 TOSS_SECRET_KEY도 live_sk_ 키여야 정상 동작(API 개별연동 키 사용).
   // (buy-widget.js의 TOSS_CLIENT_KEY와 반드시 같은 값으로 유지)
   const TOSS_CLIENT_KEY = 'live_ck_BX7zk2yd8yqLlQDyRAXv8x9POLqK';
@@ -113,6 +115,18 @@
     return { ok: res.ok, status: res.status, data };
   }
 
+  // phone-verify 전용 fetch (본인확인 send/confirm 호출용, 2026-09-18 추가)
+  async function fnFetch2(path, body) {
+    const res = await fetch(`${FN2_URL}/${path}`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body || {}),
+    });
+    const data = await res.json().catch(() => ({}));
+    return { ok: res.ok, status: res.status, data };
+  }
+
+  function digitsOf(v) { return String(v || '').replace(/[^0-9]/g, ''); }
+  function isValidPhoneDigits(d) { return /^01[0-9]{8,9}$/.test(d); }
+
   // 토스 결제창에서 돌아온 직후 /confirm 호출은 딱 한 번만 나가야 합니다. 한 페이지에
   // 개인구매(HHBuyWidget)와 단체예약금(HHGroupDepositWidget) 위젯이 함께 마운트된 경우
   // 둘 다 같은 orderId로 동시에 /confirm을 부르면, 토스 결제 서버가 두 번째 요청을
@@ -157,6 +171,21 @@
       .hhgd-method-btn:hover{border-color:#ff6b5c;color:#ff6b5c}
       .hhgd-method-btn:disabled{opacity:.5;cursor:not-allowed}
       .hhgd-msg{font-size:12px;color:#dc2626;margin-top:10px;line-height:1.6}
+      .hhgd-phone-row{display:flex;gap:8px}
+      .hhgd-phone-row input{flex:1;min-width:0}
+      .hhgd-otp-btn{white-space:nowrap;padding:0 14px;border:1.5px solid #1d6fe0;border-radius:8px;background:#fff;color:#1d6fe0;font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit}
+      .hhgd-otp-btn:hover{background:#eef4ff}
+      .hhgd-otp-btn:disabled{opacity:.5;cursor:not-allowed}
+      .hhgd-otp-row{display:flex;gap:8px;margin-top:8px}
+      .hhgd-otp-row input{flex:1;min-width:0;padding:11px 12px;border:1px solid #e2e9f2;border-radius:8px;font-size:14.5px;font-family:inherit;background:#fff;box-sizing:border-box}
+      .hhgd-otp-row input:focus{outline:none;border-color:#1d6fe0}
+      .hhgd-otp-status{font-size:12px;margin-top:6px;line-height:1.6;color:#64748b}
+      .hhgd-otp-status.ok{color:#16a34a;font-weight:700}
+      .hhgd-otp-status.err{color:#dc2626}
+      .hhgd-checkbox-row{display:flex;align-items:center;margin-bottom:12px}
+      .hhgd-checkbox-label{display:flex!important;align-items:center;gap:7px;font-size:13px!important;font-weight:600!important;color:#16202e!important;cursor:pointer;margin-bottom:0!important}
+      .hhgd-checkbox-label input{width:auto!important;padding:0!important}
+      .hhgd-recipient-section{background:#fff;border:1px solid #e2e9f2;border-radius:10px;padding:12px 14px 2px;margin-bottom:12px}
       .hhgd-test-badge{display:inline-block;background:#ffb648;color:#4a2e00;font-size:11px;font-weight:800;padding:5px 11px;border-radius:999px;margin-bottom:14px}
       .hhgd-state strong{display:block;font-size:15px;margin-bottom:8px;color:#16202e}
       .hhgd-state{font-size:13.5px;color:#16202e;line-height:1.8}
@@ -186,6 +215,8 @@
       minCount: opts.minCount || MIN_GROUP_SIZE,
       price: null,
       tiers: null,
+      // 휴대폰 본인확인 상태 (2026-09-18 추가) — render()가 새로 그려질 때마다 초기화됨
+      otp: { verified: false, token: null, verifiedPhone: null },
     };
 
     mountEl.classList.add('hhgd-box');
@@ -253,8 +284,26 @@
       ${tierOptionsHtml}
       <div class="hhgd-amount-row"><span class="l" id="hhgd-amount-label">1인 ${state.tiers ? '단체유형을 선택해주세요' : money(state.price)} × <span id="hhgd-count-display">${state.countInput.value || 0}</span>명</span><span class="amt" id="hhgd-amount">${state.tiers ? '—' : money(state.price * (parseInt(state.countInput.value, 10) || 0))}</span></div>
       <div class="hhgd-field"><label>담당자 이름</label><input type="text" id="hhgd-name" placeholder="이름을 입력해주세요"></div>
-      <div class="hhgd-field"><label>연락처</label><input type="tel" id="hhgd-phone" placeholder="010-0000-0000"></div>
+      <div class="hhgd-field">
+        <label>연락처 (본인확인 필요)</label>
+        <div class="hhgd-phone-row">
+          <input type="tel" id="hhgd-phone" placeholder="010-0000-0000">
+          <button type="button" class="hhgd-otp-btn" id="hhgd-otp-send">인증번호 받기</button>
+        </div>
+        <div class="hhgd-otp-row" id="hhgd-otp-row" style="display:none">
+          <input type="text" id="hhgd-otp-code" placeholder="인증번호 6자리" maxlength="6" inputmode="numeric">
+          <button type="button" class="hhgd-otp-btn" id="hhgd-otp-confirm">확인</button>
+        </div>
+        <div class="hhgd-otp-status" id="hhgd-otp-status"></div>
+      </div>
       <div class="hhgd-field"><label>이메일 (선택)</label><input type="email" id="hhgd-email" placeholder="안내 발송용"></div>
+      <div class="hhgd-field hhgd-checkbox-row">
+        <label class="hhgd-checkbox-label"><input type="checkbox" id="hhgd-recipient-same" checked> 안내문자 받으실 분이 담당자와 동일해요</label>
+      </div>
+      <div class="hhgd-recipient-section" id="hhgd-recipient-section" style="display:none">
+        <div class="hhgd-field"><label>받는사람 이름</label><input type="text" id="hhgd-recipient-name" placeholder="안내를 받으실 분 이름"></div>
+        <div class="hhgd-field"><label>받는사람 연락처</label><input type="tel" id="hhgd-recipient-phone" placeholder="010-0000-0000"></div>
+      </div>
       <div class="hhgd-btn-row">
         <button type="button" class="hhgd-btn hhgd-btn-inquiry" id="hhgd-inquiry">예약문의하기</button>
         <button type="button" class="hhgd-btn" id="hhgd-submit">예약금 결제하기 →</button>
@@ -270,6 +319,82 @@
     const submitBtn = mountEl.querySelector('#hhgd-submit');
     const inquiryBtn = mountEl.querySelector('#hhgd-inquiry');
     if (inquiryBtn) inquiryBtn.onclick = () => goToInquiry(state);
+
+    // ── 휴대폰 본인확인(OTP) — 2026-09-18 추가 ────────────────────────
+    const phoneInput = mountEl.querySelector('#hhgd-phone');
+    const otpSendBtn = mountEl.querySelector('#hhgd-otp-send');
+    const otpRow = mountEl.querySelector('#hhgd-otp-row');
+    const otpCodeInput = mountEl.querySelector('#hhgd-otp-code');
+    const otpConfirmBtn = mountEl.querySelector('#hhgd-otp-confirm');
+    const otpStatusEl = mountEl.querySelector('#hhgd-otp-status');
+
+    function setOtpStatus(text, kind) {
+      otpStatusEl.textContent = text || '';
+      otpStatusEl.className = 'hhgd-otp-status' + (kind ? ' ' + kind : '');
+    }
+
+    // 인증 완료 후에 번호를 바꾸면 그 토큰은 더 이상 이 번호 것이 아니므로 무효화하고
+    // 처음부터 다시 인증하도록 화면을 되돌린다.
+    function resetOtpIfPhoneChanged() {
+      if (!state.otp.verified) return;
+      if (digitsOf(phoneInput.value) === state.otp.verifiedPhone) return;
+      state.otp.verified = false; state.otp.token = null; state.otp.verifiedPhone = null;
+      otpRow.style.display = 'none';
+      otpCodeInput.value = '';
+      phoneInput.disabled = false;
+      otpSendBtn.disabled = false; otpSendBtn.textContent = '인증번호 받기';
+      setOtpStatus('번호가 바뀌어서 본인확인을 다시 해주세요.', 'err');
+    }
+    bindOnce(phoneInput, 'input', resetOtpIfPhoneChanged);
+
+    otpSendBtn.onclick = async () => {
+      const phone = digitsOf(phoneInput.value);
+      if (!isValidPhoneDigits(phone)) {
+        setOtpStatus('휴대폰 번호를 다시 확인해주세요 (010-0000-0000 형식).', 'err');
+        phoneInput.focus();
+        return;
+      }
+      otpSendBtn.disabled = true; otpSendBtn.textContent = '발송 중...';
+      const r = await fnFetch2('send', { phone: phoneInput.value });
+      if (!r.ok) {
+        otpSendBtn.disabled = false; otpSendBtn.textContent = '인증번호 받기';
+        setOtpStatus(r.data?.message || '인증번호 발송에 실패했습니다.', 'err');
+        return;
+      }
+      otpRow.style.display = 'flex';
+      otpSendBtn.disabled = false; otpSendBtn.textContent = '재발송';
+      setOtpStatus('인증번호를 보냈어요. 5분 이내에 입력해주세요.');
+      otpCodeInput.focus();
+    };
+
+    otpConfirmBtn.onclick = async () => {
+      const phone = digitsOf(phoneInput.value);
+      const code = otpCodeInput.value.trim();
+      if (!code) { setOtpStatus('인증번호를 입력해주세요.', 'err'); return; }
+      otpConfirmBtn.disabled = true; otpConfirmBtn.textContent = '확인 중...';
+      const r = await fnFetch2('confirm', { phone: phoneInput.value, code });
+      otpConfirmBtn.disabled = false; otpConfirmBtn.textContent = '확인';
+      if (!r.ok) {
+        setOtpStatus(r.data?.message || '인증번호가 일치하지 않습니다.', 'err');
+        return;
+      }
+      state.otp.verified = true;
+      state.otp.token = r.data?.data?.verificationToken || null;
+      state.otp.verifiedPhone = phone;
+      otpRow.style.display = 'none';
+      phoneInput.disabled = true;
+      otpSendBtn.disabled = true; otpSendBtn.textContent = '인증완료';
+      setOtpStatus('✅ 본인확인이 완료됐어요.', 'ok');
+    };
+
+    // ── 받는사람(구매자와 동일 체크) — 2026-09-18 추가 ─────────────────
+    const recipientSameChk = mountEl.querySelector('#hhgd-recipient-same');
+    const recipientSection = mountEl.querySelector('#hhgd-recipient-section');
+    function syncRecipientSection() {
+      recipientSection.style.display = recipientSameChk.checked ? 'none' : 'block';
+    }
+    bindOnce(recipientSameChk, 'change', syncRecipientSection);
+    syncRecipientSection();
 
     const syncAmount = () => {
       const c = Math.max(0, parseInt(state.countInput.value, 10) || 0);
@@ -326,6 +451,9 @@
     const name = mountEl.querySelector('#hhgd-name').value.trim();
     const phone = mountEl.querySelector('#hhgd-phone').value.trim();
     const email = mountEl.querySelector('#hhgd-email').value.trim();
+    const recipientSameChk = mountEl.querySelector('#hhgd-recipient-same');
+    const recipientNameInput = mountEl.querySelector('#hhgd-recipient-name');
+    const recipientPhoneInput = mountEl.querySelector('#hhgd-recipient-phone');
     const count = parseInt(countInput.value, 10);
     const msg = mountEl.querySelector('#hhgd-msg');
     const btn = mountEl.querySelector('#hhgd-submit');
@@ -344,12 +472,27 @@
     }
     if (!name) { msg.textContent = '담당자 이름을 입력해주세요.'; return; }
     if (!phone) { msg.textContent = '연락처를 입력해주세요.'; return; }
+    // 휴대폰 본인확인이 안 끝났거나, 인증 이후 번호를 바꿔서 무효화된 경우 (2026-09-18 추가)
+    if (!state.otp.verified || state.otp.verifiedPhone !== digitsOf(phone)) {
+      msg.textContent = '휴대폰 본인확인을 완료해주세요 ("인증번호 받기" → 확인).';
+      return;
+    }
+    let recipientName = '';
+    let recipientPhone = '';
+    if (!recipientSameChk.checked) {
+      recipientName = recipientNameInput.value.trim();
+      recipientPhone = recipientPhoneInput.value.trim();
+      if (!recipientName) { msg.textContent = '받는사람 이름을 입력해주세요.'; recipientNameInput.focus(); return; }
+      if (!recipientPhone) { msg.textContent = '받는사람 연락처를 입력해주세요.'; recipientPhoneInput.focus(); return; }
+    }
     msg.textContent = '';
 
     btn.disabled = true; btn.textContent = '신청 접수 중...';
     const created = await fnFetch('create', {
       productId: state.productId, quantity: count, buyerName: name, buyerPhone: phone,
       buyerEmail: email || undefined, depositMode: true, tier: tier || undefined,
+      recipientName: recipientName || undefined, recipientPhone: recipientPhone || undefined,
+      verificationToken: state.otp.token, guestPurchase: true,
     });
 
     if (!created.ok) {
