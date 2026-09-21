@@ -395,7 +395,7 @@ const sb = supabase.createClient(SB_URL, SB_KEY);
 
 const PRODUCT_ID = 'oceanworld_group';
 const MIN_GROUP_SIZE = 20;
-const TOSS_CLIENT_KEY = 'test_ck_mBZ1gQ4YVXjkO0AlJW968l2KPoqN';
+const TOSS_CLIENT_KEY = 'live_ck_BX7zk2yd8yqLlQDyRAXv8x9POLqK';
 
 // ── 대표메일 알림 (EmailJS) — oceanworld.html/reserve.html과 같은 설정값 재사용 ──
 const EMAILJS_PUBLIC_KEY = 'x4v1t-GUbsUgOBqpF';
@@ -625,7 +625,7 @@ function showApplicationReceivedState(orderId, amount, phone) {
 function renderPaymentStep(orderId, amount, buyerName, buyerEmail) {
   const body = document.getElementById('m-body');
   body.innerHTML = `
-    <div class="test-badge">테스트 결제 모드 · 실제 청구 없음</div>
+    ${TOSS_CLIENT_KEY.startsWith('test_') ? '<div class=\"test-badge\">테스트 결제 모드 · 실제 청구 없음</div>' : ''}
     <div class="mprice-row"><span class="l">결제 금액</span><span class="amt">${money(amount)}</span></div>
     <div class="pay-method-grid" id="pay-method-grid">
       <button type="button" class="paymethod-btn" data-method="카드">💳 카드로 결제</button>

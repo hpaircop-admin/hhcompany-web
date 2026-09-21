@@ -472,7 +472,7 @@ const sb = supabase.createClient(SB_URL, SB_KEY);
 const PRODUCT_ID = 'oceanworld_group';
 const VENUE_NAME = '오션월드';
 const MIN_GROUP_SIZE = 20;
-const TOSS_CLIENT_KEY = 'test_ck_mBZ1gQ4YVXjkO0AlJW968l2KPoqN';
+const TOSS_CLIENT_KEY = 'live_ck_BX7zk2yd8yqLlQDyRAXv8x9POLqK';
 
 // 참여 지정일 목록은 admin(상품관리 > 오션월드 모집형)에서 등록한 날짜를
 // products.group_dates 컬럼에서 실시간으로 불러옵니다 — 코드 수정 없이
@@ -625,7 +625,7 @@ async function submitApplication() {
 
 function renderPaymentStep(orderId, amount, buyerName, buyerEmail) {
   box.innerHTML = `
-    <div class="gr-test-badge">테스트 결제 모드 · 실제 청구 없음</div>
+    ${TOSS_CLIENT_KEY.startsWith('test_') ? '<div class=\"gr-test-badge\">테스트 결제 모드 · 실제 청구 없음</div>' : ''}
     <div class="gr-amount-row"><span class="l">결제 금액</span><span class="amt">${money(amount)}</span></div>
     <div class="gr-methods" id="gr-method-grid">
       <button type="button" class="gr-method-btn" data-method="카드">💳 카드로 결제</button>

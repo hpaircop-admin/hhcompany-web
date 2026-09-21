@@ -516,7 +516,7 @@ function renderModalBody() {
 // 실제 청구가 발생하지 않습니다. 정식 오픈 시 이 값을 실제 발급받은
 // live_ck_ 키로 교체하고, Supabase Edge Function Secrets의
 // TOSS_SECRET_KEY도 함께 live_sk_ 키로 바꿔야 합니다.
-const TOSS_CLIENT_KEY = 'test_ck_mBZ1gQ4YVXjkO0AlJW968l2KPoqN';
+const TOSS_CLIENT_KEY = 'live_ck_BX7zk2yd8yqLlQDyRAXv8x9POLqK';
 
 async function submitTicket() {
   const name = document.getElementById('m-name').value.trim();
@@ -555,7 +555,7 @@ async function submitTicket() {
 async function renderPaymentStep(orderId, amount, orderName, buyerName, buyerEmail) {
   const body = document.getElementById('m-body');
   body.innerHTML = `
-    <div class="test-badge">테스트 결제 모드 · 실제 청구 없음</div>
+    ${TOSS_CLIENT_KEY.startsWith('test_') ? '<div class=\"test-badge\">테스트 결제 모드 · 실제 청구 없음</div>' : ''}
     <div class="mprice-row"><span class="l">결제 금액</span><span class="amt">${money(amount)}</span></div>
     <div class="pay-method-grid" id="pay-method-grid">
       <button type="button" class="paymethod-btn" data-method="카드">💳 카드로 결제</button>
