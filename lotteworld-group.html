@@ -121,8 +121,6 @@ const PRODUCT_ID = 'lotteworld_group';
 // ⚠️ 최소 모집 인원 — 오션월드 모집형은 20명. 다른 숫자로 바꾸고 싶으면
 // 이 값만 수정하면 됨 (코드 수정 요청 시 이 줄 번호를 알려주면 바로 바꿔드립니다).
 const MIN_GROUP_SIZE = 30;
-// ⚠️ 1회 결제로 구매 가능한 최대 매수 제한 — 2026-09-17 사용자 요청으로 4매로 제한.
-const MAX_QTY_PER_ORDER = 6;
 const TOSS_CLIENT_KEY = 'live_ck_BX7zk2yd8yqLlQDyRAXv8x9POLqK';
 
 // 참여 지정일 목록은 admin(상품관리 > 롯데월드 모집형)에서 등록한 날짜를
@@ -226,7 +224,6 @@ function render() {
         </div>
       </div>
     </div>
-    <div style="color:#d3352b;font-size:11px;font-weight:700;margin-top:4px">1회 신청 시 최대 ${MAX_QTY_PER_ORDER}매까지 구매 가능합니다.</div>
     <div class="gr-amount-row"><span class="l">결제 예정 금액</span><span class="amt" id="gr-amount">${money(PRICE)}</span></div>
     <p class="gr-note"><a href="#member-policy" style="color:#a51d14;font-weight:800;text-decoration:underline">[필수] 하단 회원 전용 구매 유의사항 확인 및 동의 ↓</a></p>
     <button type="button" class="gr-btn" id="gr-submit">신청 및 결제하기</button>
@@ -330,14 +327,12 @@ function render() {
     const total = adultCount + minorCount;
     amountEl.textContent = money(PRICE * total);
     adultMinus.disabled = !(adultCount > 0 && total > 1);
-    adultPlus.disabled = total >= MAX_QTY_PER_ORDER;
     minorMinus.disabled = minorCount <= 0;
-    minorPlus.disabled = total >= MAX_QTY_PER_ORDER;
   }
   adultMinus.onclick = () => { if (adultCount > 0 && (adultCount + minorCount) > 1) { adultCount--; renderQty(); } };
-  adultPlus.onclick = () => { if (adultCount + minorCount < MAX_QTY_PER_ORDER) { adultCount++; renderQty(); } };
+  adultPlus.onclick = () => { adultCount++; renderQty(); };
   minorMinus.onclick = () => { if (minorCount > 0) { minorCount--; renderQty(); } };
-  minorPlus.onclick = () => { if (adultCount + minorCount < MAX_QTY_PER_ORDER) { minorCount++; renderQty(); } };
+  minorPlus.onclick = () => { minorCount++; renderQty(); };
   renderQty();
 
   document.getElementById('gr-submit').onclick = submitApplication;
@@ -361,7 +356,7 @@ async function submitApplication() {
   const visitDate = document.getElementById('gr-date').value;
   const adultN = parseInt(document.getElementById('gr-adult-val').textContent, 10) || 0;
   const minorN = parseInt(document.getElementById('gr-minor-val').textContent, 10) || 0;
-  const qty = Math.min(MAX_QTY_PER_ORDER, Math.max(1, adultN + minorN));
+  const qty = Math.max(1, adultN + minorN);
   const msg = document.getElementById('gr-msg');
   const btn = document.getElementById('gr-submit');
   const recipientSameChk = document.getElementById('gr-recipient-same');
