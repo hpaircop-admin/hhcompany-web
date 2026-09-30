@@ -233,14 +233,25 @@
     }
 
     if (!state.session) {
+      // 로그인 전에도 인원 수를 미리 체크해보고 예상 금액을 볼 수 있게 함. 실제 결제는
+      // 로그인 후에만 진행되고(이 값은 미리보기일 뿐 서버로 전송되지 않음), 로그인하면
+      // 아래 인원 수 입력칸에서 다시 고르면 됩니다.
       const redirectTo = encodeURIComponent(location.pathname + location.search + '#' + (mountEl.id || 'buy'));
       mountEl.innerHTML = `
         <div class="hhbw-label">${currentTicketLabel(state)} (1인)</div>
         <div class="hhbw-price" id="hhbw-price">${money(price)}<small> / 1인</small></div>
         ${ticketSelectHtml(state)}
+        <div class="hhbw-field"><label>인원 수</label><input type="number" id="hhbw-qty-preview" value="1" min="1" max="20"></div>
+        <div class="hhbw-amount-row"><span class="l">예상 결제 금액</span><span class="amt" id="hhbw-amount-preview">${money(price)}</span></div>
         <a class="hhbw-btn" href="login.html?redirect=${redirectTo}">로그인하고 구매하기 →</a>
         <div class="hhbw-note">회원가입/로그인 후 온라인으로 바로 결제하실 수 있어요. 처음이시면 로그인 화면에서 바로 가입도 가능합니다.</div>
       `;
+      const qtyPreview = mountEl.querySelector('#hhbw-qty-preview');
+      const amountPreview = mountEl.querySelector('#hhbw-amount-preview');
+      qtyPreview.oninput = () => {
+        const q = Math.max(1, parseInt(qtyPreview.value, 10) || 1);
+        amountPreview.textContent = money(state.price * q);
+      };
       const sel = mountEl.querySelector('#hhbw-ticket-select');
       if (sel) sel.onchange = () => { state.ticketIndex = parseInt(sel.value, 10) || 0; state.price = state.indivTickets[state.ticketIndex].price; render(state); };
       return;
