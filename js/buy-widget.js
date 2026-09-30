@@ -1,7 +1,7 @@
 /* ==========================================================================
    HH 개인 구매 위젯 (공용 모듈)
    ------------------------------------------------------------------------
-   각 상품 페이지에 아래 3가지만 추가하면 로그인 기반 개인 구매 UI가 삽입됩니다.
+   각 상품 페이지에 아래 3가지만 추가하면 휴대폰 본인확인 기반 개인 구매 UI가 삽입됩니다.
 
    1) <head> 또는 </body> 직전에 스크립트 3개 추가 (buy-widget.js는 반드시 마지막):
       <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -17,10 +17,12 @@
       </script>
 
    ------------------------------------------------------------------------
-   동작:
-   - 로그인 안 돼있으면 "로그인하고 구매하기" 버튼 → login.html?redirect=현재페이지%23buy
-   - 로그인 돼있으면 회원 정보(이름/연락처)를 자동으로 채운 구매 폼 표시
-   - 인원수 입력 → 토스페이먼츠 결제창(V1) 호출 → payment-confirm Edge Function으로 승인
+   동작 (2026-09-30부터: 로그인 → 휴대폰 본인확인으로 전환):
+   - 로그인 불필요. group-deposit-widget.js와 동일하게 휴대폰 인증번호(OTP)로
+     본인확인 후 바로 구매. 로그인해서 이미 회원 프로필이 있으면 이름/연락처는
+     편의상 자동으로 채워주지만, 그래도 인증번호 확인은 항상 해야 결제 버튼이
+     열림(휴대폰 번호가 진짜 그 사람 것인지 매 구매마다 다시 확인).
+   - 인원수·이용권 선택 → 토스페이먼츠 결제창(V1) 호출 → payment-confirm Edge Function으로 승인
    - 승인 성공 시 ticket.html?pin=... 로 이동 (기존 흐름과 동일)
    - 결제창에서 successUrl/failUrl로 돌아왔을 때(새로고침 후)도 자동으로 이어서 처리
    ========================================================================== */
@@ -28,6 +30,8 @@
   const SB_URL = 'https://xoupacfmkhuuvxebgfqi.supabase.co';
   const SB_KEY = 'sb_publishable_46KQebvC7_S-_JDramvDmA_jk9aSeVc';
   const FN_URL = `${SB_URL}/functions/v1/payment-confirm`;
+  // 휴대폰 본인확인(SMS 인증번호) 전용 Edge Function (group-deposit-widget.js와 동일)
+  const FN2_URL = `${SB_URL}/functions/v1/phone-verify`;
   // ✅ 라이브(실결제) 키. 실제 카드 청구가 발생합니다. Edge Function Secrets의 TOSS_SECRET_KEY도 live_sk_ 키여야 정상 동작(API 개별연동 키 사용).
   const TOSS_CLIENT_KEY = 'live_ck_BX7zk2yd8yqLlQDyRAXv8x9POLqK';
 
@@ -38,9 +42,30 @@
   }
 
   function money(n) { return Number(n || 0).toLocaleString('ko-KR') + '원'; }
+  function digitsOf(v) { return String(v || '').replace(/[^0-9]/g, ''); }
+  function isValidPhoneDigits(d) { return /^01[0-9]{8,9}$/.test(d); }
+
+  // 같은 엘리먼트·이벤트에 리스너를 다시 걸기 전에 이전 것을 지워서, render()가 다시
+  // 불려도(이용권 변경 등) 리스너가 계속 쌓이지 않게 함 (group-deposit-widget.js와 동일)
+  function bindOnce(el, eventName, handler) {
+    if (!el) return;
+    const key = '_hhbwListener_' + eventName;
+    if (el[key]) el.removeEventListener(eventName, el[key]);
+    el.addEventListener(eventName, handler);
+    el[key] = handler;
+  }
 
   async function fnFetch(path, body) {
     const res = await fetch(`${FN_URL}/${path}`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body || {}),
+    });
+    const data = await res.json().catch(() => ({}));
+    return { ok: res.ok, status: res.status, data };
+  }
+
+  // phone-verify 전용 fetch (본인확인 send/confirm 호출용, group-deposit-widget.js와 동일)
+  async function fnFetch2(path, body) {
+    const res = await fetch(`${FN2_URL}/${path}`, {
       method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body || {}),
     });
     const data = await res.json().catch(() => ({}));
@@ -88,6 +113,17 @@
       .hhbw-method-btn:hover{border-color:#1d6fe0;color:#1d6fe0}
       .hhbw-method-btn:disabled{opacity:.5;cursor:not-allowed}
       .hhbw-msg{font-size:12px;color:#dc2626;margin-top:10px;line-height:1.6}
+      .hhbw-phone-row{display:flex;gap:8px}
+      .hhbw-phone-row input{flex:1;min-width:0}
+      .hhbw-otp-btn{white-space:nowrap;padding:0 14px;border:1.5px solid #1d6fe0;border-radius:8px;background:#fff;color:#1d6fe0;font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit}
+      .hhbw-otp-btn:hover{background:#eef4ff}
+      .hhbw-otp-btn:disabled{opacity:.5;cursor:not-allowed}
+      .hhbw-otp-row{display:flex;gap:8px;margin-top:8px}
+      .hhbw-otp-row input{flex:1;min-width:0;padding:11px 12px;border:1px solid #e2e9f2;border-radius:8px;font-size:14.5px;font-family:inherit;background:#fafbfd;box-sizing:border-box}
+      .hhbw-otp-row input:focus{outline:none;border-color:#1d6fe0;background:#fff}
+      .hhbw-otp-status{font-size:12px;margin-top:6px;line-height:1.6;color:#64748b}
+      .hhbw-otp-status.ok{color:#16a34a;font-weight:700}
+      .hhbw-otp-status.err{color:#dc2626}
       .hhbw-test-badge{display:inline-block;background:#ffb648;color:#4a2e00;font-size:11px;font-weight:800;padding:5px 11px;border-radius:999px;margin-bottom:14px}
       .hhbw-state strong{display:block;font-size:15px;margin-bottom:8px}
       .hhbw-state{font-size:13.5px;color:#16202e;line-height:1.8}
@@ -109,6 +145,8 @@
       price: null,
       session: null,
       profile: null,
+      // 휴대폰 본인확인 상태 (2026-09-30부터 로그인 대신 이걸로 구매를 허용)
+      otp: { verified: false, token: null, verifiedPhone: null },
     };
 
     mountEl.classList.add('hhbw-box');
@@ -232,31 +270,9 @@
       return;
     }
 
-    if (!state.session) {
-      // 로그인 전에도 인원 수를 미리 체크해보고 예상 금액을 볼 수 있게 함. 실제 결제는
-      // 로그인 후에만 진행되고(이 값은 미리보기일 뿐 서버로 전송되지 않음), 로그인하면
-      // 아래 인원 수 입력칸에서 다시 고르면 됩니다.
-      const redirectTo = encodeURIComponent(location.pathname + location.search + '#' + (mountEl.id || 'buy'));
-      mountEl.innerHTML = `
-        <div class="hhbw-label">${currentTicketLabel(state)} (1인)</div>
-        <div class="hhbw-price" id="hhbw-price">${money(price)}<small> / 1인</small></div>
-        ${ticketSelectHtml(state)}
-        <div class="hhbw-field"><label>인원 수</label><input type="number" id="hhbw-qty-preview" value="1" min="1" max="20"></div>
-        <div class="hhbw-amount-row"><span class="l">예상 결제 금액</span><span class="amt" id="hhbw-amount-preview">${money(price)}</span></div>
-        <a class="hhbw-btn" href="login.html?redirect=${redirectTo}">로그인하고 구매하기 →</a>
-        <div class="hhbw-note">회원가입/로그인 후 온라인으로 바로 결제하실 수 있어요. 처음이시면 로그인 화면에서 바로 가입도 가능합니다.</div>
-      `;
-      const qtyPreview = mountEl.querySelector('#hhbw-qty-preview');
-      const amountPreview = mountEl.querySelector('#hhbw-amount-preview');
-      qtyPreview.oninput = () => {
-        const q = Math.max(1, parseInt(qtyPreview.value, 10) || 1);
-        amountPreview.textContent = money(state.price * q);
-      };
-      const sel = mountEl.querySelector('#hhbw-ticket-select');
-      if (sel) sel.onchange = () => { state.ticketIndex = parseInt(sel.value, 10) || 0; state.price = state.indivTickets[state.ticketIndex].price; render(state); };
-      return;
-    }
-
+    // 로그인 중이면 이름/연락처/이메일을 편의상 미리 채워주지만(회원 프로필), 그래도
+    // 구매 전에는 항상 휴대폰 인증번호 확인을 거쳐야 함 — group-deposit-widget.js와
+    // 동일하게 로그인 여부와 상관없이 "지금 이 번호가 본인 것"인지 매 구매마다 확인.
     const prefillName = state.profile?.name || '';
     const prefillPhone = state.profile?.phone || '';
     const prefillEmail = state.profile?.email || '';
@@ -266,7 +282,18 @@
       <div class="hhbw-price" id="hhbw-price">${money(price)}<small> / 1인</small></div>
       ${ticketSelectHtml(state)}
       <div class="hhbw-field"><label>구매자 이름</label><input type="text" id="hhbw-name" value="${escapeAttr(prefillName)}" placeholder="이름을 입력해주세요"></div>
-      <div class="hhbw-field"><label>연락처</label><input type="tel" id="hhbw-phone" value="${escapeAttr(prefillPhone)}" placeholder="010-0000-0000"></div>
+      <div class="hhbw-field">
+        <label>연락처 (본인확인 필요)</label>
+        <div class="hhbw-phone-row">
+          <input type="tel" id="hhbw-phone" value="${escapeAttr(prefillPhone)}" placeholder="010-0000-0000">
+          <button type="button" class="hhbw-otp-btn" id="hhbw-otp-send">인증번호 받기</button>
+        </div>
+        <div class="hhbw-otp-row" id="hhbw-otp-row" style="display:none">
+          <input type="text" id="hhbw-otp-code" placeholder="인증번호 6자리" maxlength="6" inputmode="numeric">
+          <button type="button" class="hhbw-otp-btn" id="hhbw-otp-confirm">확인</button>
+        </div>
+        <div class="hhbw-otp-status" id="hhbw-otp-status"></div>
+      </div>
       <div class="hhbw-field"><label>이메일 (선택)</label><input type="email" id="hhbw-email" value="${escapeAttr(prefillEmail)}" placeholder="안내 발송용"></div>
       <div class="hhbw-field"><label>인원 수</label><input type="number" id="hhbw-qty" value="1" min="1" max="20"></div>
       <div class="hhbw-amount-row"><span class="l">결제 예정 금액</span><span class="amt" id="hhbw-amount">${money(price)}</span></div>
@@ -289,6 +316,75 @@
       mountEl.querySelector('#hhbw-price').innerHTML = `${money(state.price)}<small> / 1인</small>`;
       syncAmount();
     };
+
+    // ── 휴대폰 본인확인(OTP) ────────────────────────────────────────
+    const phoneInput = mountEl.querySelector('#hhbw-phone');
+    const otpSendBtn = mountEl.querySelector('#hhbw-otp-send');
+    const otpRow = mountEl.querySelector('#hhbw-otp-row');
+    const otpCodeInput = mountEl.querySelector('#hhbw-otp-code');
+    const otpConfirmBtn = mountEl.querySelector('#hhbw-otp-confirm');
+    const otpStatusEl = mountEl.querySelector('#hhbw-otp-status');
+
+    function setOtpStatus(text, kind) {
+      otpStatusEl.textContent = text || '';
+      otpStatusEl.className = 'hhbw-otp-status' + (kind ? ' ' + kind : '');
+    }
+
+    // 인증 완료 후 번호를 바꾸면 그 토큰은 더 이상 이 번호 것이 아니므로 무효화하고
+    // 처음부터 다시 인증하도록 되돌림 (프로필에서 자동으로 채워진 번호를 그대로 쓰는
+    // 경우에도 최초 1회는 인증을 받아야 함 — 아래에서 이미 인증된 상태로 시작하지 않음)
+    function resetOtpIfPhoneChanged() {
+      if (!state.otp.verified) return;
+      if (digitsOf(phoneInput.value) === state.otp.verifiedPhone) return;
+      state.otp = { verified: false, token: null, verifiedPhone: null };
+      otpRow.style.display = 'none';
+      otpCodeInput.value = '';
+      phoneInput.disabled = false;
+      otpSendBtn.disabled = false; otpSendBtn.textContent = '인증번호 받기';
+      setOtpStatus('번호가 바뀌어서 본인확인을 다시 해주세요.', 'err');
+    }
+    bindOnce(phoneInput, 'input', resetOtpIfPhoneChanged);
+
+    otpSendBtn.onclick = async () => {
+      const phone = digitsOf(phoneInput.value);
+      if (!isValidPhoneDigits(phone)) {
+        setOtpStatus('휴대폰 번호를 다시 확인해주세요 (010-0000-0000 형식).', 'err');
+        phoneInput.focus();
+        return;
+      }
+      otpSendBtn.disabled = true; otpSendBtn.textContent = '발송 중...';
+      const r = await fnFetch2('send', { phone: phoneInput.value });
+      if (!r.ok) {
+        otpSendBtn.disabled = false; otpSendBtn.textContent = '인증번호 받기';
+        setOtpStatus(r.data?.message || '인증번호 발송에 실패했습니다.', 'err');
+        return;
+      }
+      otpRow.style.display = 'flex';
+      otpSendBtn.disabled = false; otpSendBtn.textContent = '재발송';
+      setOtpStatus('인증번호를 보냈어요. 5분 이내에 입력해주세요.');
+      otpCodeInput.focus();
+    };
+
+    otpConfirmBtn.onclick = async () => {
+      const phone = digitsOf(phoneInput.value);
+      const code = otpCodeInput.value.trim();
+      if (!code) { setOtpStatus('인증번호를 입력해주세요.', 'err'); return; }
+      otpConfirmBtn.disabled = true; otpConfirmBtn.textContent = '확인 중...';
+      const r = await fnFetch2('confirm', { phone: phoneInput.value, code });
+      otpConfirmBtn.disabled = false; otpConfirmBtn.textContent = '확인';
+      if (!r.ok) {
+        setOtpStatus(r.data?.message || '인증번호가 일치하지 않습니다.', 'err');
+        return;
+      }
+      state.otp.verified = true;
+      state.otp.token = r.data?.data?.verificationToken || null;
+      state.otp.verifiedPhone = phone;
+      otpRow.style.display = 'none';
+      phoneInput.disabled = true;
+      otpSendBtn.disabled = true; otpSendBtn.textContent = '인증완료';
+      setOtpStatus('✅ 본인확인이 완료됐어요.', 'ok');
+    };
+
     mountEl.querySelector('#hhbw-submit').onclick = () => submitTicket(state);
   }
 
@@ -307,6 +403,11 @@
 
     if (!name) { msg.textContent = '이름을 입력해주세요.'; return; }
     if (!phone) { msg.textContent = '연락처를 입력해주세요.'; return; }
+    // 휴대폰 본인확인이 안 끝났거나, 인증 이후 번호를 바꿔서 무효화된 경우
+    if (!state.otp.verified || state.otp.verifiedPhone !== digitsOf(phone)) {
+      msg.textContent = '휴대폰 본인확인을 완료해주세요 ("인증번호 받기" → 확인).';
+      return;
+    }
     msg.textContent = '';
 
     btn.disabled = true; btn.textContent = '신청 접수 중...';
@@ -316,6 +417,8 @@
       // 권종(indiv_tickets)이 있는 상품이면 어떤 권종을 골랐는지 서버에 같이 전달
       // (서버가 그 권종의 가격을 다시 조회해서 금액을 확정 — 클라이언트 price는 참고용일 뿐 신뢰하지 않음)
       ticketType: state.indivTickets ? state.indivTickets[state.ticketIndex].type : undefined,
+      // 로그인 대신 휴대폰 본인확인으로 구매 (group-deposit-widget.js와 동일 방식)
+      verificationToken: state.otp.token, guestPurchase: true,
     });
 
     if (!created.ok) {
