@@ -59,7 +59,7 @@
 .route-sources{margin-top:20px;font-size:12px;line-height:1.8;color:#58655a}.route-sources summary{cursor:pointer;font-weight:700}.route-sources a{text-decoration:underline}
 .content .member-policy{width:100%;max-width:none;margin:32px 0;padding:26px;box-sizing:border-box}
 @media(max-width:600px){.arrival-panel,.wayfinding{padding:22px 18px}.arrival-flow{grid-template-columns:1fr;gap:8px}.arrival-flow li{display:flex;align-items:center;gap:12px;padding:12px 14px}.route-list{margin:20px 0}.route-list li{grid-template-columns:34px 1fr;gap:10px}.route-list .route-number{width:34px;height:34px}.route-list li:not(:last-child):before{left:16px;top:34px}.route-list .route-copy{padding:12px}.content .member-policy{padding:22px 16px}}
-</style></head><body>
+.gr-soon{display:flex;flex-direction:column;align-items:flex-start;gap:12px;padding:26px 22px;background:#f1f6e3;border:1px solid rgba(23,48,46,.12)}.gr-soon-tag{padding:5px 10px;background:#a9d02a;color:#17302e;font:800 11px/1 ui-monospace,monospace;letter-spacing:.16em}.gr-soon strong{font-size:20px;font-weight:800;letter-spacing:-.03em;color:#17302e}.gr-soon p{margin:0;font-size:14px;line-height:1.8;color:#4a5b58}.gr-soon .gr-soon-tel{font-weight:700;color:#17302e}</style></head><body>
 <header class="nav"><div class="container"><a class="brand" href="#top" aria-label="페이지 처음으로"><img src="assets/hh-logo.png" alt="더블에이치컴퍼니 로고" class="brand-logo"><span><strong>더블에이치컴퍼니</strong><small>MAKE YOUR DAY SPECIAL</small></span></a><nav class="navlinks"><a href="#experience">집결 · 티켓 수령</a><a href="#guide">이용 안내</a><a class="button" href="#apply">날짜 선택 · 예약 ↗</a></nav></div></header>
 <main id="top"><section class="hero container"><div class="hero-panel"><img src="products/롯데월드/롯데월드 어드벤처/퍼레이드사진.jpg" alt="롯데월드 캐릭터와 공연팀의 퍼레이드" fetchpriority="high"><div class="hero-copy"><div class="eyebrow">LOTTE WORLD ADVENTURE</div><span class="hero-badge">녹색어머니회원 가족 · 자유이용권</span><h1>오늘은 일상 대신,<br>롯데월드.</h1><p>함께 웃고, 마음껏 소리치고.<br>우리의 하루를 특별한 모험으로 채워보세요.</p><a class="button light" href="#apply">나의 모험 예약하기 <span>↗</span></a></div><span class="hero-bottom">A DAY FULL OF WONDER</span></div><div class="facts"><div class="fact"><span>EXPERIENCE</span><strong>롯데월드 어드벤처 자유이용권</strong></div><div class="fact"><span>RESERVATION</span><strong>지정일 선택 · 로그인 없이 바로 신청</strong></div><div class="fact"><span>PAYMENT</span><strong>신청 후 바로 온라인 결제</strong></div></div></section>
 <div class="container main-layout"><div class="content"><section class="section" id="experience" aria-labelledby="arrival-title">
@@ -187,7 +187,12 @@ function render() {
 
   if (!GROUP_DATES.length) {
     box.innerHTML = `
-      <div class="gr-note" style="margin-top:0">현재 신청 가능한 지정일이 없습니다. 031-339-2999로 문의해주세요.</div>`;
+      <div class="gr-soon">
+        <span class="gr-soon-tag">COMING SOON</span>
+        <strong>재정비 후 다시 오픈합니다</strong>
+        <p>더 나은 모습으로 준비해 곧 다시 찾아뵙겠습니다.<br>오픈 일정은 확정되는 대로 안내드리겠습니다.</p>
+        <p class="gr-soon-tel">문의 031-339-2999</p>
+      </div>`;
     return;
   }
 
