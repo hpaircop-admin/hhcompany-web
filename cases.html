@@ -28,12 +28,12 @@
 
   :root {
     --navy: #17302e;
-    --navy-deep: #0f211f;
+    --navy-deep: #17302e;
     --blue: #1f4f49;
     --sky: #a9d02a;
     --coral: #a9d02a;
     --amber: #a9d02a;
-    --cream: #eef1ee;
+    --cream: #f1f4f0;
     --ink: #17302e;
     --gray: #5d6b68;
     --line: rgba(23,48,46,0.14);
@@ -56,28 +56,28 @@
   header { background: #fff; }
   .topbar { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 11px 0; border-bottom: 1px solid var(--line); }
   .topbar-tag { font: 9.5px/1 ui-monospace, monospace; font-weight: 700; letter-spacing: 0.28em; color: var(--blue); }
-  .topbar-auth { display: flex; gap: 18px; font-size: 12px; font-weight: 500; color: #4a5b58; }
+  .topbar-auth { display: flex; gap: 18px; font-size: 12px; font-weight:600; color: #4a5b58; }
   .topbar-auth a { color: inherit; }
   .topbar-auth a:hover { color: var(--blue); }
   .header-row { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 22px 0; }
-  .header-cta { display: inline-block; padding: 16px 26px; background: var(--navy); color: #fff; font-size: 13.5px; font-weight: 600; letter-spacing: -0.01em; border-radius: 2px; white-space: nowrap; }
+  .header-cta { display: inline-block; padding: 16px 26px; background: var(--navy); color: #fff; font-size:14px; font-weight: 600; letter-spacing: -0.01em; border-radius:4px; white-space: nowrap; }
   .logo { display: flex; align-items: center; gap: 14px; flex-shrink: 0; }
   .brand-icon { width: 52px; height: 52px; flex-shrink: 0; object-fit: contain; }
   .logo-text { display: flex; flex-direction: column; gap: 4px; line-height: 1.2; }
   .logo-tag { font: 9px/1 ui-monospace, monospace; font-weight: 700; letter-spacing: 0.26em; color: #1f4f49; text-transform: uppercase; }
   .logo-word { font-family: var(--serif); font-size: 21px; font-weight: 700; letter-spacing: -0.03em; color: var(--navy); }
   .logo-word span { color: var(--blue); }
-  .logo-kr { font-size: 10px; font-weight: 500; color: var(--gray); letter-spacing: 0.02em; margin-top: 1px; font-family: 'Pretendard', sans-serif; }
+  .logo-kr { font-size:11px; font-weight:600; color: var(--gray); letter-spacing: 0.02em; margin-top: 1px; font-family: 'Pretendard', sans-serif; }
   .foot-brand .logo-word { color: #fff; }
   .foot-brand .logo-word span { color: var(--sky); }
-  .foot-brand .logo-tag { color: #a9d43f; }
+  .foot-brand .logo-tag { color: #a9d02a; }
   .foot-brand .logo-kr { color: rgba(255,255,255,0.55); }
   .foot-kakao { display: inline-flex; align-items: center; gap: 6px; color: #FEE500 !important; font-weight: 700; }
   .foot-kakao svg { width: 14px; height: 14px; }
   .nav { display: flex; align-items: center; justify-content: flex-start; position: relative; padding: 0 0 18px; border-bottom: 1px solid var(--line); }
   .nav-menu { display: flex; justify-content: flex-start; gap: 38px; list-style: none; }
   .nav-menu a {
-    display: inline-block; font-size: 14.5px; font-weight: 600; color: var(--ink); white-space: nowrap;
+    display: inline-block; font-size:15px; font-weight: 600; color: var(--ink); white-space: nowrap;
     letter-spacing: -0.02em; position: relative; padding: 4px 0;
   }
   .nav-menu a::after {
@@ -98,9 +98,9 @@
 
   /* -- 통계 요약 -- */
   .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: -46px; position: relative; z-index: 3; }
-  .stat-card { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 26px 22px; box-shadow: 0 12px 32px rgba(14,42,71,0.08); text-align: center; }
+  .stat-card { background: #fff; border: 1px solid var(--line); border-radius:12px; padding: 26px 22px; box-shadow: 0 12px 32px rgba(14,42,71,0.08); text-align: center; }
   .stat-card .num { font-family: var(--serif); font-size: 32px; font-weight: 800; color: var(--navy); }
-  .stat-card .label { font-size: 12.5px; color: var(--gray); margin-top: 6px; font-weight: 600; }
+  .stat-card .label { font-size:13px; color: var(--gray); margin-top: 6px; font-weight: 600; }
 
   .cases { background: var(--cream); }
   .cases-head { text-align: center; margin-bottom: 36px; }
@@ -109,19 +109,19 @@
   .cases-head p { font-size: 14px; color: var(--gray); margin-top: 10px; }
 
   .filter-row { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 34px; }
-  .filter-chip { border: 1px solid var(--line); background: #fff; color: var(--gray); font-size: 12.5px; font-weight: 600; padding: 8px 16px; border-radius: 20px; transition: all .2s; }
+  .filter-chip { border: 1px solid var(--line); background: #fff; color: var(--gray); font-size:13px; font-weight: 600; padding: 8px 16px; border-radius:16px; transition: all .2s; }
   .filter-chip:hover { border-color: var(--blue); color: var(--blue); }
   .filter-chip.active { background: var(--navy); border-color: var(--navy); color: #fff; }
 
   /* -- 블러 리스트 -- */
   .blur-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; max-width: 920px; margin: 0 auto; }
-  .blur-panel { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 20px 0 0; box-shadow: 0 12px 32px rgba(14,42,71,0.07); overflow: hidden; }
+  .blur-panel { background: #fff; border: 1px solid var(--line); border-radius:16px; padding: 20px 0 0; box-shadow: 0 12px 32px rgba(14,42,71,0.07); overflow: hidden; }
   .bp-head { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 800; color: var(--navy); padding: 0 22px 16px; }
   .bp-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-  .bp-dot.done { background: #34c98f; box-shadow: 0 0 0 4px rgba(52,201,143,0.15); }
+  .bp-dot.done { background: #1c8a45; box-shadow: 0 0 0 4px rgba(52,201,143,0.15); }
   .bp-dot.upcoming { background: var(--coral); box-shadow: 0 0 0 4px rgba(169,208,42,0.15); }
 
-  .blur-list-mask { position: relative; height: 340px; overflow: hidden; -webkit-mask-image: linear-gradient(to bottom, transparent, #000 8%, #000 88%, transparent); mask-image: linear-gradient(to bottom, transparent, #000 8%, #000 88%, transparent); }
+  .blur-list-mask { position: relative; height: 340px; overflow: hidden; -webkit-mask-image: linear-gradient(to bottom, transparent, #17302e 8%, #17302e 88%, transparent); mask-image: linear-gradient(to bottom, transparent, #17302e 8%, #17302e 88%, transparent); }
   .blur-list { position: absolute; top: 0; left: 0; right: 0; animation: scrollUp 34s linear infinite; animation-duration: var(--scroll-dur, 90s); }
   .blur-list:hover { animation-play-state: paused; }
   @keyframes scrollUp { from { transform: translateY(0); } to { transform: translateY(-50%); } }
@@ -130,12 +130,12 @@
   .bl-row:hover { filter: blur(0.4px); opacity: 1; }
   .bl-left { display: flex; align-items: center; gap: 8px; min-width: 0; }
   .bl-name { font-size: 13px; font-weight: 700; color: var(--navy); white-space: nowrap; }
-  .bl-gtype { font-size: 10.5px; font-weight: 700; color: var(--blue); background: rgba(31,79,73,0.08); padding: 3px 8px; border-radius: 5px; white-space: nowrap; }
+  .bl-gtype { font-size:11px; font-weight: 700; color: var(--blue); background: rgba(31,79,73,0.08); padding: 3px 8px; border-radius:4px; white-space: nowrap; }
   .bl-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
   .bl-date { font-size: 11px; color: var(--gray); font-weight: 600; }
-  .bl-count { font-size: 11.5px; font-weight: 700; color: var(--ink); }
+  .bl-count { font-size:12px; font-weight: 700; color: var(--ink); }
 
-  .blur-note { text-align: center; font-size: 11.5px; color: var(--gray); margin-top: 22px; }
+  .blur-note { text-align: center; font-size:12px; color: var(--gray); margin-top: 22px; }
 
   @media (max-width: 900px) {
     .blur-grid { grid-template-columns: 1fr; }
@@ -161,7 +161,7 @@
   .foot-links { display: flex; gap: 20px; padding: 22px 0; }
   .foot-links a { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.7); }
   .foot-links a:hover { color: var(--sky); }
-  .foot-links a.accent { color: #ff6b78; }
+  .foot-links a.accent { color: #ff8f99; }
   .foot-links a.accent:hover { color: #ff8f99; }
   .foot-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding: 18px 0; font-size: 12px; color: rgba(255,255,255,0.4); }
 
@@ -223,7 +223,7 @@
       <li><a href="reserve.html">예약문의</a></li>
     </ul>
     <button class="burger" aria-label="메뉴">
-      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0e2a47" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#17302e" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </button>
   </div>
 </header>

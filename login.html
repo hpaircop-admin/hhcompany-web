@@ -21,8 +21,8 @@
 <style>
   @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css');
   :root{
-    --navy:#17302e;--navy-deep:#0f211f;--blue:#1f4f49;--sky:#a9d02a;--coral:#a9d02a;--amber:#a9d02a;
-    --cream:#eef1ee;--ink:#17302e;--gray:#5d6b68;--line:rgba(23,48,46,0.14);
+    --navy:#17302e;--navy-deep:#17302e;--blue:#1f4f49;--sky:#a9d02a;--coral:#a9d02a;--amber:#a9d02a;
+    --cream:#f1f4f0;--ink:#17302e;--gray:#5d6b68;--line:rgba(23,48,46,0.14);
   }
   *{margin:0;padding:0;box-sizing:border-box}
   body{font-family:'Pretendard',-apple-system,sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;line-height:1.6}
@@ -35,48 +35,48 @@
   .card{background:#fff;border-radius:16px;box-shadow:0 8px 28px rgba(14,42,71,.08);overflow:hidden}
   .card-head{background:var(--navy);padding:24px;color:#fff}
   .card-head .eyebrow{font-size:11px;letter-spacing:.12em;text-transform:uppercase;opacity:.8;margin-bottom:6px}
-  .card-head .title{font-size:20px;font-weight:800}
+  .card-head .title{font-size:21px;font-weight:800}
   .card-body{padding:24px}
 
   .tabs{display:flex;margin-bottom:18px;border-bottom:1px solid var(--line)}
-  .tab-btn{flex:1;padding:11px 4px;background:none;border:none;font-family:inherit;font-size:14.5px;font-weight:700;color:var(--gray);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .15s,border-color .15s}
+  .tab-btn{flex:1;padding:11px 4px;background:none;border:none;font-family:inherit;font-size:15px;font-weight:700;color:var(--gray);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .15s,border-color .15s}
   .tab-btn.active{color:var(--navy);border-bottom-color:var(--blue)}
 
-  .lead-msg{font-size:12.5px;color:var(--gray);line-height:1.6;margin-bottom:16px}
+  .lead-msg{font-size:13px;color:var(--gray);line-height:1.6;margin-bottom:16px}
 
   .field{margin-bottom:16px}
-  .field label{display:block;font-size:12.5px;font-weight:700;color:var(--navy);margin-bottom:6px}
-  .field input{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:8px;font-size:15px;font-family:inherit;background:#fafbfd}
+  .field label{display:block;font-size:13px;font-weight:700;color:var(--navy);margin-bottom:6px}
+  .field input{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:8px;font-size:15px;font-family:inherit;background:#ffffff}
   .field input:focus{outline:none;border-color:var(--blue);background:#fff}
 
-  .submit-btn{width:100%;padding:14px;border:none;border-radius:10px;background:var(--navy);color:#fff;font-size:15px;font-weight:700;cursor:pointer;transition:background .2s;font-family:inherit}
+  .submit-btn{width:100%;padding:14px;border:none;border-radius:12px;background:var(--navy);color:#fff;font-size:15px;font-weight:700;cursor:pointer;transition:background .2s;font-family:inherit}
   .submit-btn:hover{background:var(--blue)}
   .submit-btn:disabled{background:var(--line);color:var(--gray);cursor:not-allowed}
 
-  .msg{font-size:12.5px;color:var(--gray);margin-top:12px;line-height:1.6;min-height:1px}
+  .msg{font-size:13px;color:var(--gray);margin-top:12px;line-height:1.6;min-height:1px}
   .msg.error{color:#dc2626}
-  .msg.success{color:#16a34a}
-  .link-back{display:block;text-align:center;margin-top:16px;font-size:12.5px;color:var(--gray);text-decoration:none}
+  .msg.success{color:#1c8a45}
+  .link-back{display:block;text-align:center;margin-top:16px;font-size:13px;color:var(--gray);text-decoration:none}
   .link-back:hover{color:var(--blue)}
 
-  .consent{margin-bottom:18px;padding:12px 13px;background:#fafbfd;border:1px solid var(--line);border-radius:8px}
+  .consent{margin-bottom:18px;padding:12px 13px;background:#ffffff;border:1px solid var(--line);border-radius:8px}
   .consent-row{display:flex;align-items:flex-start;gap:8px}
   .consent-row input{margin-top:3px;flex-shrink:0;width:16px;height:16px;cursor:pointer}
-  .consent-row label{font-size:12.5px;color:var(--ink);cursor:pointer;line-height:1.5}
-  .consent-toggle{background:none;border:none;color:var(--blue);font-size:11.5px;font-family:inherit;text-decoration:underline;cursor:pointer;padding:0;margin-left:4px}
-  .consent-detail{display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--line);font-size:11.5px;color:var(--gray);line-height:1.7}
+  .consent-row label{font-size:13px;color:var(--ink);cursor:pointer;line-height:1.5}
+  .consent-toggle{background:none;border:none;color:var(--blue);font-size:12px;font-family:inherit;text-decoration:underline;cursor:pointer;padding:0;margin-left:4px}
+  .consent-detail{display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--line);font-size:12px;color:var(--gray);line-height:1.7}
   .consent-detail.open{display:block}
 
   .divider{display:flex;align-items:center;gap:10px;margin:18px 0 14px;font-size:12px;color:var(--gray)}
   .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--line)}
 
-  .oauth-btn{width:100%;padding:12px;border-radius:10px;border:1px solid var(--line);background:#fff;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px;color:var(--ink)}
+  .oauth-btn{width:100%;padding:12px;border-radius:12px;border:1px solid var(--line);background:#fff;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px;color:var(--ink)}
   .oauth-btn:last-child{margin-bottom:0}
   .oauth-btn:disabled{opacity:.45;cursor:not-allowed}
-  .oauth-btn .badge{width:20px;height:20px;border-radius:5px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0}
-  .oauth-btn.google .badge{background:#fff;border:1px solid var(--line);color:#1a73e8}
+  .oauth-btn .badge{width:20px;height:20px;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0}
+  .oauth-btn.google .badge{background:#fff;border:1px solid var(--line);color:#1d6fe0}
   .oauth-btn.kakao{background:#FEE500;border-color:#FEE500}
-  .oauth-btn.kakao .badge{background:#191919;color:#FEE500}
+  .oauth-btn.kakao .badge{background:#17302e;color:#FEE500}
 </style>
 </head>
 <body>
@@ -173,10 +173,10 @@
       </div>
 
       <div id="step-code" style="display:none">
-        <p style="font-size:12.5px;color:var(--gray);line-height:1.6;margin-bottom:16px" id="code-sent-to">입력하신 이메일로 인증코드를 보내드렸습니다. 메일함에서 코드를 확인해 아래에 입력해주세요.</p>
+        <p style="font-size:13px;color:var(--gray);line-height:1.6;margin-bottom:16px" id="code-sent-to">입력하신 이메일로 인증코드를 보내드렸습니다. 메일함에서 코드를 확인해 아래에 입력해주세요.</p>
         <div class="field">
           <label>인증코드</label>
-          <input type="text" id="f-code" placeholder="이메일로 받은 코드 입력" inputmode="numeric" maxlength="12" style="letter-spacing:3px;font-size:20px;text-align:center;font-weight:700">
+          <input type="text" id="f-code" placeholder="이메일로 받은 코드 입력" inputmode="numeric" maxlength="12" style="letter-spacing:3px;font-size:21px;text-align:center;font-weight:700">
         </div>
         <button type="button" class="submit-btn" id="verify-btn" onclick="verifyCode()">인증코드 확인</button>
         <div class="msg" id="code-msg"></div>

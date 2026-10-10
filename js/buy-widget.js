@@ -93,42 +93,42 @@
     cssInjected = true;
     const style = document.createElement('style');
     style.textContent = `
-      .hhbw-box{font-family:inherit;background:#fff;border:1px solid rgba(15,23,42,.1);border-radius:14px;padding:20px 22px;max-width:480px}
-      .hhbw-label{font-size:11.5px;font-weight:700;color:#64748b;letter-spacing:.02em;margin-bottom:6px}
-      .hhbw-price{font-size:22px;font-weight:900;color:#16202e;margin-bottom:14px}
-      .hhbw-price small{font-size:12px;font-weight:600;color:#64748b}
-      .hhbw-btn{display:block;width:100%;padding:13px;border:none;border-radius:10px;background:#1d6fe0;color:#fff;font-size:14.5px;font-weight:800;cursor:pointer;font-family:inherit;text-align:center;text-decoration:none;box-sizing:border-box}
-      .hhbw-btn:hover{background:#1558b8}
+      .hhbw-box{font-family:inherit;background:#fff;border:1px solid rgba(15,23,42,.1);border-radius:16px;padding:20px 22px;max-width:480px}
+      .hhbw-label{font-size:12px;font-weight:700;color:#5d6b68;letter-spacing:.02em;margin-bottom:6px}
+      .hhbw-price{font-size:21px;font-weight:800;color:#17302e;margin-bottom:14px}
+      .hhbw-price small{font-size:12px;font-weight:600;color:#5d6b68}
+      .hhbw-btn{display:block;width:100%;padding:13px;border:none;border-radius:12px;background:#1d6fe0;color:#fff;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;text-align:center;text-decoration:none;box-sizing:border-box}
+      .hhbw-btn:hover{background:#1d6fe0}
       .hhbw-btn:disabled{opacity:.5;cursor:not-allowed}
-      .hhbw-note{font-size:12px;color:#64748b;line-height:1.7;margin-top:10px}
+      .hhbw-note{font-size:12px;color:#5d6b68;line-height:1.7;margin-top:10px}
       .hhbw-field{margin-bottom:12px}
-      .hhbw-field label{display:block;font-size:12px;font-weight:700;color:#16202e;margin-bottom:6px}
-      .hhbw-field input{width:100%;padding:11px 12px;border:1px solid #e2e9f2;border-radius:8px;font-size:14.5px;font-family:inherit;background:#fafbfd;box-sizing:border-box}
+      .hhbw-field label{display:block;font-size:12px;font-weight:700;color:#17302e;margin-bottom:6px}
+      .hhbw-field input{width:100%;padding:11px 12px;border:1px solid #e7f0fd;border-radius:8px;font-size:15px;font-family:inherit;background:#ffffff;box-sizing:border-box}
       .hhbw-field input:focus{outline:none;border-color:#1d6fe0;background:#fff}
-      .hhbw-amount-row{display:flex;align-items:center;justify-content:space-between;background:#f5f8fc;border-radius:10px;padding:13px 15px;margin-bottom:14px}
-      .hhbw-amount-row .l{font-size:12px;color:#64748b;font-weight:600}
-      .hhbw-amount-row .amt{font-size:18px;font-weight:800;color:#ff6b5c}
+      .hhbw-amount-row{display:flex;align-items:center;justify-content:space-between;background:#faf8f4;border-radius:12px;padding:13px 15px;margin-bottom:14px}
+      .hhbw-amount-row .l{font-size:12px;color:#5d6b68;font-weight:600}
+      .hhbw-amount-row .amt{font-size:18px;font-weight:800;color:#f97316}
       .hhbw-methods{display:flex;flex-direction:column;gap:8px;margin-bottom:6px}
-      .hhbw-method-btn{width:100%;padding:13px;border:1.5px solid #e2e9f2;border-radius:10px;background:#fff;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer}
+      .hhbw-method-btn{width:100%;padding:13px;border:1.5px solid #e7f0fd;border-radius:12px;background:#fff;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer}
       .hhbw-method-btn:hover{border-color:#1d6fe0;color:#1d6fe0}
       .hhbw-method-btn:disabled{opacity:.5;cursor:not-allowed}
       .hhbw-msg{font-size:12px;color:#dc2626;margin-top:10px;line-height:1.6}
       .hhbw-phone-row{display:flex;gap:8px}
       .hhbw-phone-row input{flex:1;min-width:0}
-      .hhbw-otp-btn{white-space:nowrap;padding:0 14px;border:1.5px solid #1d6fe0;border-radius:8px;background:#fff;color:#1d6fe0;font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit}
-      .hhbw-otp-btn:hover{background:#eef4ff}
+      .hhbw-otp-btn{white-space:nowrap;padding:0 14px;border:1.5px solid #1d6fe0;border-radius:8px;background:#fff;color:#1d6fe0;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+      .hhbw-otp-btn:hover{background:#e7f0fd}
       .hhbw-otp-btn:disabled{opacity:.5;cursor:not-allowed}
       .hhbw-otp-row{display:flex;gap:8px;margin-top:8px}
-      .hhbw-otp-row input{flex:1;min-width:0;padding:11px 12px;border:1px solid #e2e9f2;border-radius:8px;font-size:14.5px;font-family:inherit;background:#fafbfd;box-sizing:border-box}
+      .hhbw-otp-row input{flex:1;min-width:0;padding:11px 12px;border:1px solid #e7f0fd;border-radius:8px;font-size:15px;font-family:inherit;background:#ffffff;box-sizing:border-box}
       .hhbw-otp-row input:focus{outline:none;border-color:#1d6fe0;background:#fff}
-      .hhbw-otp-status{font-size:12px;margin-top:6px;line-height:1.6;color:#64748b}
-      .hhbw-otp-status.ok{color:#16a34a;font-weight:700}
+      .hhbw-otp-status{font-size:12px;margin-top:6px;line-height:1.6;color:#5d6b68}
+      .hhbw-otp-status.ok{color:#1c8a45;font-weight:700}
       .hhbw-otp-status.err{color:#dc2626}
-      .hhbw-test-badge{display:inline-block;background:#ffb648;color:#4a2e00;font-size:11px;font-weight:800;padding:5px 11px;border-radius:999px;margin-bottom:14px}
+      .hhbw-test-badge{display:inline-block;background:#f97316;color:#233d32;font-size:11px;font-weight:800;padding:5px 11px;border-radius:999px;margin-bottom:14px}
       .hhbw-state strong{display:block;font-size:15px;margin-bottom:8px}
-      .hhbw-state{font-size:13.5px;color:#16202e;line-height:1.8}
-      .hhbw-state .sub{font-size:12px;color:#64748b;margin-top:10px}
-      .hhbw-skel{color:#64748b;font-size:13px;padding:6px 0}
+      .hhbw-state{font-size:14px;color:#17302e;line-height:1.8}
+      .hhbw-state .sub{font-size:12px;color:#5d6b68;margin-top:10px}
+      .hhbw-skel{color:#5d6b68;font-size:13px;padding:6px 0}
     `;
     document.head.appendChild(style);
   }
@@ -227,7 +227,7 @@
     if (indivPanel) indivPanel.style.display = 'none';
     if (groupPanel) groupPanel.style.display = '';
     if (groupBtn) {
-      groupBtn.style.background = '#152238';
+      groupBtn.style.background = '#17302e';
       groupBtn.style.color = '#fff';
     }
   }
@@ -236,7 +236,7 @@
   function ticketSelectHtml(state) {
     if (!state.indivTickets) return '';
     return `<div class="hhbw-field"><label>이용권 선택</label>
-      <select id="hhbw-ticket-select" style="width:100%;padding:11px 12px;border:1px solid #e2e9f2;border-radius:8px;font-size:14.5px;font-family:inherit;background:#fafbfd;box-sizing:border-box">
+      <select id="hhbw-ticket-select" style="width:100%;padding:11px 12px;border:1px solid #e7f0fd;border-radius:8px;font-size:15px;font-family:inherit;background:#ffffff;box-sizing:border-box">
         ${state.indivTickets.map((t, i) => `<option value="${i}"${i === state.ticketIndex ? ' selected' : ''}>${escapeAttr(t.type)} — ${money(t.price)}</option>`).join('')}
       </select>
     </div>`;

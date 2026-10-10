@@ -29,27 +29,27 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --teal:#00B8C8;--teal-dark:#007A8A;--teal-mid:#009AB0;
-  --orange:#FF6B00;--yellow:#FFD600;--red:#FF3B5C;
-  --navy:#002840;--sky:#E0F7FA;--white:#fff;
-  --dark:#001820;--text:#0D2030;--muted:#4A6070;--border:rgba(0,184,200,.15)
+  --teal:#1d6fe0;--teal-dark:#1c8a45;--teal-mid:#1d6fe0;
+  --orange:#f97316;--yellow:#fee500;--red:#dc2626;
+  --navy:#17302e;--sky:#e7f0fd;--white:#fff;
+  --dark:#17302e;--text:#17302e;--muted:#5d6b68;--border:rgba(0,184,200,.15)
 }
-body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;background:#F0FBFC;color:var(--text);overflow-x:hidden}
+body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;background:#faf8f4;color:var(--text);overflow-x:hidden}
 
 /* NAV */
 .nav{position:sticky;top:0;z-index:100;background:var(--navy);padding:13px 24px;display:flex;align-items:center;justify-content:space-between}
-.nav-title{font-size:16px;font-weight:900;letter-spacing:-.02em}
+.nav-title{font-size:15px;font-weight:800;letter-spacing:-.02em}
 .nav-title .one{color:var(--teal)}.nav-title .mount{color:#fff}
-.nav-sub{font-size:10px;color:rgba(255,255,255,.5);display:block;margin-top:1px;letter-spacing:.08em}
-.nav-btn{font-size:13px;font-weight:700;color:var(--navy);background:var(--teal);padding:9px 18px;border-radius:6px;text-decoration:none}.nav-back{font-size:12px;color:rgba(255,255,255,.6);text-decoration:none;margin-right:14px}
+.nav-sub{font-size:11px;color:rgba(255,255,255,.5);display:block;margin-top:1px;letter-spacing:.08em}
+.nav-btn{font-size:13px;font-weight:700;color:var(--navy);background:var(--teal);padding:9px 18px;border-radius:8px;text-decoration:none}.nav-back{font-size:12px;color:rgba(255,255,255,.6);text-decoration:none;margin-right:14px}
 
 /* HERO */
 .hero{position:relative;width:100%;min-height:100vh;display:flex;align-items:flex-end;overflow:hidden}
 .hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
 .hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,24,40,.95) 0%,rgba(0,24,40,.4) 55%,rgba(0,10,20,.15) 100%)}
 .hero-content{position:relative;z-index:2;padding:0 28px 56px;width:100%}
-.hero-badge{display:inline-block;background:var(--teal);color:var(--navy);font-size:11px;font-weight:900;letter-spacing:.15em;padding:5px 14px;border-radius:3px;margin-bottom:18px;text-transform:uppercase}
-.hero-title{font-size:clamp(32px,8vw,64px);font-weight:900;color:#fff;line-height:1.05;letter-spacing:-.03em;margin-bottom:14px}
+.hero-badge{display:inline-block;background:var(--teal);color:var(--navy);font-size:11px;font-weight:800;letter-spacing:.15em;padding:5px 14px;border-radius:4px;margin-bottom:18px;text-transform:uppercase}
+.hero-title{font-size:clamp(32px,8vw,64px);font-weight:800;color:#fff;line-height:1.05;letter-spacing:-.03em;margin-bottom:14px}
 .hero-title em{color:var(--teal);font-style:normal}
 .hero-title span{color:var(--yellow)}
 .hero-sub{font-size:15px;color:rgba(255,255,255,.7);line-height:1.75;margin-bottom:30px;max-width:560px}
@@ -59,7 +59,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
 /* SECTION */
 .sec{padding:64px 24px;max-width:800px;margin:0 auto}
 .sec-label{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--teal-dark);font-weight:800;margin-bottom:8px}
-.sec-title{font-size:clamp(22px,5vw,32px);font-weight:900;color:var(--dark);line-height:1.15;letter-spacing:-.025em;margin-bottom:14px}
+.sec-title{font-size:clamp(22px,5vw,32px);font-weight:800;color:var(--dark);line-height:1.15;letter-spacing:-.025em;margin-bottom:14px}
 .sec-desc{font-size:15px;color:var(--muted);line-height:1.85;margin-bottom:32px}
 .divider{height:1px;background:linear-gradient(to right,transparent,rgba(0,184,200,.25),transparent)}
 
@@ -68,26 +68,26 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
 .pill{background:rgba(0,184,200,.08);border:1px solid rgba(0,184,200,.2);color:var(--teal-dark);font-size:13px;font-weight:600;padding:7px 16px;border-radius:999px}
 
 /* PHOTO FULL */
-.photo-full{width:100%;border-radius:14px;overflow:hidden;margin-bottom:24px}
+.photo-full{width:100%;border-radius:16px;overflow:hidden;margin-bottom:24px}
 .photo-full img{width:100%;height:auto;display:block}
-.photo-frame{width:100%;border-radius:14px;overflow:hidden;aspect-ratio:16/9;margin-bottom:24px;background:#c0e8f0}
+.photo-frame{width:100%;border-radius:16px;overflow:hidden;aspect-ratio:16/9;margin-bottom:24px;background:#dce1d7}
 .photo-frame img{width:100%;height:100%;object-fit:cover;display:block}
 
 /* ACTIVITY CARD */
-.act-card{background:#fff;border-radius:14px;overflow:hidden;border:1px solid var(--border);margin-bottom:20px}
+.act-card{background:#fff;border-radius:16px;overflow:hidden;border:1px solid var(--border);margin-bottom:20px}
 .act-img{width:100%;aspect-ratio:16/9;overflow:hidden;background:var(--sky)}
 .act-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
 .act-card:hover .act-img img{transform:scale(1.04)}
 .act-body{padding:20px 22px}
-.act-tag{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;padding:4px 12px;border-radius:4px;margin-bottom:8px}
-.act-tag.out{color:#FF6B00;background:rgba(255,107,0,.08)}
+.act-tag{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;padding:4px 12px;border-radius:4px;margin-bottom:8px}
+.act-tag.out{color:#f97316;background:rgba(255,107,0,.08)}
 .act-tag.inn{color:var(--teal-dark);background:rgba(0,184,200,.08)}
 .act-tag.swim{color:var(--red);background:rgba(255,59,92,.08)}
-.act-name{font-size:19px;font-weight:900;color:var(--dark);margin-bottom:7px;letter-spacing:-.02em}
+.act-name{font-size:18px;font-weight:800;color:var(--dark);margin-bottom:7px;letter-spacing:-.02em}
 .act-desc{font-size:14px;color:var(--muted);line-height:1.8}
 .act-meta{display:flex;gap:20px;padding-top:14px;margin-top:12px;border-top:1px solid var(--sky)}
 .m-item{display:flex;flex-direction:column;gap:2px}
-.m-lbl{font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.m-lbl{font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
 .m-val{font-size:13px;font-weight:800;color:var(--teal-dark)}
 
 /* 2열 그리드 */
@@ -100,9 +100,9 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
 .notice strong{color:var(--teal-dark);display:block;margin-bottom:3px}
 
 /* SWIM CARD */
-.swim-card{background:linear-gradient(135deg,var(--navy) 0%,#004060 100%);border-radius:14px;padding:24px;margin-bottom:20px;color:#fff}
-.swim-badge{display:inline-block;background:var(--red);color:#fff;font-size:10px;font-weight:900;letter-spacing:.12em;padding:4px 12px;border-radius:999px;margin-bottom:12px}
-.swim-title{font-size:18px;font-weight:900;color:#fff;margin-bottom:10px}
+.swim-card{background:linear-gradient(135deg,var(--navy) 0%,#1f4f49 100%);border-radius:16px;padding:24px;margin-bottom:20px;color:#fff}
+.swim-badge{display:inline-block;background:var(--red);color:#fff;font-size:11px;font-weight:800;letter-spacing:.12em;padding:4px 12px;border-radius:999px;margin-bottom:12px}
+.swim-title{font-size:18px;font-weight:800;color:#fff;margin-bottom:10px}
 .swim-desc{font-size:14px;color:rgba(255,255,255,.7);line-height:1.8;margin-bottom:14px}
 .swim-items{display:flex;gap:8px;flex-wrap:wrap}
 .swim-item{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:12px;font-weight:700;padding:7px 14px;border-radius:999px}
@@ -110,7 +110,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
 /* PRICE */
 .price-wrap{background:var(--navy);padding:64px 24px}
 .price-inner{max-width:800px;margin:0 auto}
-.price-big{font-size:clamp(22px,5vw,34px);font-weight:900;color:#fff;letter-spacing:-.03em;margin-bottom:8px;line-height:1.2}
+.price-big{font-size:clamp(22px,5vw,34px);font-weight:800;color:#fff;letter-spacing:-.03em;margin-bottom:8px;line-height:1.2}
 .price-sub2{font-size:13px;color:rgba(255,255,255,.4);margin-bottom:28px}
 .price-period{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:18px 20px;margin-bottom:12px}
 .period-title{font-size:12px;font-weight:800;color:var(--teal);letter-spacing:.08em;margin-bottom:12px}
@@ -119,9 +119,9 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
 .pt td{font-size:14px;text-align:center;padding:10px 8px;border-bottom:1px solid rgba(255,255,255,.05)}
 .pt td:first-child{color:rgba(255,255,255,.75);font-weight:600;text-align:left}
 .pt tr:last-child td{border-bottom:none}
-.cy{color:var(--teal);font-weight:900}
-.wy{color:var(--yellow);font-weight:900}
-.ry{color:#FF9090;font-weight:700;font-size:13px}
+.cy{color:var(--teal);font-weight:800}
+.wy{color:var(--yellow);font-weight:800}
+.ry{color:#ff8f99;font-weight:700;font-size:13px}
 .peak{background:rgba(255,214,0,.06);border-color:rgba(255,214,0,.3)!important}
 
 .nbox{background:rgba(0,184,200,.08);border:1px solid rgba(0,184,200,.2);border-radius:12px;padding:18px 22px;margin-top:18px}
@@ -137,7 +137,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
 .meal-tbl td{padding:14px 16px;text-align:center;border-bottom:1px solid var(--border);font-size:14px}
 .meal-tbl tr:last-child td{border-bottom:none}
 .meal-tbl .mn{font-weight:700;color:var(--dark);text-align:left}
-.meal-tbl .pv{font-weight:900;color:var(--orange);font-size:16px}
+.meal-tbl .pv{font-weight:800;color:var(--orange);font-size:15px}
 
 /* FLYER */
 .flyer-wrap{background:var(--sky);padding:48px 24px}
@@ -150,17 +150,17 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
 .info-inner{max-width:800px;margin:0 auto}
 .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .info-item{background:#fff;border-radius:12px;padding:18px 20px;border:1px solid var(--border)}
-.info-icon{font-size:20px;margin-bottom:8px}
-.info-lbl{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:4px}
+.info-icon{font-size:21px;margin-bottom:8px}
+.info-lbl{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:4px}
 .info-val{font-size:14px;font-weight:700;color:var(--dark);line-height:1.55}
 
 /* CTA */
 .cta-wrap{background:linear-gradient(135deg,var(--teal-dark) 0%,var(--teal) 100%);padding:72px 24px;text-align:center}
 .cta-inner{max-width:580px;margin:0 auto}
-.cta-title{font-size:clamp(26px,6vw,42px);font-weight:900;color:#fff;letter-spacing:-.03em;margin-bottom:14px;line-height:1.15}
+.cta-title{font-size:clamp(26px,6vw,42px);font-weight:800;color:#fff;letter-spacing:-.03em;margin-bottom:14px;line-height:1.15}
 .cta-desc{font-size:15px;color:rgba(255,255,255,.8);margin-bottom:36px;line-height:1.75}
 .cta-btns{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
-.btn-p{background:#fff;color:var(--teal-dark);font-size:15px;font-weight:900;padding:14px 30px;border-radius:8px;text-decoration:none}
+.btn-p{background:#fff;color:var(--teal-dark);font-size:15px;font-weight:800;padding:14px 30px;border-radius:8px;text-decoration:none}
 .btn-s{background:transparent;color:#fff;font-size:15px;font-weight:700;padding:14px 30px;border-radius:8px;text-decoration:none;border:1.5px solid rgba(255,255,255,.5)}
 
 .footer{background:var(--dark);padding:30px 24px;text-align:center}
@@ -392,8 +392,8 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
       <p class="period-title" style="color:var(--yellow)">⭐ 7.25(토) ~ 8.17(월) 성수기</p>
       <table class="pt">
         <tr><th>구분</th><th>주중</th><th>주말</th></tr>
-        <tr><td>유아</td><td class="cy" style="color:#FFD600">22,000원</td><td class="wy">26,000원</td></tr>
-        <tr><td>초등이상</td><td class="cy" style="color:#FFD600">22,000원</td><td class="wy">26,000원</td></tr>
+        <tr><td>유아</td><td class="cy" style="color:#fee500">22,000원</td><td class="wy">26,000원</td></tr>
+        <tr><td>초등이상</td><td class="cy" style="color:#fee500">22,000원</td><td class="wy">26,000원</td></tr>
         <tr><td>생존수영</td><td class="ry">미운영</td><td class="ry">미운영</td></tr>
       </table>
     </div>
@@ -466,17 +466,17 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
     <p class="cta-desc">더블에이치컴퍼니를 통해 예약하시면 단체 맞춤 일정 조율, 버스 섭외, 식사 연계, 생존수영 프로그램 연계까지 원스톱으로 도와드립니다.</p>
 
     <div style="background:#fff;border-radius:16px;padding:26px 22px;box-shadow:0 10px 34px rgba(0,0,0,.18);text-align:left">
-      <div style="display:flex;border-radius:10px;overflow:hidden;margin-bottom:20px;border:1px solid #e2e9f2">
-        <button type="button" id="rtab-group" onclick="rvSwitchTab('group')" style="flex:1;padding:13px 8px;border:none;cursor:pointer;font-weight:800;font-size:13.5px;background:#152238;color:#fff">단체 예약 (10명 이상)</button>
-        <button type="button" id="rtab-indiv" onclick="rvSwitchTab('indiv')" style="flex:1;padding:13px 8px;border:none;cursor:pointer;font-weight:800;font-size:13.5px;background:#fff;color:#152238">개인 구매</button>
+      <div style="display:flex;border-radius:12px;overflow:hidden;margin-bottom:20px;border:1px solid #e7f0fd">
+        <button type="button" id="rtab-group" onclick="rvSwitchTab('group')" style="flex:1;padding:13px 8px;border:none;cursor:pointer;font-weight:800;font-size:14px;background:#17302e;color:#fff">단체 예약 (10명 이상)</button>
+        <button type="button" id="rtab-indiv" onclick="rvSwitchTab('indiv')" style="flex:1;padding:13px 8px;border:none;cursor:pointer;font-weight:800;font-size:14px;background:#fff;color:#17302e">개인 구매</button>
       </div>
 
       <div id="rpanel-group">
-        <label style="display:block;font-size:12.5px;font-weight:700;color:#16202e;margin-bottom:8px">예상 인원</label>
-        <input type="number" id="rv-group-count" min="1" placeholder="예: 30" value="10" style="width:100%;padding:12px;border:1px solid #e2e9f2;border-radius:8px;font-size:14.5px;margin-bottom:8px;box-sizing:border-box">
+        <label style="display:block;font-size:13px;font-weight:700;color:#17302e;margin-bottom:8px">예상 인원</label>
+        <input type="number" id="rv-group-count" min="1" placeholder="예: 30" value="10" style="width:100%;padding:12px;border:1px solid #e7f0fd;border-radius:8px;font-size:15px;margin-bottom:8px;box-sizing:border-box">
         <div id="rv-group-err" style="display:none;font-size:12px;color:#dc2626;margin-bottom:10px">단체 예약은 최소 10명부터 가능합니다. 10명 미만이시면 개인 구매 탭을 이용해주세요.</div>
-        <button type="button" onclick="rvGoGroupReserve()" style="display:block;width:100%;padding:13px;border:none;border-radius:10px;background:#152238;color:#fff;font-weight:800;font-size:14.5px;cursor:pointer">단체 예약 문의하기 →</button>
-        <p style="font-size:12px;color:#666;line-height:1.7;margin-top:10px">문의 접수 후 담당자가 시즌별 요금과 일정을 맞춤 안내해드립니다.</p>
+        <button type="button" onclick="rvGoGroupReserve()" style="display:block;width:100%;padding:13px;border:none;border-radius:12px;background:#17302e;color:#fff;font-weight:800;font-size:15px;cursor:pointer">단체 예약 문의하기 →</button>
+        <p style="font-size:12px;color:#5d6b68;line-height:1.7;margin-top:10px">문의 접수 후 담당자가 시즌별 요금과 일정을 맞춤 안내해드립니다.</p>
         <div class="hhgd-mount" id="group-deposit"></div>
       </div>
 
@@ -494,8 +494,8 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
       var RV_VENUE_NAME = '원마운트';
       function rvSwitchTab(tab) {
         var g = document.getElementById('rtab-group'), i = document.getElementById('rtab-indiv');
-        g.style.background = tab === 'group' ? '#152238' : '#fff'; g.style.color = tab === 'group' ? '#fff' : '#152238';
-        i.style.background = tab === 'indiv' ? '#152238' : '#fff'; i.style.color = tab === 'indiv' ? '#fff' : '#152238';
+        g.style.background = tab === 'group' ? '#17302e' : '#fff'; g.style.color = tab === 'group' ? '#fff' : '#17302e';
+        i.style.background = tab === 'indiv' ? '#17302e' : '#fff'; i.style.color = tab === 'indiv' ? '#fff' : '#17302e';
         document.getElementById('rpanel-group').style.display = tab === 'group' ? '' : 'none';
         document.getElementById('rpanel-indiv').style.display = tab === 'indiv' ? '' : 'none';
       }

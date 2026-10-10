@@ -14,27 +14,27 @@
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
 <style>
   :root{
-    --navy:#0e2a47;--blue:#1d6fe0;--sky:#47b6e8;--coral:#ff6b5c;--amber:#ffb648;
-    --cream:#f5f8fc;--ink:#16202e;--gray:#64748b;--line:#e2e9f2;
+    --navy:#17302e;--blue:#1d6fe0;--sky:#1d6fe0;--coral:#f97316;--amber:#f97316;
+    --cream:#faf8f4;--ink:#17302e;--gray:#5d6b68;--line:#e7f0fd;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:32px 16px}
-  .card{background:#fff;border-radius:18px;box-shadow:0 8px 32px rgba(14,42,71,.09);max-width:420px;width:100%;overflow:hidden}
+  .card{background:#fff;border-radius:16px;box-shadow:0 8px 32px rgba(14,42,71,.09);max-width:420px;width:100%;overflow:hidden}
   .card-head{background:linear-gradient(135deg,var(--navy),var(--blue));padding:22px 24px;color:#fff}
   .card-head .brand{font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.75;margin-bottom:6px}
-  .card-head .venue{font-size:20px;font-weight:800;letter-spacing:-.02em}
+  .card-head .venue{font-size:21px;font-weight:800;letter-spacing:-.02em}
   .card-head .ticket{font-size:13px;opacity:.85;margin-top:2px}
   .card-body{padding:26px 24px 24px}
   .row{display:flex;justify-content:space-between;font-size:13px;color:var(--gray);padding:7px 0;border-bottom:1px solid var(--line)}
   .row:last-of-type{border-bottom:none;margin-bottom:18px}
   .row span:last-child{color:var(--ink);font-weight:600}
-  .barcode-wrap{background:#fafbfd;border:1px solid var(--line);border-radius:12px;padding:18px 10px;text-align:center;overflow-x:auto}
+  .barcode-wrap{background:#ffffff;border:1px solid var(--line);border-radius:12px;padding:18px 10px;text-align:center;overflow-x:auto}
   .barcode-wrap svg{max-width:100%}
-  .pin-fallback{font-size:20px;font-weight:800;letter-spacing:.08em;color:var(--ink);padding:20px 0}
-  .notice{margin-top:16px;background:#FFF6E8;border:1px solid #FFE3B0;border-radius:10px;padding:12px 14px;font-size:12.5px;color:#8a5a00;line-height:1.6}
+  .pin-fallback{font-size:21px;font-weight:800;letter-spacing:.08em;color:var(--ink);padding:20px 0}
+  .notice{margin-top:16px;background:#fff3df;border:1px solid #d2efa6;border-radius:12px;padding:12px 14px;font-size:13px;color:#7ba020;line-height:1.6}
   .state{padding:60px 24px;text-align:center;color:var(--gray);font-size:14px;line-height:1.8}
-  .state strong{display:block;color:var(--ink);font-size:16px;margin-bottom:6px}
-  .foot{margin-top:24px;text-align:center;font-size:11.5px;color:var(--gray);line-height:1.8}
+  .state strong{display:block;color:var(--ink);font-size:15px;margin-bottom:6px}
+  .foot{margin-top:24px;text-align:center;font-size:12px;color:var(--gray);line-height:1.8}
   .foot a{color:var(--blue);text-decoration:none}
 </style>
 </head>
