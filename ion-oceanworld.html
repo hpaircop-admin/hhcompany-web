@@ -705,8 +705,8 @@ async function handleTossRedirectReturn() {
     document.getElementById('m-body').innerHTML = `
       <div class="mstate">
         <strong>결제가 취소됐어요</strong>
-        ${params.get('message') || '결제가 완료되지 않았습니다.'}
-        <div class="sub">${orderIdFromFail ? '접수번호 ' + orderIdFromFail + ' · ' : ''}다시 시도하시려면 신청서를 새로 작성해주세요.</div>
+        ${((s)=>String(s).replace(/[&<>"']/g,(c)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])))(params.get('message') || '결제가 완료되지 않았습니다.')}
+        <div class="sub">${orderIdFromFail ? '접수번호 ' + ((s)=>String(s).replace(/[&<>"']/g,(c)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])))(orderIdFromFail) + ' · ' : ''}다시 시도하시려면 신청서를 새로 작성해주세요.</div>
       </div>`;
     history.replaceState(null, '', location.pathname);
   }

@@ -235,7 +235,7 @@
   // 권종(indiv_tickets)이 있는 상품의 "이용권 선택" <select> 마크업. 없는 상품(대부분)은 빈 문자열.
   function ticketSelectHtml(state) {
     if (!state.indivTickets) return '';
-    return `<div class="hhbw-field"><label>이용권 선택</label>
+    return `<div class="hhbw-field"><label for="hhbw-ticket-select">이용권 선택</label>
       <select id="hhbw-ticket-select" style="width:100%;padding:11px 12px;border:1px solid #e7f0fd;border-radius:8px;font-size:15px;font-family:inherit;background:#ffffff;box-sizing:border-box">
         ${state.indivTickets.map((t, i) => `<option value="${i}"${i === state.ticketIndex ? ' selected' : ''}>${escapeAttr(t.type)} — ${money(t.price)}</option>`).join('')}
       </select>
@@ -258,7 +258,7 @@
         mountEl.innerHTML = `
           <div class="hhbw-label">개인 구매</div>
           <div class="hhbw-price">가격 정보를 불러오지 못했습니다</div>
-          <div class="hhbw-note">전화 또는 카카오톡으로 문의해주세요. (관리자: 브라우저 콘솔(F12)에서 정확한 오류 메시지를 확인할 수 있습니다)</div>
+          <div class="hhbw-note">전화 또는 카카오톡으로 문의해주세요.</div>
         `;
       } else {
         mountEl.innerHTML = `
@@ -278,24 +278,24 @@
     const prefillEmail = state.profile?.email || '';
 
     mountEl.innerHTML = `
-      <div class="hhbw-label">${currentTicketLabel(state)} (1인)</div>
+      <div class="hhbw-label">${escapeHtml(currentTicketLabel(state))} (1인)</div>
       <div class="hhbw-price" id="hhbw-price">${money(price)}<small> / 1인</small></div>
       ${ticketSelectHtml(state)}
-      <div class="hhbw-field"><label>구매자 이름</label><input type="text" id="hhbw-name" value="${escapeAttr(prefillName)}" placeholder="이름을 입력해주세요"></div>
+      <div class="hhbw-field"><label for="hhbw-name">구매자 이름</label><input type="text" id="hhbw-name" name="name" autocomplete="name" value="${escapeAttr(prefillName)}" placeholder="이름을 입력해주세요"></div>
       <div class="hhbw-field">
-        <label>연락처 (본인확인 필요)</label>
+        <label for="hhbw-phone">연락처 (본인확인 필요)</label>
         <div class="hhbw-phone-row">
-          <input type="tel" id="hhbw-phone" value="${escapeAttr(prefillPhone)}" placeholder="010-0000-0000">
+          <input type="tel" id="hhbw-phone" name="phone" autocomplete="tel-national" value="${escapeAttr(prefillPhone)}" placeholder="010-0000-0000">
           <button type="button" class="hhbw-otp-btn" id="hhbw-otp-send">인증번호 받기</button>
         </div>
         <div class="hhbw-otp-row" id="hhbw-otp-row" style="display:none">
-          <input type="text" id="hhbw-otp-code" placeholder="인증번호 6자리" maxlength="6" inputmode="numeric">
+          <input type="text" id="hhbw-otp-code" name="otp" aria-label="인증번호 6자리" autocomplete="one-time-code" placeholder="인증번호 6자리" maxlength="6" inputmode="numeric">
           <button type="button" class="hhbw-otp-btn" id="hhbw-otp-confirm">확인</button>
         </div>
         <div class="hhbw-otp-status" id="hhbw-otp-status"></div>
       </div>
-      <div class="hhbw-field"><label>이메일 (선택)</label><input type="email" id="hhbw-email" value="${escapeAttr(prefillEmail)}" placeholder="안내 발송용"></div>
-      <div class="hhbw-field"><label>인원 수</label><input type="number" id="hhbw-qty" value="1" min="1" max="20"></div>
+      <div class="hhbw-field"><label for="hhbw-email">이메일 (선택)</label><input type="email" id="hhbw-email" name="email" autocomplete="email" spellcheck="false" value="${escapeAttr(prefillEmail)}" placeholder="안내 발송용"></div>
+      <div class="hhbw-field"><label for="hhbw-qty">인원 수</label><input type="number" id="hhbw-qty" name="qty" autocomplete="off" value="1" min="1" max="20"></div>
       <div class="hhbw-amount-row"><span class="l">결제 예정 금액</span><span class="amt" id="hhbw-amount">${money(price)}</span></div>
       <button type="button" class="hhbw-btn" id="hhbw-submit">결제 진행하기</button>
       <div class="hhbw-msg" id="hhbw-msg"></div>
@@ -390,6 +390,10 @@
 
   function escapeAttr(s) {
     return String(s || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+  }
+  // 화면(innerHTML)에 넣는 모든 바깥 값(주소 파라미터, 서버 메시지, 상품 데이터)은 이걸로 거른다
+  function escapeHtml(s) {
+    return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   }
 
   async function submitTicket(state) {
@@ -491,7 +495,7 @@
     state.mountEl.innerHTML = `
       <div class="hhbw-state">
         <strong>결제 확인에 실패했습니다</strong>
-        ${message || '결제 승인 중 문제가 발생했습니다.'}
+        ${escapeHtml(message || '결제 승인 중 문제가 발생했습니다.')}
         <div class="sub">문의: 031-339-2999</div>
       </div>`;
   }
@@ -528,8 +532,8 @@
       state.mountEl.innerHTML = `
         <div class="hhbw-state">
           <strong>결제가 취소됐어요</strong>
-          ${params.get('message') || '결제가 완료되지 않았습니다.'}
-          <div class="sub">${orderIdFromFail ? '접수번호 ' + orderIdFromFail + ' · ' : ''}다시 시도하시려면 아래에서 다시 구매를 진행해주세요.</div>
+          ${escapeHtml(params.get('message') || '결제가 완료되지 않았습니다.')}
+          <div class="sub">${orderIdFromFail ? '접수번호 ' + escapeHtml(orderIdFromFail) + ' · ' : ''}다시 시도하시려면 아래에서 다시 구매를 진행해주세요.</div>
         </div>`;
       history.replaceState(null, '', location.pathname);
       return true;
