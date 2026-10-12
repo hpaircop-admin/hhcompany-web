@@ -151,7 +151,7 @@
         행사의 기획부터 현장 운영,<br /><span style="color:#1f4f49">정산까지 직접 합니다.</span>
       </h1>
       <p style="margin:0;font-size:17px;line-height:1.85;color:#4a5b58;max-width:29em;text-wrap:pretty">
-        지자체 사업, MICE, 인바운드 관광, 학생단체행사를 맡고 있습니다. 2026년 9월에는 충남문화관광재단 인바운드 팸투어를 주도해 진행했고, 10월 23일에는 연천군 외국인 유치 여행사 팸투어를 앞두고 있습니다.
+        지자체 사업, MICE, 인바운드 관광, 학생단체행사를 맡고 있습니다. 각 지역의 인바운드 팸투어를 진행해 왔고, 최근 사례는 아래에서 확인하실 수 있습니다.
       </p>
       <div style="display:flex;gap:10px;margin-top:6px">
         <a href="#contact" style="padding:16px 30px;background:#a9d02a;color:#17302e;font-size:15px;font-weight:700">협업 문의하기</a>
@@ -350,14 +350,14 @@
           <span style="font-size:14px;line-height:1.8;color:#5d6b68">미국 태권도 단체의 한국 방문 일정을 가이드했습니다.</span>
         </div>
       </a>
-      <a href="cases.html" style="display:flex;flex-direction:column;gap:18px;color:inherit">
+      <a href="cases.html" data-expire="2026-10-23" style="display:flex;flex-direction:column;gap:18px;color:inherit">
         <div style="height:210px;overflow:hidden;position:relative">
           <img src="assets/gallery/event-06-yeoncheon-famtour.jpg" alt="2026년 외국인 유치 여행사 대상 연천군 팸투어 안내 (2026.10.23)" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block">
-          <span style="position:absolute;top:12px;left:12px;padding:6px 11px;background:#a9d02a;color:#17302e;font-size:12px;font-weight:800;letter-spacing:-0.02em">진행예정</span>
+          <span style="position:absolute;top:12px;left:12px;padding:6px 11px;background:#a9d02a;color:#17302e;font-size:12px;font-weight:800;letter-spacing:-0.02em" data-upcoming>진행예정</span>
         </div>
         <div style="display:flex;flex-direction:column;gap:9px">
           <span style="font-size:18px;font-weight:700;letter-spacing:-0.03em">연천군 외국인 유치 여행사 팸투어</span>
-          <span style="font-size:14px;line-height:1.8;color:#5d6b68">2026년 10월 23일(금), 외국인 유치 여행사 대상 연천군 팸투어를 진행할 예정입니다.</span>
+          <span style="font-size:14px;line-height:1.8;color:#5d6b68" data-desc data-done="2026년 10월 23일, 외국인 유치 여행사 대상 연천군 팸투어를 진행했습니다.">2026년 10월 23일(금), 외국인 유치 여행사 대상 연천군 팸투어를 진행할 예정입니다.</span>
         </div>
       </a>
     </div>
@@ -485,6 +485,20 @@
       navigator.serviceWorker.register('sw.js').catch(function () {});
     });
   }
+</script>
+<script>
+/* data-expire 날짜(YYYY-MM-DD, 한국시간)가 지나면 '진행예정' 표시를 지우고 문구를 완료형(data-done)으로 바꾼다 */
+(function () {
+  function apply(today) {
+    document.querySelectorAll('[data-expire]').forEach(function (card) {
+      if (today <= card.getAttribute('data-expire')) return;
+      var badge = card.querySelector('[data-upcoming]'); if (badge) badge.remove();
+      var desc = card.querySelector('[data-desc]'); if (desc && desc.getAttribute('data-done')) desc.textContent = desc.getAttribute('data-done');
+    });
+  }
+  window.__hhExpire = apply;
+  apply(new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Seoul' }));
+})();
 </script>
 </body>
 </html>
