@@ -137,6 +137,22 @@ html{scroll-behavior:smooth;scroll-padding-top:92px}a,button,input{-webkit-tap-h
 @media(min-width:1441px){.hero-content{padding-left:80px}}
 @media(max-width:900px){.hero-content{padding:50px 28px}.hero,.hero>img{min-height:570px}.hero-title{font-size:44px}.activity{column-gap:28px}.price-grid{grid-template-columns:1fr 1fr}.cta-inner{gap:0 30px}.cta-title{font-size:32px}.intro{column-gap:30px}}
 @media(max-width:640px){html{scroll-padding-top:80px}.nav{padding:14px 18px}.nav-logo{font-size:13px}.nav-logo span{font-size:11px;letter-spacing:.04em}.nav-logo-img{width:29px;height:29px}.nav-back{display:none}.nav-btn{font-size:12px;padding:10px 14px}.hero{display:flex;flex-direction:column;min-height:0}.hero-content{order:0;padding:42px 24px 32px}.hero>img{order:1;min-height:0;height:330px!important;object-position:center 65%!important}.hero-title{font-size:44px}.hero-sub{font-size:14px;margin-bottom:20px}.hero-eyebrow{margin-bottom:19px;font-size:11px}.hero-badges{margin-top:22px}.hero-badge{font-size:11px}.quick-nav{gap:0;justify-content:space-around;padding:19px 8px}.quick-nav a{font-size:12px}.section{padding:52px 22px}.intro{display:block}.section-title{font-size:32px}.section-desc{font-size:14px}.activity{display:flex;flex-direction:column;gap:0}.activity>*{width:100%}.activity>.photo-hero-frame,.activity>.kart-grid,.activity>.photo-full{aspect-ratio:4/3;max-height:none;margin:8px 0 12px!important;height:auto}.activity>.photo-full img{aspect-ratio:4/3}.activity .act-body{padding:18px 0 0}.activity>.act-card{order:0}.activity>.photo-full{order:-1}.activity:has(.photo-full)>.section-label{order:-4}.activity:has(.photo-full)>.section-title{order:-3}.activity:has(.photo-full)>.section-desc{order:-2}.kart-grid{grid-template-columns:1fr 1fr}.act-meta{gap:20px}.price-wrap,.info-wrap,.cta-wrap{padding:52px 22px}.price-grid{gap:10px}.price-card{padding:20px 15px}.pc-name{font-size:12px}.pc-unit{font-size:11px}.price-table{display:block;padding:18px}.info-grid{grid-template-columns:1fr 1fr;gap:24px 18px}.info-val{font-size:13px}.cta-inner{display:block}.cta-title{font-size:32px;margin-top:0}.cta-desc{margin-bottom:25px}.booking-card{padding:20px 16px}.cta-btns{flex-direction:row;align-items:stretch}.btn-p,.btn-s{flex:1;text-align:center;padding:13px 10px}.faq-q{font-size:14px}.faq-a{font-size:13px}.footer{padding-bottom:100px}.mobile-cta{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:90;background:#fff;padding:12px 18px calc(12px + env(safe-area-inset-bottom));border-top:1px solid #dce1d7;align-items:center;justify-content:space-between;gap:12px}.mobile-cta span{font-size:12px;font-weight:700}.mobile-cta a{background:var(--olive);color:white;text-decoration:none;padding:12px 22px;border-radius:8px;font-size:13px;font-weight:800}}
+@media(min-width:1000px){
+.faq-book{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:minmax(0,1fr) 500px;grid-template-areas:"info cta" "faq cta";grid-template-rows:auto 1fr;column-gap:64px;align-items:start}
+.faq-book .divider{display:none}
+.faq-book .info-wrap{grid-area:info;background:none;padding:85px 0 0}
+.faq-book>.section{grid-area:faq;max-width:none;margin:0;padding:40px 0 85px}
+.faq-book .cta-wrap{grid-area:cta;background:none;padding:85px 0;text-align:left}
+.faq-book .cta-inner{display:block;max-width:none}
+.faq-book .cta-title{margin-top:0}
+.faq-book .booking-card{grid-column:auto;grid-row:auto;padding:26px 24px;margin-bottom:18px}
+.faq-book .cta-title{color:var(--dark);font-size:30px}
+.faq-book .cta-desc{color:var(--text-muted);margin-bottom:24px}
+.faq-book .booking-card{box-shadow:0 12px 40px rgba(18,20,12,.14);border:1px solid rgba(90,107,66,.14)}
+.faq-book .cta-btns{grid-column:auto;grid-row:auto;justify-content:flex-start}
+.faq-book .btn-p{background:var(--olive);color:#fff}
+.faq-book .btn-s{color:var(--olive);border-color:var(--olive)}
+}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 
 </style>
@@ -335,6 +351,7 @@ html{scroll-behavior:smooth;scroll-padding-top:92px}a,button,input{-webkit-tap-h
   </div>
 </div>
 
+<div class="faq-book">
 <div class="info-wrap" id="visit">
   <div class="info-inner">
     <div class="info-grid">
@@ -393,6 +410,7 @@ html{scroll-behavior:smooth;scroll-padding-top:92px}a,button,input{-webkit-tap-h
     </div>
   </div>
 </div>
+</div><!-- /faq-book -->
 
 </main>
 <div class="mobile-cta"><span>강화레포츠파크</span><a href="#contact">예약·구매하기 ↗</a></div>
