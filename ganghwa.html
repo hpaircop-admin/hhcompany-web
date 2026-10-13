@@ -428,7 +428,7 @@ html{scroll-behavior:smooth;scroll-padding-top:92px}a,button,input{-webkit-tap-h
   // buy-widget.js가 상품의 indiv_tickets(권종 2개: 30,000원/43,000원)를 DB에서 직접
   // 읽어와서 "이용권 선택" 드롭다운까지 알아서 그려줍니다 — 페이지에서 따로 권종을
   // 나열할 필요 없이 상품 하나만 지정하면 됩니다.
-  HHBuyWidget.init({ mount: '#buy', productId: 'p25', venueName: VENUE_NAME });
+  HHBuyWidget.init({ mount: '#buy', productId: 'p25', venueName: VENUE_NAME, visit: { closedWeekdays: [2], maxDaysAhead: 30, startTime: '09:00', endTime: '17:00', stepMin: 30 } });
   // 단체 예약금 결제는 관리자 화면에서 활성화하기 전까지는 자동으로 숨겨진 채로
   // 동작합니다(현재 강화레포츠파크는 단체=전화/카카오 문의만 받으므로 비활성 상태).
   HHGroupDepositWidget.init({ mount: '#group-deposit', productId: 'p25', venueName: VENUE_NAME, countInputId: 'group-count' });

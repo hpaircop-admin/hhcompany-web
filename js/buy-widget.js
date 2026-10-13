@@ -128,6 +128,15 @@
       .hhbw-state strong{display:block;font-size:15px;margin-bottom:8px}
       .hhbw-state{font-size:14px;color:#17302e;line-height:1.8}
       .hhbw-state .sub{font-size:12px;color:#5d6b68;margin-top:10px}
+      .hhbw-field select,.hhbw-field input[type=date]{width:100%;padding:11px 12px;border:1px solid #e7f0fd;border-radius:8px;font-size:15px;font-family:inherit;background:#fff;box-sizing:border-box}
+      .hhbw-quick{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+      .hhbw-quick button{padding:6px 11px;border:1px solid #e7f0fd;border-radius:999px;background:#fff;font-size:12px;font-weight:700;color:#17302e;cursor:pointer;font-family:inherit}
+      .hhbw-quick button:hover{border-color:#1d6fe0;color:#1d6fe0}
+      .hhbw-dayinfo{font-size:12px;margin-top:6px;color:#5d6b68}
+      .hhbw-dayinfo.err{color:#dc2626}
+      .hhbw-times{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+      .hhbw-times button{padding:9px 0;border:1.5px solid #e7f0fd;border-radius:8px;background:#fff;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;color:#17302e}
+      .hhbw-times button.on{border-color:#1d6fe0;background:#1d6fe0;color:#fff}
       .hhbw-skel{color:#5d6b68;font-size:13px;padding:6px 0}
     `;
     document.head.appendChild(style);
@@ -142,6 +151,7 @@
       productId: opts.productId,
       venueName: opts.venueName || '',
       orderLabel: opts.orderLabel || (opts.venueName ? `${opts.venueName} 개인 입장권` : '개인 입장권'),
+      visit: opts.visit || null, // 예: { closedWeekdays:[2], maxDaysAhead:30, startTime:'09:00', endTime:'17:00', stepMin:30 } — 없으면 날짜·시간 칸을 안 보여줌
       price: null,
       session: null,
       profile: null,
@@ -248,6 +258,61 @@
     return state.orderLabel;
   }
 
+  // ── 방문일·도착시간 (init의 visit 옵션을 준 페이지에서만 표시) ──────────────
+  const WEEK = ['일', '월', '화', '수', '목', '금', '토'];
+  function ymd(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+  function addDays(d, n) { const x = new Date(d); x.setDate(x.getDate() + n); return x; }
+  function visitFieldsHtml(state) {
+    const v = state.visit;
+    if (!v) return '';
+    const today = new Date(), max = addDays(today, v.maxDaysAhead || 30);
+    const closed = (v.closedWeekdays || []).map((d) => WEEK[d] + '요일').join('·');
+    const times = [];
+    const [sh, sm] = (v.startTime || '09:00').split(':').map(Number), [eh, em] = (v.endTime || '17:00').split(':').map(Number);
+    for (let m = sh * 60 + sm; m <= eh * 60 + em; m += v.stepMin || 30) times.push(String(Math.floor(m / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0'));
+    return `<div class="hhbw-field">
+        <label for="hhbw-visit-date">방문 예정일</label>
+        <input type="date" id="hhbw-visit-date" min="${ymd(today)}" max="${ymd(max)}">
+        <div class="hhbw-quick"><button type="button" data-add="0">오늘</button><button type="button" data-add="1">내일</button></div>
+        <div class="hhbw-dayinfo" id="hhbw-dayinfo">${closed ? escapeHtml(closed) + ' 휴무 · ' : ''}오늘부터 ${v.maxDaysAhead || 30}일 이내 선택</div>
+      </div>
+      <div class="hhbw-field">
+        <label>도착 예정 시간</label>
+        <div class="hhbw-times" id="hhbw-times">${times.map((t) => `<button type="button" data-t="${t}">${t}</button>`).join('')}</div>
+      </div>`;
+  }
+  function bindVisitFields(state) {
+    const v = state.visit;
+    if (!v) return;
+    const { mountEl } = state;
+    const dateEl = mountEl.querySelector('#hhbw-visit-date'), info = mountEl.querySelector('#hhbw-dayinfo');
+    state.visitDate = ''; state.arrivalTime = '';
+    function pick(val) {
+      state.visitDate = '';
+      info.className = 'hhbw-dayinfo';
+      if (!val) return;
+      const d = new Date(val + 'T00:00:00');
+      if ((v.closedWeekdays || []).includes(d.getDay())) {
+        dateEl.value = '';
+        info.className = 'hhbw-dayinfo err';
+        info.textContent = WEEK[d.getDay()] + '요일은 휴무일입니다. 다른 날짜를 선택해주세요.';
+        return;
+      }
+      state.visitDate = val;
+      info.textContent = (d.getMonth() + 1) + '월 ' + d.getDate() + '일 (' + WEEK[d.getDay()] + ') 방문 예정';
+    }
+    dateEl.onchange = () => pick(dateEl.value);
+    mountEl.querySelectorAll('.hhbw-quick button').forEach((b) => {
+      b.onclick = () => { dateEl.value = ymd(addDays(new Date(), +b.dataset.add)); pick(dateEl.value); };
+    });
+    mountEl.querySelectorAll('#hhbw-times button').forEach((b) => {
+      b.onclick = () => {
+        mountEl.querySelectorAll('#hhbw-times button').forEach((x) => x.classList.remove('on'));
+        b.classList.add('on'); state.arrivalTime = b.dataset.t;
+      };
+    });
+  }
+
   function render(state) {
     const { mountEl, price } = state;
 
@@ -281,6 +346,7 @@
       <div class="hhbw-label">${escapeHtml(currentTicketLabel(state))} (1인)</div>
       <div class="hhbw-price" id="hhbw-price">${money(price)}<small> / 1인</small></div>
       ${ticketSelectHtml(state)}
+      ${visitFieldsHtml(state)}
       <div class="hhbw-field"><label for="hhbw-name">구매자 이름</label><input type="text" id="hhbw-name" name="name" autocomplete="name" value="${escapeAttr(prefillName)}" placeholder="이름을 입력해주세요"></div>
       <div class="hhbw-field">
         <label for="hhbw-phone">연락처 (본인확인 필요)</label>
@@ -301,6 +367,7 @@
       <div class="hhbw-msg" id="hhbw-msg"></div>
     `;
 
+    bindVisitFields(state);
     const qtyInput = mountEl.querySelector('#hhbw-qty');
     const amountEl = mountEl.querySelector('#hhbw-amount');
     const syncAmount = () => {
@@ -405,6 +472,8 @@
     const msg = mountEl.querySelector('#hhbw-msg');
     const btn = mountEl.querySelector('#hhbw-submit');
 
+    if (state.visit && !state.visitDate) { msg.textContent = '방문 예정일을 선택해주세요.'; return; }
+    if (state.visit && !state.arrivalTime) { msg.textContent = '도착 예정 시간을 선택해주세요.'; return; }
     if (!name) { msg.textContent = '이름을 입력해주세요.'; return; }
     if (!phone) { msg.textContent = '연락처를 입력해주세요.'; return; }
     // 휴대폰 본인확인이 안 끝났거나, 인증 이후 번호를 바꿔서 무효화된 경우
@@ -418,6 +487,7 @@
     const created = await fnFetch('create', {
       productId: state.productId, quantity: qty, buyerName: name, buyerPhone: phone,
       buyerEmail: email || undefined,
+      visitDate: state.visitDate || undefined, arrivalTime: state.arrivalTime || undefined,
       // 권종(indiv_tickets)이 있는 상품이면 어떤 권종을 골랐는지 서버에 같이 전달
       // (서버가 그 권종의 가격을 다시 조회해서 금액을 확정 — 클라이언트 price는 참고용일 뿐 신뢰하지 않음)
       ticketType: state.indivTickets ? state.indivTickets[state.ticketIndex].type : undefined,
