@@ -103,7 +103,7 @@ async function loadTicket() {
         <div class="barcode-wrap">
           <svg id="barcode-svg"></svg>
         </div>
-        <div class="notice">현장 입장 시 이 화면의 바코드를 제시해주세요. 화면 캡처본도 사용 가능합니다.</div>
+        <div class="notice">현장 입장 시 이 화면의 바코드를 제시해주세요. ${String(p.venue_name||'').includes('홈티켓') ? '캡처본은 사용할 수 없습니다.' : '화면 캡처본도 사용 가능합니다.'}</div>
       </div>`;
 
     try {
