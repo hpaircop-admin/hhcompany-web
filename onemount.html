@@ -179,14 +179,55 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
   .cta-btns{flex-direction:column;align-items:center}
 }
 </style>
+<style id="onemount-redesign">
+/* Onemount page only · 2026-10-13 */
+:root{--teal:#2164de;--teal-dark:#194eaa;--teal-mid:#2164de;--navy:#142f55;--dark:#142f55;--text:#233b58;--muted:#64748b;--sky:#eef5fc;--border:#dce6f0;--yellow:#c5edff}
+html{scroll-behavior:smooth;scroll-padding-top:136px}
+body{background:#fff;color:var(--text);line-height:1.6;word-break:keep-all}
+a,button,input{-webkit-tap-highlight-color:transparent}a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid #ffb83f;outline-offset:5px}
+.nav{height:78px;background:#fff;border-bottom:1px solid #e7edf5;padding:12px max(24px,calc((100vw - 1200px)/2));gap:20px;color:var(--navy)}
+.nav-title{font-size:19px;letter-spacing:-.6px;white-space:nowrap}.nav-title .one{color:#2164de}.nav-title .mount{color:#142f55}.nav-sub{color:#6a7e96;font-size:10px;letter-spacing:1.5px}.nav-back{color:#64748b}.nav-btn{background:#2164de;color:white;border-radius:6px;padding:11px 20px;white-space:nowrap}
+.hero.split{position:relative;display:flex;min-height:620px;align-items:center;padding:76px max(24px,calc((100vw - 1200px)/2));background:#142f55;isolation:isolate}
+.hero.split .hero-img{position:absolute;inset:0;height:100%;width:100%;aspect-ratio:auto;object-fit:cover;object-position:center 52%;border-radius:0;box-shadow:none;z-index:-3}
+.hero.split .hero-overlay{display:block;position:absolute;inset:0;background:linear-gradient(90deg,rgba(6,23,50,.94) 0%,rgba(8,30,66,.76) 39%,rgba(9,27,56,.1) 85%),linear-gradient(0deg,rgba(12,28,53,.35),transparent 60%);z-index:-2}
+.hero.split .hero-content{padding:0;max-width:800px}.hero-badge{background:none;color:#b4e6ff;border:1px solid #80afd280;border-radius:4px;font-size:12px;letter-spacing:2px;padding:7px 13px;margin-bottom:24px}
+.hero.split .hero-title{font-size:clamp(38px,4.9vw,70px);line-height:1.2;letter-spacing:-3px;font-weight:900;margin-bottom:24px}.hero-title em{color:#fff}.hero-title span{color:#a5e3ff}.hero-sub{color:#d4e1ef;font-size:16px;line-height:1.9;max-width:570px;margin-bottom:26px}.hero-tags{margin-top:30px}.hero-tag{border:none;border-radius:0;background:none;padding:0 15px 0 0;font-size:12px;color:#c9d7e8}.hero-tag+.hero-tag{border-left:1px solid #ffffff35;padding-left:15px}
+.hero-actions{display:flex;gap:12px}.hero-actions a{display:inline-flex;align-items:center;justify-content:center;padding:13px 24px;border-radius:6px;text-decoration:none;font-weight:800;font-size:14px}.hero-primary{background:white;color:#194eaa}.hero-secondary{border:1px solid #a4bfd4;color:#fff}
+.quick-nav{position:sticky;top:78px;z-index:90;display:flex;justify-content:center;gap:40px;border-bottom:1px solid #dce6f0;background:#fffffffa;padding:0 20px;overflow-x:auto}.quick-nav a{display:block;text-decoration:none;color:#576c86;padding:18px 3px;font-size:14px;font-weight:700;white-space:nowrap}.quick-nav a:hover{color:#2164de}.quick-nav a:last-child{color:#2164de}
+.season-strip{max-width:1200px;margin:0 auto;padding:30px 0;display:grid;grid-template-columns:1.2fr 1fr 1fr;border-bottom:1px solid #dce6f0;gap:30px}.season-strip>div+div{border-left:1px solid #dce6f0;padding-left:36px}.season-strip small{font-size:11px;color:#64748b;display:block;letter-spacing:1px;margin-bottom:4px}.season-strip strong{font-size:20px;letter-spacing:-.7px}.season-strip span{display:block;font-size:12px;color:#718198;margin-top:3px}
+.sec{max-width:1248px;padding:84px 24px}.sec-label{color:#2164de;letter-spacing:2.2px;font-size:11px;margin-bottom:12px}.sec-title{font-size:clamp(26px,3.1vw,42px);line-height:1.3;letter-spacing:-1.8px;margin-bottom:18px}.sec-desc{font-size:15px;line-height:1.9;max-width:800px;margin-bottom:32px}.divider{height:1px;background:#e7edf5;max-width:1200px;margin:auto}
+.grid2{gap:20px}.grid2 .cell{border-radius:12px}.cap{bottom:18px;left:18px;padding:5px 12px;background:#142f55bb;font-size:12px;font-weight:500}.photo-full,.photo-frame{border-radius:12px}.photo-full img{max-height:470px;object-fit:cover}.act-card{box-shadow:none;border:0;background:#f3f7fb;border-radius:12px;margin-bottom:0}.act-name{font-size:20px;letter-spacing:-.5px}.act-desc{font-size:14px}.act-body{padding:24px}.act-img{aspect-ratio:16/10}.act-img img{transition:none}
+#snowpark .grid2{grid-template-columns:1.65fr 1fr;grid-template-rows:210px 210px;gap:18px}#snowpark .cell.wide{grid-column:1;grid-row:1/3;aspect-ratio:auto}#snowpark .cell{aspect-ratio:auto}#snowpark .swim-card{background:#eff6fc;color:var(--dark);padding:28px;margin:24px 0 0}#snowpark .swim-title{color:var(--dark)}#snowpark .swim-desc{color:#64748b}#snowpark .swim-item{background:white;color:#34567b;border:1px solid #dce6f0}.notice{background:#f5f8fb;color:#5b6e86;border-left:3px solid #8fb7eb;font-size:13px;padding:20px 24px;margin-top:24px}.notice strong{color:#234774;margin-bottom:7px}
+.facilities{display:grid;grid-template-columns:1fr 1fr;gap:24px}.facilities>.sec-label,.facilities>.sec-title,.facilities>.sec-desc,.facilities>.photo-full,.facilities>.grid2{grid-column:1/-1;margin-bottom:0}.facilities>.sec-title{margin-top:-12px}.facilities>.sec-desc{margin-top:-10px;margin-bottom:8px}.facilities>.grid2{display:grid}.facilities>.photo-full{margin-bottom:8px}.facilities>.photo-full img{height:430px;width:100%;object-fit:cover}
+.swim-card{background:#173b67;padding:30px;border-radius:12px}.swim-badge{background:#317bdd;font-size:10px}.swim-title{font-size:22px}.swim-desc{color:#d7e4f3}.swim-item{border-radius:5px}.pill{background:#f2f7fd;border-color:#dce6f0;color:#3e628d;font-size:12px}
+.price-wrap{background:#eff5fc;padding:84px 24px;color:#233b58}.price-inner{max-width:1200px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}.price-inner>p,.price-inner>.nbox{grid-column:1/-1;margin-bottom:0}.price-inner>.sec-label{color:#2164de!important}.price-big{color:#142f55;font-size:36px}.price-sub2{color:#64748b;font-size:14px}.price-period{background:white;border:1px solid #d5e2f0;border-radius:12px;padding:24px 18px;margin:0}.period-title{font-size:13px;color:#285487;letter-spacing:0}.peak{border:2px solid #2164de!important;background:white}.peak .period-title{color:#2164de!important}.pt th{color:#78869a;font-size:11px;border-bottom:1px solid #e5edf5;padding:12px 5px}.pt td{color:#365475;padding:15px 5px;border-bottom:1px solid #eaf0f6;font-size:13px}.pt td:first-child{color:#425a77}.pt .cy{color:#2164de;font-size:17px}.pt .wy{color:#426286}.pt .ry{color:#a25247}.price-period:nth-last-of-type(2){grid-column:1/-1}.nbox{background:#fff;border:1px solid #d5e2f0;padding:24px;margin-top:0}.nbox-title{color:#244974;font-size:14px}.nbox-item{color:#64748b;font-size:13px;margin:5px 0}.nbox-item::before{color:#2164de}
+.meal-wrap{padding:72px 24px}.meal-inner,.info-inner{max-width:1200px}.meal-tbl{border-color:#dce6f0}.meal-tbl th{background:#f0f5fb;color:#426286}.meal-tbl .pv{color:#2164de}.info-wrap{background:#f7f9fc;padding:64px 24px}.info-grid{grid-template-columns:repeat(3,1fr);gap:18px}.info-item{border:none;border-radius:8px;padding:25px}.info-lbl{display:block;margin-bottom:10px}.info-val{display:block}.info-icon{display:none}
+.cta-wrap{background:#163b69;padding:80px 24px}.cta-inner{max-width:700px}.cta-title{font-size:38px;line-height:1.3}.cta-desc{color:#d7e4f3;font-size:14px}.cta-btns a{font-size:14px;padding:12px 24px}.footer{background:#0f294a;padding:34px 24px 100px}.footer p{color:#a3b3c9}.footer strong{color:#d5e1ef}.footer p>span{color:#91a5bf!important}.mobile-cta{display:none}
+@media(min-width:1000px){#waterpark>.grid2 .cell{aspect-ratio:16/9}}
+@media(max-width:900px){.season-strip{margin:0 24px;gap:16px}.season-strip>div+div{padding-left:20px}.season-strip strong{font-size:17px}.quick-nav{gap:26px}.price-inner{grid-template-columns:1fr}.price-period{grid-column:1/-1}.hero.split{min-height:560px}.hero.split .hero-content{width:100%}.hero.split .hero-img{object-position:65% center}.hero.split .hero-title{font-size:50px}.info-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){html{scroll-padding-top:115px}.nav{height:65px;padding:10px 18px}.nav-title{font-size:17px}.nav-back{display:none}.nav-btn{font-size:12px;padding:9px 14px}.nav-sub{font-size:9px}.quick-nav{top:65px;gap:25px;justify-content:flex-start;padding:0 18px}.quick-nav a{font-size:12px;padding:15px 0}.hero.split{min-height:550px;padding:50px 22px}.hero.split .hero-title{font-size:42px;letter-spacing:-2px}.hero.split .hero-overlay{background:linear-gradient(90deg,#071d3bee,#102d54aa 75%,#102d5466)}.hero-sub{font-size:14px}.hero-tags{gap:10px}.hero-tag{font-size:10px;padding-right:8px}.hero-tag+.hero-tag{padding-left:8px}.hero-actions a{padding:12px 18px;font-size:13px}.season-strip{grid-template-columns:1fr;margin:0 22px;padding:24px 0;gap:16px}.season-strip>div+div{border-left:0;padding-left:0}.season-strip>div{display:grid;grid-template-columns:95px 1fr;align-items:center}.season-strip small{margin:0;font-size:10px}.season-strip span{grid-column:2;font-size:11px}.season-strip strong{font-size:17px}.sec{padding:52px 20px}.sec-title{font-size:29px;letter-spacing:-1.2px}.sec-desc{font-size:14px}.grid2{grid-template-columns:1fr 1fr;gap:10px}#snowpark .grid2{grid-template-columns:1fr 1fr;grid-template-rows:240px 150px;gap:10px}#snowpark .cell.wide{grid-column:1/-1;grid-row:1}#snowpark .swim-card{padding:22px}.swim-title{font-size:19px}.notice{padding:18px;font-size:12px}.facilities{grid-template-columns:1fr;gap:20px}.facilities>.photo-full img{height:240px}.act-img{aspect-ratio:16/9}.act-body{padding:20px}.price-wrap{padding:52px 20px}.price-big{font-size:29px}.meal-wrap,.info-wrap{padding:48px 20px}.meal-tbl td,.meal-tbl th{font-size:12px;padding:12px 5px}.meal-tbl .pv{font-size:13px}.info-grid{gap:10px}.info-item{padding:18px 14px}.info-val{font-size:12px}.cta-wrap{padding:56px 20px}.cta-title{font-size:30px}.cta-btns{flex-direction:row;gap:10px}.mobile-cta{position:fixed;bottom:0;left:0;right:0;z-index:110;display:flex;align-items:center;justify-content:space-between;background:white;border-top:1px solid #dce6f0;padding:12px 18px calc(12px + env(safe-area-inset-bottom));box-shadow:0 -4px 20px #142f550d}.mobile-cta span{font-size:12px;color:#64748b}.mobile-cta strong{display:block;font-size:14px;color:#142f55}.mobile-cta a{background:#2164de;color:#fff;text-decoration:none;padding:11px 22px;border-radius:6px;font-weight:800;font-size:13px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+
+/* 보정: 첫 화면 사진은 원본 크기를 지켜서 오른쪽 액자로, 시설 카드는 가로 한 줄씩 */
+.hero.split{background:linear-gradient(135deg,#0d2547 0%,#142f55 100%);display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:48px;min-height:560px}
+.hero.split .hero-img{position:static;grid-column:2;grid-row:1;height:auto;width:100%;aspect-ratio:3/2;border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.4);z-index:0;object-position:center}
+.hero.split .hero-overlay{display:none}
+.hero.split .hero-content{grid-column:1;grid-row:1;max-width:none}
+.facilities>.act-card{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);align-items:stretch}
+.facilities>.act-card .act-img{aspect-ratio:auto;min-height:280px;height:100%}
+.facilities>.act-card .act-body{display:flex;flex-direction:column;justify-content:center;padding:36px}
+.facilities>.act-card .act-name{font-size:22px}
+@media(max-width:900px){.hero.split{grid-template-columns:1fr;gap:28px;min-height:0;padding:44px 22px}.hero.split .hero-img{grid-column:1;grid-row:2;object-position:center}.hero.split .hero-content{grid-row:1}.hero.split .hero-title{font-size:clamp(32px,8vw,48px)}.facilities>.act-card{grid-template-columns:1fr}.facilities>.act-card .act-img{min-height:0;aspect-ratio:16/9}.facilities>.act-card .act-body{padding:20px}}
+</style>
 </head>
 <body>
 
 <!-- NAV -->
 <nav class="nav">
   <div>
-    <p class="nav-title"><span class="one">ONE</span><span class="mount">MOUNT</span> 스노우파크 · 워터파크</p>
-    <span class="nav-sub">2026 단체행사 안내</span>
+    <p class="nav-title"><span class="one">ONE</span><span class="mount">MOUNT</span></p>
+    <span class="nav-sub">스노우파크 · 워터파크 단체 예약</span>
   </div>
   <div style="display:flex;align-items:center;gap:14px">
 <a href="products.html" class="nav-back">← 상품 목록</a>
@@ -200,9 +241,10 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
   <div class="hero-overlay"></div>
   <div class="hero-content">
     <span class="hero-badge">2026-27 겨울 · 단체행사</span>
-    <h1 class="hero-title">겨울엔<br><em>원마운트</em> <span>스노우파크</span></h1>
+    <h1 class="hero-title">겨울 단체행사는<br><span>원마운트 스노우파크</span></h1>
     <p class="hero-sub">11월 26일(목) 오픈 · 서울에서 30분<br>실내외 눈썰매와 아이스레이크, 워터파크는 365일 그대로 운영합니다</p>
-    <div class="hero-tags">
+    <div class="hero-actions"><a class="hero-primary" href="#pricing">단체 요금 확인 ↗</a><a class="hero-secondary" href="#contact">예약 문의하기 →</a></div>
+<div class="hero-tags">
       <span class="hero-tag">서울 30분 거리</span>
       <span class="hero-tag">실내·야외 눈썰매</span>
       <span class="hero-tag">생존수영 교육 가능</span>
@@ -211,6 +253,9 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
           </div>
   </div>
 </div>
+
+<nav class="quick-nav" aria-label="페이지 바로가기"><a href="#snowpark">스노우파크</a><a href="#waterpark">워터파크</a><a href="#swimming">생존수영</a><a href="#pricing">단체 요금</a><a href="#visit">이용 안내</a><a href="#contact">예약 문의 ↗</a></nav>
+<div class="season-strip"><div><small>SNOW SEASON</small><strong>2026.11.26 — 2027.03.01</strong><span>스노우파크 운영 기간</span></div><div><small>GROUP RESERVATION</small><strong>10명부터 단체 예약</strong><span>학교 · 기관 · 기업 · 복지관</span></div><div><small>MEAL · PROGRAM</small><strong>단체 식사 · 생존수영</strong><span>등심 돈까스 식사, 주중 생존수영 신청 가능</span></div></div>
 
 <!-- 스노우파크 -->
 <section class="sec" id="snowpark">
@@ -240,7 +285,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
 </section>
 <div class="divider"></div>
 <!-- 소개 -->
-<section class="sec">
+<section class="sec" id="waterpark">
   
   <h2 class="sec-title">서울 도심에서 30분,<br>365일 즐기는 워터파크</h2>
   <p class="sec-desc">경기도 고양시 일산에 위치한 원마운트 워터파크는 실내외 슬라이드와 대형 파도풀, 유수풀, 아쿠아 플레이 등 다양한 어트랙션을 갖춘 복합 워터파크입니다. 학교 체험학습, 기업 워크숍, 복지관 행사 등 단체 예약을 받습니다.</p>
@@ -260,7 +305,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
 <div class="divider"></div>
 
 <!-- 야외존 -->
-<section class="sec">
+<section class="sec facilities" id="outdoor">
   <p class="sec-label">Outdoor Zone · ①</p>
   <h2 class="sec-title">건물 옥상에 있는<br>야외 워터파크</h2>
   <p class="sec-desc">지상 50m 높이 슬라이드와 패밀리풀이 있는 옥상 야외 워터파크입니다.</p>
@@ -313,7 +358,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
 <div class="divider"></div>
 
 <!-- 실내존 -->
-<section class="sec">
+<section class="sec facilities" id="indoor">
   <p class="sec-label">Indoor Zone · ②</p>
   <h2 class="sec-title">날씨와 상관없는<br>실내 워터파크</h2>
   <p class="sec-desc">365일 운영하는 실내 워터파크입니다. 대형 파도풀 카니발비치, 300m 유수풀 벤츄라리버, 독일식 바데풀이 있습니다.</p>
@@ -366,7 +411,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
 <div class="divider"></div>
 
 <!-- 생존수영 -->
-<section class="sec">
+<section class="sec" id="swimming">
   <p class="sec-label">Special Program · ③</p>
   <h2 class="sec-title">생존수영 교육 프로그램</h2>
   <p class="sec-desc">학교 단체를 위한 프로그램입니다. 생존수영과 수상안전교육을 진행합니다.</p>
@@ -396,10 +441,10 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
 <div class="divider"></div>
 
 <!-- 요금 -->
-<div class="price-wrap">
+<div class="price-wrap" id="pricing">
   <div class="price-inner">
     <p class="sec-label" style="color:rgba(255,255,255,.45)">2026 Pricing</p>
-    <p class="price-big">2026년 단체 요금 안내</p>
+    <p class="price-big">일정에 맞는 단체 요금</p>
     <p class="price-sub2">※ 단체 기준 / 생존수영 별도 신청</p>
 
 
@@ -478,7 +523,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
 </div>
 
 <!-- 기본 정보 -->
-<div class="info-wrap">
+<div class="info-wrap" id="visit"><h2 class="sec-title" style="max-width:1200px;margin:0 auto 28px">방문 전 확인해 주세요</h2>
   <div class="info-inner">
     
     <div class="info-grid">
@@ -505,7 +550,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
       </div>
 
       <div id="rpanel-group">
-        <label style="display:block;font-size:13px;font-weight:700;color:#17302e;margin-bottom:8px">예상 인원</label>
+        <label for="rv-group-count" style="display:block;font-size:13px;font-weight:700;color:#17302e;margin-bottom:8px">예상 인원</label>
         <input type="number" id="rv-group-count" min="1" placeholder="예: 30" value="10" style="width:100%;padding:12px;border:1px solid #e7f0fd;border-radius:8px;font-size:15px;margin-bottom:8px;box-sizing:border-box">
         <div id="rv-group-err" style="display:none;font-size:12px;color:#dc2626;margin-bottom:10px">단체 예약은 최소 10명부터 가능합니다. 10명 미만이시면 개인 구매 탭을 이용해주세요.</div>
         <button type="button" onclick="rvGoGroupReserve()" style="display:block;width:100%;padding:13px;border:none;border-radius:12px;background:#17302e;color:#fff;font-weight:800;font-size:15px;cursor:pointer">단체 예약 문의하기 →</button>
@@ -556,5 +601,6 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
   HHGroupDepositWidget.init({ mount: '#group-deposit', productId: 'p_1784012727753', venueName: '원마운트', countInputId: 'rv-group-count' });
 </script>
 
+<div class="mobile-cta"><span>원마운트 단체행사<strong>단체 예약 문의</strong></span><a href="#contact">예약 문의 →</a></div>
 </body>
 </html>
