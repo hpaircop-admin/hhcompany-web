@@ -591,7 +591,9 @@
           return false;
         }
         const pins = confirmed.data.data.pins || [];
-        location.href = 'ticket.html?pin=' + encodeURIComponent(pins[0] || '');
+        // 홈티켓은 핀번호 대신 임시 주소값(tokens)을 받는다 — 연속 번호 추측 방지
+        const tokens = confirmed.data.data.tokens || [];
+        location.href = tokens.length ? 'ticket.html?t=' + encodeURIComponent(tokens[0]) : 'ticket.html?pin=' + encodeURIComponent(pins[0] || '');
         return true;
       }
       showConfirmFailedState(state, confirmed.data?.message);
