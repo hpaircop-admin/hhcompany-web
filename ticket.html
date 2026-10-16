@@ -92,6 +92,12 @@ async function loadTicket() {
       return;
     }
 
+    // 현장에서 사용완료 처리된 입장권은 바코드를 숨기고 안내만 보여준다
+    if (p.status === 'used') {
+      card.innerHTML = `<div class="state"><strong>사용완료된 티켓입니다</strong>이 입장권은 이미 사용 처리되어 다시 사용하실 수 없습니다.<br>문의사항은 031-339-2999로 연락해주세요.</div>`;
+      return;
+    }
+
     card.innerHTML = `
       <div class="card-head">
         <div class="brand">HHCOMPANY 입장권</div>
