@@ -643,7 +643,7 @@
           <td>${r.venue_name ? maskText(r.venue_name) : '—'}</td>
           <td>${r.event_date ? new Date(r.event_date).toLocaleDateString('ko-KR') : '미정'}</td>
           <td>${new Date(r.created_at).toLocaleDateString('ko-KR')}</td>
-          <td><span class="badge-status ${r.status==='confirmed'?'badge-confirmed':'badge-new'}">${r.status==='confirmed'?'확정':'접수중'}</span>${r.admin_reply ? ' <span class="badge-status badge-answered">답변완료</span>' : ''}</td>
+          <td><span class="badge-status ${r.admin_reply?'badge-answered':'badge-pending'}">${r.admin_reply?'답변완료':'답변대기'}</span></td>
         </tr>`).join('');
     } catch(e) {
       body.innerHTML = '<tr><td colspan="5" class="board-empty">목록을 불러오지 못했습니다.</td></tr>';
