@@ -179,6 +179,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
       </div>
 
       <div id="rpanel-indiv" style="display:none">
+        <div style="background:#fff3cd;border:1px solid #f0c36d;border-radius:10px;padding:10px 12px;font-size:13px;color:#7a4a00;margin-bottom:12px"><strong>[테스트]</strong> 결제 테스트 중입니다. 금액은 100원이며 발급되는 바코드는 실제 입장에 사용할 수 없습니다.</div>
         <div class="hhbw-mount" id="buy"></div>
       </div>
     </div>
@@ -219,7 +220,9 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
 </footer>
 
 <script>
-  HHBuyWidget.init({ mount: '#buy', productId: 'p15', venueName: '시흥 웨이브파크' });
+  // 결제 테스트 중(2026-10-19): 개인 구매는 100원 테스트 상품(p15_test)으로 연결. 테스트가 끝나면 아래 줄 대신 주석 처리된 원래 줄로 되돌리고, [테스트] 안내 박스를 지운다.
+  // HHBuyWidget.init({ mount: '#buy', productId: 'p15', venueName: '시흥 웨이브파크' });
+  HHBuyWidget.init({ mount: '#buy', productId: 'p15_test', venueName: '시흥 웨이브파크-테스트' });
   HHGroupDepositWidget.init({ mount: '#group-deposit', productId: 'p15', venueName: '시흥 웨이브파크', countInputId: 'rv-group-count' });
 </script>
 </body>
