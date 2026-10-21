@@ -179,13 +179,6 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
       </div>
 
       <div id="rpanel-indiv" style="display:none">
-        <div style="border:1px solid #e7f0fd;border-radius:12px;padding:16px 16px 14px;margin-bottom:16px;background:#f7fbff">
-          <div style="font-size:13px;font-weight:800;color:#17302e;margin-bottom:10px">미오코스타 이용 요금 <span style="font-weight:500;color:#5d6b68">(종일권 기준)</span></div>
-          <div style="display:flex;justify-content:space-between;align-items:baseline;padding:8px 0;border-bottom:1px dashed #d7e3f3"><span style="font-size:14px;color:#17302e">대인 정가</span><strong style="font-size:17px;color:#17302e">50,000원</strong></div>
-          <div style="display:flex;justify-content:space-between;align-items:baseline;padding:8px 0"><span style="font-size:14px;color:#17302e">소인 정가 <span style="font-size:11px;color:#5d6b68">(초등학생까지)</span></span><strong style="font-size:17px;color:#17302e">40,000원</strong></div>
-          <div style="font-size:11px;color:#5d6b68;margin-top:4px">※ 시즌 및 요일에 따라 요금이 달라질 수 있습니다.</div>
-        </div>
-        <div style="background:#fff3cd;border:1px solid #f0c36d;border-radius:10px;padding:10px 12px;font-size:13px;color:#7a4a00;margin-bottom:12px"><strong>[테스트 버전 · 100원]</strong> 아래 결제는 결제 테스트용입니다. 금액은 100원이며 발급되는 바코드는 실제 입장에 사용할 수 없습니다.</div>
         <div class="hhbw-mount" id="buy"></div>
       </div>
     </div>
@@ -226,9 +219,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
 </footer>
 
 <script>
-  // 결제 테스트 중(2026-10-19): 개인 구매는 100원 테스트 상품(p15_test)으로 연결. 테스트가 끝나면 아래 줄 대신 주석 처리된 원래 줄로 되돌리고, [테스트] 안내 박스를 지운다.
-  // HHBuyWidget.init({ mount: '#buy', productId: 'p15', venueName: '시흥 웨이브파크' });
-  HHBuyWidget.init({ mount: '#buy', productId: 'p15_test', venueName: '시흥 웨이브파크-테스트' });
+  HHBuyWidget.init({ mount: '#buy', productId: 'p15', venueName: '시흥 웨이브파크' });
   HHGroupDepositWidget.init({ mount: '#group-deposit', productId: 'p15', venueName: '시흥 웨이브파크', countInputId: 'rv-group-count' });
 </script>
 </body>
