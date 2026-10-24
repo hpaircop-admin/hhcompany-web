@@ -600,6 +600,16 @@
       history.replaceState(null, '', location.pathname);
       return true;
     } else if (failCode) {
+      // 실패 사유를 서버에 남긴다 (2026-10-24). 상태는 바꾸지 않고 주문 메모(fail_reason)에만 기록 — 실패해도 화면 동작에는 영향 없음.
+      try {
+        const failOrderId = params.get('orderId');
+        if (failOrderId) {
+          fetch(`${SB_URL}/functions/v1/payment-fail-log`, {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ orderId: failOrderId, code: failCode, message: params.get('message') || '' }),
+          }).catch(() => {});
+        }
+      } catch (e) { /* 무시 */ }
       const orderIdFromFail = params.get('orderId') || '';
       state.mountEl.innerHTML = `
         <div class="hhbw-state">
