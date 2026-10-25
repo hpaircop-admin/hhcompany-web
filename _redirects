@@ -1,7 +1,10 @@
-# 롯데월드 단체방문 페이지 접속 차단 (해제하려면 이 세 줄을 삭제)
+# 롯데월드 페이지 접속 차단 (해제하려면 롯데월드 관련 줄을 모두 삭제)
 /lotteworld / 302
 /lotteworld.html / 302
 /lotteworld/ / 302
+/lotteworld-group / 302
+/lotteworld-group.html / 302
+/lotteworld-group/ / 302
 
 # 아일랜드캐슬 홈티켓: 이 주소는 삭제 (홈으로 이동). 판매 페이지는 islandcastle.hhcompany.co.kr
 /islandcastle-hometicket / 302
