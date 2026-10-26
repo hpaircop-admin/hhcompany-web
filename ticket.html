@@ -58,6 +58,20 @@ function fmtDate(s){
   return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
 }
 
+// 유효기간 표시 (2026-10-26): 시작일이 비어 있으면 '2026.12.21까지'처럼 깔끔하게 보여준다.
+// YYYY-MM-DD 문자열은 시간대 계산 없이 그대로 읽는다 (해외에서 열어도 날짜가 하루 밀리지 않게).
+function ymd(s){
+  const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(s || ''));
+  return m ? `${m[1]}.${m[2]}.${m[3]}` : fmtDate(s);
+}
+function validityText(p){
+  const f = p && p.valid_from, t = p && p.valid_to;
+  if (f && t) return `${ymd(f)} ~ ${ymd(t)}`;
+  if (t) return `${ymd(t)}까지`;
+  if (f) return `${ymd(f)}부터`;
+  return '—';
+}
+
 async function loadTicket() {
   const params = new URLSearchParams(location.search);
   const pin = (params.get('pin') || '').trim();
@@ -106,7 +120,7 @@ async function loadTicket() {
       </div>
       <div class="card-body">
         ${p.buyer_name ? `<div class="row"><span>구매자</span><span>${p.buyer_name}</span></div>` : ''}
-        <div class="row"><span>유효기간</span><span>${fmtDate(p.valid_from)} ~ ${fmtDate(p.valid_to)}</span></div>
+        <div class="row"><span>유효기간</span><span>${validityText(p)}</span></div>
         <div class="barcode-wrap">
           <svg id="barcode-svg"></svg>
         </div>
