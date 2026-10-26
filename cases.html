@@ -113,6 +113,13 @@
   .filter-chip:hover { border-color: var(--blue); color: var(--blue); }
   .filter-chip.active { background: var(--navy); border-color: var(--navy); color: #fff; }
 
+  /* -- 지자체행사·MICE 운영 사례 (홈페이지와 같은 카드) -- */
+  .mice-cases { background: #fff; padding: 72px 0 24px; }
+  .mice-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .mice-card { color: inherit; }
+  @media (max-width: 900px) { .mice-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .mice-grid { grid-template-columns: 1fr; } .mice-cases { padding-top: 56px; } }
+
   /* -- 블러 리스트 -- */
   .blur-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; max-width: 920px; margin: 0 auto; }
   .blur-panel { background: #fff; border: 1px solid var(--line); border-radius:16px; padding: 20px 0 0; box-shadow: 0 12px 32px rgba(14,42,71,0.07); overflow: hidden; }
@@ -244,6 +251,73 @@
     <div class="stat-card"><div class="num"><span id="st-types">-</span></div><div class="label">이용 기관 유형</div></div>
   </div>
 </div>
+
+<section class="mice-cases" id="mice">
+  <div class="wrap">
+    <div class="cases-head">
+      <div class="sec-tag">MICE &amp; Events</div>
+      <h2>지자체행사·MICE 운영 사례</h2>
+      <p>지역 행사와 MICE 행사 현장을 소개합니다.</p>
+    </div>
+    <div class="mice-grid">
+      <div class="mice-card" style="display:flex;flex-direction:column;gap:18px;color:inherit">
+        <div style="height:210px;overflow:hidden">
+          <img src="assets/gallery/event-01-forum.jpg" alt="2026 단체·MICE 유치 활성화 전략 팸투어 단체 사진" style="width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <span style="font-size:18px;font-weight:700;letter-spacing:-0.03em">2026 단체·MICE 유치 활성화 전략 팸투어</span>
+          <span style="font-size:14px;line-height:1.8;color:#5d6b68">단체·MICE 유치 활성화를 위한 전략 팸투어 행사 현장입니다.</span>
+        </div>
+      </div>
+      <div class="mice-card" style="display:flex;flex-direction:column;gap:18px;color:inherit">
+        <div style="height:210px;overflow:hidden">
+          <img src="assets/gallery/event-02-group.jpg" alt="단체·MICE 유치 활성화 전략 팸투어 현장 사진" style="width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <span style="font-size:18px;font-weight:700;letter-spacing:-0.03em">전략 팸투어 현장 스케치</span>
+          <span style="font-size:14px;line-height:1.8;color:#5d6b68">팸투어 참가자들과 함께한 현장 일정 사진입니다.</span>
+        </div>
+      </div>
+      <div class="mice-card" style="display:flex;flex-direction:column;gap:18px;color:inherit">
+        <div style="height:210px;overflow:hidden">
+          <img src="assets/gallery/event-03-golf.jpg" alt="제1회 강서구 협회장배 골프대회 단체 사진" style="width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <span style="font-size:18px;font-weight:700;letter-spacing:-0.03em">제1회 강서구 협회장배 골프대회</span>
+          <span style="font-size:14px;line-height:1.8;color:#5d6b68">협회 골프대회 행사 운영을 담당했습니다.</span>
+        </div>
+      </div>
+      <div class="mice-card" style="display:flex;flex-direction:column;gap:18px;color:inherit">
+        <div style="height:210px;overflow:hidden">
+          <img src="assets/gallery/event-04-chungnam-famtour.jpg" alt="충남관광 설명회 및 팸투어 단체 기념사진" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:center 70%;display:block">
+        </div>
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <span style="font-size:18px;font-weight:700;letter-spacing:-0.03em">충남문화관광재단 인바운드 팸투어</span>
+          <span style="font-size:14px;line-height:1.8;color:#5d6b68">2026년 9월, 충남문화관광재단 팸투어 행사를 공식 주도해 진행했습니다.</span>
+        </div>
+      </div>
+      <div class="mice-card" style="display:flex;flex-direction:column;gap:18px;color:inherit">
+        <div style="height:210px;overflow:hidden">
+          <img src="assets/gallery/event-05-us-taekwondo-tour.jpg" alt="미국 태권도 단체 한국 투어 기념사진" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:center 60%;display:block">
+        </div>
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <span style="font-size:18px;font-weight:700;letter-spacing:-0.03em">미국 태권도 단체 한국 투어</span>
+          <span style="font-size:14px;line-height:1.8;color:#5d6b68">미국 태권도 단체의 한국 방문 일정을 가이드했습니다.</span>
+        </div>
+      </div>
+      <div class="mice-card" style="display:flex;flex-direction:column;gap:18px;color:inherit">
+        <div style="height:210px;overflow:hidden;position:relative" data-gallery="assets/gallery/event-06-yeoncheon-famtour-a.jpg|assets/gallery/event-06-yeoncheon-famtour-b.jpg|assets/gallery/event-06-yeoncheon-famtour-c.jpg" data-pos="center 62%|center 55%|center 60%">
+          <img data-gimg src="assets/gallery/event-06-yeoncheon-famtour-a.jpg" alt="2026년 10월 23일 연천군 외국인 유치 여행사 팸투어 — 연천국화축제 고구려성 앞 단체사진" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:center 62%;display:block">
+          <div style="position:absolute;left:0;right:0;bottom:2px;display:flex;justify-content:center;gap:0"><span data-gdot role="button" tabindex="0" aria-label="사진 1번 보기" style="display:block;padding:7px;cursor:pointer"><i style="display:block;width:9px;height:9px;border-radius:50%;background:#a9d02a;box-shadow:0 0 0 1px rgba(23,48,46,.25)"></i></span><span data-gdot role="button" tabindex="0" aria-label="사진 2번 보기" style="display:block;padding:7px;cursor:pointer"><i style="display:block;width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.8);box-shadow:0 0 0 1px rgba(23,48,46,.25)"></i></span><span data-gdot role="button" tabindex="0" aria-label="사진 3번 보기" style="display:block;padding:7px;cursor:pointer"><i style="display:block;width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.8);box-shadow:0 0 0 1px rgba(23,48,46,.25)"></i></span></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <span style="font-size:18px;font-weight:700;letter-spacing:-0.03em">연천군 외국인 유치 여행사 팸투어</span>
+          <span style="font-size:14px;line-height:1.8;color:#5d6b68">2026년 10월 23일, 외국인 유치 여행사 대상 연천군 팸투어를 진행했습니다.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <section class="cases">
   <div class="wrap">
@@ -442,6 +516,32 @@ renderLists();
   if (elLogout) elLogout.addEventListener('click', doSignOut);
   sbAuth.auth.getSession().then(({ data }) => render(data.session)).catch(() => {});
   sbAuth.auth.onAuthStateChange((_event, session) => render(session));
+})();
+</script>
+
+<script>
+/* 사진 여러 장 카드: 아래 점을 누르면 다음 사진이 보인다 */
+(function () {
+  document.querySelectorAll('[data-gallery]').forEach(function (box) {
+    var img = box.querySelector('[data-gimg]');
+    var list = (box.getAttribute('data-gallery') || '').split('|').filter(Boolean);
+    var pos = (box.getAttribute('data-pos') || '').split('|');
+    var dots = box.querySelectorAll('[data-gdot]');
+    function show(i) {
+      img.src = list[i];
+      if (pos[i]) img.style.objectPosition = pos[i];
+      dots.forEach(function (d, k) {
+        d.firstElementChild.style.background = (k === i) ? '#a9d02a' : 'rgba(255,255,255,.8)';
+        d.setAttribute('aria-current', k === i ? 'true' : 'false');
+      });
+    }
+    dots.forEach(function (d, k) {
+      function pick(e) { e.preventDefault(); e.stopPropagation(); show(k); }
+      d.addEventListener('click', pick);
+      d.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') pick(e); });
+    });
+    window.addEventListener('load', function () { list.forEach(function (u) { var im = new Image(); im.src = u; }); });
+  });
 })();
 </script>
 </body>
