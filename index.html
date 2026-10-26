@@ -351,9 +351,10 @@
         </div>
       </a>
       <a href="cases.html" data-expire="2026-10-23" style="display:flex;flex-direction:column;gap:18px;color:inherit">
-        <div style="height:210px;overflow:hidden;position:relative">
-          <img src="assets/gallery/event-06-yeoncheon-famtour.jpg" alt="2026년 외국인 유치 여행사 대상 연천군 팸투어 안내 (2026.10.23)" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block">
+        <div style="height:210px;overflow:hidden;position:relative" data-gallery="assets/gallery/event-06-yeoncheon-famtour-a.jpg|assets/gallery/event-06-yeoncheon-famtour-b.jpg|assets/gallery/event-06-yeoncheon-famtour-c.jpg" data-pos="center 62%|center 55%|center 60%">
+          <img data-gimg src="assets/gallery/event-06-yeoncheon-famtour-a.jpg" alt="2026년 10월 23일 연천군 외국인 유치 여행사 팸투어 — 연천국화축제 고구려성 앞 단체사진" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:center 62%;display:block">
           <span style="position:absolute;top:12px;left:12px;padding:6px 11px;background:#a9d02a;color:#17302e;font-size:12px;font-weight:800;letter-spacing:-0.02em" data-upcoming>진행예정</span>
+          <div style="position:absolute;left:0;right:0;bottom:2px;display:flex;justify-content:center;gap:0"><span data-gdot role="button" tabindex="0" aria-label="사진 1번 보기" style="display:block;padding:7px;cursor:pointer"><i style="display:block;width:9px;height:9px;border-radius:50%;background:#a9d02a;box-shadow:0 0 0 1px rgba(23,48,46,.25)"></i></span><span data-gdot role="button" tabindex="0" aria-label="사진 2번 보기" style="display:block;padding:7px;cursor:pointer"><i style="display:block;width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.8);box-shadow:0 0 0 1px rgba(23,48,46,.25)"></i></span><span data-gdot role="button" tabindex="0" aria-label="사진 3번 보기" style="display:block;padding:7px;cursor:pointer"><i style="display:block;width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.8);box-shadow:0 0 0 1px rgba(23,48,46,.25)"></i></span></div>
         </div>
         <div style="display:flex;flex-direction:column;gap:9px">
           <span style="font-size:18px;font-weight:700;letter-spacing:-0.03em">연천군 외국인 유치 여행사 팸투어</span>
@@ -498,6 +499,31 @@
   }
   window.__hhExpire = apply;
   apply(new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Seoul' }));
+})();
+</script>
+<script>
+/* 사진 여러 장 카드: 아래 점을 누르면 다음 사진이 보인다 (카드 링크로 이동하지 않음) */
+(function () {
+  document.querySelectorAll('[data-gallery]').forEach(function (box) {
+    var img = box.querySelector('[data-gimg]');
+    var list = (box.getAttribute('data-gallery') || '').split('|').filter(Boolean);
+    var pos = (box.getAttribute('data-pos') || '').split('|');
+    var dots = box.querySelectorAll('[data-gdot]');
+    function show(i) {
+      img.src = list[i];
+      if (pos[i]) img.style.objectPosition = pos[i];
+      dots.forEach(function (d, k) {
+        d.firstElementChild.style.background = (k === i) ? '#a9d02a' : 'rgba(255,255,255,.8)';
+        d.setAttribute('aria-current', k === i ? 'true' : 'false');
+      });
+    }
+    dots.forEach(function (d, k) {
+      function pick(e) { e.preventDefault(); e.stopPropagation(); show(k); }
+      d.addEventListener('click', pick);
+      d.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') pick(e); });
+    });
+    window.addEventListener('load', function () { list.forEach(function (u) { var im = new Image(); im.src = u; }); });
+  });
 })();
 </script>
 </body>
