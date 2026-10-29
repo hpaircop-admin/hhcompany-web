@@ -71,7 +71,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
 .season-table th{background:rgba(255,255,255,.06);color:rgba(255,255,255,.6);font-size:11px;font-weight:700}
 .season-table tr:last-child td{border-bottom:none}
 .season-table td:first-child{text-align:left;color:rgba(255,255,255,.65);font-weight:600}
-.season-table .peakcol{color:var(--cyan);font-weight:800}
+.season-table .peakcol{color:var(--cyan);font-weight:800}.season-table .lowcol{color:#a9d02a;font-weight:800}@media (max-width:520px){.season-table{font-size:11px}.season-table th,.season-table td{padding:9px 2px;letter-spacing:-.04em}.season-table td:first-child{padding-left:6px;white-space:nowrap}.season-table td:not(:first-child){white-space:nowrap}.season-table th{font-size:10px}}
 .notice-box{background:#7DD3FC14;border:1px solid #7DD3FC33;border-radius:12px;padding:20px 22px;margin-top:20px}
 .notice-title{font-size:13px;font-weight:800;color:var(--cyan);margin-bottom:12px;letter-spacing:.05em}
 .notice-item{font-size:13px;color:rgba(255,255,255,.72);line-height:1.85;padding-left:14px;position:relative}
@@ -152,16 +152,16 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
     <p class="price-title">단체 요금 안내</p>
     <p class="price-sub2">※ 단체(10명 이상) 기준</p>
     <table class="season-table">
-      <tr><th>구분</th><th>A시즌</th><th>B시즌</th><th>C시즌</th><th>D시즌(성수기)</th></tr>
-      <tr><td>기간</td><td>3.14~4.30<br>8.31~12.18</td><td>5.1~6.26<br>12.19~3.1</td><td>6.27~7.24<br>8.18~8.30</td><td>7.25~8.17</td></tr>
-      <tr><td>주중 초등이상</td><td>17,000원</td><td>18,000원</td><td>19,000원</td><td class="peakcol">20,000원</td></tr>
-      <tr><td>주중 유아</td><td>15,000원</td><td>16,000원</td><td>17,000원</td><td>-</td></tr>
-      <tr><td>주말 초등이상</td><td>19,000원</td><td>20,000원</td><td>22,000원</td><td class="peakcol">24,000원</td></tr>
-      <tr><td>주말 유아</td><td>17,000원</td><td>18,000원</td><td>20,000원</td><td>-</td></tr>
+      <tr><th>구분</th><th>로우시즌<br>(비수기)</th><th>A시즌</th><th>B시즌</th><th>C시즌</th><th>D시즌(성수기)</th></tr>
+      <tr><td>기간</td><td class="lowcol">9.1~12.24</td><td>3.14~4.30<br>8.31</td><td>5.1~6.26<br>12.25~3.1</td><td>6.27~7.24<br>8.18~8.30</td><td>7.25~8.17</td></tr>
+      <tr><td>주중 초등이상</td><td class="lowcol">20,000원</td><td>17,000원</td><td>18,000원</td><td>19,000원</td><td class="peakcol">20,000원</td></tr>
+      <tr><td>주중 유아</td><td class="lowcol">20,000원</td><td>15,000원</td><td>16,000원</td><td>17,000원</td><td>-</td></tr>
+      <tr><td>주말 초등이상</td><td class="lowcol">20,000원</td><td>19,000원</td><td>20,000원</td><td>22,000원</td><td class="peakcol">24,000원</td></tr>
+      <tr><td>주말 유아</td><td class="lowcol">20,000원</td><td>17,000원</td><td>18,000원</td><td>20,000원</td><td>-</td></tr>
     </table>
     <div class="notice-box">
       <p class="notice-title">이용 안내</p>
-      <p class="notice-item">10명 이상 단체요금 적용</p><p class="notice-item">유아 인솔자 무료입장 / 초등이상 10:1 인솔자 무료입장</p><p class="notice-item">중식(돈까스 단일품목) 유아 8,000원 / 초등 9,000원 / 중고·성인 10,000원</p><p class="notice-item">D시즌(성수기) 유아 요금은 별도 문의 바랍니다</p><p class="notice-item">페이스타올은 제공되지 않습니다 (필요하신 경우 현장 대여 1,500원)</p>
+      <p class="notice-item">10명 이상 단체요금 적용</p><p class="notice-item">로우시즌(9.1~12.24) 단체가 20,000원 (주중·주말, 초등이상·유아 동일)</p><p class="notice-item">유아 인솔자 무료입장 / 초등이상 10:1 인솔자 무료입장</p><p class="notice-item">중식(돈까스 단일품목) 유아 8,000원 / 초등 9,000원 / 중고·성인 10,000원</p><p class="notice-item">D시즌(성수기) 유아 요금은 별도 문의 바랍니다</p><p class="notice-item">페이스타올은 제공되지 않습니다 (필요하신 경우 현장 대여 1,500원)</p>
     </div>
   </div>
 </div>
