@@ -76,7 +76,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
 .notice-title{font-size:13px;font-weight:800;color:var(--cyan);margin-bottom:12px;letter-spacing:.05em}
 .notice-item{font-size:13px;color:rgba(255,255,255,.72);line-height:1.85;padding-left:14px;position:relative}
 .notice-item::before{content:'·';position:absolute;left:0;color:var(--cyan)}
-.info-wrap{background:#f1f4f0;padding:48px 24px}
+.hours-wrap{background:#fff;padding:52px 24px 8px}.hours-inner{max-width:800px;margin:0 auto}.hours-sub{font-size:14px;font-weight:700;color:var(--blue);margin:-4px 0 18px}.hours-table{width:100%;border-collapse:collapse;border:1px solid var(--border);border-radius:12px;overflow:hidden;font-size:14px;background:#fff}.hours-table th,.hours-table td{padding:13px 16px;text-align:left;border-bottom:1px solid var(--border)}.hours-table th{width:46%;background:#f1f4f0;color:var(--muted);font-size:13px;font-weight:700}.hours-table td{font-weight:800;color:var(--dark)}.hours-table tr:last-child th,.hours-table tr:last-child td{border-bottom:none}.hours-table .off{color:var(--muted);font-weight:700}.info-wrap{background:#f1f4f0;padding:48px 24px}
 .info-inner{max-width:800px;margin:0 auto}
 .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .info-item{background:#fff;border-radius:12px;padding:16px 18px;border:1px solid var(--border)}
@@ -161,8 +161,23 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
     </table>
     <div class="notice-box">
       <p class="notice-title">이용 안내</p>
-      <p class="notice-item">10명 이상 단체요금 적용</p><p class="notice-item">유아 인솔자 무료입장 / 초등이상 10:1 인솔자 무료입장</p><p class="notice-item">중식(돈까스 단일품목) 유아 8,000원 / 초등 9,000원 / 중고·성인 10,000원</p><p class="notice-item">D시즌(성수기) 유아 요금은 별도 문의 바랍니다</p>
+      <p class="notice-item">10명 이상 단체요금 적용</p><p class="notice-item">유아 인솔자 무료입장 / 초등이상 10:1 인솔자 무료입장</p><p class="notice-item">중식(돈까스 단일품목) 유아 8,000원 / 초등 9,000원 / 중고·성인 10,000원</p><p class="notice-item">D시즌(성수기) 유아 요금은 별도 문의 바랍니다</p><p class="notice-item">페이스타올은 제공되지 않습니다 (필요하신 경우 현장 대여 1,500원)</p>
     </div>
+  </div>
+</div>
+
+<div class="hours-wrap">
+  <div class="hours-inner">
+    <p class="sec-label">Operating Hours</p>
+    <h2 class="sec-title">운영시간 안내</h2>
+    <p class="hours-sub">로우시즌(비수기) 2026.09.01 ~ 12.24 · 운영일수 65일</p>
+    <table class="hours-table">
+      <tr><th>운영 요일</th><td>월 · 금 · 토 · 일</td></tr>
+      <tr><th>매표소 / 사우나</th><td>09:00 ~ 18:00</td></tr>
+      <tr><th>찜질방 / 바데풀</th><td>09:00 ~ 17:30</td></tr>
+      <tr><th>워터파크 (실내)</th><td>10:00 ~ 17:30</td></tr>
+      <tr><th>워터파크 (실외)</th><td class="off">운영안함</td></tr>
+    </table>
   </div>
 </div>
 
