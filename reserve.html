@@ -782,6 +782,10 @@
     if (!venue && !count && !write) return;
     if (venue) document.getElementById('rb-venue').value = venue;
     if (count) document.getElementById('rb-count').value = count;
+    const date = params.get('date');
+    const time = params.get('time');
+    if (date && /^\d{4}-\d{2}-\d{2}$/.test(date)) document.getElementById('rb-date').value = date;
+    if (time && /^\d{1,2}:\d{2}$/.test(time) && !document.getElementById('rb-note').value) document.getElementById('rb-note').value = '희망 회차: ' + time;
     document.getElementById('reserve-form').classList.add('open');
     document.getElementById('reserve-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
   });

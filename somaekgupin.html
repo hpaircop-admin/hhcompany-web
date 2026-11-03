@@ -93,6 +93,46 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
 .footer strong{color:rgba(255,255,255,.55)}
 .footer a{color:rgba(255,255,255,.5)}
 @media(max-width:560px){.info-grid{grid-template-columns:1fr}.cta-btns{flex-direction:column;align-items:center}}
+
+/* World travel redesign — November 2026 */
+:root{--blue:#0063bd;--navy:#112b64;--dark:#112b64;--text:#203854;--muted:#526980;--cyan:#ffda43}
+html{scroll-behavior:smooth;scroll-padding-top:96px}body{background:#f7fcff;line-height:1.6}
+a,button,input{-webkit-tap-highlight-color:transparent}a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #f39c12;outline-offset:4px}
+.nav{padding:16px max(24px,calc((100vw - 1160px)/2));background:#fff;box-shadow:0 2px 20px #123b6210}.nav-title{color:var(--navy)}.nav-sub{color:#55758d}.nav-back{color:#516a83}.nav-btn{border-radius:100px;padding:11px 22px}
+.hero{min-height:710px;align-items:center;background:#61d6f3}.hero-img{object-position:center;object-fit:cover}.hero-overlay{background:linear-gradient(90deg,#d9f7ff 0%,#d9f7fff2 22%,#c9f5ffb0 38%,transparent 60%)}
+.hero-content{max-width:1208px;margin:auto;padding:70px 24px 100px}.hero-badge{background:#fff;color:#1357a2;border:1px solid #b8e5f5;border-radius:100px;letter-spacing:0;padding:8px 16px;box-shadow:0 4px 0 #1035680a}
+.hero-title{font-size:clamp(40px,5vw,68px);color:#102d65;line-height:1.17;letter-spacing:-.065em;max-width:560px;margin-bottom:22px}.hero-title em{color:#0075bf}.hero-sub{color:#274e70;max-width:370px;font-size:16px;word-break:keep-all}.hero-tags{max-width:380px;gap:7px}.hero-tag{background:#ffffffc9;color:#22547b;border-color:#ffffff;font-weight:700;padding:6px 12px}.hero-action{display:inline-flex;align-items:center;gap:28px;margin-top:28px;background:#122f69;color:#fff;border-radius:100px;padding:15px 24px;text-decoration:none;font-weight:800;box-shadow:0 7px 0 #122f6914}
+.boarding{position:relative;z-index:3;display:grid;grid-template-columns:1.3fr 1fr 1fr;max-width:1080px;margin:-38px auto 0;background:white;border:1px solid #d4e6f1;border-radius:20px;box-shadow:0 12px 34px #15538b0c;padding:26px 18px}.boarding>div{padding:0 24px;border-right:1px dashed #b9d4e7}.boarding>div:last-child{border:0}.boarding small{display:block;color:#60788d;font-size:12px;margin-bottom:5px}.boarding strong{font-size:17px;color:#173b70}.boarding .fare{font-size:27px;color:#0068ba}.boarding .fare span{font-size:13px;font-weight:500}
+.section-nav{display:flex;justify-content:center;gap:32px;margin:32px auto 0;padding:12px;flex-wrap:wrap}.section-nav a{font-size:14px;font-weight:700;text-decoration:none;color:#46647e}
+.sec{max-width:1080px;padding:76px 24px}.sec-title{font-size:clamp(26px,3.5vw,38px);letter-spacing:-.045em;word-break:keep-all}.sec-label{color:#0876bc;font-size:12px;letter-spacing:.12em}.sec-desc{max-width:760px;font-size:16px}.pills{margin-top:24px}.pill{background:#e7f5ff;border:0}.story-route{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:30px;padding:22px;background:#eaf7ff;border-radius:18px}.story-route span{background:white;border-radius:100px;padding:8px 17px;color:#19538a;font-weight:700;font-size:14px}.story-route b{color:#69a5cf}
+.hl-grid{grid-template-columns:repeat(3,1fr);gap:18px;margin-top:30px;counter-reset:points}.hl-card{position:relative;padding:28px 24px;border:1px solid #d7e8f3;border-radius:22px;box-shadow:0 6px 0 #e8f3f9;counter-increment:points}.hl-card:before{content:'0' counter(points);display:block;font-size:34px;font-weight:900;color:#159bdb;margin-bottom:24px;line-height:1}.hl-card:nth-child(2){background:#fffceb}.hl-card:nth-child(3){background:#effbf9}.hl-title{font-size:18px;line-height:1.5;word-break:keep-all}.char-wrap{max-width:750px;margin:30px auto 0;border:8px solid white;border-radius:24px;box-shadow:0 12px 40px #0963a317}
+.price-wrap{background:#122e65;padding:72px 24px}.price-inner,.info-inner{max-width:1032px}.price-title{font-size:34px}.price-sub2{color:#c2d5ef;margin-top:12px}.pt{margin-top:28px}.pt td{padding:20px;font-size:15px}.pt td:first-child{width:38%}.pt tr:first-child td:last-child{font-size:32px;white-space:nowrap}.pt tr:first-child td:first-child span,.pt tr:nth-child(3) td:first-child span{color:#c1d1e6!important}.notice-item{color:#d4dff0}.info-wrap{background:#eaf7ff;padding:64px 24px}.info-item{padding:24px;border-color:#d9eaf5;border-radius:18px}.info-val{font-size:16px}.info-lbl{margin-bottom:10px}.cta-wrap{background:#d6f4ff;color:#112b64;padding:72px 24px}.cta-title{color:#112b64}.cta-desc{color:#456580}.btn-p{color:#112b64}.btn-s{color:#112b64;border-color:#8dbfdb}.footer{background:#102958}.footer p,.footer a,.footer strong{color:#b8cbe3}.footer p>span{color:#9aafcd!important}
+@media(min-width:1600px){.hero-img{object-position:center 48%}}
+@media(max-width:760px){.nav{padding:12px 18px}.nav-title{font-size:13px}.nav-back{display:none}.nav-btn{font-size:12px;padding:9px 14px}.hero{min-height:0;display:flex;flex-direction:column}.hero-img{position:relative;height:auto;aspect-ratio:3/2;object-fit:contain;order:2}.hero-overlay{display:none}.hero-content{padding:38px 24px 20px;background:linear-gradient(#dff8ff,#b1edff);order:1}.hero-title{font-size:43px;max-width:none}.hero-title br{display:none}.hero-sub{max-width:100%;font-size:14px;margin-bottom:18px}.hero-badge{font-size:11px}.hero-action{margin-top:20px}.boarding{margin:0 14px;grid-template-columns:1fr;border-radius:18px;padding:8px 20px}.boarding>div{border-right:0;border-bottom:1px dashed #cee0ec;padding:14px 0;display:flex;justify-content:space-between;align-items:center;gap:12px}.boarding small{margin:0}.boarding strong{font-size:14px;text-align:right}.boarding .fare{font-size:24px}.section-nav{gap:23px;margin:18px auto 0}.sec{padding:48px 22px}.sec-title{font-size:27px}.sec-desc{font-size:15px}.hl-grid{grid-template-columns:1fr}.hl-card{padding:23px}.hl-card:before{font-size:25px;margin-bottom:14px}.price-wrap{padding:48px 18px}.price-title{font-size:28px}.pt td{font-size:13px;padding:15px 11px;word-break:keep-all}.cy{font-size:13px}.pt tr:first-child td:last-child{font-size:27px}.notice-box{padding:18px}.info-wrap{padding:40px 20px}.cta-wrap{padding:48px 20px}.char-wrap{border-width:4px}.story-route{gap:8px;padding:16px}.story-route span{font-size:12px;padding:6px 10px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+.pt td.cy{color:var(--cyan)}
+/* 관람 희망일 달력 */
+.rvc-label{display:block;font-size:13px;font-weight:700;color:#112b64;margin-bottom:8px}
+.rvc{border:1px solid #d4e6f1;border-radius:14px;padding:14px;margin-bottom:16px;background:#fff}
+.rvc-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.rvc-head strong{font-size:16px;color:#112b64}
+.rvc-head button{width:36px;height:36px;border:1px solid #d4e6f1;background:#fff;border-radius:50%;font-size:16px;cursor:pointer;color:#112b64}
+.rvc-head button:disabled{opacity:.3;cursor:default}
+.rvc-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
+.rvc-dow{font-size:11px;font-weight:700;color:#60788d;padding:4px 0}
+.rvc-dow:first-child,.rvc-sun{color:#d64545}.rvc-dow:last-child,.rvc-sat{color:#0063bd}
+.rvc-day{aspect-ratio:1;max-height:44px;border:0;border-radius:10px;background:#f1f8fd;font-size:14px;font-weight:700;color:#112b64;cursor:pointer}
+.rvc-day:hover:not(:disabled){background:#d9eefc}
+.rvc-day:disabled{background:transparent;color:#c3ced8;font-weight:500;cursor:default}
+.rvc-day.on{background:#112b64;color:#fff}
+.rvc-empty{visibility:hidden}
+.rvc-note{font-size:11px;color:#60788d;margin-top:8px;line-height:1.6}
+.rvc-picked{font-size:14px;font-weight:800;color:#0063bd;margin:2px 0 10px}
+.rvc-times{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.rvc-time{padding:9px 16px;border:1px solid #b9d4e7;border-radius:100px;background:#fff;font-size:13px;font-weight:700;color:#112b64;cursor:pointer}
+.rvc-time.on{background:#0063bd;border-color:#0063bd;color:#fff}
+
 </style>
 </head>
 <body>
@@ -109,28 +149,34 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
   </div>
 </nav>
 <div class="hero">
-  <img class="hero-img" src="assets/somaekgupin/poster.jpg" alt="뮤지컬 소맥거핀 : 찰칵! 세계여행 포스터">
+  <img class="hero-img" src="assets/somaekgupin/travel-hero-v2.jpg" width="1536" height="1024" fetchpriority="high" alt="카메라를 든 소맥이와 가족이 지구 위에서 떠나는 신나는 세계여행">
   <div class="hero-overlay"></div>
   <div class="hero-content">
     <span class="hero-badge">1,000만 구독자 &lsquo;소맥거핀&rsquo;의 첫 무대화</span>
-    <h1 class="hero-title">올겨울 소맥이네 가족이<br><em>뮤지컬로 찾아온다!</em></h1>
-    <p class="hero-sub">유튜브에서 시작해 TV 애니메이션까지 확장된 &lsquo;소맥거핀&rsquo;이 처음으로 무대에 오릅니다. 브라질, 노르웨이, 그리스, 스페인까지 소맥이네 가족의 좌충우돌 세계여행 어드벤처를 관객과 함께 즐겨보세요.</p>
+    <h1 class="hero-title">찰칵!<br>우리 함께<br><em>세계여행</em></h1>
+    <p class="hero-sub">화면 밖으로 나온 소맥이네 가족!<br>올겨울, 함께 웃고 참여하는<br>좌충우돌 세계여행 뮤지컬이 시작됩니다.</p>
     <div class="hero-tags"><span class="hero-tag">뮤지컬(Musical)</span><span class="hero-tag">유튜브 구독자 1,000만 명</span><span class="hero-tag">관객 참여형 어드벤처</span><span class="hero-tag">2026.12.12 개막</span></div>
+    <a href="#contact" class="hero-action">단체 관람 문의하기 <span aria-hidden="true">↗</span></a>
   </div>
 </div>
-<section class="sec">
+<div class="boarding" aria-label="공연 핵심 정보"><div><small>여행 장소</small><strong>서울어린이대공원 아트센터</strong></div><div><small>함께하는 시간</small><strong>60분 · 12개월 이상</strong></div><div><small>단체관람 특별가</small><strong class="fare">22,000<span>원 / 1인</span></strong></div></div>
+<nav class="section-nav" aria-label="공연 정보 바로가기"><a href="#story">공연 소개</a><a href="#friends">등장인물</a><a href="#price">관람 안내</a><a href="#contact">예약 문의</a></nav>
+<section class="sec" id="story">
 
+  <p class="sec-label">STORY · 여행의 시작</p>
   <h2 class="sec-title">스마트폰에 빠져 지내던 가족의<br>뜻밖의 세계여행</h2>
   <p class="sec-desc">어느 날 소맥이가 세계여행 게임 &lsquo;랜드 마블&rsquo;의 경품에 당첨되며 소맥이네 가족은 뜻밖의 여행을 떠나게 됩니다.
 
 하지만 설레는 마음으로 여행을 즐기는 것도 잠시, 게임 속 몬스터 &lsquo;랜디온&rsquo;이 현실 세계로 넘어와 곳곳에서 이상현상을 일으키기 시작합니다. 소맥이네 가족은 집으로 돌아가기 위해 각 나라에서 랜디온과의 대결 미션에 성공해야 하는데&hellip;
 
 브라질, 노르웨이, 그리스, 스페인까지! 소맥이네 가족 인생 최고의 좌충우돌 세계여행 어드벤처가 시작됩니다.</p>
+  <div class="story-route" aria-label="여행 코스"><span>브라질</span><b aria-hidden="true">→</b><span>노르웨이</span><b aria-hidden="true">→</b><span>그리스</span><b aria-hidden="true">→</b><span>스페인</span></div>
   <div class="pills"><span class="pill">유튜브 구독자 1,000만 명</span><span class="pill">누적 조회수 51억 뷰</span><span class="pill">TV 애니메이션 확장</span><span class="pill">관객 참여형 미션</span></div>
 </section>
 <div class="divider"></div>
 <section class="sec">
 
+  <p class="sec-label">HIGHLIGHTS · 함께 즐기는 무대</p>
   <h2 class="sec-title">왜 &lsquo;소맥거핀 : 찰칵! 세계여행&rsquo;인가</h2>
   <div class="hl-grid">
     <div class="hl-card"><p class="hl-title">1,000만 구독자 &lsquo;소맥거핀&rsquo;의 첫 무대화</p><p class="hl-desc">유튜브에서 시작해 TV 애니메이션까지 확장된 &lsquo;소맥거핀 : 찰칵! 세계여행&rsquo;이 이번에는 뮤지컬로 탄생해, 화면 밖으로 나온 소맥이네 가족의 세계여행이 무대에서 펼쳐집니다.</p></div>
@@ -141,11 +187,12 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
 <div class="divider"></div>
 <section class="sec">
 
+  <p class="sec-label" id="friends">TRAVEL MATES · 우리의 여행 친구들</p>
   <h2 class="sec-title">소맥이 · 누나 · 엄마 · 아빠와 함께하는<br>세계여행 캐릭터</h2>
   <div class="char-wrap"><img src="assets/somaekgupin/characters.jpg" alt="소맥거핀 등장인물 - 소맥이, 누나, 엄마, 아빠, 귀시니, 트래미, 랜디온" loading="lazy"></div>
 </section>
 <div class="divider"></div>
-<div class="price-wrap">
+<div class="price-wrap" id="price">
   <div class="price-inner">
 
     <p class="price-title">단체 관람 요금 안내</p>
@@ -182,7 +229,23 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
       </div>
 
       <div id="rpanel-group">
-        <label style="display:block;font-size:13px;font-weight:700;color:#17302e;margin-bottom:8px">예상 인원</label>
+        <span class="rvc-label" id="rvc-label">관람 희망일 선택</span>
+        <div class="rvc" role="group" aria-labelledby="rvc-label">
+          <div class="rvc-head">
+            <button type="button" id="rvc-prev" aria-label="이전 달" onclick="rvcMove(-1)">◀</button>
+            <strong id="rvc-title"></strong>
+            <button type="button" id="rvc-next" aria-label="다음 달" onclick="rvcMove(1)">▶</button>
+          </div>
+          <div class="rvc-grid" id="rvc-grid"></div>
+          <p class="rvc-note">공연 기간 2026.12.12 ~ 2027.3.1 · 월요일은 공연이 없어 선택할 수 없습니다.</p>
+        </div>
+        <div id="rvc-time-wrap" style="display:none">
+          <p class="rvc-picked" id="rvc-picked"></p>
+          <span class="rvc-label">희망 회차 (선택)</span>
+          <div class="rvc-times" id="rvc-times"></div>
+        </div>
+        <div id="rv-date-err" style="display:none;font-size:12px;color:#dc2626;margin:4px 0 12px">관람 희망일을 달력에서 선택해주세요.</div>
+        <label for="rv-group-count" style="display:block;font-size:13px;font-weight:700;color:#17302e;margin-bottom:8px">예상 인원</label>
         <input type="number" id="rv-group-count" min="1" placeholder="예: 30" value="10" style="width:100%;padding:12px;border:1px solid #e7f0fd;border-radius:8px;font-size:15px;margin-bottom:8px;box-sizing:border-box">
         <div id="rv-group-err" style="display:none;font-size:12px;color:#dc2626;margin-bottom:10px">단체 예약은 최소 10명부터 가능합니다. 10명 미만이시면 개인 구매 탭을 이용해주세요.</div>
         <button type="button" onclick="rvGoGroupReserve()" style="display:block;width:100%;padding:13px;border:none;border-radius:12px;background:#17302e;color:#fff;font-weight:800;font-size:15px;cursor:pointer">단체 예약 문의하기 →</button>
@@ -197,7 +260,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
 
     <div class="cta-btns" style="margin-top:20px">
       <a href="tel:031-339-2999" class="btn-p">031-339-2999</a>
-      <a href="https://pf.kakao.com/_CixkJX/chat" target="_blank" class="btn-s">카카오톡 문의</a>
+      <a href="https://pf.kakao.com/_CixkJX/chat" target="_blank" rel="noopener noreferrer" class="btn-s">카카오톡 문의</a>
     </div>
 
     <script>
@@ -215,8 +278,62 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
         var count = parseInt(countInput.value, 10);
         if (!count || count < 10) { errEl.style.display = 'block'; countInput.focus(); return; }
         errEl.style.display = 'none';
-        location.href = 'reserve.html?venue=' + encodeURIComponent(RV_VENUE_NAME) + '&count=' + count;
+        if (!rvcSel) { document.getElementById('rv-date-err').style.display = 'block'; document.getElementById('rvc-label').scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
+        document.getElementById('rv-date-err').style.display = 'none';
+        location.href = 'reserve.html?venue=' + encodeURIComponent(RV_VENUE_NAME) + '&count=' + count +
+          '&date=' + rvcSel + (rvcTime ? '&time=' + encodeURIComponent(rvcTime) : '');
       }
+
+      // ── 관람 희망일 달력 ──
+      var RVC_START = '2026-12-12', RVC_END = '2027-03-01';
+      // 월요일이어도 공연하는 날(공휴일). 일정 확정 시 여기만 고치면 됩니다.
+      var RVC_HOLIDAYS = ['2026-12-25', '2027-01-01', '2027-02-06', '2027-02-07', '2027-02-08', '2027-02-09', '2027-03-01'];
+      var RVC_DOW = ['일', '월', '화', '수', '목', '금', '토'];
+      var rvcSel = '', rvcTime = '', rvcY = 2026, rvcM = 11;
+      function rvcKey(y, m, d) { return y + '-' + String(m + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0'); }
+      function rvcPlayable(key, dow) {
+        if (key < RVC_START || key > RVC_END) return false;
+        return dow !== 1 || RVC_HOLIDAYS.indexOf(key) >= 0;
+      }
+      function rvcRender() {
+        var first = new Date(rvcY, rvcM, 1).getDay(), last = new Date(rvcY, rvcM + 1, 0).getDate();
+        var h = RVC_DOW.map(function (d) { return '<div class="rvc-dow">' + d + '</div>'; }).join('');
+        for (var i = 0; i < first; i++) h += '<div class="rvc-empty"></div>';
+        for (var d = 1; d <= last; d++) {
+          var key = rvcKey(rvcY, rvcM, d), dow = new Date(rvcY, rvcM, d).getDay();
+          var ok = rvcPlayable(key, dow);
+          h += '<button type="button" class="rvc-day' + (key === rvcSel ? ' on' : '') + '"' + (ok ? '' : ' disabled') +
+            ' onclick="rvcPick(\'' + key + '\')" aria-label="' + (rvcM + 1) + '월 ' + d + '일">' + d + '</button>';
+        }
+        document.getElementById('rvc-grid').innerHTML = h;
+        document.getElementById('rvc-title').textContent = rvcY + '년 ' + (rvcM + 1) + '월';
+        document.getElementById('rvc-prev').disabled = (rvcY === 2026 && rvcM === 11);
+        document.getElementById('rvc-next').disabled = (rvcY === 2027 && rvcM === 2);
+      }
+      function rvcMove(n) {
+        rvcM += n;
+        if (rvcM < 0) { rvcM = 11; rvcY--; } else if (rvcM > 11) { rvcM = 0; rvcY++; }
+        rvcRender();
+      }
+      function rvcPick(key) {
+        rvcSel = key; rvcTime = '';
+        var p = key.split('-'), dt = new Date(+p[0], +p[1] - 1, +p[2]), dow = dt.getDay();
+        var holiday = RVC_HOLIDAYS.indexOf(key) >= 0;
+        var times = (dow === 6 || holiday) ? ['11:00', '14:00', '16:00'] : ['11:00', '14:00'];
+        document.getElementById('rvc-picked').textContent = (+p[1]) + '월 ' + (+p[2]) + '일(' + RVC_DOW[dow] + ')' + (holiday ? ' 공휴일' : '') + ' 선택';
+        document.getElementById('rvc-times').innerHTML = times.map(function (t) {
+          return '<button type="button" class="rvc-time" onclick="rvcPickTime(this,\'' + t + '\')">' + t + '</button>';
+        }).join('');
+        document.getElementById('rvc-time-wrap').style.display = '';
+        document.getElementById('rv-date-err').style.display = 'none';
+        rvcRender();
+      }
+      function rvcPickTime(btn, t) {
+        var on = btn.classList.contains('on');
+        document.querySelectorAll('.rvc-time').forEach(function (b) { b.classList.remove('on'); });
+        if (on) { rvcTime = ''; } else { btn.classList.add('on'); rvcTime = t; }
+      }
+      rvcRender();
       if (location.hash === '#buy') rvSwitchTab('indiv');
     </script>
   </div>
