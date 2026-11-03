@@ -195,6 +195,8 @@
   .prod-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
   .prod-card { display: flex; flex-direction: column; height: 100%; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; transition: transform .25s, box-shadow .25s; background: #fff; }
   .prod-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(14,42,71,0.1); }
+  .prod-card { position: relative; }
+  .prod-new { position: absolute; top: 12px; left: 12px; z-index: 2; background: #e53935; color: #fff; font-size: 11px; font-weight: 800; letter-spacing: .06em; padding: 4px 10px; border-radius: 999px; box-shadow: 0 2px 8px rgba(0,0,0,.2); pointer-events: none; }
   .prod-thumb { height: 140px; display: flex; align-items: center; justify-content: center; font-size: 44px; overflow: hidden; flex-shrink: 0; }
   .prod-body { padding: 20px 22px 22px; display: flex; flex-direction: column; flex: 1; }
   .prod-name { font-family: var(--serif); font-size:18px; font-weight: 700; color: var(--ink); margin-bottom: 3px; }
@@ -551,7 +553,10 @@
       ? `<div class="prod-thumb" style="padding:0;"><img src="${p.image_url}" alt="${p.vname||p.name}" style="width:100%;height:100%;object-fit:cover;display:block"></div>`
       : `<div class="prod-thumb" style="background:${p.gradient||'linear-gradient(135deg,#17302e,#1d6fe0)'}">${p.emoji||'🎡'}</div>`;
     const nameText = p.vname||p.name;
+    // 등록 후 30일 동안 NEW 표시 (products.created_at 기준, 자동 해제)
+    const isNew = p.created_at && (Date.now() - new Date(p.created_at).getTime()) < 30 * 24 * 3600 * 1000;
     return `<div class="prod-card">
+      ${isNew ? '<span class="prod-new">NEW</span>' : ''}
       ${detailPage ? `<a href="${detailPage}" class="prod-thumb-link">${thumb}</a>` : thumb}
       <div class="prod-body">
         <div class="prod-name">${detailPage ? `<a href="${detailPage}" class="prod-name-link">${nameText}</a>` : nameText}</div>
