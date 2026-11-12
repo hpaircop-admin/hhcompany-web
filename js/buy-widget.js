@@ -141,6 +141,15 @@
       .hhbw-times button.on small{color:#e6efff}
       .hhbw-times button:disabled{background:#f1f3f6;border-color:#e3e7ee;color:#a3adbb;cursor:not-allowed;text-decoration:line-through}
       .hhbw-times button:disabled small{color:#d0463c;text-decoration:none;display:inline-block}
+      .hhbw-addon{border:1.5px dashed #c9d9f3;border-radius:12px;padding:12px 12px 4px;margin-bottom:12px;background:#f8fbff}
+      .hhbw-addon .hhbw-addon-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+      .hhbw-addon .hhbw-addon-head b{font-size:14px;color:#17302e}
+      .hhbw-addon .hhbw-addon-head span{font-size:12px;color:#5d6b68;display:block;font-weight:600}
+      .hhbw-stepper{display:flex;align-items:center;gap:0}
+      .hhbw-stepper button{width:34px;height:34px;border:1.5px solid #c9d9f3;background:#fff;font-size:18px;font-weight:800;color:#1d6fe0;cursor:pointer;font-family:inherit;line-height:1}
+      .hhbw-stepper button:first-child{border-radius:8px 0 0 8px}
+      .hhbw-stepper button:last-child{border-radius:0 8px 8px 0}
+      .hhbw-stepper .n{min-width:40px;height:34px;display:flex;align-items:center;justify-content:center;border-top:1.5px solid #c9d9f3;border-bottom:1.5px solid #c9d9f3;background:#fff;font-weight:800;font-size:15px}
       .hhbw-skel{color:#5d6b68;font-size:13px;padding:6px 0}
     `;
     document.head.appendChild(style);
@@ -282,50 +291,98 @@
       </div>
       <div class="hhbw-field">
         <label>도착 예정 시간</label>
-        <div class="hhbw-times" id="hhbw-times">${times.map((t) => `<button type="button" data-t="${t}">${t}${v.slots ? '<small></small>' : ''}</button>`).join('')}</div>
-        ${v.slots ? '<div class="hhbw-dayinfo" id="hhbw-slotinfo">방문일을 선택하면 시간별 남은 인원이 표시됩니다. 마감된 시간은 선택할 수 없습니다.</div>' : ''}
-      </div>`;
+        <div class="hhbw-times" id="hhbw-times">${times.map((t) => `<button type="button" data-t="${t}">${t}</button>`).join('')}</div>
+      </div>
+      ${v.addon ? `<div class="hhbw-addon" id="hhbw-addon" style="display:none">
+        <div class="hhbw-addon-head">
+          <div><b id="hhbw-addon-title">추가 상품</b><span id="hhbw-addon-sub"></span></div>
+          <div class="hhbw-stepper"><button type="button" id="hhbw-addon-minus" aria-label="줄이기">−</button><div class="n" id="hhbw-addon-n">0</div><button type="button" id="hhbw-addon-plus" aria-label="늘리기">+</button></div>
+        </div>
+        <div id="hhbw-addon-timewrap" style="display:none">
+          <div class="hhbw-field" style="margin-bottom:8px"><label id="hhbw-addon-timelabel">이용 시간</label>
+            <div class="hhbw-times" id="hhbw-addon-times">${times.map((t) => `<button type="button" data-t="${t}">${t}<small></small></button>`).join('')}</div>
+            <div class="hhbw-dayinfo" id="hhbw-addon-info">방문일을 먼저 선택해주세요.</div>
+          </div>
+        </div>
+      </div>` : ''}`;
   }
-  // ── 시간대별 정원 (init의 visit.slots 옵션을 준 상품만) ───────────────
-  // 서버(DB)의 slot_status 함수가 시간별 사용 인원을 숫자로만 알려주고, 정원 초과 주문은 DB가 직접 거절한다.
-  async function loadSlots(state) {
+
+  // ── 추가 상품(예: 카트) + 이용 시간 선택 + 시간당 정원 (init의 visit.addon 옵션을 준 상품만) ──
+  // 서버(DB)의 slot_status 함수가 추가 상품 이름·가격·시간당 정원·시간별 사용 인원(숫자만)을 알려주고,
+  // 금액 계산과 정원 초과 차단은 서버(payment-create-addon + DB 트리거)가 다시 한다.
+  const ADDON_FN_URL = `${SB_URL}/functions/v1/payment-create-addon`;
+  function addonTotal(state) { return state.addon && state.addon.price ? state.addon.price * (state.addon.qty || 0) : 0; }
+  async function loadAddon(state) {
     const { mountEl } = state;
-    const info = mountEl.querySelector('#hhbw-slotinfo');
-    state.slotInfo = null;
-    if (!state.visitDate) return;
-    if (info) { info.className = 'hhbw-dayinfo'; info.textContent = '시간별 남은 인원을 불러오는 중...'; }
+    if (!state.visit || !state.visit.addon) return;
+    const date = state.visitDate || ymd(new Date());
+    let data = null;
     try {
-      const { data, error } = await getClient().rpc('slot_status', { p_product: state.productId, p_date: state.visitDate });
-      if (error) throw error;
-      state.slotInfo = { capacity: Number(data && data.capacity) || 0, used: (data && data.used) || {} };
+      const r = await getClient().rpc('slot_status', { p_product: state.productId, p_date: date });
+      if (r.error) throw r.error;
+      data = r.data;
     } catch (e) {
       console.error('[HHBuyWidget] slot_status 조회 실패', e);
-      if (info) { info.className = 'hhbw-dayinfo err'; info.textContent = '남은 인원을 불러오지 못했습니다. 새로고침 후 다시 시도해주세요.'; }
+      const info = mountEl.querySelector('#hhbw-addon-info');
+      if (info) { info.className = 'hhbw-dayinfo err'; info.textContent = '남은 자리를 불러오지 못했습니다. 새로고침 후 다시 시도해주세요.'; }
       return;
     }
-    applySlots(state);
+    if (!data) return; // 이 상품은 추가 상품 없음
+    const prevQty = state.addon ? state.addon.qty : 0, prevTime = state.addon ? state.addon.time : '';
+    state.addon = { label: data.label || '추가 상품', price: Number(data.price) || 0, capacity: Number(data.capacity) || 0, used: data.used || {}, qty: prevQty, time: prevTime, forDate: date };
+    const box = mountEl.querySelector('#hhbw-addon');
+    if (box) box.style.display = '';
+    mountEl.querySelector('#hhbw-addon-title').textContent = state.addon.label + ' 추가';
+    mountEl.querySelector('#hhbw-addon-sub').textContent = '1대 ' + money(state.addon.price) + ' · 입장권과 별도 요금 · 이용 시간 선택';
+    mountEl.querySelector('#hhbw-addon-timelabel').textContent = state.addon.label + ' 이용 시간';
+    applyAddonSlots(state);
+    if (state.syncAmount) state.syncAmount();
   }
-  function applySlots(state) {
-    const { mountEl, slotInfo } = state;
-    if (!slotInfo || !slotInfo.capacity) return;
-    const qty = Math.max(1, parseInt((mountEl.querySelector('#hhbw-qty') || {}).value, 10) || 1);
-    const info = mountEl.querySelector('#hhbw-slotinfo');
+  function applyAddonSlots(state) {
+    const { mountEl, addon } = state;
+    if (!addon) return;
+    const wrap = mountEl.querySelector('#hhbw-addon-timewrap');
+    mountEl.querySelector('#hhbw-addon-n').textContent = String(addon.qty);
+    wrap.style.display = addon.qty > 0 ? '' : 'none';
+    const info = mountEl.querySelector('#hhbw-addon-info');
+    if (addon.qty <= 0) { addon.time = ''; return; }
+    if (!state.visitDate) { info.className = 'hhbw-dayinfo'; info.textContent = '방문일을 먼저 선택하면 시간별 남은 자리가 표시됩니다.'; return; }
     let anyOpen = false;
-    mountEl.querySelectorAll('#hhbw-times button').forEach((b) => {
-      const left = slotInfo.capacity - (Number(slotInfo.used[b.dataset.t]) || 0);
-      const full = left < qty;
+    mountEl.querySelectorAll('#hhbw-addon-times button').forEach((b) => {
+      const left = addon.capacity - (Number(addon.used[b.dataset.t]) || 0);
+      const full = left < addon.qty;
       b.disabled = full;
       const sm = b.querySelector('small');
-      if (sm) sm.textContent = left <= 0 ? '마감' : (full ? '잔여 ' + left + '명' : '잔여 ' + left + '명');
-      if (full && b.classList.contains('on')) { b.classList.remove('on'); state.arrivalTime = ''; }
+      if (sm) sm.textContent = left <= 0 ? '마감' : '잔여 ' + left + '대';
+      if (full && b.classList.contains('on')) { b.classList.remove('on'); addon.time = ''; }
+      else if (!full && addon.time === b.dataset.t) b.classList.add('on');
       if (!full) anyOpen = true;
     });
-    if (info) {
-      info.className = anyOpen ? 'hhbw-dayinfo' : 'hhbw-dayinfo err';
-      info.textContent = anyOpen
-        ? '시간당 최대 ' + slotInfo.capacity + '명 · 선택 인원(' + qty + '명)이 들어갈 수 없는 시간은 마감으로 표시됩니다.'
-        : '이 날은 선택하신 인원이 들어갈 수 있는 시간이 없습니다. 다른 날짜를 선택하거나 인원을 줄여주세요.';
-    }
+    info.className = anyOpen ? 'hhbw-dayinfo' : 'hhbw-dayinfo err';
+    info.textContent = anyOpen
+      ? '시간당 최대 ' + addon.capacity + '대 · 선택한 ' + addon.qty + '대가 들어갈 수 없는 시간은 마감으로 표시됩니다.'
+      : '이 날은 선택하신 수량이 들어갈 수 있는 시간이 없습니다. 다른 날짜를 선택하거나 수량을 줄여주세요.';
+  }
+  function bindAddon(state) {
+    const { mountEl } = state;
+    if (!state.visit || !state.visit.addon) return;
+    state.addon = null;
+    const bump = (d) => {
+      if (!state.addon) return;
+      state.addon.qty = Math.min(Math.max(0, state.addon.qty + d), Math.min(20, state.addon.capacity || 20));
+      applyAddonSlots(state);
+      if (state.syncAmount) state.syncAmount();
+    };
+    mountEl.querySelector('#hhbw-addon-minus').onclick = () => bump(-1);
+    mountEl.querySelector('#hhbw-addon-plus').onclick = () => bump(1);
+    mountEl.querySelectorAll('#hhbw-addon-times button').forEach((b) => {
+      b.onclick = () => {
+        if (!state.addon || b.disabled) return;
+        mountEl.querySelectorAll('#hhbw-addon-times button').forEach((x) => x.classList.remove('on'));
+        b.classList.add('on'); state.addon.time = b.dataset.t;
+      };
+    });
+    loadAddon(state);
   }
   function bindVisitFields(state) {
     const v = state.visit;
@@ -346,11 +403,8 @@
       }
       state.visitDate = val;
       info.textContent = (d.getMonth() + 1) + '월 ' + d.getDate() + '일 (' + WEEK[d.getDay()] + ') 방문 예정';
-      if (v.slots) loadSlots(state);
+      if (v.addon) loadAddon(state); // 선택한 날짜의 시간별 남은 자리를 다시 불러온다
     }
-    // 시간대별 정원이 있는 상품(v.slots): 인원을 바꾸면 남은 자리 기준으로 마감 표시를 다시 계산
-    const qtyEl = mountEl.querySelector('#hhbw-qty');
-    if (v.slots && qtyEl) qtyEl.addEventListener('input', () => applySlots(state));
     dateEl.onchange = () => pick(dateEl.value);
     mountEl.querySelectorAll('.hhbw-quick button').forEach((b) => {
       b.onclick = () => { dateEl.value = ymd(addDays(new Date(), +b.dataset.add)); pick(dateEl.value); };
@@ -422,9 +476,11 @@
     const amountEl = mountEl.querySelector('#hhbw-amount');
     const syncAmount = () => {
       const q = Math.max(1, parseInt(qtyInput.value, 10) || 1);
-      amountEl.textContent = money(state.price * q);
+      amountEl.textContent = money(state.price * q + addonTotal(state));
     };
+    state.syncAmount = syncAmount;
     qtyInput.oninput = syncAmount;
+    bindAddon(state);
     const sel = mountEl.querySelector('#hhbw-ticket-select');
     if (sel) sel.onchange = () => {
       state.ticketIndex = parseInt(sel.value, 10) || 0;
@@ -524,6 +580,9 @@
 
     if (state.visit && !state.visitDate) { msg.textContent = '방문 예정일을 선택해주세요.'; return; }
     if (state.visit && !state.arrivalTime) { msg.textContent = '도착 예정 시간을 선택해주세요.'; return; }
+    const addonOn = !!(state.visit && state.visit.addon && state.addon && state.addon.price);
+    const addonQty = addonOn ? state.addon.qty : 0;
+    if (addonQty > 0 && !state.addon.time) { msg.textContent = state.addon.label + ' 이용 시간을 선택해주세요.'; return; }
     if (!name) { msg.textContent = '이름을 입력해주세요.'; return; }
     if (!phone) { msg.textContent = '연락처를 입력해주세요.'; return; }
     // 휴대폰 본인확인이 안 끝났거나, 인증 이후 번호를 바꿔서 무효화된 경우
@@ -534,7 +593,16 @@
     msg.textContent = '';
 
     btn.disabled = true; btn.textContent = '신청 접수 중...';
-    const created = await fnFetch('create', {
+    // 추가 상품(예: 카트)이 있는 상품은 전용 주문 생성 함수(payment-create-addon)로 보낸다 (결제 승인은 기존과 동일)
+    const createCall = addonOn
+      ? async (body) => {
+          const res = await fetch(ADDON_FN_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+          const data = await res.json().catch(() => ({}));
+          return { ok: res.ok, status: res.status, data };
+        }
+      : (body) => fnFetch('create', body);
+    const created = await createCall({
+      addonQty: addonOn ? addonQty : undefined, addonTime: addonQty > 0 ? state.addon.time : undefined,
       productId: state.productId, quantity: qty, buyerName: name, buyerPhone: phone,
       buyerEmail: email || undefined,
       visitDate: state.visitDate || undefined, arrivalTime: state.arrivalTime || undefined,
@@ -548,11 +616,8 @@
     if (!created.ok) {
       btn.disabled = false; btn.textContent = '결제 진행하기';
       msg.textContent = created.data?.message || '신청 처리에 실패했습니다.';
-      // 시간대별 정원 상품: 그 사이 다른 분이 먼저 예약해 마감됐을 수 있으니 남은 인원을 다시 불러와 보여준다
-      if (state.visit && state.visit.slots) {
-        await loadSlots(state);
-        msg.textContent = '선택하신 시간이 방금 마감되었거나 주문 처리에 실패했습니다. 남은 인원을 확인하고 다른 시간을 선택해주세요.';
-      }
+      // 그 사이 다른 분이 먼저 예약해 정원이 찼다면 남은 자리를 다시 불러와 보여준다
+      if (addonOn && created.data?.code === 'SLOT_FULL') await loadAddon(state);
       return;
     }
 

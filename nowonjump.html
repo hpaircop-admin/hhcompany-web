@@ -24,7 +24,7 @@
 <meta property="og:locale" content="ko_KR">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://js.tosspayments.com/v1/payment"></script>
-<script src="js/buy-widget.js?v=20261112"></script>
+<script src="js/buy-widget.js?v=20261112b"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--navy:#17302e;--green:#1f7a5c;--yellow:#ffd23f;--text:#17302e;--muted:#5d6b68;--line:rgba(23,48,46,.12)}
@@ -206,18 +206,12 @@ table.pt{width:100%;border-collapse:collapse;background:rgba(255,255,255,.06);bo
     <div class="box">
       <div class="tabs" role="tablist">
         <button type="button" id="tab-indiv" class="on" onclick="showTab('indiv')">개인 구매</button>
-        <button type="button" id="tab-kart" onclick="showTab('kart')">카트 추가</button>
         <button type="button" id="tab-group" onclick="showTab('group')">단체 예약 문의</button>
       </div>
 
       <div id="panel-indiv">
-        <div class="demo"><b>🧪 시연용 테스트 결제입니다</b>결제 금액은 <strong>100원</strong>이고 실제 입장권이 아닙니다. 휴대폰 본인확인 → 카드 결제 → 알림톡·문자 수신까지 확인할 수 있습니다. (정식 요금: 주중 종일 40,000원 / 3시간 30,000원)</div>
+        <div class="demo"><b>🧪 시연용 테스트 결제입니다</b>입장권 <strong>100원</strong>, 카트 추가 시 <strong>1대 100원</strong>이 더해집니다. 실제 입장권·이용권이 아닙니다. 카트는 이용 시간을 고르며, 시간당 최대 10대까지라 정원이 찬 시간은 <strong>마감</strong>으로 표시됩니다. 휴대폰 본인확인 → 카드 결제 → 알림톡·문자 수신까지 확인할 수 있습니다. (정식 요금: 주중 종일 40,000원 / 3시간 30,000원)</div>
         <div class="hhbw-mount" id="buy" style="border:none;padding:0;max-width:none"></div>
-      </div>
-
-      <div id="panel-kart" style="display:none">
-        <div class="demo"><b>🧪 시연용 카트 예약 샘플입니다</b>카트는 입장권과 별도 요금이며, <strong>이용 시간을 선택</strong>해야 합니다. 시간당 최대 <strong>10명</strong>까지이고, 정원이 찬 시간은 <strong>마감</strong>으로 표시되어 선택할 수 없습니다. 결제 금액은 <strong>100원</strong>이며 실제 이용권이 아닙니다.</div>
-        <div class="hhbw-mount" id="buy-kart" style="border:none;padding:0;max-width:none"></div>
       </div>
 
       <div id="panel-group" style="display:none">
@@ -245,28 +239,17 @@ table.pt{width:100%;border-collapse:collapse;background:rgba(255,255,255,.06);bo
   var VENUE_NAME = '노원 JUMP';
   function showTab(t) {
     document.getElementById('panel-indiv').style.display = t === 'indiv' ? '' : 'none';
-    document.getElementById('panel-kart').style.display = t === 'kart' ? '' : 'none';
     document.getElementById('panel-group').style.display = t === 'group' ? '' : 'none';
     document.getElementById('tab-indiv').classList.toggle('on', t === 'indiv');
-    document.getElementById('tab-kart').classList.toggle('on', t === 'kart');
     document.getElementById('tab-group').classList.toggle('on', t === 'group');
-    if (t === 'kart' && !window.__kartInit) {
-      window.__kartInit = true; // 카트 위젯은 탭을 처음 열 때 한 번만 시작 (결제창 복귀 처리는 개인 구매 위젯이 담당)
-      // 시연용 카트(nowonjump_kart_test, 100원): 시간당 정원 10명. 정원은 DB(products.slot_capacity)에서 관리한다.
-      HHBuyWidget.init({
-        mount: '#buy-kart',
-        productId: 'nowonjump_kart_test',
-        venueName: '노원 JUMP 카트',
-        visit: { maxDaysAhead: 60, startTime: '09:30', endTime: '15:30', stepMin: 30, slots: true }
-      });
-    }
   }
   // 시연용 테스트: 100원 테스트 상품(nowonjump_test)으로 결제합니다. 정식 오픈 시 productId·venueName을 실제 상품으로 바꿉니다.
   HHBuyWidget.init({
     mount: '#buy',
     productId: 'nowonjump_test',
     venueName: '노원 JUMP 테스트',
-    visit: { maxDaysAhead: 60, startTime: '09:30', endTime: '15:30', stepMin: 30 }
+    // addon: true → 구매 화면에 '카트 추가'(수량 + 이용 시간 선택, 시간당 정원)가 나온다. 가격·정원은 DB(products.addon_config)에서 관리
+    visit: { maxDaysAhead: 60, startTime: '09:30', endTime: '15:30', stepMin: 30, addon: true }
   });
   function goReserve() {
     var el = document.getElementById('cnt'), err = document.getElementById('cnt-err');
