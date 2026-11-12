@@ -137,6 +137,10 @@
       .hhbw-times{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
       .hhbw-times button{padding:9px 0;border:1.5px solid #e7f0fd;border-radius:8px;background:#fff;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;color:#17302e}
       .hhbw-times button.on{border-color:#1d6fe0;background:#1d6fe0;color:#fff}
+      .hhbw-times button small{display:block;font-size:10px;font-weight:600;color:#6b7c93;margin-top:1px;min-height:12px}
+      .hhbw-times button.on small{color:#e6efff}
+      .hhbw-times button:disabled{background:#f1f3f6;border-color:#e3e7ee;color:#a3adbb;cursor:not-allowed;text-decoration:line-through}
+      .hhbw-times button:disabled small{color:#d0463c;text-decoration:none;display:inline-block}
       .hhbw-skel{color:#5d6b68;font-size:13px;padding:6px 0}
     `;
     document.head.appendChild(style);
@@ -278,8 +282,50 @@
       </div>
       <div class="hhbw-field">
         <label>도착 예정 시간</label>
-        <div class="hhbw-times" id="hhbw-times">${times.map((t) => `<button type="button" data-t="${t}">${t}</button>`).join('')}</div>
+        <div class="hhbw-times" id="hhbw-times">${times.map((t) => `<button type="button" data-t="${t}">${t}${v.slots ? '<small></small>' : ''}</button>`).join('')}</div>
+        ${v.slots ? '<div class="hhbw-dayinfo" id="hhbw-slotinfo">방문일을 선택하면 시간별 남은 인원이 표시됩니다. 마감된 시간은 선택할 수 없습니다.</div>' : ''}
       </div>`;
+  }
+  // ── 시간대별 정원 (init의 visit.slots 옵션을 준 상품만) ───────────────
+  // 서버(DB)의 slot_status 함수가 시간별 사용 인원을 숫자로만 알려주고, 정원 초과 주문은 DB가 직접 거절한다.
+  async function loadSlots(state) {
+    const { mountEl } = state;
+    const info = mountEl.querySelector('#hhbw-slotinfo');
+    state.slotInfo = null;
+    if (!state.visitDate) return;
+    if (info) { info.className = 'hhbw-dayinfo'; info.textContent = '시간별 남은 인원을 불러오는 중...'; }
+    try {
+      const { data, error } = await getClient().rpc('slot_status', { p_product: state.productId, p_date: state.visitDate });
+      if (error) throw error;
+      state.slotInfo = { capacity: Number(data && data.capacity) || 0, used: (data && data.used) || {} };
+    } catch (e) {
+      console.error('[HHBuyWidget] slot_status 조회 실패', e);
+      if (info) { info.className = 'hhbw-dayinfo err'; info.textContent = '남은 인원을 불러오지 못했습니다. 새로고침 후 다시 시도해주세요.'; }
+      return;
+    }
+    applySlots(state);
+  }
+  function applySlots(state) {
+    const { mountEl, slotInfo } = state;
+    if (!slotInfo || !slotInfo.capacity) return;
+    const qty = Math.max(1, parseInt((mountEl.querySelector('#hhbw-qty') || {}).value, 10) || 1);
+    const info = mountEl.querySelector('#hhbw-slotinfo');
+    let anyOpen = false;
+    mountEl.querySelectorAll('#hhbw-times button').forEach((b) => {
+      const left = slotInfo.capacity - (Number(slotInfo.used[b.dataset.t]) || 0);
+      const full = left < qty;
+      b.disabled = full;
+      const sm = b.querySelector('small');
+      if (sm) sm.textContent = left <= 0 ? '마감' : (full ? '잔여 ' + left + '명' : '잔여 ' + left + '명');
+      if (full && b.classList.contains('on')) { b.classList.remove('on'); state.arrivalTime = ''; }
+      if (!full) anyOpen = true;
+    });
+    if (info) {
+      info.className = anyOpen ? 'hhbw-dayinfo' : 'hhbw-dayinfo err';
+      info.textContent = anyOpen
+        ? '시간당 최대 ' + slotInfo.capacity + '명 · 선택 인원(' + qty + '명)이 들어갈 수 없는 시간은 마감으로 표시됩니다.'
+        : '이 날은 선택하신 인원이 들어갈 수 있는 시간이 없습니다. 다른 날짜를 선택하거나 인원을 줄여주세요.';
+    }
   }
   function bindVisitFields(state) {
     const v = state.visit;
@@ -300,7 +346,11 @@
       }
       state.visitDate = val;
       info.textContent = (d.getMonth() + 1) + '월 ' + d.getDate() + '일 (' + WEEK[d.getDay()] + ') 방문 예정';
+      if (v.slots) loadSlots(state);
     }
+    // 시간대별 정원이 있는 상품(v.slots): 인원을 바꾸면 남은 자리 기준으로 마감 표시를 다시 계산
+    const qtyEl = mountEl.querySelector('#hhbw-qty');
+    if (v.slots && qtyEl) qtyEl.addEventListener('input', () => applySlots(state));
     dateEl.onchange = () => pick(dateEl.value);
     mountEl.querySelectorAll('.hhbw-quick button').forEach((b) => {
       b.onclick = () => { dateEl.value = ymd(addDays(new Date(), +b.dataset.add)); pick(dateEl.value); };
@@ -498,6 +548,11 @@
     if (!created.ok) {
       btn.disabled = false; btn.textContent = '결제 진행하기';
       msg.textContent = created.data?.message || '신청 처리에 실패했습니다.';
+      // 시간대별 정원 상품: 그 사이 다른 분이 먼저 예약해 마감됐을 수 있으니 남은 인원을 다시 불러와 보여준다
+      if (state.visit && state.visit.slots) {
+        await loadSlots(state);
+        msg.textContent = '선택하신 시간이 방금 마감되었거나 주문 처리에 실패했습니다. 남은 인원을 확인하고 다른 시간을 선택해주세요.';
+      }
       return;
     }
 
