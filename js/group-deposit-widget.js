@@ -213,6 +213,8 @@
       venueName: opts.venueName || '',
       orderLabel: opts.orderLabel || (opts.venueName ? `${opts.venueName} 단체 예약금` : '단체 예약금'),
       minCount: opts.minCount || MIN_GROUP_SIZE,
+      // visitDateInputId(선택, 2026-11-13): 방문 예정일 <input type="date">가 있는 페이지는 그 날짜를 주문에 함께 저장한다
+      visitDateInput: opts.visitDateInputId ? document.getElementById(opts.visitDateInputId) : null,
       price: null,
       tiers: null,
       // 휴대폰 본인확인 상태 (2026-09-18 추가) — render()가 새로 그려질 때마다 초기화됨
@@ -470,6 +472,8 @@
       if (unit === null) { msg.textContent = '단체유형을 선택해주세요.'; state.tierInput.focus(); return; }
       if (unit === -1) { msg.textContent = '선택하신 단체유형은 이 상품 조합으로 온라인 결제가 어렵습니다. 전화 또는 카카오톡으로 문의해주세요.'; return; }
     }
+    const visitDate = state.visitDateInput && /^\d{4}-\d{2}-\d{2}$/.test(state.visitDateInput.value) ? state.visitDateInput.value : '';
+    if (state.visitDateInput && !visitDate) { msg.textContent = '방문 예정일을 선택해주세요.'; state.visitDateInput.focus(); return; }
     if (!name) { msg.textContent = '담당자 이름을 입력해주세요.'; return; }
     if (!phone) { msg.textContent = '연락처를 입력해주세요.'; return; }
     // 휴대폰 본인확인이 안 끝났거나, 인증 이후 번호를 바꿔서 무효화된 경우 (2026-09-18 추가)
@@ -491,6 +495,7 @@
     const created = await fnFetch('create', {
       productId: state.productId, quantity: count, buyerName: name, buyerPhone: phone,
       buyerEmail: email || undefined, depositMode: true, tier: tier || undefined,
+      visitDate: visitDate || undefined,
       recipientName: recipientName || undefined, recipientPhone: recipientPhone || undefined,
       verificationToken: state.otp.token, guestPurchase: true,
     });
