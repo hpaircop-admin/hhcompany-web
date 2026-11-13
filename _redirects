@@ -10,3 +10,7 @@
 /islandcastle-hometicket / 302
 /islandcastle-hometicket.html / 302
 /islandcastle-hometicket/ / 302
+
+# 원마운트 스노우파크: 전용 주소는 기존 주소(/onemount)로 이동 (2026-11-13)
+/onemount-snow /onemount 301
+/onemount-snow.html /onemount 301
