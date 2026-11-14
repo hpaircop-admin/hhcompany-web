@@ -22,9 +22,6 @@
 <meta property="og:url" content="https://hhcompany.co.kr/nowonjump.html">
 <meta property="og:image" content="https://hhcompany.co.kr/assets/nowonjump/hero.jpg">
 <meta property="og:locale" content="ko_KR">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://js.tosspayments.com/v1/payment"></script>
-<script src="js/buy-widget.js?v=20261112b"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--navy:#17302e;--green:#1f7a5c;--yellow:#ffd23f;--text:#17302e;--muted:#5d6b68;--line:rgba(23,48,46,.12)}
@@ -204,17 +201,9 @@ table.pt{width:100%;border-collapse:collapse;background:rgba(255,255,255,.06);bo
     <h2>구매·예약은<br>더블에이치컴퍼니로 문의하세요</h2>
     <p>인원과 방문 날짜를 알려주시면 담당자가 요금과 일정을 맞춰 안내해 드립니다.</p>
     <div class="box">
-      <div class="tabs" role="tablist">
-        <button type="button" id="tab-indiv" class="on" onclick="showTab('indiv')">개인 구매</button>
-        <button type="button" id="tab-group" onclick="showTab('group')">단체 예약 문의</button>
-      </div>
 
-      <div id="panel-indiv">
-        <div class="demo"><b>🧪 시연용 테스트 결제입니다</b>입장권 <strong>100원</strong>, 카트 추가 시 <strong>1대 100원</strong>이 더해집니다. 실제 입장권·이용권이 아닙니다. 카트는 이용 시간을 고르며, 시간당 최대 10대까지라 정원이 찬 시간은 <strong>마감</strong>으로 표시됩니다. 휴대폰 본인확인 → 카드 결제 → 알림톡·문자 수신까지 확인할 수 있습니다. (정식 요금: 주중 종일 40,000원 / 3시간 30,000원)</div>
-        <div class="hhbw-mount" id="buy" style="border:none;padding:0;max-width:none"></div>
-      </div>
 
-      <div id="panel-group" style="display:none">
+      <div id="panel-group">
         <label for="cnt">예상 인원</label>
         <input type="number" id="cnt" min="1" value="10" inputmode="numeric">
         <div class="err" id="cnt-err">단체 예약은 10명부터 접수합니다. 10명 미만은 아래 카카오톡이나 전화로 문의해 주세요.</div>
@@ -237,20 +226,6 @@ table.pt{width:100%;border-collapse:collapse;background:rgba(255,255,255,.06);bo
 
 <script>
   var VENUE_NAME = '노원 JUMP';
-  function showTab(t) {
-    document.getElementById('panel-indiv').style.display = t === 'indiv' ? '' : 'none';
-    document.getElementById('panel-group').style.display = t === 'group' ? '' : 'none';
-    document.getElementById('tab-indiv').classList.toggle('on', t === 'indiv');
-    document.getElementById('tab-group').classList.toggle('on', t === 'group');
-  }
-  // 시연용 테스트: 100원 테스트 상품(nowonjump_test)으로 결제합니다. 정식 오픈 시 productId·venueName을 실제 상품으로 바꿉니다.
-  HHBuyWidget.init({
-    mount: '#buy',
-    productId: 'nowonjump_test',
-    venueName: '노원 JUMP 테스트',
-    // addon: true → 구매 화면에 '카트 추가'(수량 + 이용 시간 선택, 시간당 정원)가 나온다. 가격·정원은 DB(products.addon_config)에서 관리
-    visit: { maxDaysAhead: 60, startTime: '09:30', endTime: '15:30', stepMin: 30, addon: true }
-  });
   function goReserve() {
     var el = document.getElementById('cnt'), err = document.getElementById('cnt-err');
     var n = parseInt(el.value, 10);
